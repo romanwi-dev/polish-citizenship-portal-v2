@@ -77,7 +77,16 @@ const resources = {
       nav: {
         register: 'Register / Login',
         signOut: 'Sign Out',
-        navigation: 'Navigation'
+        navigation: 'Navigation',
+        home: 'Home',
+        about: 'About',
+        services: 'Services',
+        howToStart: 'How to Start',
+        timeline: 'Timeline',
+        pricing: 'Pricing',
+        testimonials: 'Testimonials',
+        faq: 'FAQ',
+        contact: 'Contact'
       },
       
       // Hero Section - Homepage
@@ -428,7 +437,16 @@ const resources = {
       nav: {
         register: 'Registrarse / Iniciar Sesión',
         signOut: 'Cerrar Sesión',
-        navigation: 'Navegación'
+        navigation: 'Navegación',
+        home: 'Inicio',
+        about: 'Acerca de',
+        services: 'Servicios',
+        howToStart: 'Cómo Comenzar',
+        timeline: 'Cronograma',
+        pricing: 'Precios',
+        testimonials: 'Testimonios',
+        faq: 'Preguntas Frecuentes',
+        contact: 'Contacto'
       },
       hero: {
         badge: 'Servicios Legales Web3',
@@ -763,7 +781,16 @@ const resources = {
       nav: {
         register: 'Registrar / Entrar',
         signOut: 'Sair',
-        navigation: 'Navegação'
+        navigation: 'Navegação',
+        home: 'Início',
+        about: 'Sobre',
+        services: 'Serviços',
+        howToStart: 'Como Começar',
+        timeline: 'Cronograma',
+        pricing: 'Preços',
+        testimonials: 'Depoimentos',
+        faq: 'Perguntas Frequentes',
+        contact: 'Contato'
       },
       hero: {
         badge: 'Serviços Jurídicos Web3',
@@ -930,7 +957,16 @@ const resources = {
       nav: {
         register: 'Registrieren / Anmelden',
         signOut: 'Abmelden',
-        navigation: 'Navigation'
+        navigation: 'Navigation',
+        home: 'Startseite',
+        about: 'Über Uns',
+        services: 'Dienstleistungen',
+        howToStart: 'Wie Beginnen',
+        timeline: 'Zeitplan',
+        pricing: 'Preise',
+        testimonials: 'Erfahrungsberichte',
+        faq: 'Häufige Fragen',
+        contact: 'Kontakt'
       },
       hero: {
         badge: 'Web3 Rechtsdienstleistungen',
@@ -1097,7 +1133,16 @@ const resources = {
       nav: {
         register: "S'inscrire / Se Connecter",
         signOut: 'Se Déconnecter',
-        navigation: 'Navigation'
+        navigation: 'Navigation',
+        home: 'Accueil',
+        about: 'À Propos',
+        services: 'Services',
+        howToStart: 'Comment Commencer',
+        timeline: 'Chronologie',
+        pricing: 'Tarifs',
+        testimonials: 'Témoignages',
+        faq: 'Questions Fréquentes',
+        contact: 'Contact'
       },
       hero: {
         badge: 'Services Juridiques Web3',
@@ -1264,7 +1309,16 @@ const resources = {
       nav: {
         register: 'הרשמה / התחברות',
         signOut: 'התנתקות',
-        navigation: 'ניווט'
+        navigation: 'ניווט',
+        home: 'דף הבית',
+        about: 'אודות',
+        services: 'שירותים',
+        howToStart: 'איך להתחיל',
+        timeline: 'ציר זמן',
+        pricing: 'תמחור',
+        testimonials: 'המלצות',
+        faq: 'שאלות נפוצות',
+        contact: 'צור קשר'
       },
       hero: {
         badge: 'שירותים משפטיים Web3',
@@ -1431,7 +1485,16 @@ const resources = {
       nav: {
         register: 'Регистрация / Вход',
         signOut: 'Выйти',
-        navigation: 'Навигация'
+        navigation: 'Навигация',
+        home: 'Главная',
+        about: 'О Нас',
+        services: 'Услуги',
+        howToStart: 'Как Начать',
+        timeline: 'График',
+        pricing: 'Цены',
+        testimonials: 'Отзывы',
+        faq: 'Часто Задаваемые Вопросы',
+        contact: 'Контакты'
       },
       hero: {
         badge: 'Юридические Услуги Web3',
@@ -1598,7 +1661,16 @@ const resources = {
       nav: {
         register: 'Реєстрація / Вхід',
         signOut: 'Вийти',
-        navigation: 'Навігація'
+        navigation: 'Навігація',
+        home: 'Головна',
+        about: 'Про Нас',
+        services: 'Послуги',
+        howToStart: 'Як Почати',
+        timeline: 'Графік',
+        pricing: 'Ціни',
+        testimonials: 'Відгуки',
+        faq: 'Часті Питання',
+        contact: 'Контакти'
       },
       hero: {
         badge: 'Юридичні Послуги Web3',
