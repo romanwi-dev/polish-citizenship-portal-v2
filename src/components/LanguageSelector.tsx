@@ -1,4 +1,3 @@
-import { Globe } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -37,7 +36,9 @@ export function LanguageSelector() {
           className="h-8 w-8 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
           aria-label="Select language"
         >
-          <Globe className="h-4 w-4 md:h-5 md:w-5 text-primary dark:text-foreground/70" />
+          <span className="text-xs md:text-sm font-bold text-primary dark:text-foreground/70">
+            {currentLanguage.code.toUpperCase()}
+          </span>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20">
