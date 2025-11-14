@@ -78,7 +78,7 @@ const AboutSection = () => {
       
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 opacity-50">
             <Shield className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Legal Expertise Since 2003</span>
           </div>
@@ -131,7 +131,7 @@ const AboutSection = () => {
         </div>
         
         <MainCTA
-          wrapperClassName="flex justify-center mt-40 mb-20 animate-fade-in"
+          wrapperClassName="flex justify-center mt-40 mb-20 animate-fade-in opacity-50"
           animationDelay="400ms"
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test to check your eligibility"
