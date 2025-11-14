@@ -1,12 +1,13 @@
-import europeCelebration from "@/assets/footer/europe-celebration-diverse.jpg";
+import warsawCelebration from "@/assets/hero/warsaw-celebration.png";
 
 export const LandmarkUnity = () => {
   return (
+    <section className="pt-32 pb-12 relative overflow-hidden">
     <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden group">
       {/* Background Image */}
       <img 
-        src={europeCelebration} 
-        alt="European celebration - Multiple landmarks including Big Ben, historic bridges and colorful fireworks representing EU unity" 
+        src={warsawCelebration} 
+        alt="Warsaw celebration - Futuristic cityscape with Palace of Culture and fireworks representing Polish heritage and EU membership" 
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
       
@@ -46,5 +47,6 @@ export const LandmarkUnity = () => {
         ))}
       </div>
     </div>
+    </section>
   );
 };
