@@ -101,15 +101,15 @@ export default function ClientOnboardingSection() {
         <div className="text-center mb-20 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
             <UserCircle className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Client Journey</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('onboarding.badge')}</span>
           </div>
           <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight animate-scale-in">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
-              How to Become Our Client
+              {t('onboarding.title')}
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 animate-fade-in">
-            Follow these 8 clear steps to become our registered client and start your citizenship case
+            {t('onboarding.description')}
           </p>
         </div>
 
