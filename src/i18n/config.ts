@@ -3538,7 +3538,7 @@ const resources = {
       }
     }
   },
-  ua: {
+  uk: {
     translation: {
       // Navigation
       next: 'Далі',
