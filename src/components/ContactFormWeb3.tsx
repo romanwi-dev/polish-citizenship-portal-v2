@@ -176,64 +176,86 @@ const ContactFormWeb3 = () => {
                       </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Country</Label>
-                      <Select
-                        value={formData.country}
-                        onValueChange={(value) => handleSelectChange("country", value)}
-                      >
-                        <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                          <SelectValue placeholder="Select your country" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background border-2 z-[100]">
-                          {COUNTRIES.map((country) => (
-                            <SelectItem
-                              key={country}
-                              value={country}
-                              className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3"
-                            >
-                              {country}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                    {/* Row 2: Country + Polish Ancestor */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Country</Label>
+                        <Select
+                          value={formData.country}
+                          onValueChange={(value) => handleSelectChange("country", value)}
+                        >
+                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                            <SelectValue placeholder="Select your country" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background border-2 z-[100]">
+                            {COUNTRIES.map((country) => (
+                              <SelectItem
+                                key={country}
+                                value={country}
+                                className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3"
+                              >
+                                {country}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
+                        <Select
+                          value={formData.polishAncestor}
+                          onValueChange={(value) => handleSelectChange("polishAncestor", value)}
+                        >
+                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                            <SelectValue placeholder="Select your Polish ancestor" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background border-2 z-[100]">
+                            <SelectItem value="mother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Mother</SelectItem>
+                            <SelectItem value="father" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Father</SelectItem>
+                            <SelectItem value="grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Grandmother</SelectItem>
+                            <SelectItem value="grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Grandfather</SelectItem>
+                            <SelectItem value="great-grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Great-grandmother</SelectItem>
+                            <SelectItem value="great-grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Great-grandfather</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
-                      <Select
-                        value={formData.polishAncestor}
-                        onValueChange={(value) => handleSelectChange("polishAncestor", value)}
-                      >
-                        <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                          <SelectValue placeholder="Select your Polish ancestor" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background border-2 z-[100]">
-                          <SelectItem value="mother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Mother</SelectItem>
-                          <SelectItem value="father" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Father</SelectItem>
-                          <SelectItem value="grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Grandmother</SelectItem>
-                          <SelectItem value="grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Grandfather</SelectItem>
-                          <SelectItem value="great-grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Great-grandmother</SelectItem>
-                          <SelectItem value="great-grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Great-grandfather</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    {/* Row 3: Year of Emigration + Polish Documents */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="yearOfEmigration" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Year of Emigration *</Label>
+                        <input
+                          id="yearOfEmigration"
+                          name="yearOfEmigration"
+                          type="text"
+                          value={formData.yearOfEmigration}
+                          onChange={handleChange}
+                          placeholder="e.g., 1920"
+                          required
+                          maxLength={4}
+                          pattern="\d{4}"
+                          className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Documents</Label>
-                      <Select
-                        value={formData.polishDocuments}
-                        onValueChange={(value) => handleSelectChange("polishDocuments", value)}
-                      >
-                        <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                          <SelectValue placeholder="Select an option" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background border-2 z-[100]">
-                          <SelectItem value="have-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I have some Polish documents of my family</SelectItem>
-                          <SelectItem value="no-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I don't have any Polish documents</SelectItem>
-                          <SelectItem value="need-check" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I need to check</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <div className="space-y-2">
+                        <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Documents</Label>
+                        <Select
+                          value={formData.polishDocuments}
+                          onValueChange={(value) => handleSelectChange("polishDocuments", value)}
+                        >
+                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                            <SelectValue placeholder="Select an option" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background border-2 z-[100]">
+                            <SelectItem value="have-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I have some Polish documents of my family</SelectItem>
+                            <SelectItem value="no-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I don't have any Polish documents</SelectItem>
+                            <SelectItem value="need-check" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I need to check</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
 
                     <Button 
