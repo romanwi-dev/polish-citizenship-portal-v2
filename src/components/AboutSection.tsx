@@ -2,6 +2,7 @@ import { Shield, Users, Globe } from "lucide-react";
 import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 const FlippableAboutCard = ({ 
   icon: Icon, 
@@ -73,6 +74,8 @@ const FlippableAboutCard = ({
 };
 
 const AboutSection = () => {
+  const { t } = useTranslation();
+  
   return (
     <section className="relative py-24 overflow-hidden overflow-x-hidden">
       
@@ -80,18 +83,18 @@ const AboutSection = () => {
         <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-[#7C1328]/30">
             <Shield className="w-4 h-4 text-[#D94565]" />
-            <span className="text-sm font-medium bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent">Legal Expertise Since 2003</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent">{t('about.badge')}</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Your Gateway to Polish & EU Citizenship
+              {t('about.title')}
             </span>
           </h2>
           
           <div className="mb-16 max-w-6xl mx-auto px-2 md:px-0">
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 font-body font-light tracking-normal">
-              Since 2003, we've helped thousands of people with Polish ancestry reclaim their heritage and obtain Polish citizenship by descent. Our expert team combines legal expertise, document research, and government consultation to guide you through every step of your journey to becoming an EU citizen.
+              {t('about.description')}
             </p>
             
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal">

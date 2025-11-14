@@ -1,7 +1,10 @@
 import { Shield, Zap, Globe } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { useTranslation } from 'react-i18next';
 
 const FooterWeb3 = () => {
+  const { t } = useTranslation();
+  
   return (
     <footer className="relative py-20 -mt-2 pt-12">
       {/* Background Effects */}
@@ -15,8 +18,7 @@ const FooterWeb3 = () => {
               <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" width="400" height="70" loading="lazy" />
             </div>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Expert legal guidance for people of Polish and Polish-Jewish descent from around the world. 
-              Unmatched 100% success rate, realistic timelines, transparent pricing. Since 2003.
+              {t('footer.description')}
             </p>
             <div className="flex gap-4">
               {[Shield, Zap, Globe].map((Icon, i) => (
@@ -31,41 +33,54 @@ const FooterWeb3 = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold mb-6 text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Services</h4>
+            <h4 className="font-semibold mb-6 text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{t('footer.servicesTitle')}</h4>
             <ul className="space-y-3">
-              {['AI Analysis', 'Legal Guidance', 'Document Processing', 'Pricing'].map((item, idx) => (
-                <li key={item}>
-                  <a 
-                    href={idx === 3 ? "#pricing" : "#services"} 
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">
+                  {t('footer.aiAnalysis')}
+                </a>
+              </li>
+              <li>
+                <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">
+                  {t('footer.legalGuidance')}
+                </a>
+              </li>
+              <li>
+                <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">
+                  {t('footer.documentProcessing')}
+                </a>
+              </li>
+              <li>
+                <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">
+                  {t('footer.pricing')}
+                </a>
+              </li>
             </ul>
           </div>
           
           <div>
-            <h4 className="font-semibold mb-6 text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Resources</h4>
+            <h4 className="font-semibold mb-6 text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{t('footer.resourcesTitle')}</h4>
             <ul className="space-y-3">
-              {[
-                { label: 'Take Test', url: 'https://polishcitizenship.typeform.com/to/PS5ecU' },
-                { label: 'Family Tree', url: 'https://polishcitizenshippl-20-8pfm8wc5m6.replit.app/family-tree' },
-                { label: 'About Process', url: '#' },
-                { label: 'Contact', url: '#contact' }
-              ].map((item) => (
-                <li key={item.label}>
-                  <a 
-                    href={item.url} 
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                    target={item.url.startsWith('http') ? '_blank' : undefined}
-                    rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="https://polishcitizenship.typeform.com/to/PS5ecU" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                  {t('footer.takeTest')}
+                </a>
+              </li>
+              <li>
+                <a href="https://polishcitizenshippl-20-8pfm8wc5m6.replit.app/family-tree" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                  {t('footer.familyTree')}
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                  {t('footer.aboutProcess')}
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">
+                  {t('footer.contact')}
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -73,17 +88,17 @@ const FooterWeb3 = () => {
         <div className="glass-card p-6 rounded-lg">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} PolishCitizenship.pl - Expert Legal Services Since 2003
+              © {new Date().getFullYear()} {t('footer.copyright')}
             </p>
             <div className="flex gap-6 text-sm">
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                Privacy Policy
+                {t('footer.privacy')}
               </a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                Terms of Service
+                {t('footer.terms')}
               </a>
               <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">
-                Contact Us
+                {t('footer.contactUs')}
               </a>
             </div>
           </div>
