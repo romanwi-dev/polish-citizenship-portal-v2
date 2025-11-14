@@ -110,7 +110,7 @@ const AboutSection = () => {
           <FlippableAboutCard 
             icon={Shield}
             title={t('about.card1Title')}
-            description={t('about.card1Desc')}
+            description={t('about.card1Text')}
             gradient="from-primary to-secondary"
             textColor="text-white"
             index={0}
@@ -120,7 +120,7 @@ const AboutSection = () => {
           <FlippableAboutCard 
             icon={Users}
             title={t('about.card2Title')}
-            description={t('about.card2Desc')}
+            description={t('about.card2Text')}
             gradient="from-secondary to-accent"
             textColor="text-white"
             index={1}
@@ -130,7 +130,7 @@ const AboutSection = () => {
           <FlippableAboutCard 
             icon={Globe}
             title={t('about.card3Title')}
-            description={t('about.card3Desc')}
+            description={t('about.card3Text')}
             gradient="from-accent to-primary"
             textColor="text-white"
             index={2}
