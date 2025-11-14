@@ -155,13 +155,13 @@ All colors MUST be HSL.
     --muted-foreground: 217 19% 65%;
     
     /* Pure red accents */
-    --primary: 343 79% 53%;
+    --primary: 343 79% 53% !important;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 345 66% 58%;
+    --secondary: 345 66% 58% !important;
     --secondary-foreground: 0 0% 100%;
 
-    --accent: 345 66% 58%;
+    --accent: 345 66% 58% !important;
     --accent-foreground: 0 0% 100%;
     
     --destructive: 0 84% 60%;
@@ -169,12 +169,12 @@ All colors MUST be HSL.
 
     --border: 215 28% 22%;
     --input: 215 28% 22%;
-    --ring: 343 79% 53%;
+    --ring: 343 79% 53% !important;
 
-    --gradient-web3: linear-gradient(135deg, hsl(343 79% 33%) 0%, hsl(345 66% 58%) 50%, hsl(343 70% 45%) 100%);
-    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(345 66% 58% / 0.25) 0%, transparent 70%);
-    --shadow-glow: 0 0 60px hsl(345 66% 58% / 0.4);
-    --shadow-glow-secondary: 0 0 60px hsl(343 79% 53% / 0.3);
+    --gradient-web3: linear-gradient(135deg, hsl(343 79% 33%) 0%, hsl(345 66% 58%) 50%, hsl(343 70% 45%) 100%) !important;
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(345 66% 58% / 0.25) 0%, transparent 70%) !important;
+    --shadow-glow: 0 0 60px hsl(345 66% 58% / 0.4) !important;
+    --shadow-glow-secondary: 0 0 60px hsl(343 79% 53% / 0.3) !important;
   }
 
   .theme-red.light {
@@ -188,8 +188,14 @@ All colors MUST be HSL.
     --border: 345 20% 88%;
     --input: 345 20% 96%;
     
-    --shadow-glow: 0 0 40px hsl(345 66% 58% / 0.15);
-    --shadow-glow-secondary: 0 0 40px hsl(343 79% 33% / 0.15);
+    --primary: 343 79% 53% !important;
+    --secondary: 345 66% 58% !important;
+    --accent: 345 66% 58% !important;
+    --ring: 343 79% 53% !important;
+    
+    --shadow-glow: 0 0 40px hsl(345 66% 58% / 0.15) !important;
+    --shadow-glow-secondary: 0 0 40px hsl(343 79% 33% / 0.15) !important;
+    --gradient-web3: linear-gradient(135deg, hsl(343 79% 53%) 0%, hsl(345 66% 58%) 50%, hsl(343 79% 65%) 100%) !important;
     
     /* Light shadow system */
     --shadow-card-light: 0 2px 8px hsl(345 50% 15% / 0.08), 0 4px 16px hsl(345 50% 15% / 0.04);
@@ -213,13 +219,13 @@ All colors MUST be HSL.
     --muted: 215 28% 17%;
     --muted-foreground: 217 19% 65%;
     
-    --primary: 221 83% 53%;
+    --primary: 221 83% 53% !important;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 204 70% 53%;
+    --secondary: 204 70% 53% !important;
     --secondary-foreground: 210 40% 98%;
 
-    --accent: 204 70% 53%;
+    --accent: 204 70% 53% !important;
     --accent-foreground: 210 40% 98%;
     
     --destructive: 0 84% 60%;
@@ -227,12 +233,12 @@ All colors MUST be HSL.
 
     --border: 215 28% 22%;
     --input: 215 28% 22%;
-    --ring: 221 83% 53%;
+    --ring: 221 83% 53% !important;
 
-    --gradient-web3: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(204 70% 53%) 50%, hsl(221 50% 45%) 100%);
-    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(221 83% 53% / 0.25) 0%, transparent 70%);
-    --shadow-glow: 0 0 60px hsl(221 83% 53% / 0.4);
-    --shadow-glow-secondary: 0 0 60px hsl(204 70% 53% / 0.3);
+    --gradient-web3: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(204 70% 53%) 50%, hsl(221 50% 45%) 100%) !important;
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(221 83% 53% / 0.25) 0%, transparent 70%) !important;
+    --shadow-glow: 0 0 60px hsl(221 83% 53% / 0.4) !important;
+    --shadow-glow-secondary: 0 0 60px hsl(204 70% 53% / 0.3) !important;
   }
 
   .theme-blue.light {
@@ -246,8 +252,14 @@ All colors MUST be HSL.
     --border: 220 20% 88%;
     --input: 220 20% 96%;
     
-    --shadow-glow: 0 0 40px hsl(221 83% 53% / 0.15);
-    --shadow-glow-secondary: 0 0 40px hsl(204 70% 53% / 0.15);
+    --primary: 221 83% 53% !important;
+    --secondary: 204 70% 53% !important;
+    --accent: 204 70% 53% !important;
+    --ring: 221 83% 53% !important;
+    
+    --shadow-glow: 0 0 40px hsl(221 83% 53% / 0.15) !important;
+    --shadow-glow-secondary: 0 0 40px hsl(204 70% 53% / 0.15) !important;
+    --gradient-web3: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(204 70% 53%) 50%, hsl(221 83% 65%) 100%) !important;
     
     /* Light Theme 3D Shadow System */
     --shadow-card-light: 0 2px 8px hsl(222 47% 15% / 0.08), 0 4px 16px hsl(222 47% 15% / 0.04);
