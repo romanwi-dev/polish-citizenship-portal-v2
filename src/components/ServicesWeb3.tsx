@@ -45,8 +45,8 @@ const FlippableServiceCard = ({
           
           <div className="relative z-10">
             <div className="flex items-center gap-4 mb-4">
-              <div className={`w-12 h-12 rounded bg-gradient-to-br ${color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                <Icon className="h-6 w-6 text-white" />
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                <Icon className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {title}
