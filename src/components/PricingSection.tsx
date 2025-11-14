@@ -2,6 +2,7 @@ import { Check, Train, Plane, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const FlippablePricingCard = ({ 
   icon: Icon, 

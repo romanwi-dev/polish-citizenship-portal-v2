@@ -2,6 +2,7 @@ import { Brain, TrendingUp, AlertTriangle, Clock } from "lucide-react";
 import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 
 const FlippableAICard = ({ 
@@ -19,6 +20,7 @@ const FlippableAICard = ({
   textColor: string; 
   index: number;
 }) => {
+  const { t } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
@@ -64,7 +66,7 @@ const FlippableAICard = ({
           <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-20 rounded-lg`} />
           <div className="relative z-10 text-center">
             <p className="text-muted-foreground italic">
-              Click to flip back
+              {t('aiAnalysis.flipBack')}
             </p>
           </div>
         </div>
