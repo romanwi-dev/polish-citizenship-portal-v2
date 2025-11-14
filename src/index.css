@@ -143,16 +143,16 @@ All colors MUST be HSL.
   .theme-red {
     /* Same dark background as default theme */
     --background: 222 47% 11%;
-    --foreground: 213 31% 91%;
+    --foreground: 345 50% 92% !important;  /* Light rose/pink shade */
     
     --card: 217 33% 17%;
-    --card-foreground: 213 31% 91%;
+    --card-foreground: 345 45% 88% !important;  /* Slightly darker rose */
     
     --popover: 217 33% 17%;
-    --popover-foreground: 213 31% 91%;
+    --popover-foreground: 345 45% 88% !important;
     
     --muted: 215 28% 17%;
-    --muted-foreground: 217 19% 65%;
+    --muted-foreground: 345 35% 68% !important;  /* Medium rose shade */
     
     /* Pure red accents */
     --primary: 343 79% 53% !important;
@@ -167,8 +167,8 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 28% 22%;
-    --input: 215 28% 22%;
+    --border: 343 40% 28% !important;  /* Dark red border */
+    --input: 343 35% 22% !important;   /* Darker red input bg */
     --ring: 343 79% 53% !important;
 
     --gradient-web3: linear-gradient(135deg, hsl(343 79% 33%) 0%, hsl(345 66% 58%) 50%, hsl(343 70% 45%) 100%) !important;
@@ -208,16 +208,16 @@ All colors MUST be HSL.
   .theme-blue {
     /* Pure blue-gray backgrounds */
     --background: 222 47% 11%;
-    --foreground: 213 31% 91%;
+    --foreground: 221 50% 92% !important;  /* Light blue shade */
     
     --card: 217 33% 17%;
-    --card-foreground: 213 31% 91%;
+    --card-foreground: 221 45% 88% !important;  /* Slightly darker blue */
     
     --popover: 217 33% 17%;
-    --popover-foreground: 213 31% 91%;
+    --popover-foreground: 221 45% 88% !important;
     
     --muted: 215 28% 17%;
-    --muted-foreground: 217 19% 65%;
+    --muted-foreground: 221 35% 68% !important;  /* Medium blue shade */
     
     --primary: 221 83% 53% !important;
     --primary-foreground: 210 40% 98%;
@@ -231,8 +231,8 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 28% 22%;
-    --input: 215 28% 22%;
+    --border: 221 40% 28% !important;  /* Dark blue border */
+    --input: 221 35% 22% !important;   /* Darker blue input bg */
     --ring: 221 83% 53% !important;
 
     --gradient-web3: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(204 70% 53%) 50%, hsl(221 50% 45%) 100%) !important;
