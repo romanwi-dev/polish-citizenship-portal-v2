@@ -4,45 +4,6 @@ import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { useTranslation } from 'react-i18next';
 
-const services = [
-  {
-    icon: Cpu,
-    title: "AI Deep Case Analysis",
-    description: "Predict success probability and timeline with high accuracy based on 20+ years of case history and 180+ data points.",
-    color: "from-primary to-accent",
-  },
-  {
-    icon: Shield,
-    title: "Bank-Level Security",
-    description: "256-bit SSL encryption and certified legal professionals ensure your data and documents are secure.",
-    color: "from-secondary to-primary",
-  },
-  {
-    icon: Users,
-    title: "Expert Legal Guidance",
-    description: "Independent experts, specialized lawyers, and experienced representatives guide you through every step.",
-    color: "from-accent to-secondary",
-  },
-  {
-    icon: FileText,
-    title: "Complete Document Processing",
-    description: "Systematic research through Polish, Ukrainian, and Lithuanian archives with professional authentication.",
-    color: "from-primary to-secondary",
-  },
-  {
-    icon: CheckCircle,
-    title: "100% Success Rate",
-    description: "Proven track record with 25,000+ successfully processed cases since 2003.",
-    color: "from-secondary to-accent",
-  },
-  {
-    icon: Globe,
-    title: "24/7 Case Monitoring",
-    description: "Always here to help with continuous case monitoring and support throughout the entire process.",
-    color: "from-accent to-primary",
-  },
-];
-
 const FlippableServiceCard = ({ 
   icon: Icon,
   title,
@@ -56,6 +17,7 @@ const FlippableServiceCard = ({
   color: string;
   index: number;
 }) => {
+  const { t } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
@@ -110,10 +72,14 @@ const FlippableServiceCard = ({
           
           <div className="relative z-10 text-center">
             <p className="text-muted-foreground italic">
-              [Admin: Add custom content here]
+              {t('services.flipBack')}
             </p>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
       </div>
     </div>
   );
