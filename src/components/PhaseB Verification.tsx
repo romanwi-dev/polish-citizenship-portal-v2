@@ -7,24 +7,82 @@ import { Loader2, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 import { runTripleVerification } from '@/utils/tripleVerification';
 import type { TripleVerificationResponse } from '@/utils/tripleVerification';
 
-const phaseAAnalysis = `# PHASE A ANALYSIS - HOMEPAGE TRANSLATION IMPLEMENTATION
+const phaseAAnalysis = `# PHASE A ANALYSIS - Language Selector Bug Fixes & Translation Completion
 
-## Status: ✅ 99% COMPLETE (Timeline Fixed)
+## User Requirement Clarified
+- ✅ Keep Polish (PL) translations in i18n config
+- ❌ Remove Polish from language selector UI (hide toggle option)
 
-## Recent Changes
-- ✅ Added timelineProcess translations for German, French, Hebrew, Russian, Ukrainian (430 keys)
-- ✅ All 8 languages now have complete Timeline section (86 keys each)
-- ✅ testimonials.reviews implemented for all 8 languages (36 keys each)
+## Critical Findings
 
-## Remaining Issue
+### CRITICAL BUG 1: Language Code Mismatch (Ukrainian)
+- **UI LanguageSelector.tsx**: Uses code 'ua' for Ukrainian (line 19)
+- **i18n config**: Uses code 'uk' for Ukrainian
+- **Impact**: Ukrainian toggle BROKEN - code mismatch prevents language switching
+- **Severity**: CRITICAL
+- **Fix**: Change UI line 19 from 'ua' to 'uk'
 
-### Issue #1: Hardcoded CTA Button (LOW Severity)
-**Location**: TestimonialsSection.tsx lines 96-102
-**Problem**: CTA button text and ariaLabel hardcoded in English
-**Impact**: Non-English users see English button text "Take Polish Citizenship Test"
-**Fix**: Replace with t('testimonials.cta')`;
+### CRITICAL BUG 2: Portuguese in UI Without Config
+- **UI LanguageSelector.tsx**: Shows Portuguese (PT) option (lines 13-14)
+- **i18n config**: No Portuguese translations exist
+- **Impact**: Clicking PT breaks app - throws runtime errors
+- **Severity**: CRITICAL
+- **Fix**: Remove PT from LANGUAGES array
 
-const context = `Polish Citizenship Portal - React/TypeScript/Supabase. Homepage translation for 8 languages in src/i18n/config.ts (3,987 lines). All 12 homepage sections use i18next. TimelineProcessEnhanced verified working with all 8 languages. TestimonialsSection renders testimonials.reviews correctly. Only 1 hardcoded element remaining. NO runtime errors. System stable.`;
+### Issue 3: Polish Language Handling (User Request)
+- **Status**: Polish NOT in UI selector ✅
+- **Config**: Polish translations exist in i18n config ✅
+- **Requirement Met**: Polish hidden from UI as requested
+- **Severity**: NONE - Already working correctly
+
+### LOW SEVERITY: Hardcoded CTA Button
+- **Location**: TestimonialsSection.tsx line 101
+- **Current**: "Take Polish Citizenship Test" (English hardcoded)
+- **Impact**: Doesn't translate for 7 languages
+- **Fix**: Add testimonials.cta key to all 8 languages + update component
+
+## Architectural Solution
+
+### Fix 1: Update LanguageSelector.tsx
+Remove PT, fix Ukrainian code:
+const LANGUAGES = [
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+  { code: 'he', label: 'עברית', flag: '🇮🇱' },
+  { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+  { code: 'uk', label: 'Українська', flag: '🇺🇦' },
+];
+
+### Fix 2: Add testimonials.cta (8 languages in i18n/config.ts)
+- EN: "Take Polish Citizenship Test"
+- PL: "Polski Test Obywatelstwa"
+- DE: "Polnischer Staatsbürgerschaftstest"
+- FR: "Test de Citoyenneté Polonaise"
+- HE: "מבחן אזרחות פולנית"
+- RU: "Тест на польское гражданство"
+- UK: "Тест на польське громадянство"
+- ES: "Prueba de Ciudadanía Polaca"
+
+### Fix 3: Update TestimonialsSection.tsx line 101
+{t('testimonials.cta')}
+
+## Risk Assessment
+- **Critical Bugs**: 2 (PT removal, UA→UK code)
+- **Low Priority**: 1 (CTA translation)
+- **Breaking Changes**: NONE (fixes existing bugs)
+- **Dependencies**: NONE
+- **Testing**: Language switcher across 7 visible languages
+
+## Zero-Fail Classification
+- **Complexity**: SIMPLE (3 file edits)
+- **Risk**: LOW (bug fixes + additive changes)
+- **Time**: 5 minutes
+- **Post-Fix Coverage**: 100%
+`;
+
+const context = `Polish Citizenship Portal - React/TypeScript/Supabase. 8 languages in i18n config (EN, PL, DE, FR, HE, RU, UK, ES). LanguageSelector.tsx has critical bugs: PT without translations, Ukrainian code mismatch (ua vs uk). Polish translations exist but hidden from UI per user request. One hardcoded CTA button remaining. Homepage 99% translated.`;
 
 export function PhaseBVerification() {
   const [isRunning, setIsRunning] = useState(false);
