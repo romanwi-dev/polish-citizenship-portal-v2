@@ -427,7 +427,7 @@ const ContactFormWeb3 = () => {
 
       {/* Bottom CTA - Outside container for full width */}
       <MainCTA
-        wrapperClassName="mt-40 mb-0"
+        wrapperClassName="mt-40 mb-20"
         onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
         ariaLabel="Take the Polish Citizenship Test to check your eligibility"
       >
