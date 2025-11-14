@@ -98,7 +98,7 @@ const AboutSection = () => {
             </p>
             
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal">
-              Transform your Polish heritage into reality. Get expert guidance, transparent pricing, and proven results on your path to Polish citizenship and an EU passport.
+              {t('about.subtitle')}
             </p>
           </div>
         </div>
@@ -108,39 +108,41 @@ const AboutSection = () => {
           <FlippableAboutCard 
             icon={Shield}
             title={t('about.card1Title')}
-            description={t('about.card1Text')}
-            gradient="from-primary/20 to-secondary/20"
-            textColor="text-primary"
+            description={t('about.card1Desc')}
+            gradient="from-primary to-secondary"
+            textColor="text-white"
             index={0}
           />
-
+          
           <FlippableAboutCard 
             icon={Users}
             title={t('about.card2Title')}
-            description={t('about.card2Text')}
-            gradient="from-secondary/20 to-accent/20"
-            textColor="text-secondary"
+            description={t('about.card2Desc')}
+            gradient="from-secondary to-accent"
+            textColor="text-white"
             index={1}
           />
-
+          
           <FlippableAboutCard 
             icon={Globe}
             title={t('about.card3Title')}
-            description={t('about.card3Text')}
-            gradient="from-accent/20 to-primary/20"
-            textColor="text-accent"
+            description={t('about.card3Desc')}
+            gradient="from-accent to-primary"
+            textColor="text-white"
             index={2}
           />
         </div>
         
-        <MainCTA
-          wrapperClassName="mt-40 mb-20"
-          animationDelay="400ms"
-          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-          ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-        >
-          {t('about.cta')}
-        </MainCTA>
+        {/* CTA Section */}
+        <div className="text-center animate-fade-in" style={{ animationDelay: '400ms' }}>
+          <MainCTA
+            wrapperClassName="flex justify-center"
+            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+            ariaLabel="Schedule a free consultation to discuss your Polish citizenship case"
+          >
+            {t('about.cta')}
+          </MainCTA>
+        </div>
       </div>
     </section>
   );
