@@ -19,9 +19,9 @@ const HeroWeb3 = () => {
       {/* Content */}
       <div className="container relative z-10 px-4 pt-32 pb-20 mx-auto">
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-16 animate-fade-in w-fit max-w-[280px] mx-auto md:max-w-none border border-[#7C1328]/30">
-            <Sparkles className="w-4 h-4 text-[#D94565]" />
-            <span className="text-sm font-medium text-foreground">Web3 Legal Services</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 animate-fade-in w-fit max-w-[280px] mx-auto md:max-w-none">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
