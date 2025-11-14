@@ -288,18 +288,18 @@ const ContactFormWeb3 = () => {
                   transition: 'opacity 0s 0.35s'
                 }}
               >
-                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col items-center justify-center relative overflow-hidden">
-                  {/* Background Image */}
-                  <div className="absolute inset-0 z-0">
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col md:flex-row items-center justify-center gap-8 relative overflow-hidden">
+                  {/* Left Side - Image */}
+                  <div className="w-full md:w-1/2 h-1/2 md:h-full relative">
                     <img 
                       src={thankYou1} 
                       alt="Professional with passport" 
-                      className="w-full h-full object-cover opacity-30"
+                      className="w-full h-full object-cover rounded-lg"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/60" />
                   </div>
                   
-                  <div className="relative z-10 space-y-12 text-center">
+                  {/* Right Side - Message */}
+                  <div className="w-full md:w-1/2 flex flex-col items-center justify-center space-y-12 text-center px-4">
                     <p className="bg-gradient-to-r from-slate-400 to-slate-600 bg-clip-text text-transparent text-2xl md:text-3xl font-semibold">
                       Thank you. We will get back to you shortly...
                     </p>
