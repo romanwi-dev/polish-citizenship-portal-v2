@@ -2,15 +2,13 @@ import Navigation from "@/components/Navigation";
 import AboutSection from "@/components/AboutSection";
 import ServicesWeb3 from "@/components/ServicesWeb3";
 import FooterWeb3 from "@/components/FooterWeb3";
-import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+import { GlobalBackground } from "@/components/GlobalBackground";
 
 const TranslationDemo = () => {
   return (
     <div className="min-h-screen overflow-x-hidden relative">
-      {/* Background */}
-      <div className="fixed inset-0 z-0">
-        <StaticHeritagePlaceholder />
-      </div>
+      {/* Background - Theme-aware (3D for dark, plain for light) */}
+      <GlobalBackground />
       
       {/* Content */}
       <div className="relative z-10">
