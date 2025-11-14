@@ -29,6 +29,7 @@ const contactSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }).max(255),
   country: z.string().min(1, "Please select a country"),
   polishAncestor: z.string().min(1, "Please select your Polish ancestor"),
+  yearOfEmigration: z.string().min(1, "Please enter the year of emigration").regex(/^\d{4}$/, "Year must be a 4-digit number"),
   polishDocuments: z.string().min(1, "Please select an option"),
 });
 
@@ -41,6 +42,7 @@ const ContactFormWeb3 = () => {
     email: "",
     country: "",
     polishAncestor: "",
+    yearOfEmigration: "",
     polishDocuments: "",
   });
 
@@ -52,7 +54,7 @@ const ContactFormWeb3 = () => {
       
       setIsFlipped(true);
       
-      setFormData({ name: "", email: "", country: "", polishAncestor: "", polishDocuments: "" });
+      setFormData({ name: "", email: "", country: "", polishAncestor: "", yearOfEmigration: "", polishDocuments: "" });
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -276,7 +278,7 @@ const ContactFormWeb3 = () => {
                     <Button
                       onClick={() => {
                         setIsFlipped(false);
-                        setFormData({ name: "", email: "", country: "", polishAncestor: "", polishDocuments: "" });
+                        setFormData({ name: "", email: "", country: "", polishAncestor: "", yearOfEmigration: "", polishDocuments: "" });
                       }}
                       variant="outline"
                       className="hover-glow"
