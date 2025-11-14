@@ -179,21 +179,33 @@ All colors MUST be HSL.
   }
 
   .theme-red.light {
-    /* Plain gray-white with warm red tint */
-    --background: 0 0% 98%;
-    --card: 345 20% 96%;
-    --muted: 345 15% 94%;
+    --background: 0 0% 98% !important;
+    --foreground: 343 80% 12% !important;
     
-    --foreground: 345 50% 15%;
-    --card-foreground: 345 50% 15%;
-    --border: 345 20% 88%;
-    --input: 345 20% 96%;
+    --card: 0 0% 100% !important;
+    --card-foreground: 343 80% 12% !important;
     
-    --primary: 343 95% 28% !important;  /* Much darker red for light mode */
-    --primary-foreground: 0 0% 100% !important;  /* Pure white text */
-    --secondary: 345 90% 35% !important;
-    --accent: 345 90% 35% !important;
-    --ring: 343 95% 28% !important;
+    --popover: 0 0% 100% !important;
+    --popover-foreground: 343 80% 12% !important;
+    
+    --primary: 343 95% 22% !important;
+    --primary-foreground: 0 0% 100% !important;
+    
+    --secondary: 343 85% 30% !important;
+    --secondary-foreground: 0 0% 100% !important;
+    
+    --muted: 343 20% 95% !important;
+    --muted-foreground: 343 40% 35% !important;
+    
+    --accent: 343 75% 35% !important;
+    --accent-foreground: 0 0% 100% !important;
+    
+    --destructive: 0 84.2% 60.2% !important;
+    --destructive-foreground: 0 0% 98% !important;
+    
+    --border: 343 30% 85% !important;
+    --input: 343 30% 85% !important;
+    --ring: 343 95% 22% !important;
     
     --shadow-glow: 0 0 50px hsl(343 95% 35% / 0.35) !important;
     --shadow-glow-secondary: 0 0 40px hsl(343 95% 35% / 0.25) !important;
@@ -201,9 +213,8 @@ All colors MUST be HSL.
     
     /* Light shadow system */
     --shadow-card-light: 0 2px 8px hsl(345 50% 15% / 0.08), 0 4px 16px hsl(345 50% 15% / 0.04);
-    --shadow-elevated-light: 0 8px 24px hsl(345 50% 15% / 0.12), 0 12px 32px hsl(345 50% 15% / 0.08);
-    --shadow-hover-light: 0 12px 32px hsl(345 50% 15% / 0.15), 0 16px 48px hsl(345 50% 15% / 0.1);
-    --shadow-pressed-light: 0 1px 4px hsl(345 50% 15% / 0.06);
+    --shadow-elevated-light: 0 4px 16px hsl(345 50% 15% / 0.12), 0 8px 32px hsl(345 50% 15% / 0.08);
+    --shadow-hover-light: 0 8px 24px hsl(345 50% 15% / 0.16), 0 16px 48px hsl(345 50% 15% / 0.12);
   }
 
   /* Blue Theme - Existing Blue Accents */
@@ -246,40 +257,42 @@ All colors MUST be HSL.
   }
 
   .theme-blue.light {
-    /* Plain gray-white with cool blue tint */
-    --background: 0 0% 98%;
-    --card: 220 20% 96%;
-    --muted: 220 15% 94%;
+    --background: 0 0% 98% !important;
+    --foreground: 221 80% 12% !important;
     
-    --foreground: 222 47% 15%;
-    --card-foreground: 222 47% 15%;
-    --border: 220 20% 88%;
-    --input: 220 20% 96%;
+    --card: 0 0% 100% !important;
+    --card-foreground: 221 80% 12% !important;
     
-    --primary: 221 95% 28% !important;  /* Much darker blue for light mode */
-    --primary-foreground: 0 0% 100% !important;  /* Pure white text */
-    --secondary: 204 95% 35% !important;
-    --accent: 204 95% 35% !important;
-    --ring: 221 95% 28% !important;
+    --popover: 0 0% 100% !important;
+    --popover-foreground: 221 80% 12% !important;
+    
+    --primary: 221 95% 22% !important;
+    --primary-foreground: 0 0% 100% !important;
+    
+    --secondary: 221 85% 30% !important;
+    --secondary-foreground: 0 0% 100% !important;
+    
+    --muted: 221 20% 95% !important;
+    --muted-foreground: 221 40% 35% !important;
+    
+    --accent: 221 75% 35% !important;
+    --accent-foreground: 0 0% 100% !important;
+    
+    --destructive: 0 84.2% 60.2% !important;
+    --destructive-foreground: 0 0% 98% !important;
+    
+    --border: 221 30% 85% !important;
+    --input: 221 30% 85% !important;
+    --ring: 221 95% 22% !important;
     
     --shadow-glow: 0 0 50px hsl(221 95% 35% / 0.35) !important;
-    --shadow-glow-secondary: 0 0 40px hsl(204 95% 35% / 0.25) !important;
-    --gradient-web3: linear-gradient(135deg, hsl(221 95% 25%) 0%, hsl(221 95% 45%) 50%, hsl(221 95% 60%) 100%) !important;
+    --shadow-glow-secondary: 0 0 40px hsl(221 95% 35% / 0.25) !important;
+    --gradient-web3: linear-gradient(135deg, hsl(221 95% 20%) 0%, hsl(221 95% 50%) 50%, hsl(221 95% 70%) 100%) !important;
     
-    /* Light Theme 3D Shadow System */
-    --shadow-card-light: 0 2px 8px hsl(222 47% 15% / 0.08), 0 4px 16px hsl(222 47% 15% / 0.04);
-    --shadow-elevated-light: 0 8px 24px hsl(222 47% 15% / 0.12), 0 12px 32px hsl(222 47% 15% / 0.08);
-    --shadow-hover-light: 0 12px 32px hsl(222 47% 15% / 0.15), 0 16px 48px hsl(222 47% 15% / 0.1);
-    --shadow-pressed-light: 0 1px 4px hsl(222 47% 15% / 0.06);
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Light shadow system */
+    --shadow-card-light: 0 2px 8px hsl(217 50% 15% / 0.08), 0 4px 16px hsl(217 50% 15% / 0.04);
+    --shadow-elevated-light: 0 4px 16px hsl(217 50% 15% / 0.12), 0 8px 32px hsl(217 50% 15% / 0.08);
+    --shadow-hover-light: 0 8px 24px hsl(217 50% 15% / 0.16), 0 16px 48px hsl(217 50% 15% / 0.12);
   }
 
   /* Ocean Breeze */
