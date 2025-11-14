@@ -2,13 +2,13 @@ import warsawCelebration from "@/assets/hero/warsaw-celebration.png";
 
 export const LandmarkUnity = () => {
   return (
-    <section className="relative min-h-[60vh] md:min-h-screen overflow-hidden -mb-2 border-b-4 border-red-500">
+    <section className="relative min-h-[60vh] md:min-h-screen overflow-hidden -mb-2">
     <div className="relative w-full h-full min-h-[60vh] md:min-h-screen overflow-hidden">
       {/* Background Image */}
       <img 
         src={warsawCelebration} 
         alt="Warsaw celebration - Futuristic cityscape with Palace of Culture and fireworks representing Polish heritage and EU membership" 
-        className="w-full h-full object-cover"
+        className="w-full h-[120%] object-cover object-[center_20%]"
       />
       
       {/* Grid overlay */}
