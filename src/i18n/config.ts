@@ -374,7 +374,11 @@ const resources = {
         stage15: 'EXTENDED SERVICES',
         stage15Desc: 'Extended family legal services available after successful citizenship confirmation',
         stage15Duration: 'Ongoing',
-        stage15Action: 'Final Steps'
+        stage15Action: 'Final Steps',
+        detailedInfoTitle: 'Detailed Information',
+        detailedInfoDesc: 'Full timeline content, detailed requirements, and process specifics are available to registered users in their portal account.',
+        detailedInfoSignup: 'Sign up to access comprehensive step-by-step guidance',
+        flipBack: 'Click to flip back'
       },
 
       // FAQ Section
@@ -720,7 +724,11 @@ const resources = {
         stage15: 'SERVICIOS EXTENDIDOS',
         stage15Desc: 'Servicios legales para familia extendida disponibles después de la confirmación exitosa de ciudadanía',
         stage15Duration: 'Continuo',
-        stage15Action: 'Pasos Finales'
+        stage15Action: 'Pasos Finales',
+        detailedInfoTitle: 'Información Detallada',
+        detailedInfoDesc: 'El contenido completo del cronograma, requisitos detallados y especificaciones del proceso están disponibles para usuarios registrados en su cuenta del portal.',
+        detailedInfoSignup: 'Regístrate para acceder a la guía paso a paso completa',
+        flipBack: 'Haz clic para voltear'
       },
 
       // FAQ Section - Spanish
