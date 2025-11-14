@@ -385,56 +385,81 @@ const resources = {
       faq: {
         badge: 'Frequently Asked Questions',
         title: 'Everything You Need to Know',
-        subtitle: 'Comprehensive answers to the most common questions about Polish citizenship by descent',
         searchPlaceholder: 'Search questions...',
-        searchButton: 'Search',
-        categoryEligibility: 'ELIGIBILITY',
-        categoryTimeline: 'TIMELINE',
-        categoryDocuments: 'DOCUMENTS',
-        categoryCosts: 'COSTS',
-        q1: 'Who is eligible for Polish citizenship by descent?',
-        a1: 'You may be eligible if you have Polish ancestors (parent, grandparent, great-grandparent) who were Polish citizens. The key is proving an unbroken chain of citizenship transmission from your Polish ancestor to you. This includes individuals of Polish and Polish-Jewish descent from around the world.',
-        q2: 'What if my ancestor left before 1920?',
-        a2: 'Leaving before 1920 does not automatically make you ineligible. Under the 1920 Citizenship Act and related treaty provisions, people connected to territories that became Poland could acquire (or be deemed to have acquired) Polish citizenship based on domicile/right of residence—even if they had emigrated earlier. We assess where the ancestor was domiciled on 31 January 1920 and shortly after. These cases are complex and document-heavy—our specialty.',
-        q3: 'Can I apply through my grandmother\'s line?',
-        a3: 'Yes, you can claim citizenship through female ancestors, though the rules vary depending on when your ancestor had children. Polish law changed over time regarding maternal transmission of citizenship. We analyze your specific family timeline to determine the best legal pathway through maternal lineage.',
-        q4: 'Can I claim through my great-grandparents?',
-        a4: 'Yes, many successful cases involve great-grandparents or even earlier generations. The key is proving the unbroken chain of citizenship transmission through each generation. The further back your Polish ancestor, the more complex the documentation requirements, but it\'s absolutely possible with proper legal representation.',
-        q5: 'Do I need to speak Polish?',
-        a5: 'No, you don\'t need to speak Polish to obtain citizenship by descent. This is confirmation of existing citizenship rights, not naturalization. Our team handles all communications with Polish authorities in Polish, and all documents are professionally translated by certified translators.',
-        q6: 'Why does confirmation take time?',
-        a6: 'Polish citizenship confirmation is a thorough legal process handled by provincial governors (voivodes) in Poland. The realistic timeline is 1.5 to 4 years because: (1) Polish authorities must verify all documents and legal claims thoroughly, (2) Historical records often require extensive research and verification, (3) Government offices in Poland face significant backlogs, (4) Complex cases involving pre-1920 emigration or multiple jurisdictions require additional scrutiny. We provide honest timelines based on actual case experience, not marketing promises.',
-        q7: 'Where do I file if I live outside Poland?',
-        a7: 'Applications are filed with the appropriate provincial governor (voivode) in Poland, determined by your ancestor\'s last place of residence in Poland or where their records are held. You don\'t need to be in Poland to file - we handle all submissions and communications with Polish authorities on your behalf. Most of our clients never visit Poland during the confirmation process.',
-        q8: 'What happens during the government phase?',
-        a8: 'After filing, the Mazovian Voivode\'s Office reviews your application and supporting documents. They may request additional evidence or clarification. This is when our legal expertise becomes crucial - we respond to all government requests professionally and promptly. The office will eventually issue either a positive confirmation decision or request for additional information. We handle all communications with Polish authorities in Polish.',
-        q9: 'Can the process be faster?',
-        a9: 'We offer three acceleration strategies: PUSH (regular communication with authorities), NUDGE (strategic intervention at key points), and SIT-DOWN (in-person meetings with decision-makers). While these can help move cases forward, realistic timeline expectations remain important - Polish citizenship confirmation is a thorough legal process. We explain these options in detail during consultation.',
-        q10: 'What if I get a negative decision?',
-        a10: 'In the rare case of a negative decision, we can file an appeal to the Ministry of Interior within 14 days. Our success rate on appeals is strong because we thoroughly analyze the reasoning and present compelling legal arguments. However, our comprehensive preparation and legal expertise mean most of our cases receive positive decisions without needing appeals.',
-        q11: 'What documents do I need from my side?',
-        a11: 'You\'ll need: your passport, your birth certificate, your parents\' birth/marriage certificates, and any documents about your Polish ancestor (birth, marriage, emigration, naturalization, military service). The specific requirements vary by case. We provide a detailed checklist after initial assessment and guide you through obtaining any missing documents.',
-        q12: 'What if I don\'t have all the documents?',
-        a12: 'Missing documents are common. We help you obtain them through: (1) Polish archives - we conduct extensive searches in Polish and international archives, (2) Local authorities - we guide you in requesting documents from your country of residence, (3) Family sources - we help identify documents that might be in family possession. Our archive research partnerships mean we can often find documents you didn\'t know existed.',
-        q13: 'Do documents need translation?',
-        a13: 'Yes, all non-Polish documents must be translated by Polish certified sworn translators. We handle this through our translations workflow - documents can be translated on our portal with AI translation service, then certified by Polish Certified Sworn Translators. We also double-check all translations for accuracy with an independent agent to ensure quality.',
-        q14: 'What are Polish civil acts?',
-        a14: 'Polish civil acts (akty stanu cywilnego) are official birth and marriage certificates issued by Polish civil registry offices. We can obtain these for your Polish ancestors by submitting applications to the relevant Polish Civil Registry office. This process is supervised by our dedicated Civil Acts Agent and takes approximately 4-8 weeks depending on the specific registry office.',
-        q15: 'How do archives searches work?',
-        a15: 'We conduct comprehensive searches in Polish state archives, Jewish historical institutes, and international archives to find records of your ancestors. This includes birth records, marriage records, residence permits, emigration documents, and citizenship records. Our research partnerships with Polish and international archives mean we have access to databases and collections that individuals cannot access on their own.',
-        q16: 'What are the total costs?',
-        a16: 'Our fees are structured transparently: Initial assessment and consultation, Main legal service fee (varies by case complexity), Document translation costs, Archive search fees (when needed), Polish civil acts fees (when needed), Optional acceleration services (PUSH/NUDGE/SIT-DOWN). We provide detailed cost breakdown during initial consultation based on your specific case. Payment is typically structured in stages aligned with the process.',
-        q17: 'Is there an advance payment?',
-        a17: 'Yes, we require an advance payment after initial assessment and before beginning legal work. This covers initial case setup, account creation on our portal, and preparation of Powers of Attorney. The advance is deducted from the total service fee. We explain the complete fee structure during consultation.',
-        q18: 'What payment methods do you accept?',
-        a18: 'We accept bank transfers, credit cards, and can accommodate cryptocurrency payments for international clients. Detailed payment instructions are provided after you decide to proceed. We issue official invoices for all payments.',
-        q19: 'Are there hidden fees?',
-        a19: 'No. We believe in complete transparency. All potential costs are disclosed during initial consultation, including optional services. If additional work becomes necessary during the process (such as unexpected archive searches), we discuss and agree on costs before proceeding. There are no surprise charges.',
-        q20: 'What if I need to stop the process?',
-        a20: 'We understand circumstances change. If you need to pause or stop the process, we discuss your options and handle any work completed to that point professionally. Our goal is always to serve your interests while maintaining ethical professional standards.',
+        noResults: 'No questions found matching your search',
         stillHaveQuestions: 'Still have questions?',
         contactForConsultation: 'Contact us for a personalized consultation about your specific case and eligibility.',
-        faqCta: 'Schedule Free Consultation'
+        faqCta: 'Schedule Free Consultation',
+        
+        eligibility: {
+          title: 'Eligibility',
+          q1: 'Who is eligible for Polish citizenship by descent?',
+          a1: 'You may be eligible if you have Polish ancestors (parent, grandparent, great-grandparent) who were Polish citizens. The key is proving an unbroken chain of citizenship transmission from your Polish ancestor to you.',
+          q2: 'What if my ancestor left before 1920?',
+          a2: 'Leaving before 1920 does not automatically make you ineligible. Under the 1920 Citizenship Act, people connected to territories that became Poland could acquire Polish citizenship based on domicile/right of residence.',
+          q3: 'Can I apply through my grandmother\'s line?',
+          a3: 'Yes, you can claim citizenship through female ancestors, though the rules vary depending on when your ancestor had children. We analyze your specific family timeline to determine the best legal pathway.',
+          q4: 'Can I claim through my great-grandparents?',
+          a4: 'Yes, many successful cases involve great-grandparents or even earlier generations. The key is proving the unbroken chain of citizenship transmission through each generation.',
+          q5: 'Do I need to speak Polish?',
+          a5: 'No, you don\'t need to speak Polish to obtain citizenship by descent. This is confirmation of existing citizenship rights, not naturalization.'
+        },
+        
+        timeline: {
+          title: 'Timeline',
+          q1: 'Why does confirmation take time?',
+          a1: 'Polish citizenship confirmation is a thorough legal process handled by provincial governors. The realistic timeline is 1.5 to 4 years due to document verification, historical record research, and government backlogs.',
+          q2: 'Where do I file if I live outside Poland?',
+          a2: 'Applications are filed with the appropriate provincial governor in Poland. You don\'t need to be in Poland to file - we handle all submissions and communications on your behalf.',
+          q3: 'What happens during the government phase?',
+          a3: 'After filing, the Voivode\'s Office reviews your application. They may request additional evidence. We respond to all government requests professionally and handle all communications in Polish.',
+          q4: 'Can the process be faster?',
+          a4: 'We can help expedite through proper documentation, strategic timing, and professional legal representation. However, some waiting is inevitable due to government processing times.',
+          q5: 'What if I get a negative decision?',
+          a5: 'If a negative decision is issued, we can file an appeal or administrative review. Many cases are won on appeal with additional evidence and stronger legal arguments.'
+        },
+        
+        costs: {
+          title: 'Costs',
+          q1: 'What are the total costs?',
+          a1: 'Total costs vary based on case complexity, document availability, and required services. We provide transparent pricing with no hidden fees after initial case assessment.',
+          q2: 'Are there payment plans available?',
+          a2: 'Yes, we offer flexible payment plans to make the process accessible. Payment is typically split into phases aligned with case milestones.',
+          q3: 'What do government fees include?',
+          a3: 'Government fees cover application processing, document certification, and official stamps. These are separate from our legal fees and vary by case.',
+          q4: 'Do I pay if my case is unsuccessful?',
+          a4: 'Our fee structure is designed to be fair. Initial assessment fees cover case evaluation. Main fees are tied to successful filing and representation.',
+          q5: 'What about translation costs?',
+          a5: 'Certified translation costs depend on the number and type of documents. We work with certified translators and provide accurate cost estimates upfront.'
+        },
+        
+        documents: {
+          title: 'Documents',
+          q1: 'What documents do I need?',
+          a1: 'Required documents include birth certificates, marriage certificates, and documents proving your Polish ancestor\'s citizenship. Specific requirements vary by case.',
+          q2: 'What if records were destroyed?',
+          a2: 'Many Polish records survived despite wars. We have extensive experience finding alternative evidence and working with archives worldwide to reconstruct lost documentation.',
+          q3: 'Do documents need to be translated?',
+          a3: 'Yes, all foreign documents must be translated by certified Polish translators. We coordinate all translation services to ensure accuracy and legal compliance.',
+          q4: 'How do I get Polish birth certificates?',
+          a4: 'We can obtain Polish civil records on your behalf by filing requests with appropriate civil registry offices in Poland. This is often a crucial step in building your case.',
+          q5: 'What about naturalization records?',
+          a5: 'If an ancestor naturalized in another country, we need those records to determine if Polish citizenship was lost. We help obtain these documents from relevant national archives.'
+        },
+        
+        issues: {
+          title: 'Common Issues',
+          q1: 'What if my ancestor naturalized?',
+          a1: 'Naturalization in another country before 1951 could affect citizenship transmission. However, many cases still succeed depending on timing and circumstances. We analyze each situation carefully.',
+          q2: 'My ancestor\'s name was changed - is that a problem?',
+          a2: 'Name changes are common and manageable. We help establish identity continuity through documentation like name change decrees, immigration records, and genealogical evidence.',
+          q3: 'What if I have gaps in my family tree?',
+          a3: 'Missing links can be filled through archival research, church records, immigration documents, and other sources. We specialize in reconstructing family histories.',
+          q4: 'Can children be included?',
+          a4: 'Yes, once you confirm your Polish citizenship, your minor children can be registered as Polish citizens. The process is straightforward for children under 16.',
+          q5: 'What about dual citizenship?',
+          a5: 'Poland allows dual citizenship. Confirming Polish citizenship does not require renouncing other citizenships, and most countries (including the US, Canada, UK) also allow dual citizenship.'
+        }
       }
     },
   },
@@ -735,56 +760,81 @@ const resources = {
       faq: {
         badge: 'Preguntas Frecuentes',
         title: 'Todo Lo Que Necesitas Saber',
-        subtitle: 'Respuestas completas a las preguntas más comunes sobre la ciudadanía polaca por descendencia',
         searchPlaceholder: 'Buscar preguntas...',
-        searchButton: 'Buscar',
-        categoryEligibility: 'ELEGIBILIDAD',
-        categoryTimeline: 'CRONOGRAMA',
-        categoryDocuments: 'DOCUMENTOS',
-        categoryCosts: 'COSTOS',
-        q1: '¿Quién es elegible para la ciudadanía polaca por descendencia?',
-        a1: 'Puede ser elegible si tiene ancestros polacos (padre, abuelo, bisabuelo) que fueron ciudadanos polacos. La clave es demostrar una cadena ininterrumpida de transmisión de ciudadanía desde su ancestro polaco hasta usted. Esto incluye a personas de ascendencia polaca y judío-polaca de todo el mundo.',
-        q2: '¿Qué pasa si mi ancestro se fue antes de 1920?',
-        a2: 'Irse antes de 1920 no lo hace automáticamente inelegible. Bajo la Ley de Ciudadanía de 1920 y disposiciones de tratados relacionados, las personas conectadas a territorios que se convirtieron en Polonia podrían adquirir (o ser consideradas como que adquirieron) la ciudadanía polaca basándose en domicilio/derecho de residencia, incluso si habían emigrado antes. Evaluamos dónde estaba domiciliado el ancestro el 31 de enero de 1920 y poco después. Estos casos son complejos y requieren muchos documentos, nuestra especialidad.',
-        q3: '¿Puedo aplicar a través de la línea de mi abuela?',
-        a3: 'Sí, puede reclamar la ciudadanía a través de ancestros femeninos, aunque las reglas varían dependiendo de cuándo su ancestro tuvo hijos. La ley polaca cambió con el tiempo con respecto a la transmisión materna de la ciudadanía. Analizamos su línea de tiempo familiar específica para determinar el mejor camino legal a través del linaje materno.',
-        q4: '¿Puedo reclamar a través de mis bisabuelos?',
-        a4: 'Sí, muchos casos exitosos involucran bisabuelos o generaciones aún anteriores. La clave es demostrar la cadena ininterrumpida de transmisión de ciudadanía a través de cada generación. Cuanto más atrás esté su ancestro polaco, más complejos son los requisitos de documentación, pero es absolutamente posible con la representación legal adecuada.',
-        q5: '¿Necesito hablar polaco?',
-        a5: 'No, no necesita hablar polaco para obtener la ciudadanía por descendencia. Esto es una confirmación de derechos de ciudadanía existentes, no naturalización. Nuestro equipo maneja todas las comunicaciones con las autoridades polacas en polaco, y todos los documentos son traducidos profesionalmente por traductores certificados.',
-        q6: '¿Por qué la confirmación toma tiempo?',
-        a6: 'La confirmación de ciudadanía polaca es un proceso legal exhaustivo manejado por gobernadores provinciales (voivodas) en Polonia. El cronograma realista es de 1.5 a 4 años porque: (1) Las autoridades polacas deben verificar todos los documentos y reclamos legales exhaustivamente, (2) Los registros históricos a menudo requieren investigación y verificación extensas, (3) Las oficinas gubernamentales en Polonia enfrentan retrasos significativos, (4) Los casos complejos que involucran emigración pre-1920 o múltiples jurisdicciones requieren escrutinio adicional. Proporcionamos cronogramas honestos basados en la experiencia real de casos, no promesas de marketing.',
-        q7: '¿Dónde presento si vivo fuera de Polonia?',
-        a7: 'Las solicitudes se presentan ante el gobernador provincial (voivoda) apropiado en Polonia, determinado por el último lugar de residencia de su ancestro en Polonia o donde se guardan sus registros. No necesita estar en Polonia para presentar - manejamos todas las presentaciones y comunicaciones con las autoridades polacas en su nombre. La mayoría de nuestros clientes nunca visitan Polonia durante el proceso de confirmación.',
-        q8: '¿Qué sucede durante la fase gubernamental?',
-        a8: 'Después de presentar, la Oficina del Voivoda de Mazovia revisa su solicitud y documentos de apoyo. Pueden solicitar evidencia o aclaración adicional. Aquí es cuando nuestra experiencia legal se vuelve crucial: respondemos a todas las solicitudes del gobierno de manera profesional y rápida. La oficina eventualmente emitirá una decisión de confirmación positiva o solicitará información adicional. Manejamos todas las comunicaciones con las autoridades polacas en polaco.',
-        q9: '¿Puede ser más rápido el proceso?',
-        a9: 'Ofrecemos tres estrategias de aceleración: PUSH (comunicación regular con autoridades), NUDGE (intervención estratégica en puntos clave) y SIT-DOWN (reuniones en persona con tomadores de decisiones). Si bien estos pueden ayudar a avanzar los casos, las expectativas de cronograma realistas siguen siendo importantes: la confirmación de ciudadanía polaca es un proceso legal exhaustivo. Explicamos estas opciones en detalle durante la consulta.',
-        q10: '¿Qué pasa si recibo una decisión negativa?',
-        a10: 'En el raro caso de una decisión negativa, podemos presentar una apelación al Ministerio del Interior dentro de 14 días. Nuestra tasa de éxito en apelaciones es sólida porque analizamos exhaustivamente el razonamiento y presentamos argumentos legales convincentes. Sin embargo, nuestra preparación integral y experiencia legal significan que la mayoría de nuestros casos reciben decisiones positivas sin necesidad de apelaciones.',
-        q11: '¿Qué documentos necesito de mi parte?',
-        a11: 'Necesitará: su pasaporte, su certificado de nacimiento, los certificados de nacimiento/matrimonio de sus padres y cualquier documento sobre su ancestro polaco (nacimiento, matrimonio, emigración, naturalización, servicio militar). Los requisitos específicos varían según el caso. Proporcionamos una lista de verificación detallada después de la evaluación inicial y lo guiamos para obtener cualquier documento faltante.',
-        q12: '¿Qué pasa si no tengo todos los documentos?',
-        a12: 'Los documentos faltantes son comunes. Lo ayudamos a obtenerlos a través de: (1) Archivos polacos - realizamos búsquedas extensas en archivos polacos e internacionales, (2) Autoridades locales - lo guiamos para solicitar documentos de su país de residencia, (3) Fuentes familiares - ayudamos a identificar documentos que podrían estar en posesión de la familia. Nuestras asociaciones de investigación de archivos significan que a menudo podemos encontrar documentos que no sabía que existían.',
-        q13: '¿Los documentos necesitan traducción?',
-        a13: 'Sí, todos los documentos que no sean en polaco deben ser traducidos por traductores jurados certificados polacos. Manejamos esto a través de nuestro flujo de trabajo de traducciones: los documentos pueden traducirse en nuestro portal con servicio de traducción IA, luego certificarse por Traductores Jurados Certificados Polacos. También verificamos dos veces todas las traducciones para verificar la precisión con un agente independiente para garantizar la calidad.',
-        q14: '¿Qué son las actas civiles polacas?',
-        a14: 'Las actas civiles polacas (akty stanu cywilnego) son certificados oficiales de nacimiento y matrimonio emitidos por las oficinas de registro civil polacas. Podemos obtenerlas para sus ancestros polacos presentando solicitudes a la Oficina de Registro Civil Polaca relevante. Este proceso es supervisado por nuestro Agente de Actas Civiles dedicado y toma aproximadamente 4-8 semanas dependiendo de la oficina de registro específica.',
-        q15: '¿Cómo funcionan las búsquedas de archivos?',
-        a15: 'Realizamos búsquedas exhaustivas en archivos estatales polacos, institutos históricos judíos y archivos internacionales para encontrar registros de sus ancestros. Esto incluye registros de nacimiento, registros de matrimonio, permisos de residencia, documentos de emigración y registros de ciudadanía. Nuestras asociaciones de investigación con archivos polacos e internacionales significan que tenemos acceso a bases de datos y colecciones a las que los individuos no pueden acceder por sí mismos.',
-        q16: '¿Cuáles son los costos totales?',
-        a16: 'Nuestras tarifas están estructuradas de manera transparente: Evaluación inicial y consulta, Tarifa principal de servicio legal (varía según la complejidad del caso), Costos de traducción de documentos, Tarifas de búsqueda en archivos (cuando sea necesario), Tarifas de actas civiles polacas (cuando sea necesario), Servicios de aceleración opcionales (PUSH/NUDGE/SIT-DOWN). Proporcionamos un desglose detallado de costos durante la consulta inicial basado en su caso específico. El pago generalmente se estructura en etapas alineadas con el proceso.',
-        q17: '¿Hay un pago anticipado?',
-        a17: 'Sí, requerimos un pago anticipado después de la evaluación inicial y antes de comenzar el trabajo legal. Esto cubre la configuración inicial del caso, la creación de la cuenta en nuestro portal y la preparación de Poderes Notariales. El anticipo se deduce de la tarifa total de servicio. Explicamos la estructura completa de tarifas durante la consulta.',
-        q18: '¿Qué métodos de pago aceptan?',
-        a18: 'Aceptamos transferencias bancarias, tarjetas de crédito y podemos acomodar pagos en criptomonedas para clientes internacionales. Se proporcionan instrucciones de pago detalladas después de que decida proceder. Emitimos facturas oficiales para todos los pagos.',
-        q19: '¿Hay tarifas ocultas?',
-        a19: 'No. Creemos en la transparencia completa. Todos los costos potenciales se divulgan durante la consulta inicial, incluidos los servicios opcionales. Si se hace necesario un trabajo adicional durante el proceso (como búsquedas de archivos inesperadas), discutimos y acordamos los costos antes de proceder. No hay cargos sorpresa.',
-        q20: '¿Qué pasa si necesito detener el proceso?',
-        a20: 'Entendemos que las circunstancias cambian. Si necesita pausar o detener el proceso, discutimos sus opciones y manejamos cualquier trabajo completado hasta ese punto de manera profesional. Nuestro objetivo es siempre servir a sus intereses mientras mantenemos estándares profesionales éticos.',
+        noResults: 'No se encontraron preguntas que coincidan con tu búsqueda',
         stillHaveQuestions: '¿Todavía tienes preguntas?',
         contactForConsultation: 'Contáctanos para una consulta personalizada sobre tu caso específico y elegibilidad.',
-        faqCta: 'Programar Consulta Gratuita'
+        faqCta: 'Programar Consulta Gratuita',
+        
+        eligibility: {
+          title: 'Elegibilidad',
+          q1: '¿Quién es elegible para la ciudadanía polaca por descendencia?',
+          a1: 'Puede ser elegible si tiene ancestros polacos (padre, abuelo, bisabuelo) que fueron ciudadanos polacos. La clave es demostrar una cadena ininterrumpida de transmisión de ciudadanía.',
+          q2: '¿Qué pasa si mi ancestro se fue antes de 1920?',
+          a2: 'Irse antes de 1920 no lo hace automáticamente inelegible. Bajo la Ley de Ciudadanía de 1920, las personas conectadas a territorios que se convirtieron en Polonia podrían adquirir ciudadanía polaca.',
+          q3: '¿Puedo aplicar a través de la línea de mi abuela?',
+          a3: 'Sí, puede reclamar la ciudadanía a través de ancestros femeninos, aunque las reglas varían. Analizamos su línea de tiempo familiar específica para determinar el mejor camino legal.',
+          q4: '¿Puedo reclamar a través de mis bisabuelos?',
+          a4: 'Sí, muchos casos exitosos involucran bisabuelos o generaciones aún anteriores. La clave es demostrar la cadena ininterrumpida de transmisión de ciudadanía.',
+          q5: '¿Necesito hablar polaco?',
+          a5: 'No, no necesita hablar polaco para obtener la ciudadanía por descendencia. Esta es una confirmación de derechos de ciudadanía existentes, no naturalización.'
+        },
+        
+        timeline: {
+          title: 'Cronograma',
+          q1: '¿Por qué la confirmación toma tiempo?',
+          a1: 'La confirmación de ciudadanía polaca es un proceso legal exhaustivo manejado por gobernadores provinciales. El cronograma realista es de 1.5 a 4 años debido a la verificación de documentos, investigación de registros históricos y atrasos gubernamentales.',
+          q2: '¿Dónde presento si vivo fuera de Polonia?',
+          a2: 'Las solicitudes se presentan con el gobernador provincial apropiado en Polonia. No necesita estar en Polonia para presentar - manejamos todas las presentaciones y comunicaciones en su nombre.',
+          q3: '¿Qué sucede durante la fase gubernamental?',
+          a3: 'Después de presentar, la Oficina del Voivoda revisa su solicitud. Pueden solicitar evidencia adicional. Respondemos a todas las solicitudes gubernamentales profesionalmente y manejamos todas las comunicaciones en polaco.',
+          q4: '¿Puede ser más rápido el proceso?',
+          a4: 'Podemos ayudar a acelerar a través de documentación adecuada, tiempo estratégico y representación legal profesional. Sin embargo, algo de espera es inevitable debido a los tiempos de procesamiento gubernamental.',
+          q5: '¿Qué pasa si recibo una decisión negativa?',
+          a5: 'Si se emite una decisión negativa, podemos presentar una apelación o revisión administrativa. Muchos casos se ganan en apelación con evidencia adicional y argumentos legales más fuertes.'
+        },
+        
+        costs: {
+          title: 'Costos',
+          q1: '¿Cuáles son los costos totales?',
+          a1: 'Los costos totales varían según la complejidad del caso, disponibilidad de documentos y servicios requeridos. Proporcionamos precios transparentes sin cargos ocultos después de la evaluación inicial del caso.',
+          q2: '¿Hay planes de pago disponibles?',
+          a2: 'Sí, ofrecemos planes de pago flexibles para hacer el proceso accesible. El pago generalmente se divide en fases alineadas con los hitos del caso.',
+          q3: '¿Qué incluyen las tarifas gubernamentales?',
+          a3: 'Las tarifas gubernamentales cubren el procesamiento de solicitudes, certificación de documentos y sellos oficiales. Estas son separadas de nuestras tarifas legales y varían según el caso.',
+          q4: '¿Pago si mi caso no tiene éxito?',
+          a4: 'Nuestra estructura de tarifas está diseñada para ser justa. Las tarifas de evaluación inicial cubren la evaluación del caso. Las tarifas principales están vinculadas a la presentación y representación exitosa.',
+          q5: '¿Qué pasa con los costos de traducción?',
+          a5: 'Los costos de traducción certificada dependen del número y tipo de documentos. Trabajamos con traductores certificados y proporcionamos estimaciones de costos precisas por adelantado.'
+        },
+        
+        documents: {
+          title: 'Documentos',
+          q1: '¿Qué documentos necesito?',
+          a1: 'Los documentos requeridos incluyen certificados de nacimiento, certificados de matrimonio y documentos que prueben la ciudadanía de su ancestro polaco. Los requisitos específicos varían según el caso.',
+          q2: '¿Qué pasa si los registros fueron destruidos?',
+          a2: 'Muchos registros polacos sobrevivieron a pesar de las guerras. Tenemos amplia experiencia encontrando evidencia alternativa y trabajando con archivos en todo el mundo para reconstruir documentación perdida.',
+          q3: '¿Los documentos necesitan ser traducidos?',
+          a3: 'Sí, todos los documentos extranjeros deben ser traducidos por traductores polacos certificados. Coordinamos todos los servicios de traducción para garantizar precisión y cumplimiento legal.',
+          q4: '¿Cómo obtengo certificados de nacimiento polacos?',
+          a4: 'Podemos obtener registros civiles polacos en su nombre presentando solicitudes con las oficinas de registro civil apropiadas en Polonia. Este es a menudo un paso crucial para construir su caso.',
+          q5: '¿Qué pasa con los registros de naturalización?',
+          a5: 'Si un ancestro se naturalizó en otro país, necesitamos esos registros para determinar si se perdió la ciudadanía polaca. Ayudamos a obtener estos documentos de archivos nacionales relevantes.'
+        },
+        
+        issues: {
+          title: 'Problemas Comunes',
+          q1: '¿Qué pasa si mi ancestro se naturalizó?',
+          a1: 'La naturalización en otro país antes de 1951 podría afectar la transmisión de ciudadanía. Sin embargo, muchos casos aún tienen éxito dependiendo del momento y las circunstancias. Analizamos cada situación cuidadosamente.',
+          q2: 'El nombre de mi ancestro fue cambiado - ¿es eso un problema?',
+          a2: 'Los cambios de nombre son comunes y manejables. Ayudamos a establecer la continuidad de identidad a través de documentación como decretos de cambio de nombre, registros de inmigración y evidencia genealógica.',
+          q3: '¿Qué pasa si tengo vacíos en mi árbol genealógico?',
+          a3: 'Los enlaces faltantes pueden llenarse a través de investigación de archivos, registros de iglesias, documentos de inmigración y otras fuentes. Nos especializamos en reconstruir historias familiares.',
+          q4: '¿Pueden incluirse los niños?',
+          a4: 'Sí, una vez que confirme su ciudadanía polaca, sus hijos menores pueden registrarse como ciudadanos polacos. El proceso es sencillo para niños menores de 16 años.',
+          q5: '¿Qué pasa con la doble ciudadanía?',
+          a5: 'Polonia permite la doble ciudadanía. Confirmar la ciudadanía polaca no requiere renunciar a otras ciudadanías, y la mayoría de los países (incluidos EE. UU., Canadá, Reino Unido) también permiten la doble ciudadanía.'
+        }
       }
     }
   },
@@ -990,6 +1040,88 @@ const resources = {
         benefit4Title: 'Processo Transparente',
         benefit4Desc: 'Preços Claros'
       },
+
+      // FAQ Section - Portuguese
+      faq: {
+        badge: 'Perguntas Frequentes',
+        title: 'Tudo O Que Você Precisa Saber',
+        searchPlaceholder: 'Pesquisar perguntas...',
+        noResults: 'Nenhuma pergunta encontrada correspondente à sua pesquisa',
+        stillHaveQuestions: 'Ainda tem perguntas?',
+        contactForConsultation: 'Entre em contato conosco para uma consulta personalizada sobre seu caso específico e elegibilidade.',
+        faqCta: 'Agendar Consulta Gratuita',
+        
+        eligibility: {
+          title: 'Elegibilidade',
+          q1: 'Quem é elegível para a cidadania polonesa por descendência?',
+          a1: 'Você pode ser elegível se tiver ancestrais poloneses (pai, avô, bisavô) que foram cidadãos poloneses. A chave é provar uma cadeia ininterrupta de transmissão de cidadania.',
+          q2: 'E se meu ancestral saiu antes de 1920?',
+          a2: 'Sair antes de 1920 não o torna automaticamente inelegível. Sob a Lei de Cidadania de 1920, pessoas conectadas a territórios que se tornaram Polônia poderiam adquirir cidadania polonesa.',
+          q3: 'Posso aplicar através da linha da minha avó?',
+          a3: 'Sim, você pode reivindicar cidadania através de ancestrais femininos, embora as regras variem. Analisamos sua linha do tempo familiar específica para determinar o melhor caminho legal.',
+          q4: 'Posso reivindicar através dos meus bisavós?',
+          a4: 'Sim, muitos casos bem-sucedidos envolvem bisavós ou gerações ainda anteriores. A chave é provar a cadeia ininterrupta de transmissão de cidadania.',
+          q5: 'Preciso falar polonês?',
+          a5: 'Não, você não precisa falar polonês para obter a cidadania por descendência. Esta é uma confirmação de direitos de cidadania existentes, não naturalização.'
+        },
+        
+        timeline: {
+          title: 'Cronograma',
+          q1: 'Por que a confirmação leva tempo?',
+          a1: 'A confirmação de cidadania polonesa é um processo legal minucioso realizado por governadores provinciais. O cronograma realista é de 1,5 a 4 anos devido à verificação de documentos, pesquisa de registros históricos e atrasos governamentais.',
+          q2: 'Onde apresento se moro fora da Polônia?',
+          a2: 'As solicitações são apresentadas ao governador provincial apropriado na Polônia. Você não precisa estar na Polônia para apresentar - lidamos com todas as submissões e comunicações em seu nome.',
+          q3: 'O que acontece durante a fase governamental?',
+          a3: 'Após a apresentação, o Gabinete do Voivoda revisa sua solicitação. Eles podem solicitar evidências adicionais. Respondemos a todas as solicitações governamentais profissionalmente e lidamos com todas as comunicações em polonês.',
+          q4: 'O processo pode ser mais rápido?',
+          a4: 'Podemos ajudar a acelerar através de documentação adequada, tempo estratégico e representação legal profissional. No entanto, alguma espera é inevitável devido aos tempos de processamento governamental.',
+          q5: 'E se eu receber uma decisão negativa?',
+          a5: 'Se uma decisão negativa for emitida, podemos apresentar um recurso ou revisão administrativa. Muitos casos são vencidos em recurso com evidências adicionais e argumentos legais mais fortes.'
+        },
+        
+        costs: {
+          title: 'Custos',
+          q1: 'Quais são os custos totais?',
+          a1: 'Os custos totais variam com base na complexidade do caso, disponibilidade de documentos e serviços necessários. Fornecemos preços transparentes sem taxas ocultas após a avaliação inicial do caso.',
+          q2: 'Existem planos de pagamento disponíveis?',
+          a2: 'Sim, oferecemos planos de pagamento flexíveis para tornar o processo acessível. O pagamento é normalmente dividido em fases alinhadas com os marcos do caso.',
+          q3: 'O que as taxas governamentais incluem?',
+          a3: 'As taxas governamentais cobrem o processamento de solicitações, certificação de documentos e carimbos oficiais. Estas são separadas de nossas taxas legais e variam de acordo com o caso.',
+          q4: 'Eu pago se meu caso não for bem-sucedido?',
+          a4: 'Nossa estrutura de taxas é projetada para ser justa. As taxas de avaliação inicial cobrem a avaliação do caso. As taxas principais estão vinculadas à apresentação e representação bem-sucedidas.',
+          q5: 'E quanto aos custos de tradução?',
+          a5: 'Os custos de tradução certificada dependem do número e tipo de documentos. Trabalhamos com tradutores certificados e fornecemos estimativas de custo precisas antecipadamente.'
+        },
+        
+        documents: {
+          title: 'Documentos',
+          q1: 'Que documentos eu preciso?',
+          a1: 'Os documentos necessários incluem certidões de nascimento, certidões de casamento e documentos que comprovem a cidadania de seu ancestral polonês. Requisitos específicos variam de acordo com o caso.',
+          q2: 'E se os registros foram destruídos?',
+          a2: 'Muitos registros poloneses sobreviveram apesar das guerras. Temos ampla experiência em encontrar evidências alternativas e trabalhar com arquivos em todo o mundo para reconstruir documentação perdida.',
+          q3: 'Os documentos precisam ser traduzidos?',
+          a3: 'Sim, todos os documentos estrangeiros devem ser traduzidos por tradutores poloneses certificados. Coordenamos todos os serviços de tradução para garantir precisão e conformidade legal.',
+          q4: 'Como obtenho certidões de nascimento polonesas?',
+          a4: 'Podemos obter registros civis poloneses em seu nome apresentando solicitações aos cartórios apropriados na Polônia. Este é frequentemente um passo crucial na construção de seu caso.',
+          q5: 'E quanto aos registros de naturalização?',
+          a5: 'Se um ancestral se naturalizou em outro país, precisamos desses registros para determinar se a cidadania polonesa foi perdida. Ajudamos a obter esses documentos de arquivos nacionais relevantes.'
+        },
+        
+        issues: {
+          title: 'Problemas Comuns',
+          q1: 'E se meu ancestral se naturalizou?',
+          a1: 'A naturalização em outro país antes de 1951 pode afetar a transmissão de cidadania. No entanto, muitos casos ainda são bem-sucedidos dependendo do momento e das circunstâncias. Analisamos cada situação cuidadosamente.',
+          q2: 'O nome do meu ancestral foi alterado - isso é um problema?',
+          a2: 'Mudanças de nome são comuns e gerenciáveis. Ajudamos a estabelecer continuidade de identidade através de documentação como decretos de mudança de nome, registros de imigração e evidências genealógicas.',
+          q3: 'E se eu tiver lacunas na minha árvore genealógica?',
+          a3: 'Elos faltantes podem ser preenchidos através de pesquisa de arquivo, registros de igreja, documentos de imigração e outras fontes. Nos especializamos em reconstruir histórias familiares.',
+          q4: 'As crianças podem ser incluídas?',
+          a4: 'Sim, uma vez que você confirme sua cidadania polonesa, seus filhos menores podem ser registrados como cidadãos poloneses. O processo é direto para crianças menores de 16 anos.',
+          q5: 'E quanto à dupla cidadania?',
+          a5: 'A Polônia permite dupla cidadania. Confirmar a cidadania polonesa não exige renunciar a outras cidadanias, e a maioria dos países (incluindo EUA, Canadá, Reino Unido) também permite dupla cidadania.'
+        }
+      },
+      
       footer: {
         description: 'Orientação jurídica especializada para pessoas de descendência polonesa e judaico-polonesa de todo o mundo. Taxa de sucesso incomparável de 100%, cronogramas realistas, preços transparentes. Desde 2003.',
         servicesTitle: 'Serviços',
@@ -1211,6 +1343,88 @@ const resources = {
         benefit4Title: 'Transparenter Prozess',
         benefit4Desc: 'Klare Preise'
       },
+
+      // FAQ Section - German
+      faq: {
+        badge: 'Häufig Gestellte Fragen',
+        title: 'Alles, Was Sie Wissen Müssen',
+        searchPlaceholder: 'Fragen durchsuchen...',
+        noResults: 'Keine Fragen gefunden, die Ihrer Suche entsprechen',
+        stillHaveQuestions: 'Haben Sie noch Fragen?',
+        contactForConsultation: 'Kontaktieren Sie uns für eine persönliche Beratung zu Ihrem spezifischen Fall und Ihrer Berechtigung.',
+        faqCta: 'Kostenlose Beratung Vereinbaren',
+        
+        eligibility: {
+          title: 'Berechtigung',
+          q1: 'Wer hat Anspruch auf die polnische Staatsbürgerschaft durch Abstammung?',
+          a1: 'Sie könnten berechtigt sein, wenn Sie polnische Vorfahren (Elternteil, Großelternteil, Urgroßelternteil) haben, die polnische Staatsbürger waren. Der Schlüssel ist der Nachweis einer ununterbrochenen Übertragungskette der Staatsbürgerschaft.',
+          q2: 'Was ist, wenn mein Vorfahr vor 1920 ausgewandert ist?',
+          a2: 'Eine Ausreise vor 1920 macht Sie nicht automatisch unberechtigt. Nach dem Staatsbürgerschaftsgesetz von 1920 konnten Personen, die mit Gebieten verbunden waren, die zu Polen wurden, die polnische Staatsbürgerschaft erwerben.',
+          q3: 'Kann ich über die Linie meiner Großmutter beantragen?',
+          a3: 'Ja, Sie können die Staatsbürgerschaft über weibliche Vorfahren geltend machen, obwohl die Regeln variieren. Wir analysieren Ihre spezifische Familienzeitleiste, um den besten rechtlichen Weg zu bestimmen.',
+          q4: 'Kann ich über meine Urgroßeltern Anspruch erheben?',
+          a4: 'Ja, viele erfolgreiche Fälle betreffen Urgroßeltern oder noch frühere Generationen. Der Schlüssel ist der Nachweis der ununterbrochenen Übertragungskette der Staatsbürgerschaft.',
+          q5: 'Muss ich Polnisch sprechen?',
+          a5: 'Nein, Sie müssen nicht Polnisch sprechen, um die Staatsbürgerschaft durch Abstammung zu erhalten. Dies ist eine Bestätigung bestehender Staatsbürgerschaftsrechte, keine Einbürgerung.'
+        },
+        
+        timeline: {
+          title: 'Zeitplan',
+          q1: 'Warum dauert die Bestätigung Zeit?',
+          a1: 'Die Bestätigung der polnischen Staatsbürgerschaft ist ein gründlicher rechtlicher Prozess, der von Provinzgouverneuren durchgeführt wird. Der realistische Zeitplan beträgt 1,5 bis 4 Jahre aufgrund von Dokumentenprüfung, historischer Aufzeichnungsforschung und behördlichen Rückständen.',
+          q2: 'Wo reiche ich ein, wenn ich außerhalb Polens lebe?',
+          a2: 'Anträge werden beim zuständigen Provinzgouverneur in Polen eingereicht. Sie müssen nicht in Polen sein, um einzureichen - wir kümmern uns um alle Einreichungen und Kommunikationen in Ihrem Namen.',
+          q3: 'Was passiert während der Regierungsphase?',
+          a3: 'Nach der Einreichung prüft das Büro des Woiwoden Ihren Antrag. Sie können zusätzliche Nachweise anfordern. Wir reagieren professionell auf alle behördlichen Anfragen und bearbeiten alle Kommunikationen auf Polnisch.',
+          q4: 'Kann der Prozess schneller sein?',
+          a4: 'Wir können durch ordnungsgemäße Dokumentation, strategisches Timing und professionelle rechtliche Vertretung beschleunigen. Einige Wartezeiten sind jedoch aufgrund behördlicher Bearbeitungszeiten unvermeidlich.',
+          q5: 'Was ist, wenn ich eine negative Entscheidung erhalte?',
+          a5: 'Wenn eine negative Entscheidung erteilt wird, können wir Berufung oder Verwaltungsprüfung einlegen. Viele Fälle werden in der Berufung mit zusätzlichen Beweisen und stärkeren rechtlichen Argumenten gewonnen.'
+        },
+        
+        costs: {
+          title: 'Kosten',
+          q1: 'Was sind die Gesamtkosten?',
+          a1: 'Die Gesamtkosten variieren je nach Fallkomplexität, Dokumentenverfügbarkeit und erforderlichen Dienstleistungen. Wir bieten transparente Preise ohne versteckte Gebühren nach der ersten Fallbewertung.',
+          q2: 'Gibt es Zahlungspläne?',
+          a2: 'Ja, wir bieten flexible Zahlungspläne an, um den Prozess zugänglich zu machen. Die Zahlung wird normalerweise in Phasen aufgeteilt, die auf Fallmeilensteine abgestimmt sind.',
+          q3: 'Was beinhalten die Regierungsgebühren?',
+          a3: 'Regierungsgebühren decken die Antragsbearbeitung, Dokumentenbeglaubigung und offizielle Stempel ab. Diese sind von unseren Anwaltsgebühren getrennt und variieren je nach Fall.',
+          q4: 'Zahle ich, wenn mein Fall nicht erfolgreich ist?',
+          a4: 'Unsere Gebührenstruktur ist fair gestaltet. Erstbewertungsgebühren decken die Fallbewertung ab. Hauptgebühren sind an erfolgreiche Einreichung und Vertretung gebunden.',
+          q5: 'Was ist mit Übersetzungskosten?',
+          a5: 'Beglaubigte Übersetzungskosten hängen von der Anzahl und Art der Dokumente ab. Wir arbeiten mit zertifizierten Übersetzern und bieten genaue Kostenschätzungen im Voraus.'
+        },
+        
+        documents: {
+          title: 'Dokumente',
+          q1: 'Welche Dokumente benötige ich?',
+          a1: 'Erforderliche Dokumente umfassen Geburtsurkunden, Heiratsurkunden und Dokumente, die die Staatsbürgerschaft Ihres polnischen Vorfahren nachweisen. Spezifische Anforderungen variieren je nach Fall.',
+          q2: 'Was ist, wenn Aufzeichnungen zerstört wurden?',
+          a2: 'Viele polnische Aufzeichnungen haben trotz Kriegen überlebt. Wir haben umfangreiche Erfahrung darin, alternative Beweise zu finden und mit Archiven weltweit zu arbeiten, um verlorene Dokumentation wiederherzustellen.',
+          q3: 'Müssen Dokumente übersetzt werden?',
+          a3: 'Ja, alle ausländischen Dokumente müssen von zertifizierten polnischen Übersetzern übersetzt werden. Wir koordinieren alle Übersetzungsdienste, um Genauigkeit und Rechtskonformität zu gewährleisten.',
+          q4: 'Wie erhalte ich polnische Geburtsurkunden?',
+          a4: 'Wir können polnische Zivilstandsregister in Ihrem Namen erhalten, indem wir Anfragen bei den entsprechenden Standesämtern in Polen einreichen. Dies ist oft ein entscheidender Schritt beim Aufbau Ihres Falls.',
+          q5: 'Was ist mit Einbürgerungsunterlagen?',
+          a5: 'Wenn sich ein Vorfahr in einem anderen Land einbürgerte, benötigen wir diese Aufzeichnungen, um festzustellen, ob die polnische Staatsbürgerschaft verloren ging. Wir helfen, diese Dokumente aus relevanten Nationalarchiven zu erhalten.'
+        },
+        
+        issues: {
+          title: 'Häufige Probleme',
+          q1: 'Was ist, wenn sich mein Vorfahr eingebürgert hat?',
+          a1: 'Eine Einbürgerung in einem anderen Land vor 1951 könnte die Übertragung der Staatsbürgerschaft beeinflussen. Viele Fälle sind jedoch je nach Zeitpunkt und Umständen immer noch erfolgreich. Wir analysieren jede Situation sorgfältig.',
+          q2: 'Der Name meines Vorfahren wurde geändert - ist das ein Problem?',
+          a2: 'Namensänderungen sind üblich und handhabbar. Wir helfen, Identitätskontinuität durch Dokumentation wie Namensänderungsverordnungen, Einwanderungsunterlagen und genealogische Beweise zu etablieren.',
+          q3: 'Was ist, wenn ich Lücken in meinem Stammbaum habe?',
+          a3: 'Fehlende Verbindungen können durch Archivrecherche, Kirchenregister, Einwanderungsdokumente und andere Quellen gefüllt werden. Wir sind darauf spezialisiert, Familiengeschichten zu rekonstruieren.',
+          q4: 'Können Kinder eingeschlossen werden?',
+          a4: 'Ja, sobald Sie Ihre polnische Staatsbürgerschaft bestätigen, können Ihre minderjährigen Kinder als polnische Staatsbürger registriert werden. Der Prozess ist für Kinder unter 16 Jahren unkompliziert.',
+          q5: 'Was ist mit der doppelten Staatsbürgerschaft?',
+          a5: 'Polen erlaubt die doppelte Staatsbürgerschaft. Die Bestätigung der polnischen Staatsbürgerschaft erfordert nicht den Verzicht auf andere Staatsbürgerschaften, und die meisten Länder (einschließlich USA, Kanada, Großbritannien) erlauben ebenfalls die doppelte Staatsbürgerschaft.'
+        }
+      },
+      
       footer: {
         description: 'Fachkundige Rechtsberatung für Menschen polnischer und polnisch-jüdischer Abstammung aus der ganzen Welt. Unübertroffene 100% Erfolgsquote, realistische Zeitpläne, transparente Preise. Seit 2003.',
         servicesTitle: 'Dienstleistungen',
@@ -1432,6 +1646,88 @@ const resources = {
         benefit4Title: 'Processus Transparent',
         benefit4Desc: 'Prix Clairs'
       },
+
+      // FAQ Section - French
+      faq: {
+        badge: 'Questions Fréquemment Posées',
+        title: 'Tout Ce Que Vous Devez Savoir',
+        searchPlaceholder: 'Rechercher des questions...',
+        noResults: 'Aucune question trouvée correspondant à votre recherche',
+        stillHaveQuestions: 'Vous avez encore des questions?',
+        contactForConsultation: 'Contactez-nous pour une consultation personnalisée concernant votre cas spécifique et votre éligibilité.',
+        faqCta: 'Planifier une Consultation Gratuite',
+        
+        eligibility: {
+          title: 'Éligibilité',
+          q1: 'Qui est éligible à la citoyenneté polonaise par descendance?',
+          a1: 'Vous pourriez être éligible si vous avez des ancêtres polonais (parent, grand-parent, arrière-grand-parent) qui étaient citoyens polonais. La clé est de prouver une chaîne ininterrompue de transmission de citoyenneté.',
+          q2: 'Et si mon ancêtre est parti avant 1920?',
+          a2: 'Partir avant 1920 ne vous rend pas automatiquement inéligible. Selon la loi sur la citoyenneté de 1920, les personnes liées aux territoires devenus la Pologne pouvaient acquérir la citoyenneté polonaise.',
+          q3: 'Puis-je postuler par la lignée de ma grand-mère?',
+          a3: 'Oui, vous pouvez revendiquer la citoyenneté par des ancêtres féminins, bien que les règles varient. Nous analysons votre chronologie familiale spécifique pour déterminer le meilleur parcours juridique.',
+          q4: 'Puis-je revendiquer par mes arrière-grands-parents?',
+          a4: 'Oui, de nombreux cas réussis impliquent des arrière-grands-parents ou des générations encore antérieures. La clé est de prouver la chaîne ininterrompue de transmission de citoyenneté.',
+          q5: 'Dois-je parler polonais?',
+          a5: 'Non, vous n\'avez pas besoin de parler polonais pour obtenir la citoyenneté par descendance. Il s\'agit d\'une confirmation de droits de citoyenneté existants, pas de naturalisation.'
+        },
+        
+        timeline: {
+          title: 'Calendrier',
+          q1: 'Pourquoi la confirmation prend-elle du temps?',
+          a1: 'La confirmation de la citoyenneté polonaise est un processus juridique approfondi géré par les gouverneurs provinciaux. Le calendrier réaliste est de 1,5 à 4 ans en raison de la vérification des documents, de la recherche de dossiers historiques et des arriérés gouvernementaux.',
+          q2: 'Où dois-je déposer si je vis hors de Pologne?',
+          a2: 'Les demandes sont déposées auprès du gouverneur provincial approprié en Pologne. Vous n\'avez pas besoin d\'être en Pologne pour déposer - nous gérons toutes les soumissions et communications en votre nom.',
+          q3: 'Que se passe-t-il pendant la phase gouvernementale?',
+          a3: 'Après le dépôt, le bureau du voïvode examine votre demande. Ils peuvent demander des preuves supplémentaires. Nous répondons professionnellement à toutes les demandes gouvernementales et gérons toutes les communications en polonais.',
+          q4: 'Le processus peut-il être plus rapide?',
+          a4: 'Nous pouvons aider à accélérer grâce à une documentation appropriée, un calendrier stratégique et une représentation juridique professionnelle. Cependant, une certaine attente est inévitable en raison des délais de traitement gouvernementaux.',
+          q5: 'Que se passe-t-il si je reçois une décision négative?',
+          a5: 'Si une décision négative est rendue, nous pouvons déposer un appel ou un examen administratif. De nombreux cas sont gagnés en appel avec des preuves supplémentaires et des arguments juridiques plus solides.'
+        },
+        
+        costs: {
+          title: 'Coûts',
+          q1: 'Quels sont les coûts totaux?',
+          a1: 'Les coûts totaux varient en fonction de la complexité du cas, de la disponibilité des documents et des services requis. Nous fournissons des prix transparents sans frais cachés après l\'évaluation initiale du cas.',
+          q2: 'Des plans de paiement sont-ils disponibles?',
+          a2: 'Oui, nous offrons des plans de paiement flexibles pour rendre le processus accessible. Le paiement est généralement divisé en phases alignées sur les jalons du cas.',
+          q3: 'Que comprennent les frais gouvernementaux?',
+          a3: 'Les frais gouvernementaux couvrent le traitement des demandes, la certification des documents et les timbres officiels. Ceux-ci sont séparés de nos honoraires juridiques et varient selon les cas.',
+          q4: 'Dois-je payer si mon cas n\'est pas couronné de succès?',
+          a4: 'Notre structure de frais est conçue pour être équitable. Les frais d\'évaluation initiale couvrent l\'évaluation du cas. Les frais principaux sont liés au dépôt et à la représentation réussis.',
+          q5: 'Qu\'en est-il des frais de traduction?',
+          a5: 'Les coûts de traduction certifiée dépendent du nombre et du type de documents. Nous travaillons avec des traducteurs certifiés et fournissons des estimations de coûts précises à l\'avance.'
+        },
+        
+        documents: {
+          title: 'Documents',
+          q1: 'De quels documents ai-je besoin?',
+          a1: 'Les documents requis comprennent les actes de naissance, les certificats de mariage et les documents prouvant la citoyenneté de votre ancêtre polonais. Les exigences spécifiques varient selon les cas.',
+          q2: 'Et si les dossiers ont été détruits?',
+          a2: 'De nombreux dossiers polonais ont survécu malgré les guerres. Nous avons une vaste expérience dans la recherche de preuves alternatives et le travail avec des archives du monde entier pour reconstruire la documentation perdue.',
+          q3: 'Les documents doivent-ils être traduits?',
+          a3: 'Oui, tous les documents étrangers doivent être traduits par des traducteurs polonais certifiés. Nous coordonnons tous les services de traduction pour garantir l\'exactitude et la conformité légale.',
+          q4: 'Comment obtenir des actes de naissance polonais?',
+          a4: 'Nous pouvons obtenir des registres civils polonais en votre nom en déposant des demandes auprès des bureaux d\'état civil appropriés en Pologne. C\'est souvent une étape cruciale dans la construction de votre cas.',
+          q5: 'Qu\'en est-il des dossiers de naturalisation?',
+          a5: 'Si un ancêtre s\'est naturalisé dans un autre pays, nous avons besoin de ces dossiers pour déterminer si la citoyenneté polonaise a été perdue. Nous aidons à obtenir ces documents auprès des archives nationales pertinentes.'
+        },
+        
+        issues: {
+          title: 'Problèmes Courants',
+          q1: 'Et si mon ancêtre s\'est naturalisé?',
+          a1: 'La naturalisation dans un autre pays avant 1951 pourrait affecter la transmission de la citoyenneté. Cependant, de nombreux cas réussissent toujours selon le calendrier et les circonstances. Nous analysons chaque situation avec soin.',
+          q2: 'Le nom de mon ancêtre a été changé - est-ce un problème?',
+          a2: 'Les changements de nom sont courants et gérables. Nous aidons à établir la continuité de l\'identité par la documentation telle que les décrets de changement de nom, les dossiers d\'immigration et les preuves généalogiques.',
+          q3: 'Et si j\'ai des lacunes dans mon arbre généalogique?',
+          a3: 'Les liens manquants peuvent être comblés par des recherches d\'archives, des registres d\'église, des documents d\'immigration et d\'autres sources. Nous nous spécialisons dans la reconstruction des histoires familiales.',
+          q4: 'Les enfants peuvent-ils être inclus?',
+          a4: 'Oui, une fois que vous confirmez votre citoyenneté polonaise, vos enfants mineurs peuvent être enregistrés comme citoyens polonais. Le processus est simple pour les enfants de moins de 16 ans.',
+          q5: 'Qu\'en est-il de la double citoyenneté?',
+          a5: 'La Pologne permet la double citoyenneté. Confirmer la citoyenneté polonaise n\'exige pas de renoncer à d\'autres citoyennetés, et la plupart des pays (y compris les États-Unis, le Canada, le Royaume-Uni) permettent également la double citoyenneté.'
+        }
+      },
+      
       footer: {
         description: "Conseils juridiques experts pour les personnes d'ascendance polonaise et judéo-polonaise du monde entier. Taux de réussite inégalé de 100%, délais réalistes, prix transparents. Depuis 2003.",
         servicesTitle: 'Services',
@@ -1653,6 +1949,88 @@ const resources = {
         benefit4Title: 'תהליך שקוף',
         benefit4Desc: 'מחירים ברורים'
       },
+
+      // FAQ Section - Hebrew
+      faq: {
+        badge: 'שאלות נפוצות',
+        title: 'כל מה שאתה צריך לדעת',
+        searchPlaceholder: 'חיפוש שאלות...',
+        noResults: 'לא נמצאו שאלות התואמות את החיפוש שלך',
+        stillHaveQuestions: 'עדיין יש שאלות?',
+        contactForConsultation: 'צור איתנו קשר לייעוץ מותאם אישית לגבי המקרה הספציפי שלך והזכאות.',
+        faqCta: 'קביעת ייעוץ חינם',
+        
+        eligibility: {
+          title: 'זכאות',
+          q1: 'מי זכאי לאזרחות פולנית לפי מוצא?',
+          a1: 'ייתכן שתהיה זכאי אם יש לך אבות פולניים (הורה, סב וסבתא, סבא רבא וסבתא רבתא) שהיו אזרחים פולניים. המפתח הוא להוכיח שרשרת העברה בלתי פרוצה של אזרחות.',
+          q2: 'מה אם האב הקדמון שלי עזב לפני 1920?',
+          a2: 'עזיבה לפני 1920 לא הופכת אותך אוטומטית ללא זכאי. על פי חוק האזרחות משנת 1920, אנשים המקושרים לטריטוריות שהפכו לפולין יכלו לרכוש אזרחות פולנית.',
+          q3: 'האם אוכל להגיש בקשה דרך קו הסבתא שלי?',
+          a3: 'כן, אתה יכול לתבוע אזרחות דרך אבות נקבות, אם כי הכללים משתנים. אנו מנתחים את ציר הזמן המשפחתי הספציפי שלך כדי לקבוע את הנתיב המשפטי הטוב ביותר.',
+          q4: 'האם אוכל לתבוע דרך הסבא רבא והסבתא רבתא שלי?',
+          a4: 'כן, מקרים מוצלחים רבים כוללים סבא רבא וסבתא רבתא או דורות מוקדמים עוד יותר. המפתח הוא להוכיח את שרשרת העברת האזרחות הבלתי פרוצה.',
+          q5: 'האם אני צריך לדבר פולנית?',
+          a5: 'לא, אינך צריך לדבר פולנית כדי לקבל אזרחות לפי מוצא. זהו אישור של זכויות אזרחות קיימות, לא התאזרחות.'
+        },
+        
+        timeline: {
+          title: 'לוח זמנים',
+          q1: 'למה האישור לוקח זמן?',
+          a1: 'אישור אזרחות פולנית הוא תהליך משפטי יסודי המנוהל על ידי מושלי מחוזות. לוח הזמנים הריאלי הוא 1.5 עד 4 שנים עקב אימות מסמכים, מחקר רשומות היסטוריות ועיכובים ממשלתיים.',
+          q2: 'היכן אני מגיש אם אני גר מחוץ לפולין?',
+          a2: 'הבקשות מוגשות למושל המחוז המתאים בפולין. אינך צריך להיות בפולין כדי להגיש - אנו מטפלים בכל ההגשות והתקשורת מטעמך.',
+          q3: 'מה קורה בשלב הממשלתי?',
+          a3: 'לאחר ההגשה, משרד הווייבוד בודק את הבקשה שלך. הם עשויים לבקש ראיות נוספות. אנו מגיבים באופן מקצועי לכל הבקשות הממשלתיות ומטפלים בכל התקשורת בפולנית.',
+          q4: 'האם התהליך יכול להיות מהיר יותר?',
+          a4: 'אנו יכולים לעזור להאיץ באמצעות תיעוד נאות, תזמון אסטרטגי וייצוג משפטי מקצועי. עם זאת, המתנה מסוימת היא בלתי נמנעת בגלל זמני עיבוד ממשלתיים.',
+          q5: 'מה אם אקבל החלטה שלילית?',
+          a5: 'אם מונפקת החלטה שלילית, נוכל להגיש ערעור או סקירה מנהלית. מקרים רבים מנצחים בערעור עם ראיות נוספות וטיעונים משפטיים חזקים יותר.'
+        },
+        
+        costs: {
+          title: 'עלויות',
+          q1: 'מהן העלויות הכוללות?',
+          a1: 'העלויות הכוללות משתנות בהתבסס על מורכבות המקרה, זמינות מסמכים ושירותים נדרשים. אנו מספקים תמחור שקוף ללא עמלות נסתרות לאחר הערכת המקרה הראשונית.',
+          q2: 'האם ישנן תוכניות תשלום זמינות?',
+          a2: 'כן, אנו מציעים תוכניות תשלום גמישות כדי להפוך את התהליך לנגיש. התשלום מחולק בדרך כלל לשלבים המיושרים עם אבני דרך במקרה.',
+          q3: 'מה כוללים אגרות ממשלה?',
+          a3: 'אגרות ממשלה מכסות עיבוד בקשות, אישור מסמכים וחותמות רשמיות. אלה נפרדות מהשכר הטרחה המשפטי שלנו ומשתנות לפי מקרה.',
+          q4: 'האם אני משלם אם המקרה שלי לא מצליח?',
+          a4: 'מבנה העמלות שלנו מתוכנן להיות הוגן. עמלות הערכה ראשונית מכסות הערכת מקרה. עמלות עיקריות קשורות להגשה וייצוג מוצלחים.',
+          q5: 'מה לגבי עלויות תרגום?',
+          a5: 'עלויות תרגום מאושר תלויות במספר ובסוג המסמכים. אנו עובדים עם מתרגמים מאושרים ומספקים הערכות עלות מדויקות מראש.'
+        },
+        
+        documents: {
+          title: 'מסמכים',
+          q1: 'אילו מסמכים אני צריך?',
+          a1: 'המסמכים הנדרשים כוללים תעודות לידה, תעודות נישואין ומסמכים המוכיחים את האזרחות של האב הקדמון הפולני שלך. דרישות ספציפיות משתנות לפי מקרה.',
+          q2: 'מה אם רשומות הושמדו?',
+          a2: 'רשומות פולניות רבות שרדו למרות מלחמות. יש לנו ניסיון רחב במציאת ראיות חלופיות ועבודה עם ארכיונים ברחבי העולם כדי לשחזר תיעוד אבוד.',
+          q3: 'האם מסמכים צריכים להיות מתורגמים?',
+          a3: 'כן, כל המסמכים הזרים חייבים להיות מתורגמים על ידי מתרגמים פולניים מאושרים. אנו מתאמים את כל שירותי התרגום כדי להבטיח דיוק ועמידה בחוק.',
+          q4: 'איך אני משיג תעודות לידה פולניות?',
+          a4: 'אנו יכולים להשיג רשומות אזרחיות פולניות מטעמך על ידי הגשת בקשות למשרדי הרישום האזרחי המתאימים בפולין. זהו לעתים קרובות צעד מכריע בבניית המקרה שלך.',
+          q5: 'מה לגבי רשומות התאזרחות?',
+          a5: 'אם אב קדמון התאזרח במדינה אחרת, אנו זקוקים לרשומות האלה כדי לקבוע אם האזרחות הפולנית אבדה. אנו עוזרים להשיג מסמכים אלה מארכיונים לאומיים רלוונטיים.'
+        },
+        
+        issues: {
+          title: 'בעיות נפוצות',
+          q1: 'מה אם האב הקדמון שלי התאזרח?',
+          a1: 'התאזרחות במדינה אחרת לפני 1951 עלולה להשפיע על העברת אזרחות. עם זאת, מקרים רבים עדיין מצליחים בהתאם לתזמון ונסיבות. אנו מנתחים כל מצב בקפידה.',
+          q2: 'השם של האב הקדמון שלי שונה - האם זו בעיה?',
+          a2: 'שינויי שמות נפוצים וניתנים לניהול. אנו עוזרים לבסס המשכיות זהות באמצעות תיעוד כמו צווי שינוי שם, רשומות הגירה וראיות גנאלוגיות.',
+          q3: 'מה אם יש לי פערים בעץ המשפחה שלי?',
+          a3: 'קישורים חסרים יכולים להתמלא באמצעות מחקר ארכיוני, רשומות כנסייה, מסמכי הגירה ומקורות אחרים. אנו מתמחים בשחזור היסטוריות משפחתיות.',
+          q4: 'האם ילדים יכולים להיכלל?',
+          a4: 'כן, ברגע שאתה מאשר את האזרחות הפולנית שלך, הילדים הקטינים שלך יכולים להירשם כאזרחים פולניים. התהליך פשוט לילדים מתחת לגיל 16.',
+          q5: 'מה לגבי אזרחות כפולה?',
+          a5: 'פולין מאפשרת אזרחות כפולה. אישור אזרחות פולנית לא דורש ויתור על אזרחויות אחרות, ורוב המדינות (כולל ארה"ב, קנדה, בריטניה) גם מאפשרות אזרחות כפולה.'
+        }
+      },
+      
       footer: {
         description: 'ייעוץ משפטי מומחה לאנשים ממוצא פולני ויהודי-פולני מרחבי העולם. שיעור הצלחה ללא תחרות של 100%, לוחות זמנים ריאליים, תמחור שקוף. מאז 2003.',
         servicesTitle: 'שירותים',
@@ -1874,6 +2252,88 @@ const resources = {
         benefit4Title: 'Прозрачный Процесс',
         benefit4Desc: 'Четкие Цены'
       },
+
+      // FAQ Section - Russian
+      faq: {
+        badge: 'Часто Задаваемые Вопросы',
+        title: 'Все, Что Вам Нужно Знать',
+        searchPlaceholder: 'Поиск вопросов...',
+        noResults: 'Не найдено вопросов, соответствующих вашему поиску',
+        stillHaveQuestions: 'Остались вопросы?',
+        contactForConsultation: 'Свяжитесь с нами для персональной консультации по вашему конкретному случаю и праву на гражданство.',
+        faqCta: 'Назначить Бесплатную Консультацию',
+        
+        eligibility: {
+          title: 'Право на гражданство',
+          q1: 'Кто имеет право на польское гражданство по происхождению?',
+          a1: 'Вы можете иметь право, если у вас есть польские предки (родитель, дедушка/бабушка, прадедушка/прабабушка), которые были польскими гражданами. Ключ в том, чтобы доказать непрерывную цепочку передачи гражданства.',
+          q2: 'Что, если мой предок уехал до 1920 года?',
+          a2: 'Отъезд до 1920 года не делает вас автоматически неправомочным. По Закону о гражданстве 1920 года люди, связанные с территориями, которые стали Польшей, могли приобрести польское гражданство.',
+          q3: 'Могу ли я подать заявку по линии бабушки?',
+          a3: 'Да, вы можете претендовать на гражданство через женских предков, хотя правила различаются. Мы анализируем вашу конкретную семейную хронологию, чтобы определить наилучший юридический путь.',
+          q4: 'Могу ли я претендовать через прадедушку/прабабушку?',
+          a4: 'Да, многие успешные случаи включают прадедушек/прабабушек или еще более ранние поколения. Ключ в том, чтобы доказать непрерывную цепочку передачи гражданства.',
+          q5: 'Нужно ли мне говорить по-польски?',
+          a5: 'Нет, вам не нужно говорить по-польски, чтобы получить гражданство по происхождению. Это подтверждение существующих прав на гражданство, а не натурализация.'
+        },
+        
+        timeline: {
+          title: 'Сроки',
+          q1: 'Почему подтверждение занимает время?',
+          a1: 'Подтверждение польского гражданства - это тщательный юридический процесс, проводимый губернаторами провинций. Реалистичные сроки составляют от 1,5 до 4 лет из-за проверки документов, исследования исторических записей и правительственных задолженностей.',
+          q2: 'Где я подаю документы, если живу за пределами Польши?',
+          a2: 'Заявления подаются соответствующему губернатору провинции в Польше. Вам не нужно быть в Польше для подачи - мы обрабатываем все заявки и коммуникации от вашего имени.',
+          q3: 'Что происходит на государственном этапе?',
+          a3: 'После подачи заявления Управление воеводы рассматривает вашу заявку. Они могут запросить дополнительные доказательства. Мы профессионально отвечаем на все государственные запросы и обрабатываем все коммуникации на польском языке.',
+          q4: 'Может ли процесс быть быстрее?',
+          a4: 'Мы можем помочь ускорить процесс с помощью правильной документации, стратегического времени и профессионального юридического представительства. Однако некоторое ожидание неизбежно из-за сроков обработки государством.',
+          q5: 'Что, если я получу отрицательное решение?',
+          a5: 'Если выносится отрицательное решение, мы можем подать апелляцию или административный пересмотр. Многие дела выигрываются в апелляции с дополнительными доказательствами и более сильными юридическими аргументами.'
+        },
+        
+        costs: {
+          title: 'Стоимость',
+          q1: 'Какова общая стоимость?',
+          a1: 'Общая стоимость варьируется в зависимости от сложности дела, доступности документов и необходимых услуг. Мы предоставляем прозрачные цены без скрытых платежей после первоначальной оценки дела.',
+          q2: 'Доступны ли планы оплаты?',
+          a2: 'Да, мы предлагаем гибкие планы оплаты, чтобы сделать процесс доступным. Оплата обычно делится на этапы, согласованные с вехами дела.',
+          q3: 'Что включают государственные сборы?',
+          a3: 'Государственные сборы покрывают обработку заявлений, сертификацию документов и официальные печати. Они отдельны от наших юридических гонораров и варьируются в зависимости от дела.',
+          q4: 'Плачу ли я, если мое дело не успешно?',
+          a4: 'Наша структура гонораров разработана справедливо. Сборы за первоначальную оценку покрывают оценку дела. Основные гонорары связаны с успешной подачей и представительством.',
+          q5: 'А как насчет расходов на перевод?',
+          a5: 'Расходы на сертифицированный перевод зависят от количества и типа документов. Мы работаем с сертифицированными переводчиками и предоставляем точные оценки расходов заранее.'
+        },
+        
+        documents: {
+          title: 'Документы',
+          q1: 'Какие документы мне нужны?',
+          a1: 'Требуемые документы включают свидетельства о рождении, свидетельства о браке и документы, подтверждающие гражданство вашего польского предка. Конкретные требования варьируются в зависимости от дела.',
+          q2: 'Что, если записи были уничтожены?',
+          a2: 'Многие польские записи сохранились, несмотря на войны. У нас есть обширный опыт поиска альтернативных доказательств и работы с архивами по всему миру для восстановления утерянной документации.',
+          q3: 'Нужно ли переводить документы?',
+          a3: 'Да, все иностранные документы должны быть переведены сертифицированными польскими переводчиками. Мы координируем все услуги перевода для обеспечения точности и соблюдения закона.',
+          q4: 'Как получить польские свидетельства о рождении?',
+          a4: 'Мы можем получить польские гражданские записи от вашего имени, подав заявки в соответствующие отделы ЗАГС в Польше. Это часто важный шаг в построении вашего дела.',
+          q5: 'А как насчет записей о натурализации?',
+          a5: 'Если предок натурализовался в другой стране, нам нужны эти записи, чтобы определить, было ли потеряно польское гражданство. Мы помогаем получить эти документы из соответствующих национальных архивов.'
+        },
+        
+        issues: {
+          title: 'Распространенные Проблемы',
+          q1: 'Что, если мой предок натурализовался?',
+          a1: 'Натурализация в другой стране до 1951 года может повлиять на передачу гражданства. Однако многие дела все равно успешны в зависимости от времени и обстоятельств. Мы тщательно анализируем каждую ситуацию.',
+          q2: 'Имя моего предка было изменено - это проблема?',
+          a2: 'Изменения имени распространены и управляемы. Мы помогаем установить непрерывность личности через документацию, такую как указы об изменении имени, иммиграционные записи и генеалогические доказательства.',
+          q3: 'Что, если у меня есть пробелы в моем семейном древе?',
+          a3: 'Отсутствующие звенья можно заполнить через архивные исследования, церковные записи, иммиграционные документы и другие источники. Мы специализируемся на восстановлении семейных историй.',
+          q4: 'Могут ли дети быть включены?',
+          a4: 'Да, как только вы подтвердите свое польское гражданство, ваши несовершеннолетние дети могут быть зарегистрированы как польские граждане. Процесс прост для детей до 16 лет.',
+          q5: 'А как насчет двойного гражданства?',
+          a5: 'Польша разрешает двойное гражданство. Подтверждение польского гражданства не требует отказа от других гражданств, и большинство стран (включая США, Канаду, Великобританию) также разрешают двойное гражданство.'
+        }
+      },
+      
       footer: {
         description: 'Экспертная юридическая консультация для людей польского и польско-еврейского происхождения со всего мира. Непревзойденная 100% успешность, реалистичные сроки, прозрачные цены. С 2003 года.',
         servicesTitle: 'Услуги',
@@ -2095,6 +2555,88 @@ const resources = {
         benefit4Title: 'Прозорий Процес',
         benefit4Desc: 'Чіткі Ціни'
       },
+
+      // FAQ Section - Ukrainian
+      faq: {
+        badge: 'Часті Питання',
+        title: 'Все, Що Вам Потрібно Знати',
+        searchPlaceholder: 'Пошук питань...',
+        noResults: 'Не знайдено питань, що відповідають вашому пошуку',
+        stillHaveQuestions: 'Залишилися питання?',
+        contactForConsultation: 'Зв\'яжіться з нами для персональної консультації щодо вашого конкретного випадку та права на громадянство.',
+        faqCta: 'Призначити Безкоштовну Консультацію',
+        
+        eligibility: {
+          title: 'Право на громадянство',
+          q1: 'Хто має право на польське громадянство за походженням?',
+          a1: 'Ви можете мати право, якщо у вас є польські предки (батько/мати, дідусь/бабуся, прадідусь/прабабуся), які були польськими громадянами. Ключ у тому, щоб довести безперервний ланцюг передачі громадянства.',
+          q2: 'Що, якщо мій предок виїхав до 1920 року?',
+          a2: 'Від\'їзд до 1920 року не робить вас автоматично неправомочним. За Законом про громадянство 1920 року люди, пов\'язані з територіями, що стали Польщею, могли набути польське громадянство.',
+          q3: 'Чи можу я подати заявку за лінією бабусі?',
+          a3: 'Так, ви можете претендувати на громадянство через жіночих предків, хоча правила різняться. Ми аналізуємо вашу конкретну сімейну хронологію, щоб визначити найкращий юридичний шлях.',
+          q4: 'Чи можу я претендувати через прадідуся/прабабусю?',
+          a4: 'Так, багато успішних випадків включають прадідусів/прабабусь або ще більш ранні покоління. Ключ у тому, щоб довести безперервний ланцюг передачі громадянства.',
+          q5: 'Чи потрібно мені говорити польською?',
+          a5: 'Ні, вам не потрібно говорити польською, щоб отримати громадянство за походженням. Це підтвердження існуючих прав на громадянство, а не натуралізація.'
+        },
+        
+        timeline: {
+          title: 'Терміни',
+          q1: 'Чому підтвердження займає час?',
+          a1: 'Підтвердження польського громадянства - це ретельний юридичний процес, що проводиться губернаторами провінцій. Реалістичні терміни становлять від 1,5 до 4 років через перевірку документів, дослідження історичних записів та урядові затримки.',
+          q2: 'Де я подаю документи, якщо живу за межами Польщі?',
+          a2: 'Заяви подаються відповідному губернатору провінції в Польщі. Вам не потрібно бути в Польщі для подання - ми обробляємо всі заявки та комунікації від вашого імені.',
+          q3: 'Що відбувається на державному етапі?',
+          a3: 'Після подання заяви Управління воєводи розглядає вашу заявку. Вони можуть запросити додаткові докази. Ми професійно відповідаємо на всі державні запити та обробляємо всі комунікації польською мовою.',
+          q4: 'Чи може процес бути швидшим?',
+          a4: 'Ми можемо допомогти прискорити процес за допомогою правильної документації, стратегічного часу та професійного юридичного представництва. Однак деяке очікування неминуче через терміни обробки державою.',
+          q5: 'Що, якщо я отримаю негативне рішення?',
+          a5: 'Якщо виноситься негативне рішення, ми можемо подати апеляцію або адміністративний перегляд. Багато справ виграються в апеляції з додатковими доказами та сильнішими юридичними аргументами.'
+        },
+        
+        costs: {
+          title: 'Вартість',
+          q1: 'Яка загальна вартість?',
+          a1: 'Загальна вартість варіюється залежно від складності справи, доступності документів та необхідних послуг. Ми надаємо прозорі ціни без прихованих платежів після початкової оцінки справи.',
+          q2: 'Чи доступні плани оплати?',
+          a2: 'Так, ми пропонуємо гнучкі плани оплати, щоб зробити процес доступним. Оплата зазвичай ділиться на етапи, узгоджені з віхами справи.',
+          q3: 'Що включають державні збори?',
+          a3: 'Державні збори покривають обробку заяв, сертифікацію документів та офіційні печатки. Вони окремі від наших юридичних гонорарів та варіюються залежно від справи.',
+          q4: 'Чи плачу я, якщо моя справа не успішна?',
+          a4: 'Наша структура гонорарів розроблена справедливо. Збори за початкову оцінку покривають оцінку справи. Основні гонорари пов\'язані з успішною подачею та представництвом.',
+          q5: 'А як щодо витрат на переклад?',
+          a5: 'Витрати на сертифікований переклад залежать від кількості та типу документів. Ми працюємо з сертифікованими перекладачами та надаємо точні оцінки витрат заздалегідь.'
+        },
+        
+        documents: {
+          title: 'Документи',
+          q1: 'Які документи мені потрібні?',
+          a1: 'Необхідні документи включають свідоцтва про народження, свідоцтва про шлюб та документи, що підтверджують громадянство вашого польського предка. Конкретні вимоги варіюються залежно від справи.',
+          q2: 'Що, якщо записи були знищені?',
+          a2: 'Багато польських записів збереглися, незважаючи на війни. У нас є великий досвід пошуку альтернативних доказів та роботи з архівами по всьому світу для відновлення втраченої документації.',
+          q3: 'Чи потрібно перекладати документи?',
+          a3: 'Так, всі іноземні документи повинні бути перекладені сертифікованими польськими перекладачами. Ми координуємо всі послуги перекладу для забезпечення точності та дотримання закону.',
+          q4: 'Як отримати польські свідоцтва про народження?',
+          a4: 'Ми можемо отримати польські цивільні записи від вашого імені, подавши заявки до відповідних відділів РАЦС у Польщі. Це часто важливий крок у побудові вашої справи.',
+          q5: 'А як щодо записів про натуралізацію?',
+          a5: 'Якщо предок натуралізувався в іншій країні, нам потрібні ці записи, щоб визначити, чи було втрачено польське громадянство. Ми допомагаємо отримати ці документи з відповідних національних архівів.'
+        },
+        
+        issues: {
+          title: 'Поширені Проблеми',
+          q1: 'Що, якщо мій предок натуралізувався?',
+          a1: 'Натуралізація в іншій країні до 1951 року може вплинути на передачу громадянства. Однак багато справ все одно успішні залежно від часу та обставин. Ми ретельно аналізуємо кожну ситуацію.',
+          q2: 'Ім\'я мого предка було змінено - це проблема?',
+          a2: 'Зміни імені поширені та керовані. Ми допомагаємо встановити безперервність особистості через документацію, таку як укази про зміну імені, імміграційні записи та генеалогічні докази.',
+          q3: 'Що, якщо у мене є прогалини в моєму родинному дереві?',
+          a3: 'Відсутні ланки можна заповнити через архівні дослідження, церковні записи, імміграційні документи та інші джерела. Ми спеціалізуємося на відновленні сімейних історій.',
+          q4: 'Чи можуть діти бути включені?',
+          a4: 'Так, як тільки ви підтвердите своє польське громадянство, ваші неповнолітні діти можуть бути зареєстровані як польські громадяни. Процес простий для дітей до 16 років.',
+          q5: 'А як щодо подвійного громадянства?',
+          a5: 'Польща дозволяє подвійне громадянство. Підтвердження польського громадянства не вимагає відмови від інших громадянств, і більшість країн (включаючи США, Канаду, Великобританію) також дозволяють подвійне громадянство.'
+        }
+      },
+      
       footer: {
         description: 'Експертна юридична консультація для людей польського та польсько-єврейського походження з усього світу. Неперевершена 100% успішність, реалістичні терміни, прозорі ціни. З 2003 року.',
         servicesTitle: 'Послуги',
