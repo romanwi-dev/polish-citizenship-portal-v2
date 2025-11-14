@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { ProgressStepper } from "@/components/intake-wizard/ProgressStepper";
-import { LanguageSwitcher } from "@/components/intake-wizard/LanguageSwitcher";
 import { Step1BasicInfo } from "@/components/intake-wizard/Step1BasicInfo";
 import { Step2Contact } from "@/components/intake-wizard/Step2Contact";
 import { Step3Passport } from "@/components/intake-wizard/Step3Passport";
@@ -286,11 +285,10 @@ export default function ClientIntakeWizard() {
       
       <div className="container max-w-4xl mx-auto px-4 relative z-10">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6">
           <h1 className="text-2xl md:text-3xl font-bold">
             {t('steps.basicInfo')} - {t('step')} {currentStep}
           </h1>
-          <LanguageSwitcher />
         </div>
 
         {/* Progress Stepper */}
