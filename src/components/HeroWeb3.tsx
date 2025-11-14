@@ -92,7 +92,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">100%</h3>
-                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">{t('hero.stats.satisfaction')}</p>
+                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">{t('hero.stats.success')}</p>
               </div>
             </div>
           </div>

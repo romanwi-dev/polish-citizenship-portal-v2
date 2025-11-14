@@ -98,7 +98,7 @@ const resources = {
         stats: {
           experience: 'Years of Experience',
           cases: 'Cases Processed',
-          satisfaction: '100% Success Rate'
+          success: 'Success Rate'
         }
       },
       
