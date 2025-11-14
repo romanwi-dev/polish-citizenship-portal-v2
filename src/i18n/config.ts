@@ -113,6 +113,7 @@ const resources = {
         card2Text: 'Leverage our proprietary AI systems that analyze your eligibility, predict timelines, and automate document processing - reducing typical processing time by 40%.',
         card3Title: 'Lifetime EU Benefits',
         card3Text: 'Gain full Polish citizenship and EU passport rights - live, work, study anywhere in the EU. Pass citizenship to your descendants forever.',
+        flipBack: 'Click to flip back',
         cta: 'Take Polish Citizenship Test'
       },
       
@@ -470,6 +471,7 @@ const resources = {
         card2Text: 'Aprovecha nuestros sistemas de IA propietarios que analizan tu elegibilidad, predicen plazos y automatizan el procesamiento de documentos, reduciendo el tiempo de procesamiento típico en un 40%.',
         card3Title: 'Beneficios de la UE de por Vida',
         card3Text: 'Obtén ciudadanía polaca completa y derechos de pasaporte de la UE: vive, trabaja, estudia en cualquier lugar de la UE. Transmite la ciudadanía a tus descendientes para siempre.',
+        flipBack: 'Haz clic para voltear',
         cta: 'Realizar Test de Ciudadanía Polaca'
       },
       services: {
@@ -815,6 +817,7 @@ const resources = {
         card2Text: 'Aproveite nossos sistemas de IA proprietários que analisam sua elegibilidade, preveem cronogramas e automatizam o processamento de documentos - reduzindo o tempo típico de processamento em 40%.',
         card3Title: 'Benefícios Vitalícios da UE',
         card3Text: 'Obtenha cidadania polonesa completa e direitos de passaporte da UE - viva, trabalhe, estude em qualquer lugar da UE. Transmita a cidadania aos seus descendentes para sempre.',
+        flipBack: 'Clique para virar',
         cta: 'Fazer Teste de Cidadania Polonesa'
       },
       services: {
@@ -1035,6 +1038,7 @@ const resources = {
         card2Text: 'Nutzen Sie unsere proprietären KI-Systeme, die Ihre Berechtigung analysieren, Zeitpläne vorhersagen und die Dokumentenverarbeitung automatisieren - wodurch die typische Bearbeitungszeit um 40% reduziert wird.',
         card3Title: 'Lebenslange EU-Vorteile',
         card3Text: 'Erhalten Sie die volle polnische Staatsbürgerschaft und EU-Passrechte - leben, arbeiten, studieren Sie überall in der EU. Geben Sie die Staatsbürgerschaft für immer an Ihre Nachkommen weiter.',
+        flipBack: 'Klicken zum Zurückdrehen',
         cta: 'Polnischen Staatsbürgerschaftstest Machen'
       },
       services: {
@@ -1255,6 +1259,7 @@ const resources = {
         card2Text: "Exploitez nos systèmes d'IA propriétaires qui analysent votre éligibilité, prédisent les délais et automatisent le traitement des documents - réduisant le temps de traitement typique de 40%.",
         card3Title: 'Avantages UE à Vie',
         card3Text: "Obtenez la pleine citoyenneté polonaise et les droits de passeport UE - vivez, travaillez, étudiez n'importe où dans l'UE. Transmettez la citoyenneté à vos descendants pour toujours.",
+        flipBack: 'Cliquer pour retourner',
         cta: 'Passer le Test de Citoyenneté Polonaise'
       },
       services: {
@@ -1475,6 +1480,7 @@ const resources = {
         card2Text: 'נצל את מערכות ה-AI הקנייניות שלנו שמנתחות את הזכאות שלך, צופות ציר זמן ומאוטמטות עיבוד מסמכים - מקטינות את זמן העיבוד הטיפוסי ב-40%.',
         card3Title: 'הטבות EU לכל החיים',
         card3Text: 'קבל אזרחות פולנית מלאה וזכויות דרכון EU - חיה, עבוד, למד בכל מקום באיחוד האירופי. העבר אזרחות לצאצאיך לנצח.',
+        flipBack: 'לחץ להפוך חזרה',
         cta: 'בצע מבחן אזרחות פולנית'
       },
       services: {
@@ -1695,6 +1701,7 @@ const resources = {
         card2Text: 'Используйте наши собственные системы ИИ, которые анализируют вашу приемлемость, прогнозируют сроки и автоматизируют обработку документов - сокращая типичное время обработки на 40%.',
         card3Title: 'Пожизненные Преимущества ЕС',
         card3Text: 'Получите полное польское гражданство и права паспорта ЕС - живите, работайте, учитесь где угодно в ЕС. Передайте гражданство своим потомкам навсегда.',
+        flipBack: 'Нажмите, чтобы вернуть',
         cta: 'Пройти Тест на Польское Гражданство'
       },
       services: {
@@ -1915,6 +1922,7 @@ const resources = {
         card2Text: 'Використовуйте наші власні системи ШІ, які аналізують вашу прийнятність, прогнозують терміни та автоматизують обробку документів - скорочуючи типовий час обробки на 40%.',
         card3Title: 'Довічні Переваги ЄС',
         card3Text: 'Отримайте повне польське громадянство та права паспорта ЄС - живіть, працюйте, навчайтесь будь-де в ЄС. Передайте громадянство своїм нащадкам назавжди.',
+        flipBack: 'Натисніть, щоб повернути',
         cta: 'Пройти Тест на Польське Громадянство'
       },
       services: {

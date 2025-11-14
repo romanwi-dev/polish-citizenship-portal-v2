@@ -323,7 +323,7 @@ export default function TimelineProcessEnhanced() {
                           </p>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground/60 text-center mt-4">{isMobile ? 'Tap' : 'Click'} to flip back</p>
+                      <p className="text-xs text-muted-foreground/60 text-center mt-4">{t('timeline.flipBack')}</p>
                     </div>
                   </div>
                 </div>
