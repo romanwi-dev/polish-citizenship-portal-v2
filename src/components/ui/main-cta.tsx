@@ -69,7 +69,7 @@ export function MainCTA({
         onClick={onClick}
         aria-label={ariaLabel}
       >
-        <span className="relative z-10 font-bold drop-shadow-lg text-white">
+        <span className="relative z-10 font-bold text-white" style={{ textShadow: '0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(217, 69, 101, 0.3)' }}>
           {children}
         </span>
       </Button>
