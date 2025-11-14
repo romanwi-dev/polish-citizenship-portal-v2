@@ -304,7 +304,7 @@ export default function TimelineProcessEnhanced() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
+                      <p className="text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails')}</p>
                     </div>
 
                     {/* Back Side */}
