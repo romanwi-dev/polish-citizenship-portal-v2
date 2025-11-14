@@ -226,13 +226,13 @@ const resources = {
         thankYouMessage: 'We will review your application and get back to you within 24 hours.',
         cta: 'Take Polish Citizenship Test',
         benefit1Title: 'Fast Response',
-        benefit1Desc: '24-hour response time guaranteed',
+        benefit1Desc: '< 24 hours',
         benefit2Title: 'Expert Team',
-        benefit2Desc: '20+ years of specialized experience',
+        benefit2Desc: '20+ years',
         benefit3Title: 'Free Assessment',
-        benefit3Desc: 'No cost initial evaluation',
+        benefit3Desc: '100% Free',
         benefit4Title: 'Transparent Process',
-        benefit4Desc: 'Clear timeline and pricing from day one'
+        benefit4Desc: 'Clear Pricing'
       },
 
       // Footer - Demo
@@ -563,13 +563,13 @@ const resources = {
         thankYouMessage: 'Te responderemos en 24 horas.',
         cta: 'Realizar Test',
         benefit1Title: 'Respuesta Rápida',
-        benefit1Desc: '24 horas garantizado',
+        benefit1Desc: '< 24 horas',
         benefit2Title: 'Equipo Experto',
-        benefit2Desc: '20+ años experiencia',
+        benefit2Desc: '20+ años',
         benefit3Title: 'Evaluación Gratuita',
-        benefit3Desc: 'Sin costo inicial',
+        benefit3Desc: '100% Gratis',
         benefit4Title: 'Proceso Transparente',
-        benefit4Desc: 'Precios claros'
+        benefit4Desc: 'Precios Claros'
       },
       footer: {
         description: 'Orientación legal experta para personas de ascendencia polaca y judío-polaca de todo el mundo. Tasa de éxito incomparable del 100%, plazos realistas, precios transparentes. Desde 2003.',
@@ -898,13 +898,13 @@ const resources = {
         thankYouMessage: 'Responderemos em 24 horas.',
         cta: 'Fazer Teste',
         benefit1Title: 'Resposta Rápida',
-        benefit1Desc: '24 horas garantido',
+        benefit1Desc: '< 24 horas',
         benefit2Title: 'Equipe Especializada',
-        benefit2Desc: '20+ anos experiência',
+        benefit2Desc: '20+ anos',
         benefit3Title: 'Avaliação Gratuita',
-        benefit3Desc: 'Sem custo inicial',
+        benefit3Desc: '100% Grátis',
         benefit4Title: 'Processo Transparente',
-        benefit4Desc: 'Preços claros'
+        benefit4Desc: 'Preços Claros'
       },
       footer: {
         description: 'Orientação jurídica especializada para pessoas de descendência polonesa e judaico-polonesa de todo o mundo. Taxa de sucesso incomparável de 100%, cronogramas realistas, preços transparentes. Desde 2003.',
@@ -1065,11 +1065,11 @@ const resources = {
         thankYouMessage: 'Antwort in 24 Stunden.',
         cta: 'Test Machen',
         benefit1Title: 'Schnelle Antwort',
-        benefit1Desc: '24 Stunden garantiert',
+        benefit1Desc: '< 24 Stunden',
         benefit2Title: 'Expertenteam',
-        benefit2Desc: '20+ Jahre Erfahrung',
+        benefit2Desc: '20+ Jahre',
         benefit3Title: 'Kostenlose Bewertung',
-        benefit3Desc: 'Keine Anfangskosten',
+        benefit3Desc: '100% Kostenlos',
         benefit4Title: 'Transparenter Prozess',
         benefit4Desc: 'Klare Preise'
       },
@@ -1232,13 +1232,13 @@ const resources = {
         thankYouMessage: 'Réponse en 24 heures.',
         cta: 'Passer le Test',
         benefit1Title: 'Réponse Rapide',
-        benefit1Desc: '24 heures garanti',
+        benefit1Desc: '< 24 heures',
         benefit2Title: 'Équipe Experte',
-        benefit2Desc: '20+ ans expérience',
+        benefit2Desc: '20+ ans',
         benefit3Title: 'Évaluation Gratuite',
-        benefit3Desc: 'Sans coût initial',
+        benefit3Desc: '100% Gratuit',
         benefit4Title: 'Processus Transparent',
-        benefit4Desc: 'Prix clairs'
+        benefit4Desc: 'Prix Clairs'
       },
       footer: {
         description: "Conseils juridiques experts pour les personnes d'ascendance polonaise et judéo-polonaise du monde entier. Taux de réussite inégalé de 100%, délais réalistes, prix transparents. Depuis 2003.",
@@ -1399,11 +1399,11 @@ const resources = {
         thankYouMessage: 'נענה תוך 24 שעות.',
         cta: 'עבור מבחן',
         benefit1Title: 'תגובה מהירה',
-        benefit1Desc: '24 שעות',
+        benefit1Desc: '< 24 שעות',
         benefit2Title: 'צוות מומחה',
         benefit2Desc: '20+ שנים',
         benefit3Title: 'הערכה חינם',
-        benefit3Desc: 'ללא עלות',
+        benefit3Desc: '100% חינם',
         benefit4Title: 'תהליך שקוף',
         benefit4Desc: 'מחירים ברורים'
       },
@@ -1566,13 +1566,13 @@ const resources = {
         thankYouMessage: 'Мы ответим в течение 24 часов.',
         cta: 'Пройти Тест',
         benefit1Title: 'Быстрый Ответ',
-        benefit1Desc: '24 часа',
+        benefit1Desc: '< 24 часа',
         benefit2Title: 'Экспертная Команда',
         benefit2Desc: '20+ лет',
         benefit3Title: 'Бесплатная Оценка',
-        benefit3Desc: 'Без оплаты',
+        benefit3Desc: '100% Бесплатно',
         benefit4Title: 'Прозрачный Процесс',
-        benefit4Desc: 'Четкие цены'
+        benefit4Desc: 'Четкие Цены'
       },
       footer: {
         description: 'Экспертная юридическая консультация для людей польского и польско-еврейского происхождения со всего мира. Непревзойденная 100% успешность, реалистичные сроки, прозрачные цены. С 2003 года.',
@@ -1733,13 +1733,13 @@ const resources = {
         thankYouMessage: 'Ми відповімо протягом 24 годин.',
         cta: 'Пройти Тест',
         benefit1Title: 'Швидка Відповідь',
-        benefit1Desc: '24 години',
+        benefit1Desc: '< 24 години',
         benefit2Title: 'Експертна Команда',
         benefit2Desc: '20+ років',
         benefit3Title: 'Безкоштовна Оцінка',
-        benefit3Desc: 'Без оплати',
+        benefit3Desc: '100% Безкоштовно',
         benefit4Title: 'Прозорий Процес',
-        benefit4Desc: 'Чіткі ціни'
+        benefit4Desc: 'Чіткі Ціни'
       },
       footer: {
         description: 'Експертна юридична консультація для людей польського та польсько-єврейського походження з усього світу. Неперевершена 100% успішність, реалістичні терміни, прозорі ціни. З 2003 року.',
