@@ -106,27 +106,27 @@ const AboutSection = () => {
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
           <FlippableAboutCard 
-            icon={Users}
-            title="20M+ Poles Worldwide"
-            description="Over 20 million people of Polish descent live outside Poland—that's more than half of Poland's population. Your Polish heritage could be your gateway to EU citizenship."
+            icon={Shield}
+            title={t('about.card1Title')}
+            description={t('about.card1Text')}
             gradient="from-primary/20 to-secondary/20"
             textColor="text-primary"
             index={0}
           />
 
           <FlippableAboutCard 
-            icon={Globe}
-            title="Full EU Access"
-            description="Poland joined the EU in 2004. Polish citizenship means you can live, work, and study freely in all 27 EU countries—from Paris to Berlin to Rome."
+            icon={Users}
+            title={t('about.card2Title')}
+            description={t('about.card2Text')}
             gradient="from-secondary/20 to-accent/20"
             textColor="text-secondary"
             index={1}
           />
 
           <FlippableAboutCard 
-            icon={Shield}
-            title="Lifetime Benefits"
-            description="Access world-class European education, healthcare, and career opportunities. Your Polish passport opens doors across the entire European Union for you and your family."
+            icon={Globe}
+            title={t('about.card3Title')}
+            description={t('about.card3Text')}
             gradient="from-accent/20 to-primary/20"
             textColor="text-accent"
             index={2}
@@ -139,7 +139,7 @@ const AboutSection = () => {
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test to check your eligibility"
         >
-          Take Polish Citizenship Test
+          {t('about.cta')}
         </MainCTA>
       </div>
     </section>

@@ -43,9 +43,20 @@ const services = [
   },
 ];
 
-const FlippableServiceCard = ({ service, index }: { service: typeof services[0]; index: number }) => {
+const FlippableServiceCard = ({ 
+  icon: Icon,
+  title,
+  description,
+  color,
+  index
+}: { 
+  icon: any;
+  title: string;
+  description: string;
+  color: string;
+  index: number;
+}) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const Icon = service.icon;
 
   return (
     <div 
@@ -68,23 +79,23 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
           className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-1"
           style={{ backfaceVisibility: 'hidden' }}
         >
-          <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+          <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
           
           <div className="relative z-10">
             <div className="flex items-center gap-4 mb-4">
-              <div className={`w-12 h-12 rounded bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+              <div className={`w-12 h-12 rounded bg-gradient-to-br ${color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                 <Icon className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                {service.title}
+                {title}
               </h3>
             </div>
             <p className="text-muted-foreground leading-relaxed font-medium">
-              {service.description}
+              {description}
             </p>
           </div>
 
-          <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${service.color} opacity-20 blur-2xl rounded-full`} />
+          <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${color} opacity-20 blur-2xl rounded-full`} />
         </div>
 
         {/* Back of card */}
@@ -95,7 +106,7 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
             transform: 'rotateY(180deg)'
           }}
         >
-          <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-20`} />
+          <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-20`} />
           
           <div className="relative z-10 text-center">
             <p className="text-muted-foreground italic">
@@ -109,6 +120,8 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 };
 
 const ServicesWeb3 = () => {
+  const { t } = useTranslation();
+  
   return (
     <section id="services" className="py-24 relative overflow-hidden overflow-x-hidden">
       
@@ -116,22 +129,61 @@ const ServicesWeb3 = () => {
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-[#7C1328]/30">
             <Zap className="w-4 h-4 text-[#D94565]" />
-            <span className="text-sm font-medium bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent">Next-Gen Services</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent">{t('services.badge')}</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Powered by Innovation
+              {t('services.title')}
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-16">
-            Professional legal expertise combined with cutting-edge AI technology
+            {t('services.description')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {services.map((service, index) => (
-            <FlippableServiceCard key={index} service={service} index={index} />
-          ))}
+          <FlippableServiceCard
+            icon={Cpu}
+            title={t('services.service1Title')}
+            description={t('services.service1Desc')}
+            color="from-primary to-accent"
+            index={0}
+          />
+          <FlippableServiceCard
+            icon={Shield}
+            title={t('services.service2Title')}
+            description={t('services.service2Desc')}
+            color="from-secondary to-primary"
+            index={1}
+          />
+          <FlippableServiceCard
+            icon={Users}
+            title={t('services.service3Title')}
+            description={t('services.service3Desc')}
+            color="from-accent to-secondary"
+            index={2}
+          />
+          <FlippableServiceCard
+            icon={FileText}
+            title={t('services.service4Title')}
+            description={t('services.service4Desc')}
+            color="from-primary to-secondary"
+            index={3}
+          />
+          <FlippableServiceCard
+            icon={CheckCircle}
+            title={t('services.service5Title')}
+            description={t('services.service5Desc')}
+            color="from-secondary to-accent"
+            index={4}
+          />
+          <FlippableServiceCard
+            icon={Globe}
+            title={t('services.service6Title')}
+            description={t('services.service6Desc')}
+            color="from-accent to-primary"
+            index={5}
+          />
         </div>
         
           <MainCTA
@@ -140,7 +192,7 @@ const ServicesWeb3 = () => {
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             ariaLabel="Take the Polish Citizenship Test to check your eligibility"
           >
-            Take Polish Citizenship Test
+            {t('services.cta')}
           </MainCTA>
       </div>
     </section>
