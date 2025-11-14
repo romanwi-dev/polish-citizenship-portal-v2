@@ -480,8 +480,8 @@ All colors MUST be HSL.
     color: hsl(var(--foreground) / 0.9);
     font-size: 17px;
     font-weight: 400;
-    background-image: radial-gradient(circle at 20% 20%, hsl(221 83% 53% / 0.08) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 80%, hsl(204 70% 53% / 0.08) 0%, transparent 50%);
+    background-image: radial-gradient(circle at 20% 20%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, hsl(var(--secondary) / 0.08) 0%, transparent 50%);
     background-attachment: fixed;
     overflow-x: hidden;
     /* Hide scrollbars globally */
@@ -514,11 +514,11 @@ All colors MUST be HSL.
   }
 
   .glow-text {
-    text-shadow: 0 0 20px hsl(221 83% 53% / 0.4);
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.4);
   }
 
   .hover-glow {
-    box-shadow: 0 0 30px hsla(348, 68%, 53%, 0.15);
+    box-shadow: var(--shadow-glow);
     transition: all 0.3s ease;
   }
 
@@ -541,11 +541,11 @@ All colors MUST be HSL.
   }
 
   .hover-glow:hover {
-    box-shadow: 0 0 50px hsla(348, 68%, 53%, 0.4);
+    box-shadow: 0 0 50px hsl(var(--primary) / 0.4);
   }
 
   .hover-glow:focus {
-    box-shadow: 0 0 60px hsla(348, 68%, 53%, 0.5);
+    box-shadow: 0 0 60px hsl(var(--primary) / 0.5);
   }
 
   /* Optimized form input glow - no cursor interference */
