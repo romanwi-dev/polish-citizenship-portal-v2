@@ -189,11 +189,11 @@ All colors MUST be HSL.
     --border: 345 20% 88%;
     --input: 345 20% 96%;
     
-    --primary: 343 90% 42% !important;  /* Much darker, more visible red */
+    --primary: 343 90% 35% !important;  /* Darker red for better visibility */
     --primary-foreground: 0 0% 100% !important;  /* Pure white text */
-    --secondary: 345 85% 48% !important;
-    --accent: 345 85% 48% !important;
-    --ring: 343 90% 42% !important;
+    --secondary: 345 85% 42% !important;
+    --accent: 345 85% 42% !important;
+    --ring: 343 90% 35% !important;
     
     --shadow-glow: 0 0 50px hsl(343 90% 42% / 0.35) !important;
     --shadow-glow-secondary: 0 0 40px hsl(343 90% 42% / 0.25) !important;
@@ -256,11 +256,11 @@ All colors MUST be HSL.
     --border: 220 20% 88%;
     --input: 220 20% 96%;
     
-    --primary: 221 95% 40% !important;  /* Much darker, more visible blue */
+    --primary: 221 95% 33% !important;  /* Darker blue for better visibility */
     --primary-foreground: 0 0% 100% !important;  /* Pure white text */
-    --secondary: 204 90% 45% !important;
-    --accent: 204 90% 45% !important;
-    --ring: 221 95% 40% !important;
+    --secondary: 204 90% 38% !important;
+    --accent: 204 90% 38% !important;
+    --ring: 221 95% 33% !important;
     
     --shadow-glow: 0 0 50px hsl(221 95% 40% / 0.35) !important;
     --shadow-glow-secondary: 0 0 40px hsl(204 90% 45% / 0.25) !important;
