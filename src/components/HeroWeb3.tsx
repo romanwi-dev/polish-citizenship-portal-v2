@@ -53,12 +53,7 @@ const HeroWeb3 = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
             {/* Card 1 */}
             <div 
-              className="p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
-              style={{
-                background: 'linear-gradient(135deg, rgba(124, 19, 40, 0.2) 0%, rgba(74, 12, 24, 0.3) 100%)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(124, 19, 40, 0.3)'
-              }}
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none animate-[pulse_2s_ease-in-out_infinite] shadow-[0_0_20px_rgba(217,69,101,0.3)]"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent mb-2">&gt;20</h3>
@@ -68,12 +63,8 @@ const HeroWeb3 = () => {
 
             {/* Card 2 */}
             <div 
-              className="p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
-              style={{
-                background: 'linear-gradient(135deg, rgba(124, 19, 40, 0.25) 0%, rgba(74, 12, 24, 0.35) 100%)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(124, 19, 40, 0.4)'
-              }}
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none animate-[pulse_2s_ease-in-out_infinite] shadow-[0_0_20px_rgba(217,69,101,0.3)]"
+              style={{ animationDelay: '0.3s' }}
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#8B1D3D] to-[#E05575] bg-clip-text text-transparent mb-2">&gt;20,000</h3>
@@ -83,12 +74,8 @@ const HeroWeb3 = () => {
 
             {/* Card 3 */}
             <div 
-              className="p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
-              style={{
-                background: 'linear-gradient(135deg, rgba(124, 19, 40, 0.3) 0%, rgba(74, 12, 24, 0.4) 100%)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(124, 19, 40, 0.5)'
-              }}
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none animate-[pulse_2s_ease-in-out_infinite] shadow-[0_0_20px_rgba(217,69,101,0.3)]"
+              style={{ animationDelay: '0.6s' }}
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#A01D48] to-[#F06585] bg-clip-text text-transparent mb-2">100%</h3>
