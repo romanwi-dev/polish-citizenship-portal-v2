@@ -465,6 +465,74 @@ const resources = {
   },
   es: {
     translation: {
+      // Navigation
+      next: 'Siguiente',
+      previous: 'Anterior',
+      submit: 'Enviar Solicitud',
+      saveProgress: 'Guardar Progreso',
+      
+      // Steps
+      step: 'Paso',
+      of: 'de',
+      steps: {
+        basicInfo: 'Información Básica',
+        contact: 'Detalles de Contacto',
+        passport: 'Pasaporte',
+        family: 'Antecedentes Familiares',
+        polishConnection: 'Conexión Polaca',
+        additional: 'Información Adicional',
+        review: 'Revisar y Enviar',
+      },
+      
+      // Common fields
+      firstName: 'Nombre(s)',
+      lastName: 'Apellido',
+      dateOfBirth: 'Fecha de Nacimiento',
+      sex: 'Sexo',
+      male: 'Masculino',
+      female: 'Femenino',
+      email: 'Correo Electrónico',
+      phone: 'Número de Teléfono',
+      address: 'Dirección',
+      city: 'Ciudad',
+      state: 'Estado/Provincia',
+      zipCode: 'Código Postal',
+      country: 'País',
+      
+      // Passport
+      passportNumber: 'Número de Pasaporte',
+      passportIssueDate: 'Fecha de Emisión',
+      passportExpiryDate: 'Fecha de Vencimiento',
+      passportCountry: 'País Emisor',
+      
+      // Family
+      fatherName: "Nombre Completo del Padre",
+      motherName: "Nombre Completo de la Madre",
+      maritalStatus: 'Estado Civil',
+      single: 'Soltero/a',
+      married: 'Casado/a',
+      divorced: 'Divorciado/a',
+      widowed: 'Viudo/a',
+      
+      // Polish Connection
+      polishAncestor: '¿Tienes ancestros polacos?',
+      ancestorDetails: 'Por favor proporciona detalles sobre tu(s) ancestro(s) polaco(s)',
+      polishDocuments: '¿Tienes algún documento polaco?',
+      
+      // Options
+      yes: 'Sí',
+      no: 'No',
+      dontKnow: "No lo sé",
+      optional: '(Opcional)',
+      required: 'Requerido',
+      
+      // Messages
+      progressSaved: 'Progreso guardado exitosamente',
+      submitting: 'Enviando tu solicitud...',
+      submitted: '¡Solicitud enviada exitosamente!',
+      error: 'Ocurrió un error. Por favor intenta de nuevo.',
+      pleaseComplete: 'Por favor completa todos los campos requeridos',
+      
       nav: {
         register: 'Registrarse / Iniciar Sesión',
         signOut: 'Cerrar Sesión',
@@ -840,6 +908,74 @@ const resources = {
   },
   pt: {
     translation: {
+      // Navigation
+      next: 'Próximo',
+      previous: 'Anterior',
+      submit: 'Enviar Solicitação',
+      saveProgress: 'Salvar Progresso',
+      
+      // Steps
+      step: 'Passo',
+      of: 'de',
+      steps: {
+        basicInfo: 'Informações Básicas',
+        contact: 'Detalhes de Contato',
+        passport: 'Passaporte',
+        family: 'Antecedentes Familiares',
+        polishConnection: 'Conexão Polonesa',
+        additional: 'Informações Adicionais',
+        review: 'Revisar e Enviar',
+      },
+      
+      // Common fields
+      firstName: 'Nome(s)',
+      lastName: 'Sobrenome',
+      dateOfBirth: 'Data de Nascimento',
+      sex: 'Sexo',
+      male: 'Masculino',
+      female: 'Feminino',
+      email: 'Endereço de E-mail',
+      phone: 'Número de Telefone',
+      address: 'Endereço',
+      city: 'Cidade',
+      state: 'Estado/Província',
+      zipCode: 'Código Postal',
+      country: 'País',
+      
+      // Passport
+      passportNumber: 'Número do Passaporte',
+      passportIssueDate: 'Data de Emissão',
+      passportExpiryDate: 'Data de Validade',
+      passportCountry: 'País Emissor',
+      
+      // Family
+      fatherName: "Nome Completo do Pai",
+      motherName: "Nome Completo da Mãe",
+      maritalStatus: 'Estado Civil',
+      single: 'Solteiro/a',
+      married: 'Casado/a',
+      divorced: 'Divorciado/a',
+      widowed: 'Viúvo/a',
+      
+      // Polish Connection
+      polishAncestor: 'Você tem ancestrais poloneses?',
+      ancestorDetails: 'Por favor forneça detalhes sobre seu(s) ancestral(is) polonês(es)',
+      polishDocuments: 'Você tem algum documento polonês?',
+      
+      // Options
+      yes: 'Sim',
+      no: 'Não',
+      dontKnow: "Não sei",
+      optional: '(Opcional)',
+      required: 'Obrigatório',
+      
+      // Messages
+      progressSaved: 'Progresso salvo com sucesso',
+      submitting: 'Enviando sua solicitação...',
+      submitted: 'Solicitação enviada com sucesso!',
+      error: 'Ocorreu um erro. Por favor tente novamente.',
+      pleaseComplete: 'Por favor complete todos os campos obrigatórios',
+      
       nav: {
         register: 'Registrar / Entrar',
         signOut: 'Sair',
@@ -1143,6 +1279,74 @@ const resources = {
   },
   de: {
     translation: {
+      // Navigation
+      next: 'Weiter',
+      previous: 'Zurück',
+      submit: 'Antrag Einreichen',
+      saveProgress: 'Fortschritt Speichern',
+      
+      // Steps
+      step: 'Schritt',
+      of: 'von',
+      steps: {
+        basicInfo: 'Grundinformationen',
+        contact: 'Kontaktdaten',
+        passport: 'Reisepass',
+        family: 'Familienhintergrund',
+        polishConnection: 'Polnische Verbindung',
+        additional: 'Zusätzliche Informationen',
+        review: 'Überprüfen & Absenden',
+      },
+      
+      // Common fields
+      firstName: 'Vorname(n)',
+      lastName: 'Nachname',
+      dateOfBirth: 'Geburtsdatum',
+      sex: 'Geschlecht',
+      male: 'Männlich',
+      female: 'Weiblich',
+      email: 'E-Mail-Adresse',
+      phone: 'Telefonnummer',
+      address: 'Straße und Hausnummer',
+      city: 'Stadt',
+      state: 'Bundesland/Provinz',
+      zipCode: 'Postleitzahl',
+      country: 'Land',
+      
+      // Passport
+      passportNumber: 'Reisepassnummer',
+      passportIssueDate: 'Ausstellungsdatum',
+      passportExpiryDate: 'Ablaufdatum',
+      passportCountry: 'Ausstellendes Land',
+      
+      // Family
+      fatherName: "Vollständiger Name des Vaters",
+      motherName: "Vollständiger Name der Mutter",
+      maritalStatus: 'Familienstand',
+      single: 'Ledig',
+      married: 'Verheiratet',
+      divorced: 'Geschieden',
+      widowed: 'Verwitwet',
+      
+      // Polish Connection
+      polishAncestor: 'Haben Sie polnische Vorfahren?',
+      ancestorDetails: 'Bitte geben Sie Details zu Ihren polnischen Vorfahren an',
+      polishDocuments: 'Haben Sie polnische Dokumente?',
+      
+      // Options
+      yes: 'Ja',
+      no: 'Nein',
+      dontKnow: "Ich weiß es nicht",
+      optional: '(Optional)',
+      required: 'Erforderlich',
+      
+      // Messages
+      progressSaved: 'Fortschritt erfolgreich gespeichert',
+      submitting: 'Ihr Antrag wird eingereicht...',
+      submitted: 'Antrag erfolgreich eingereicht!',
+      error: 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
+      pleaseComplete: 'Bitte füllen Sie alle Pflichtfelder aus',
+      
       nav: {
         register: 'Registrieren / Anmelden',
         signOut: 'Abmelden',
@@ -1446,6 +1650,74 @@ const resources = {
   },
   fr: {
     translation: {
+      // Navigation
+      next: 'Suivant',
+      previous: 'Précédent',
+      submit: 'Soumettre la Demande',
+      saveProgress: 'Sauvegarder la Progression',
+      
+      // Steps
+      step: 'Étape',
+      of: 'sur',
+      steps: {
+        basicInfo: 'Informations de Base',
+        contact: 'Coordonnées',
+        passport: 'Passeport',
+        family: 'Contexte Familial',
+        polishConnection: 'Connexion Polonaise',
+        additional: 'Informations Supplémentaires',
+        review: 'Réviser et Soumettre',
+      },
+      
+      // Common fields
+      firstName: 'Prénom(s)',
+      lastName: 'Nom de Famille',
+      dateOfBirth: 'Date de Naissance',
+      sex: 'Sexe',
+      male: 'Masculin',
+      female: 'Féminin',
+      email: 'Adresse E-mail',
+      phone: 'Numéro de Téléphone',
+      address: 'Adresse',
+      city: 'Ville',
+      state: 'État/Province',
+      zipCode: 'Code Postal',
+      country: 'Pays',
+      
+      // Passport
+      passportNumber: 'Numéro de Passeport',
+      passportIssueDate: 'Date d\'Émission',
+      passportExpiryDate: 'Date d\'Expiration',
+      passportCountry: 'Pays Émetteur',
+      
+      // Family
+      fatherName: "Nom Complet du Père",
+      motherName: "Nom Complet de la Mère",
+      maritalStatus: 'État Civil',
+      single: 'Célibataire',
+      married: 'Marié(e)',
+      divorced: 'Divorcé(e)',
+      widowed: 'Veuf/Veuve',
+      
+      // Polish Connection
+      polishAncestor: 'Avez-vous des ancêtres polonais?',
+      ancestorDetails: 'Veuillez fournir des détails sur votre/vos ancêtre(s) polonais',
+      polishDocuments: 'Avez-vous des documents polonais?',
+      
+      // Options
+      yes: 'Oui',
+      no: 'Non',
+      dontKnow: "Je ne sais pas",
+      optional: '(Optionnel)',
+      required: 'Obligatoire',
+      
+      // Messages
+      progressSaved: 'Progression sauvegardée avec succès',
+      submitting: 'Soumission de votre demande...',
+      submitted: 'Demande soumise avec succès!',
+      error: 'Une erreur s\'est produite. Veuillez réessayer.',
+      pleaseComplete: 'Veuillez compléter tous les champs obligatoires',
+      
       nav: {
         register: "S'inscrire / Se Connecter",
         signOut: 'Se Déconnecter',
@@ -1749,6 +2021,74 @@ const resources = {
   },
   he: {
     translation: {
+      // Navigation
+      next: 'הבא',
+      previous: 'הקודם',
+      submit: 'שלח בקשה',
+      saveProgress: 'שמור התקדמות',
+      
+      // Steps
+      step: 'שלב',
+      of: 'מתוך',
+      steps: {
+        basicInfo: 'מידע בסיסי',
+        contact: 'פרטי יצירת קשר',
+        passport: 'דרכון',
+        family: 'רקע משפחתי',
+        polishConnection: 'קשר פולני',
+        additional: 'מידע נוסף',
+        review: 'בדיקה ושליחה',
+      },
+      
+      // Common fields
+      firstName: 'שם פרטי',
+      lastName: 'שם משפחה',
+      dateOfBirth: 'תאריך לידה',
+      sex: 'מין',
+      male: 'זכר',
+      female: 'נקבה',
+      email: 'כתובת אימייל',
+      phone: 'מספר טלפון',
+      address: 'כתובת רחוב',
+      city: 'עיר',
+      state: 'מדינה/מחוז',
+      zipCode: 'מיקוד',
+      country: 'מדינה',
+      
+      // Passport
+      passportNumber: 'מספר דרכון',
+      passportIssueDate: 'תאריך הנפקה',
+      passportExpiryDate: 'תאריך תפוגה',
+      passportCountry: 'מדינה מנפיקה',
+      
+      // Family
+      fatherName: "שם מלא של האב",
+      motherName: "שם מלא של האם",
+      maritalStatus: 'מצב משפחתי',
+      single: 'רווק/ה',
+      married: 'נשוי/אה',
+      divorced: 'גרוש/ה',
+      widowed: 'אלמן/ה',
+      
+      // Polish Connection
+      polishAncestor: 'האם יש לך אבות פולניים?',
+      ancestorDetails: 'אנא ספק פרטים על האב/אבות הפולניים שלך',
+      polishDocuments: 'האם יש לך מסמכים פולניים?',
+      
+      // Options
+      yes: 'כן',
+      no: 'לא',
+      dontKnow: "אני לא יודע",
+      optional: '(אופציונלי)',
+      required: 'נדרש',
+      
+      // Messages
+      progressSaved: 'ההתקדמות נשמרה בהצלחה',
+      submitting: 'שולח את הבקשה שלך...',
+      submitted: 'הבקשה נשלחה בהצלחה!',
+      error: 'אירעה שגיאה. אנא נסה שוב.',
+      pleaseComplete: 'אנא מלא את כל השדות הנדרשים',
+      
       nav: {
         register: 'הרשמה / התחברות',
         signOut: 'התנתקות',
@@ -2052,6 +2392,74 @@ const resources = {
   },
   ru: {
     translation: {
+      // Navigation
+      next: 'Далее',
+      previous: 'Назад',
+      submit: 'Отправить Заявку',
+      saveProgress: 'Сохранить Прогресс',
+      
+      // Steps
+      step: 'Шаг',
+      of: 'из',
+      steps: {
+        basicInfo: 'Основная Информация',
+        contact: 'Контактные Данные',
+        passport: 'Паспорт',
+        family: 'Семейное Происхождение',
+        polishConnection: 'Польская Связь',
+        additional: 'Дополнительная Информация',
+        review: 'Проверка и Отправка',
+      },
+      
+      // Common fields
+      firstName: 'Имя',
+      lastName: 'Фамилия',
+      dateOfBirth: 'Дата Рождения',
+      sex: 'Пол',
+      male: 'Мужской',
+      female: 'Женский',
+      email: 'Адрес Электронной Почты',
+      phone: 'Номер Телефона',
+      address: 'Адрес',
+      city: 'Город',
+      state: 'Штат/Область',
+      zipCode: 'Почтовый Индекс',
+      country: 'Страна',
+      
+      // Passport
+      passportNumber: 'Номер Паспорта',
+      passportIssueDate: 'Дата Выдачи',
+      passportExpiryDate: 'Срок Действия',
+      passportCountry: 'Страна Выдачи',
+      
+      // Family
+      fatherName: "Полное Имя Отца",
+      motherName: "Полное Имя Матери",
+      maritalStatus: 'Семейное Положение',
+      single: 'Холост/Не замужем',
+      married: 'Женат/Замужем',
+      divorced: 'Разведен/Разведена',
+      widowed: 'Вдовец/Вдова',
+      
+      // Polish Connection
+      polishAncestor: 'У вас есть польские предки?',
+      ancestorDetails: 'Пожалуйста, предоставьте информацию о ваших польских предках',
+      polishDocuments: 'У вас есть польские документы?',
+      
+      // Options
+      yes: 'Да',
+      no: 'Нет',
+      dontKnow: "Не знаю",
+      optional: '(Необязательно)',
+      required: 'Обязательно',
+      
+      // Messages
+      progressSaved: 'Прогресс успешно сохранен',
+      submitting: 'Отправка вашей заявки...',
+      submitted: 'Заявка успешно отправлена!',
+      error: 'Произошла ошибка. Пожалуйста, попробуйте еще раз.',
+      pleaseComplete: 'Пожалуйста, заполните все обязательные поля',
+      
       nav: {
         register: 'Регистрация / Вход',
         signOut: 'Выйти',
@@ -2355,6 +2763,74 @@ const resources = {
   },
   ua: {
     translation: {
+      // Navigation
+      next: 'Далі',
+      previous: 'Назад',
+      submit: 'Відправити Заявку',
+      saveProgress: 'Зберегти Прогрес',
+      
+      // Steps
+      step: 'Крок',
+      of: 'з',
+      steps: {
+        basicInfo: 'Основна Інформація',
+        contact: 'Контактні Дані',
+        passport: 'Паспорт',
+        family: 'Сімейне Походження',
+        polishConnection: 'Польський Зв\'язок',
+        additional: 'Додаткова Інформація',
+        review: 'Перевірка та Відправка',
+      },
+      
+      // Common fields
+      firstName: 'Ім\'я',
+      lastName: 'Прізвище',
+      dateOfBirth: 'Дата Народження',
+      sex: 'Стать',
+      male: 'Чоловіча',
+      female: 'Жіноча',
+      email: 'Адреса Електронної Пошти',
+      phone: 'Номер Телефону',
+      address: 'Адреса',
+      city: 'Місто',
+      state: 'Штат/Область',
+      zipCode: 'Поштовий Індекс',
+      country: 'Країна',
+      
+      // Passport
+      passportNumber: 'Номер Паспорта',
+      passportIssueDate: 'Дата Видачі',
+      passportExpiryDate: 'Термін Дії',
+      passportCountry: 'Країна Видачі',
+      
+      // Family
+      fatherName: "Повне Ім'я Батька",
+      motherName: "Повне Ім'я Матері",
+      maritalStatus: 'Сімейний Стан',
+      single: 'Неодружений/Незаміжня',
+      married: 'Одружений/Заміжня',
+      divorced: 'Розлучений/Розлучена',
+      widowed: 'Вдівець/Вдова',
+      
+      // Polish Connection
+      polishAncestor: 'У вас є польські предки?',
+      ancestorDetails: 'Будь ласка, надайте інформацію про ваших польських предків',
+      polishDocuments: 'У вас є польські документи?',
+      
+      // Options
+      yes: 'Так',
+      no: 'Ні',
+      dontKnow: "Не знаю",
+      optional: '(Необов\'язково)',
+      required: 'Обов\'язково',
+      
+      // Messages
+      progressSaved: 'Прогрес успішно збережено',
+      submitting: 'Відправка вашої заявки...',
+      submitted: 'Заявка успішно відправлена!',
+      error: 'Сталася помилка. Будь ласка, спробуйте ще раз.',
+      pleaseComplete: 'Будь ласка, заповніть всі обов\'язкові поля',
+      
       nav: {
         register: 'Реєстрація / Вхід',
         signOut: 'Вийти',
