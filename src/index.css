@@ -154,15 +154,15 @@ All colors MUST be HSL.
     --muted: 215 28% 17%;
     --muted-foreground: 345 35% 68% !important;  /* Medium rose shade */
     
-    /* Pure red accents */
+    /* Pure red accents - GRADIENT: dark burgundy → bright red → glowing white */
     --primary: 343 79% 53% !important;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 345 66% 58% !important;
     --secondary-foreground: 0 0% 100%;
 
-    --accent: 345 66% 58% !important;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 98% !important;  /* Almost white for gradient end */
+    --accent-foreground: 222 47% 11%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -171,7 +171,8 @@ All colors MUST be HSL.
     --input: 343 35% 22% !important;   /* Darker red input bg */
     --ring: 343 79% 53% !important;
 
-    --gradient-web3: linear-gradient(135deg, hsl(343 79% 33%) 0%, hsl(345 66% 58%) 50%, hsl(343 70% 45%) 100%) !important;
+    /* Gradient: dark wine → bright red → glowing white */
+    --gradient-web3: linear-gradient(135deg, hsl(343 70% 25%) 0%, hsl(343 79% 53%) 50%, hsl(0 0% 98%) 100%) !important;
     --gradient-glow: radial-gradient(circle at 50% 50%, hsl(345 66% 58% / 0.25) 0%, transparent 70%) !important;
     --shadow-glow: 0 0 60px hsl(345 66% 58% / 0.4) !important;
     --shadow-glow-secondary: 0 0 60px hsl(343 79% 53% / 0.3) !important;
@@ -219,14 +220,15 @@ All colors MUST be HSL.
     --muted: 215 28% 17%;
     --muted-foreground: 221 35% 68% !important;  /* Medium blue shade */
     
+    /* Blue accents - GRADIENT: dark navy → bright blue → glowing white */
     --primary: 221 83% 53% !important;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 204 70% 53% !important;
     --secondary-foreground: 210 40% 98%;
 
-    --accent: 204 70% 53% !important;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 98% !important;  /* Almost white for gradient end */
+    --accent-foreground: 222 47% 11%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -235,7 +237,8 @@ All colors MUST be HSL.
     --input: 221 35% 22% !important;   /* Darker blue input bg */
     --ring: 221 83% 53% !important;
 
-    --gradient-web3: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(204 70% 53%) 50%, hsl(221 50% 45%) 100%) !important;
+    /* Gradient: dark navy → bright blue → glowing white */
+    --gradient-web3: linear-gradient(135deg, hsl(221 70% 25%) 0%, hsl(221 83% 53%) 50%, hsl(0 0% 98%) 100%) !important;
     --gradient-glow: radial-gradient(circle at 50% 50%, hsl(221 83% 53% / 0.25) 0%, transparent 70%) !important;
     --shadow-glow: 0 0 60px hsl(221 83% 53% / 0.4) !important;
     --shadow-glow-secondary: 0 0 60px hsl(204 70% 53% / 0.3) !important;
