@@ -1,6 +1,6 @@
 import { MainCTA } from "@/components/ui/main-cta";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import oldTownFuture from "@/assets/hero/old-town-future.jpg";
+import polishHeritage from "@/assets/hero/polish-heritage-3d.jpg";
 import { useState } from "react";
 
 const HeroWeb3 = () => {
@@ -46,16 +46,14 @@ const HeroWeb3 = () => {
         </div>
       </div>
 
-      {/* Animated Geometric Pattern */}
-      <div className="w-full mb-32 md:mb-20 relative h-[400px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background/50 to-background/90" />
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 border-2 border-primary/30 rotate-45 animate-[spin_20s_linear_infinite]" />
-          <div className="absolute top-1/2 right-1/4 w-24 h-24 border-2 border-accent/40 rotate-12 animate-[spin_15s_linear_infinite_reverse]" />
-          <div className="absolute bottom-1/4 left-1/3 w-40 h-40 border-2 border-primary/20 -rotate-12 animate-[spin_25s_linear_infinite]" />
-          <div className="absolute top-1/3 right-1/3 w-28 h-28 rounded-full border-2 border-accent/30 animate-pulse" />
-          <div className="absolute bottom-1/3 right-1/2 w-36 h-36 border-2 border-primary/25 rotate-45 animate-[spin_18s_linear_infinite_reverse]" />
-        </div>
+      {/* Polish Heritage 3D Image */}
+      <div className="w-full mb-32 md:mb-20 relative h-[400px] md:h-[500px] overflow-hidden">
+        <img 
+          src={polishHeritage} 
+          alt="Polish Heritage - Elegant Polish eagle with official documents symbolizing citizenship" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 to-background/90" />
       </div>
 
       {/* Stats Badges */}
