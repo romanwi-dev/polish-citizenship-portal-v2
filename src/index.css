@@ -173,9 +173,9 @@ All colors MUST be HSL.
 
     /* Gradient: dark wine → bright red → glowing white */
     --gradient-web3: linear-gradient(135deg, hsl(343 70% 25%) 0%, hsl(343 79% 53%) 50%, hsl(0 0% 98%) 100%) !important;
-    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(345 66% 58% / 0.25) 0%, transparent 70%) !important;
-    --shadow-glow: 0 0 60px hsl(345 66% 58% / 0.4) !important;
-    --shadow-glow-secondary: 0 0 60px hsl(343 79% 53% / 0.3) !important;
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(345 66% 58% / 0.15) 0%, transparent 70%) !important;
+    --shadow-glow: 0 0 40px hsl(345 66% 58% / 0.2) !important;
+    --shadow-glow-secondary: 0 0 40px hsl(343 79% 53% / 0.15) !important;
   }
 
   .theme-red.light {
