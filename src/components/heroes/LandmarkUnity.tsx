@@ -1,11 +1,11 @@
-import europeNight from "@/assets/footer/europe-night-celebration-3d.jpg";
+import europeHolographic from "@/assets/footer/europe-holographic-celebration.jpg";
 
 export const LandmarkUnity = () => {
   return (
     <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden">
       <img 
-        src={europeNight} 
-        alt="European celebration at night - Illuminated landmarks with fireworks representing vibrant EU citizenship" 
+        src={europeHolographic} 
+        alt="Premium holographic European celebration - Single illuminated Eiffel Tower with fireworks and Alpine mountains" 
         className="w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />

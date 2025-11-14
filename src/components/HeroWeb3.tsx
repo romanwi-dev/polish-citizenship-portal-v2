@@ -1,7 +1,7 @@
 import { MainCTA } from "@/components/ui/main-cta";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
 import { useState } from "react";
-import warsawSkyline from "@/assets/hero/warsaw-skyline-3d.jpg";
+import warsawHolographic from "@/assets/hero/warsaw-holographic-3d.jpg";
 
 const HeroWeb3 = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -19,8 +19,8 @@ const HeroWeb3 = () => {
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         <img 
-          src={warsawSkyline} 
-          alt="Photorealistic 3D Warsaw skyline at golden hour - Palace of Culture, modern skyscrapers and Vistula River" 
+          src={warsawHolographic} 
+          alt="Premium holographic 3D Warsaw skyline - Palace of Culture with futuristic glass materials and Vistula River" 
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/90" />
