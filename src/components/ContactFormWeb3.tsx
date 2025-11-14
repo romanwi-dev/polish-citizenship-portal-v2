@@ -150,28 +150,28 @@ const ContactFormWeb3 = () => {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Name *</Label>
+                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.nameLabel')} *</Label>
                         <input
                           id="name"
                           name="name"
                           type="text"
                           value={formData.name}
                           onChange={handleChange}
-                          placeholder=""
+                          placeholder={t('contact.namePlaceholder')}
                           required
                           autoComplete="name"
                           className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Email *</Label>
+                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.emailLabel')} *</Label>
                         <input
                           id="email"
                           name="email"
                           type="email"
                           value={formData.email}
                           onChange={handleChange}
-                          placeholder=""
+                          placeholder={t('contact.emailPlaceholder')}
                           required
                           autoComplete="email"
                           className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
@@ -182,13 +182,13 @@ const ContactFormWeb3 = () => {
                     {/* Row 2: Country + Polish Ancestor */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Country</Label>
+                        <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.countryLabel')}</Label>
                         <Select
                           value={formData.country}
                           onValueChange={(value) => handleSelectChange("country", value)}
                         >
                           <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                            <SelectValue placeholder="Select your country" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                            <SelectValue placeholder={t('contact.countryPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="bg-background border-2 z-[100]">
                             {COUNTRIES.map((country) => (
@@ -303,7 +303,7 @@ const ContactFormWeb3 = () => {
                   {/* Right Side - Message */}
                   <div className="w-full md:w-1/2 flex flex-col items-center justify-center space-y-12 text-center px-4">
                     <p className="bg-gradient-to-r from-slate-400 to-slate-600 bg-clip-text text-transparent text-2xl md:text-3xl font-semibold">
-                      Thank you. We will get back to you shortly...
+                      {t('contact.thankYouMessage')}
                     </p>
                     <Button
                       onClick={() => {
@@ -350,27 +350,27 @@ const ContactFormWeb3 = () => {
             {[
               { 
                 icon: Zap, 
-                label: "Smart Response", 
-                value: "< 5 mins",
+                label: t('contact.benefit1Title'), 
+                value: t('contact.benefit1Desc'),
                 details: "Advanced AI analyzes your case instantly based on 25,000+ cases and Polish law. Get preliminary assessment with document checklist.",
                 id: "response-time-card"
               },
               { 
                 icon: Mail, 
-                label: "Detailed Feedback", 
-                value: "< 1 hour",
+                label: t('contact.benefit2Title'), 
+                value: t('contact.benefit2Desc'),
                 details: "Expert legal team reviews your case personally. Receive comprehensive analysis with timeline estimates and strategic recommendations."
               },
               { 
                 icon: Clock, 
-                label: "Live Consultation", 
-                value: "24/7",
+                label: t('contact.benefit3Title'), 
+                value: t('contact.benefit3Desc'),
                 details: "Book consultations at your convenience across all time zones. Video calls, phone, or email - we're available when you need us."
               },
               { 
                 icon: Gift, 
-                label: "Case Assessment", 
-                value: "Free",
+                label: t('contact.benefit4Title'), 
+                value: t('contact.benefit4Desc'),
                 details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment."
               }
             ].map((stat, i) => {
@@ -463,7 +463,7 @@ const ContactFormWeb3 = () => {
         onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
         ariaLabel="Take the Polish Citizenship Test to check your eligibility"
       >
-        Take Polish Citizenship Test
+        {t('contact.cta')}
       </MainCTA>
     </section>
   );
