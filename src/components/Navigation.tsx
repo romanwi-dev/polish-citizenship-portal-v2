@@ -14,6 +14,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useTranslation } from 'react-i18next';
 const Navigation = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -79,7 +80,7 @@ const Navigation = () => {
                   {/* Header */}
                   <div className="flex items-center gap-2 p-4 border-b border-border/50">
                     <Sparkles className="h-5 w-5 text-primary" />
-                    <span className="font-semibold text-lg">Navigation</span>
+                    <span className="font-semibold text-lg">{t('nav.navigation')}</span>
                   </div>
                     
                     {/* Scrollable Content */}
