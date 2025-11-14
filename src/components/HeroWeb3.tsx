@@ -1,7 +1,7 @@
 import { MainCTA } from "@/components/ui/main-cta";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
 import { useState } from "react";
-import warsawNightHolographic from "@/assets/hero/warsaw-night-holographic.jpg";
+import warsawAnimation from "@/assets/hero/warsaw-animation.png";
 
 const HeroWeb3 = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -16,6 +16,16 @@ const HeroWeb3 = () => {
     });
   };
   return <section className="relative min-h-[60vh] md:min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={warsawAnimation} 
+          alt="Warsaw Futuristic Cityscape" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/80" />
+      </div>
+
       {/* Content */}
       <div className="container relative z-10 px-4 pt-32 pb-20 mx-auto">
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-20">
