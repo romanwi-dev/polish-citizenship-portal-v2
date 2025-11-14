@@ -26,6 +26,11 @@ export function ThemeSwitcher() {
     const [mode, color] = theme.split('-') as ['dark' | 'light', 'red' | 'blue'];
     root.classList.add(mode, `theme-${color}`);
     
+    // Debug logging
+    console.log('🎨 Theme changed to:', theme);
+    console.log('📋 HTML classes:', root.className);
+    console.log('🔍 Computed --shadow-glow:', getComputedStyle(root).getPropertyValue('--shadow-glow'));
+    
     localStorage.setItem("theme", theme);
   }, [theme]);
 
