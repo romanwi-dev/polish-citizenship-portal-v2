@@ -80,10 +80,6 @@ const FlippableServiceCard = ({
     </div>
   );
 };
-      </div>
-    </div>
-  );
-};
 
 const ServicesWeb3 = () => {
   const { t } = useTranslation();
