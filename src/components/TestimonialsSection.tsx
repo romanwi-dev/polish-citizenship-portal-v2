@@ -91,7 +91,7 @@ export default function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <Card 
               key={index} 
-              className="group hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:scale-105 hover:-translate-y-1 animate-fade-in w-full max-w-[380px] mx-auto"
+              className="group hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:scale-105 hover:-translate-y-1 animate-fade-in w-full max-w-[480px] md:max-w-[380px] mx-auto"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardContent className="p-6">
