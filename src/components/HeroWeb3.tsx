@@ -63,7 +63,7 @@ const HeroWeb3 = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
             {/* Card 1 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none animate-[pulse_2s_ease-in-out_infinite] shadow-[0_0_20px_rgba(217,69,101,0.3)]"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)]"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent mb-2">&gt;20</h3>
@@ -73,8 +73,7 @@ const HeroWeb3 = () => {
 
             {/* Card 2 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none animate-[pulse_2s_ease-in-out_infinite] shadow-[0_0_20px_rgba(217,69,101,0.3)]"
-              style={{ animationDelay: '0.3s' }}
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)]"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#8B1D3D] to-[#E05575] bg-clip-text text-transparent mb-2">&gt;20,000</h3>
@@ -84,8 +83,7 @@ const HeroWeb3 = () => {
 
             {/* Card 3 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none animate-[pulse_2s_ease-in-out_infinite] shadow-[0_0_20px_rgba(217,69,101,0.3)]"
-              style={{ animationDelay: '0.6s' }}
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)]"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#A01D48] to-[#F06585] bg-clip-text text-transparent mb-2">100%</h3>
