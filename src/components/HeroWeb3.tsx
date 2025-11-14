@@ -23,7 +23,7 @@ const HeroWeb3 = () => {
           alt="Warsaw Futuristic Cityscape" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/75 to-background/95" />
       </div>
 
       {/* Content */}
@@ -37,17 +37,17 @@ const HeroWeb3 = () => {
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
           contentVisibility: 'auto'
         }}>
-            <span className="bg-gradient-to-r from-[#7C1328] via-[#D94565] to-white bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#5A0E1D] via-[#7C1328] to-[#D94565] bg-clip-text text-transparent">
               Polish Citizenship by Descent
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 bg-gradient-to-r from-[#7C1328] via-[#D94565] to-white bg-clip-text text-transparent">
+          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 bg-gradient-to-r from-[#5A0E1D] via-[#7C1328] to-[#D94565] bg-clip-text text-transparent">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
           </p>
           
           <MainCTA
-            wrapperClassName="flex justify-center animate-fade-in"
+            wrapperClassName="flex justify-center animate-fade-in opacity-50"
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             ariaLabel="Take the Polish Citizenship Test to check your eligibility"
           >
@@ -63,7 +63,7 @@ const HeroWeb3 = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
             {/* Card 1 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)]"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-50"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent mb-2">&gt;20</h3>
@@ -73,7 +73,7 @@ const HeroWeb3 = () => {
 
             {/* Card 2 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)]"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-50"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#8B1D3D] to-[#E05575] bg-clip-text text-transparent mb-2">&gt;20,000</h3>
@@ -83,7 +83,7 @@ const HeroWeb3 = () => {
 
             {/* Card 3 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)]"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-50"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#A01D48] to-[#F06585] bg-clip-text text-transparent mb-2">100%</h3>
