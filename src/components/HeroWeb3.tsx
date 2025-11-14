@@ -37,12 +37,12 @@ const HeroWeb3 = () => {
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
           contentVisibility: 'auto'
         }}>
-            <span className="bg-gradient-to-r from-[#5A0E1D] via-[#7C1328] to-[#D94565] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#D94565] via-[#F06585] to-white bg-clip-text text-transparent">
               Polish Citizenship by Descent
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 bg-gradient-to-r from-[#5A0E1D] via-[#7C1328] to-[#D94565] bg-clip-text text-transparent">
+          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 bg-gradient-to-r from-[#E05575] via-[#F06585] to-white bg-clip-text text-transparent">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
           </p>
           
