@@ -2,8 +2,10 @@ import { MainCTA } from "@/components/ui/main-cta";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
 import { useState } from "react";
 import warsawAnimation from "@/assets/hero/warsaw-animation.png";
+import { useTranslation } from "react-i18next";
 
 const HeroWeb3 = () => {
+  const { t } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
 
   const toggleFlip = (id: string) => {
@@ -31,19 +33,19 @@ const HeroWeb3 = () => {
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 animate-fade-in w-fit max-w-[280px] mx-auto md:max-w-none border border-primary/30">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Web3 Legal Services</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('hero.badge')}</span>
           </div>
           
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
           contentVisibility: 'auto'
         }}>
             <span className="bg-gradient-to-r from-primary via-secondary to-primary-foreground bg-clip-text text-transparent">
-              Polish Citizenship by Descent
+              {t('hero.title')}
             </span>
           </h1>
           
           <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-foreground/90 dark:text-foreground/80 light:text-foreground">
-            Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
+            {t('hero.description')}
           </p>
           
           <MainCTA
@@ -51,7 +53,7 @@ const HeroWeb3 = () => {
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             ariaLabel="Take the Polish Citizenship Test to check your eligibility"
           >
-            Take Polish Citizenship Test
+            {t('hero.cta')}
           </MainCTA>
         </div>
       </div>
@@ -67,7 +69,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">&gt;20</h3>
-                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">Years of Experience</p>
+                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">{t('hero.stats.experience')}</p>
               </div>
             </div>
 
@@ -77,7 +79,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">&gt;20,000</h3>
-                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">Cases Processed</p>
+                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">{t('hero.stats.cases')}</p>
               </div>
             </div>
 
@@ -87,7 +89,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">100%</h3>
-                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">Success Rate</p>
+                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">{t('hero.stats.success')}</p>
               </div>
             </div>
           </div>
