@@ -35,151 +35,151 @@ export default function TimelineProcessEnhanced() {
 
   const timelineSteps = [{
     number: "1",
-    title: t('timeline.stage1'),
-    description: t('timeline.stage1Desc'),
-    duration: t('timeline.stage1Duration'),
-    keyAction: t('timeline.stage1Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage1'),
+    description: t('timelineProcess.stage1Desc'),
+    duration: t('timelineProcess.stage1Duration'),
+    keyAction: t('timelineProcess.stage1Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: FileText,
     gradient: "from-blue-500 to-cyan-500",
     image: timeline01
   }, {
     number: "2",
-    title: t('timeline.stage2'),
-    description: t('timeline.stage2Desc'),
-    duration: t('timeline.stage2Duration'),
-    keyAction: t('timeline.stage2Action'),
-    priority: t('timeline.foundationBuilding'),
+    title: t('timelineProcess.stage2'),
+    description: t('timelineProcess.stage2Desc'),
+    duration: t('timelineProcess.stage2Duration'),
+    keyAction: t('timelineProcess.stage2Action'),
+    priority: t('timelineProcess.foundationBuilding'),
     icon: CreditCard,
     gradient: "from-cyan-500 to-blue-500",
     image: timeline02
   }, {
     number: "3",
-    title: t('timeline.stage3'),
-    description: t('timeline.stage3Desc'),
-    duration: t('timeline.stage3Duration'),
-    keyAction: t('timeline.stage3Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage3'),
+    description: t('timelineProcess.stage3Desc'),
+    duration: t('timelineProcess.stage3Duration'),
+    keyAction: t('timelineProcess.stage3Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: CheckCircle,
     gradient: "from-blue-500 to-indigo-500",
     image: timeline03
   }, {
     number: "4",
-    title: t('timeline.stage4'),
-    description: t('timeline.stage4Desc'),
-    duration: t('timeline.stage4Duration'),
-    keyAction: t('timeline.stage4Action'),
-    priority: t('timeline.foundationBuilding'),
+    title: t('timelineProcess.stage4'),
+    description: t('timelineProcess.stage4Desc'),
+    duration: t('timelineProcess.stage4Duration'),
+    keyAction: t('timelineProcess.stage4Action'),
+    priority: t('timelineProcess.foundationBuilding'),
     icon: FileCheck,
     gradient: "from-indigo-500 to-purple-500",
     image: timeline04
   }, {
     number: "5",
-    title: t('timeline.stage5'),
-    description: t('timeline.stage5Desc'),
-    duration: t('timeline.stage5Duration'),
-    keyAction: t('timeline.stage5Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage5'),
+    description: t('timelineProcess.stage5Desc'),
+    duration: t('timelineProcess.stage5Duration'),
+    keyAction: t('timelineProcess.stage5Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: Send,
     gradient: "from-purple-500 to-pink-500",
     image: timeline05
   }, {
     number: "6",
-    title: t('timeline.stage6'),
-    description: t('timeline.stage6Desc'),
-    duration: t('timeline.stage6Duration'),
-    keyAction: t('timeline.stage6Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage6'),
+    description: t('timelineProcess.stage6Desc'),
+    duration: t('timelineProcess.stage6Duration'),
+    keyAction: t('timelineProcess.stage6Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: FolderSearch,
     gradient: "from-pink-500 to-rose-500",
     image: timeline06
   }, {
     number: "7",
-    title: t('timeline.stage7'),
-    description: t('timeline.stage7Desc'),
-    duration: t('timeline.stage7Duration'),
-    keyAction: t('timeline.stage7Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage7'),
+    description: t('timelineProcess.stage7Desc'),
+    duration: t('timelineProcess.stage7Duration'),
+    keyAction: t('timelineProcess.stage7Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: Archive,
     gradient: "from-rose-500 to-red-500",
     image: timeline07
   }, {
     number: "8",
-    title: t('timeline.stage8'),
-    description: t('timeline.stage8Desc'),
-    duration: t('timeline.stage8Duration'),
-    keyAction: t('timeline.stage8Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage8'),
+    description: t('timelineProcess.stage8Desc'),
+    duration: t('timelineProcess.stage8Duration'),
+    keyAction: t('timelineProcess.stage8Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: Languages,
     gradient: "from-red-500 to-orange-500",
     image: timeline08
   }, {
     number: "9",
-    title: t('timeline.stage9'),
-    description: t('timeline.stage9Desc'),
-    duration: t('timeline.stage9Duration'),
-    keyAction: t('timeline.stage9Action'),
-    priority: t('timeline.foundationBuilding'),
+    title: t('timelineProcess.stage9'),
+    description: t('timelineProcess.stage9Desc'),
+    duration: t('timelineProcess.stage9Duration'),
+    keyAction: t('timelineProcess.stage9Action'),
+    priority: t('timelineProcess.foundationBuilding'),
     icon: Upload,
     gradient: "from-orange-500 to-amber-500",
     image: timeline09
   }, {
     number: "10",
-    title: t('timeline.stage10'),
-    description: t('timeline.stage10Desc'),
-    duration: t('timeline.stage10Duration'),
-    keyAction: t('timeline.stage10Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage10'),
+    description: t('timelineProcess.stage10Desc'),
+    duration: t('timelineProcess.stage10Duration'),
+    keyAction: t('timelineProcess.stage10Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: Stamp,
     gradient: "from-amber-500 to-yellow-500",
     image: timeline10
   }, {
     number: "11",
-    title: t('timeline.stage11'),
-    description: t('timeline.stage11Desc'),
-    duration: t('timeline.stage11Duration'),
-    keyAction: t('timeline.stage11Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage11'),
+    description: t('timelineProcess.stage11Desc'),
+    duration: t('timelineProcess.stage11Duration'),
+    keyAction: t('timelineProcess.stage11Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: Clock,
     gradient: "from-yellow-500 to-lime-500",
     image: timeline11
   }, {
     number: "12",
-    title: t('timeline.stage12'),
-    description: t('timeline.stage12Desc'),
-    duration: t('timeline.stage12Duration'),
-    keyAction: t('timeline.stage12Action'),
-    priority: t('timeline.foundationBuilding'),
+    title: t('timelineProcess.stage12'),
+    description: t('timelineProcess.stage12Desc'),
+    duration: t('timelineProcess.stage12Duration'),
+    keyAction: t('timelineProcess.stage12Action'),
+    priority: t('timelineProcess.foundationBuilding'),
     icon: Zap,
     gradient: "from-lime-500 to-green-500",
     image: timeline12
   }, {
     number: "13",
-    title: t('timeline.stage13'),
-    description: t('timeline.stage13Desc'),
-    duration: t('timeline.stage13Duration'),
-    keyAction: t('timeline.stage13Action'),
-    priority: t('timeline.majorMilestone'),
+    title: t('timelineProcess.stage13'),
+    description: t('timelineProcess.stage13Desc'),
+    duration: t('timelineProcess.stage13Duration'),
+    keyAction: t('timelineProcess.stage13Action'),
+    priority: t('timelineProcess.majorMilestone'),
     icon: Award,
     gradient: "from-green-500 to-emerald-500",
     image: timeline13
   }, {
     number: "14",
-    title: t('timeline.stage14'),
-    description: t('timeline.stage14Desc'),
-    duration: t('timeline.stage14Duration'),
-    keyAction: t('timeline.stage14Action'),
-    priority: t('timeline.foundationBuilding'),
+    title: t('timelineProcess.stage14'),
+    description: t('timelineProcess.stage14Desc'),
+    duration: t('timelineProcess.stage14Duration'),
+    keyAction: t('timelineProcess.stage14Action'),
+    priority: t('timelineProcess.foundationBuilding'),
     icon: Shield,
     gradient: "from-emerald-500 to-teal-500",
     image: timeline14
   }, {
     number: "15",
-    title: t('timeline.stage15'),
-    description: t('timeline.stage15Desc'),
-    duration: t('timeline.stage15Duration'),
-    keyAction: t('timeline.stage15Action'),
-    priority: t('timeline.foundationBuilding'),
+    title: t('timelineProcess.stage15'),
+    description: t('timelineProcess.stage15Desc'),
+    duration: t('timelineProcess.stage15Duration'),
+    keyAction: t('timelineProcess.stage15Action'),
+    priority: t('timelineProcess.foundationBuilding'),
     icon: Users,
     gradient: "from-teal-500 to-cyan-500",
     image: timeline15
@@ -213,15 +213,15 @@ export default function TimelineProcessEnhanced() {
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
             <Clock className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('timeline.badge')}</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('timelineProcess.badge')}</span>
           </div>
           <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight animate-scale-in" style={{ animationDelay: '150ms' }}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
-              {t('timeline.title')}
+              {t('timelineProcess.title')}
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 animate-fade-in" style={{ animationDelay: '200ms' }}>
-            {t('timeline.subtitle')}
+            {t('timelineProcess.subtitle')}
           </p>
         </div>
 
@@ -312,18 +312,18 @@ export default function TimelineProcessEnhanced() {
                       <div className="flex-1 flex flex-col gap-3 justify-center items-center text-center">
                         <Shield className="w-12 h-12 text-primary mb-3" />
                         <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                          {t('timeline.detailedInfoTitle')}
+                          {t('timelineProcess.detailedInfoTitle')}
                         </h3>
                         <div className="flex-1 overflow-auto">
                           <p className="text-sm text-muted-foreground">
-                            {t('timeline.detailedInfoDesc')}
+                            {t('timelineProcess.detailedInfoDesc')}
                           </p>
                           <p className="text-xs text-muted-foreground/70 mt-3 italic">
-                            {t('timeline.detailedInfoSignup')}
+                            {t('timelineProcess.detailedInfoSignup')}
                           </p>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground/60 text-center mt-4">{t('timeline.flipBack')}</p>
+                      <p className="text-xs text-muted-foreground/60 text-center mt-4">{t('timelineProcess.flipBack')}</p>
                     </div>
                   </div>
                 </div>
@@ -355,7 +355,7 @@ export default function TimelineProcessEnhanced() {
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test to check your eligibility"
         >
-          {t('timeline.mainCta')}
+          {t('timelineProcess.mainCta')}
         </MainCTA>
       </div>
     </section>
