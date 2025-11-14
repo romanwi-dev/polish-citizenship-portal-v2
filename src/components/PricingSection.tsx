@@ -1,8 +1,8 @@
 import { Check, Train, Plane, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
+import { useTranslation } from 'react-i18next';
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const FlippablePricingCard = ({ 
   icon: Icon, 
@@ -232,7 +232,7 @@ const PricingSection = () => {
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test to check your eligibility"
         >
-          Take Polish Citizenship Test
+          {t('hero.cta')}
         </MainCTA>
       </div>
     </section>
