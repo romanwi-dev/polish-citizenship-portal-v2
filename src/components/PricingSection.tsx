@@ -95,7 +95,7 @@ const FlippablePricingCard = ({
 
           <div className="mt-auto pt-4">
             <Button 
-              className="w-full bg-red-900/50 hover:bg-red-900/60 text-white border-2 border-red-800/30 hover:border-red-700/50 shadow-[0_0_20px_rgba(127,29,29,0.4)] hover:shadow-[0_0_30px_rgba(127,29,29,0.6)] transition-all duration-300 hover:scale-105" 
+              className="w-full bg-blue-900/50 hover:bg-blue-900/60 text-white border-2 border-blue-800/30 hover:border-blue-700/50 shadow-[0_0_20px_rgba(29,78,216,0.4)] hover:shadow-[0_0_30px_rgba(29,78,216,0.6)] transition-all duration-300 hover:scale-105" 
               onClick={(e) => {
                 e.stopPropagation();
                 onClick();
