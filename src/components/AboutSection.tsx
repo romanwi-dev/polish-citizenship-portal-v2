@@ -10,7 +10,8 @@ const FlippableAboutCard = ({
   description, 
   gradient, 
   textColor, 
-  index 
+  index,
+  flipBackText
 }: { 
   icon: any; 
   title: string; 
@@ -18,6 +19,7 @@ const FlippableAboutCard = ({
   gradient: string; 
   textColor: string; 
   index: number;
+  flipBackText: string;
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -64,7 +66,7 @@ const FlippableAboutCard = ({
           <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-20 rounded-lg`} />
           <div className="relative z-10 text-center">
             <p className="text-muted-foreground italic">
-              Click to flip back
+              {flipBackText}
             </p>
           </div>
         </div>
@@ -112,6 +114,7 @@ const AboutSection = () => {
             gradient="from-primary to-secondary"
             textColor="text-white"
             index={0}
+            flipBackText={t('about.flipBack')}
           />
           
           <FlippableAboutCard 
@@ -121,6 +124,7 @@ const AboutSection = () => {
             gradient="from-secondary to-accent"
             textColor="text-white"
             index={1}
+            flipBackText={t('about.flipBack')}
           />
           
           <FlippableAboutCard 
@@ -130,6 +134,7 @@ const AboutSection = () => {
             gradient="from-accent to-primary"
             textColor="text-white"
             index={2}
+            flipBackText={t('about.flipBack')}
           />
         </div>
         

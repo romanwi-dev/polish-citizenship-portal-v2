@@ -231,7 +231,7 @@ export default function ClientOnboardingSection() {
                       </div>
                     </div>
                       
-                      <p className="text-xs text-muted-foreground/60 text-center mt-auto">Tap to flip back</p>
+                      <p className="text-xs text-muted-foreground/60 text-center mt-auto">{t('onboarding.flipBack')}</p>
                     </div>
                   </div>
                   </div>
