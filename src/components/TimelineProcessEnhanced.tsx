@@ -27,11 +27,15 @@ import timeline14 from "@/assets/timeline-14-passport.webp";
 import timeline15 from "@/assets/timeline-15-extended.webp";
 
 export default function TimelineProcessEnhanced() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [firstCardAnimated, setFirstCardAnimated] = useState(false);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
+
+  // Debug: Log current language and first translation
+  console.log('🌍 Timeline language:', i18n.language);
+  console.log('🔤 Timeline title translation:', t('timelineProcess.title'));
 
   const timelineSteps = [{
     number: "1",
