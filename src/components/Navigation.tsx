@@ -52,7 +52,7 @@ const Navigation = () => {
             
             {/* User Icon */}
             <button onClick={() => navigate('/admin/cases')} className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Management">
-              <User className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
+              <User className="h-4 w-4 md:h-5 md:w-5 text-primary dark:text-foreground" />
             </button>
             
             {/* Mobile Navigation - Full Screen Sheet */}
@@ -64,10 +64,10 @@ const Navigation = () => {
             <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <DropdownMenuTrigger asChild className="hidden md:flex">
                 <button className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Open menu">
-                  <Menu className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
+                  <Menu className="h-4 w-4 md:h-5 md:w-5 text-primary dark:text-foreground" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[440px] p-0 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col" style={{
+              <DropdownMenuContent align="end" className="w-[440px] p-0 bg-background dark:bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col" style={{
               height: 'calc(100vh - 5rem)'
             }}>
                 {/* Simple background matching footer */}
