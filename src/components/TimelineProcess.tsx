@@ -1,5 +1,6 @@
 import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 
 const timelineSteps = [
   {
@@ -155,6 +156,8 @@ const timelineSteps = [
 ];
 
 const TimelineProcess = () => {
+  const { t } = useTranslation();
+  
   return (
     <section className="py-20 relative overflow-hidden bg-gradient-to-b from-background via-background/95 to-background">
       {/* Background Pattern */}
@@ -164,11 +167,11 @@ const TimelineProcess = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-heading font-black mb-6 tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Complete Legal Process Timeline
+              {t('timeline.title')}
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Your journey to Polish citizenship through our comprehensive 15-part process. Many parts are processed SIMULTANEOUSLY to save time.
+            {t('timeline.subtitle')}
           </p>
         </div>
 
@@ -208,17 +211,17 @@ const TimelineProcess = () => {
                             <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                               {step.number}
                             </span>
-                            <span className="text-xs text-muted-foreground">{step.duration}</span>
+                            <span className="text-xs text-muted-foreground">{t(`timeline.stage${step.number}Duration`)}</span>
                           </div>
                           <h3 className="text-sm md:text-base font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap">
-                            {step.title}
+                            {t(`timeline.stage${step.number}`)}
                           </h3>
                           <p className="text-xs text-muted-foreground mb-2 px-2 text-center line-clamp-2">
-                            {step.description}
+                            {t(`timeline.stage${step.number}Desc`)}
                           </p>
                           <div className="flex flex-wrap gap-1 justify-center mb-2">
                             <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-                              {step.keyAction}
+                              {t(`timeline.stage${step.number}Action`)}
                             </span>
                             <span className="text-xs px-2 py-0.5 rounded-full bg-secondary/10 text-secondary">
                               {step.priority}
