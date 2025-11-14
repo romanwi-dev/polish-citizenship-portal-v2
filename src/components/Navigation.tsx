@@ -10,6 +10,7 @@ import { LastVisitedLinks } from "@/components/navigation/LastVisitedLinks";
 import { NavigationLinks } from "@/components/navigation/NavigationLinks";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { LanguageSelector } from "@/components/LanguageSelector";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 const Navigation = () => {
   const navigate = useNavigate();
@@ -43,11 +44,16 @@ const Navigation = () => {
 
           {/* User Icon & Desktop/Mobile Menu */}
           <div className="flex items-center gap-1 md:gap-2">
+            {/* Theme Switcher */}
+            <ThemeSwitcher />
+            
+            {/* Language Selector */}
+            <LanguageSelector />
+            
+            {/* User Icon */}
             <button onClick={() => navigate('/admin/cases')} className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Management">
               <User className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
             </button>
-
-            
             
             {/* Mobile Navigation - Full Screen Sheet */}
             <div className="md:hidden">
