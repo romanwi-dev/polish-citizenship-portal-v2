@@ -190,7 +190,8 @@ const PricingSection = () => {
                 t('pricing.expeditedFeature2'),
                 t('pricing.expeditedFeature3'),
                 t('pricing.expeditedFeature4'),
-                t('pricing.expeditedFeature5')
+                t('pricing.expeditedFeature5'),
+                t('pricing.expeditedFeature6')
               ]}
               buttonText={t('pricing.expeditedButton')}
               gradient="bg-gradient-to-br from-secondary/20 to-accent/20"
@@ -212,7 +213,9 @@ const PricingSection = () => {
                 t('pricing.vipFeature2'),
                 t('pricing.vipFeature3'),
                 t('pricing.vipFeature4'),
-                t('pricing.vipFeature5')
+                t('pricing.vipFeature5'),
+                t('pricing.vipFeature6'),
+                t('pricing.vipFeature7')
               ]}
               buttonText={t('pricing.vipButton')}
               gradient="bg-gradient-to-br from-accent/20 to-primary/20"
