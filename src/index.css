@@ -78,6 +78,11 @@ All colors MUST be HSL.
     --shadow-glow-secondary: 0 0 60px hsl(204 70% 53% / 0.3);
     --shadow-card: 0 20px 50px -12px hsl(221 83% 53% / 0.2);
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    --shadow-success: 0 0 20px hsl(var(--success) / 0.3);
+    --shadow-success-hover: 0 0 30px hsl(var(--success) / 0.5);
+    --shadow-destructive: 0 0 20px hsl(var(--destructive) / 0.3);
+    --shadow-destructive-hover: 0 0 30px hsl(var(--destructive) / 0.5);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -136,6 +141,11 @@ All colors MUST be HSL.
 
   /* Red Theme - Burgundy Accents */
   .theme-red {
+    /* Pure burgundy backgrounds */
+    --background: 345 50% 8%;
+    --card: 343 40% 12%;
+    --muted: 345 30% 15%;
+    
     --primary: 343 79% 33%;
     --primary-foreground: 0 0% 100%;
 
@@ -154,12 +164,33 @@ All colors MUST be HSL.
   }
 
   .theme-red.light {
+    /* Plain gray-white with warm red tint */
+    --background: 0 0% 98%;
+    --card: 345 20% 96%;
+    --muted: 345 15% 94%;
+    
+    --foreground: 345 50% 15%;
+    --card-foreground: 345 50% 15%;
+    --border: 345 20% 88%;
+    --input: 345 20% 96%;
+    
     --shadow-glow: 0 0 40px hsl(345 66% 58% / 0.15);
     --shadow-glow-secondary: 0 0 40px hsl(343 79% 33% / 0.15);
+    
+    /* Light shadow system */
+    --shadow-card-light: 0 2px 8px hsl(345 50% 15% / 0.08), 0 4px 16px hsl(345 50% 15% / 0.04);
+    --shadow-elevated-light: 0 8px 24px hsl(345 50% 15% / 0.12), 0 12px 32px hsl(345 50% 15% / 0.08);
+    --shadow-hover-light: 0 12px 32px hsl(345 50% 15% / 0.15), 0 16px 48px hsl(345 50% 15% / 0.1);
+    --shadow-pressed-light: 0 1px 4px hsl(345 50% 15% / 0.06);
   }
 
   /* Blue Theme - Existing Blue Accents */
   .theme-blue {
+    /* Pure blue-gray backgrounds */
+    --background: 222 47% 11%;
+    --card: 217 33% 17%;
+    --muted: 215 28% 17%;
+    
     --primary: 221 83% 53%;
     --primary-foreground: 210 40% 98%;
 
@@ -178,6 +209,16 @@ All colors MUST be HSL.
   }
 
   .theme-blue.light {
+    /* Plain gray-white with cool blue tint */
+    --background: 0 0% 98%;
+    --card: 220 20% 96%;
+    --muted: 220 15% 94%;
+    
+    --foreground: 222 47% 15%;
+    --card-foreground: 222 47% 15%;
+    --border: 220 20% 88%;
+    --input: 220 20% 96%;
+    
     --shadow-glow: 0 0 40px hsl(221 83% 53% / 0.15);
     --shadow-glow-secondary: 0 0 40px hsl(204 70% 53% / 0.15);
     
@@ -660,6 +701,12 @@ All colors MUST be HSL.
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+  
+  /* Text Shadow Utility */
+  .text-shadow-primary {
+    text-shadow: 0 0 20px hsl(var(--primary-foreground) / 0.5), 
+                 0 0 40px hsl(var(--primary) / 0.3);
   }
 }
 
