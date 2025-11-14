@@ -264,7 +264,7 @@ export default function ClientOnboardingSection() {
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test to check your eligibility"
         >
-          Take Polish Citizenship Test
+          {t('hero.cta')}
         </MainCTA>
       </div>
     </section>
