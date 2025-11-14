@@ -167,11 +167,11 @@ const TimelineProcess = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-heading font-black mb-6 tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              {t('timeline.title')}
+              {t('timelineProcess.title')}
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            {t('timeline.subtitle')}
+            {t('timelineProcess.subtitle')}
           </p>
         </div>
 
@@ -211,17 +211,17 @@ const TimelineProcess = () => {
                             <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                               {step.number}
                             </span>
-                            <span className="text-xs text-muted-foreground">{t(`timeline.stage${step.number}Duration`)}</span>
+                            <span className="text-xs text-muted-foreground">{t(`timelineProcess.stage${step.number}Duration`)}</span>
                           </div>
                           <h3 className="text-sm md:text-base font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap">
-                            {t(`timeline.stage${step.number}`)}
+                            {t(`timelineProcess.stage${step.number}`)}
                           </h3>
                           <p className="text-xs text-muted-foreground mb-2 px-2 text-center line-clamp-2">
-                            {t(`timeline.stage${step.number}Desc`)}
+                            {t(`timelineProcess.stage${step.number}Desc`)}
                           </p>
                           <div className="flex flex-wrap gap-1 justify-center mb-2">
                             <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-                              {t(`timeline.stage${step.number}Action`)}
+                              {t(`timelineProcess.stage${step.number}Action`)}
                             </span>
                             <span className="text-xs px-2 py-0.5 rounded-full bg-secondary/10 text-secondary">
                               {step.priority}
