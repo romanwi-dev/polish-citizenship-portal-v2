@@ -237,13 +237,13 @@ const ContactFormWeb3 = () => {
                             <SelectValue placeholder="Select year range" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="bg-background border-2 z-[100]">
-                            <SelectItem value="before-1920" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">before 1920</SelectItem>
-                            <SelectItem value="1920-1939" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1920 - 1939</SelectItem>
-                            <SelectItem value="1939-1951" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1939 - 1951</SelectItem>
-                            <SelectItem value="1951-1962" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1951 - 1962</SelectItem>
-                            <SelectItem value="1962-1989" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1962 - 1989</SelectItem>
-                            <SelectItem value="1989-2004" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1989 - 2004</SelectItem>
-                            <SelectItem value="after-2004" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">after 2004</SelectItem>
+                            <SelectItem value="before-1920" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">before 1920</SelectItem>
+                            <SelectItem value="1920-1939" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">1920 - 1939</SelectItem>
+                            <SelectItem value="1939-1951" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">1939 - 1951</SelectItem>
+                            <SelectItem value="1951-1962" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">1951 - 1962</SelectItem>
+                            <SelectItem value="1962-1989" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">1962 - 1989</SelectItem>
+                            <SelectItem value="1989-2004" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">1989 - 2004</SelectItem>
+                            <SelectItem value="after-2004" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">after 2004</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -258,9 +258,9 @@ const ContactFormWeb3 = () => {
                             <SelectValue placeholder={t('contact.selectOption')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="bg-background border-2 z-[100]">
-                            <SelectItem value="have-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.haveDocuments')}</SelectItem>
-                            <SelectItem value="no-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.noDocuments')}</SelectItem>
-                            <SelectItem value="need-check" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.needCheck')}</SelectItem>
+                            <SelectItem value="have-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">{t('contact.haveDocuments')}</SelectItem>
+                            <SelectItem value="no-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">{t('contact.noDocuments')}</SelectItem>
+                            <SelectItem value="need-check" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">{t('contact.needCheck')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
