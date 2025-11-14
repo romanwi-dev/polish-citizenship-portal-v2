@@ -45,8 +45,8 @@ const FlippableAICard = ({
           style={{ backfaceVisibility: 'hidden' }}
         >
           <div className="text-center flex flex-col items-center justify-center">
-            <div className={`w-14 h-14 mb-4 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-              <Icon className={`w-7 h-7 ${textColor}`} />
+            <div className="w-16 h-16 mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+              <Icon className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-bold mb-3 font-heading">{title}</h3>
             <p className="text-base text-muted-foreground leading-relaxed font-body font-light text-center">

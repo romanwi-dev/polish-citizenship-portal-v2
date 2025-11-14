@@ -412,7 +412,9 @@ const ContactFormWeb3 = () => {
                         }}
                       >
                         <div className="text-center flex-1 flex flex-col items-center justify-center">
-                          <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
+                          <div className="w-16 h-16 mb-4 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+                            <stat.icon className="h-8 w-8 text-white" />
+                          </div>
                           <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                             {stat.value}
                           </div>
