@@ -5,8 +5,9 @@ import warsawAnimation from "@/assets/hero/warsaw-animation.png";
 import { useTranslation } from "react-i18next";
 
 const HeroWeb3 = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const isRTL = i18n.language === 'he';
 
   const toggleFlip = (id: string) => {
     setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
@@ -39,7 +40,9 @@ const HeroWeb3 = () => {
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
           contentVisibility: 'auto'
         }}>
-            <span className="bg-gradient-to-r from-primary via-secondary to-primary-foreground bg-clip-text text-transparent">
+            <span className={`bg-clip-text text-transparent ${
+              isRTL ? 'bg-gradient-to-l from-primary via-secondary to-primary-foreground' : 'bg-gradient-to-r from-primary via-secondary to-primary-foreground'
+            }`}>
               {t('hero.title')}
             </span>
           </h1>

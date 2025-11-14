@@ -3524,45 +3524,9 @@ const resources = {
         keyMilestonesCta: 'Узнать Больше',
         learnMoreCta: 'Узнать Больше'
       },
-
-      contact: {
-        badge: 'Свяжитесь с Нами',
-        title: 'Проверьте Вашу Приемлемость и Шансы',
-        subtitle: 'Ответ в течение 24 часов',
-        nameLabel: 'Полное Имя',
-        namePlaceholder: 'Иван Иванов',
-        emailLabel: 'Email',
-        emailPlaceholder: 'ivan@example.com',
-        countryLabel: 'Страна',
-        countryPlaceholder: 'Выберите страну',
-        ancestorLabel: 'Польский Предок',
-        ancestorPlaceholder: 'Выберите',
-        ancestorParent: 'Родитель',
-        ancestorGrandparent: 'Дедушка/Бабушка',
-        ancestorGreatGrandparent: 'Прадедушка/Прабабушка',
-        ancestorOther: 'Другой',
-        yearLabel: 'Год Эмиграции',
-        yearPlaceholder: 'напр. 1920',
-        documentsLabel: 'Есть документы?',
-        documentsPlaceholder: 'Выберите',
-        documentsYes: 'Да, есть',
-        documentsNo: 'Нет',
-        documentsNotSure: 'Не уверен',
-        submitButton: 'Отправить',
-        submitting: 'Отправка...',
-        thankYouTitle: 'Спасибо!',
-        thankYouMessage: 'Мы ответим в течение 24 часов.',
-        cta: 'Пройти Тест',
-        benefit1Title: 'Быстрый Ответ',
-        benefit1Desc: '< 24 часа',
-        benefit2Title: 'Экспертная Команда',
-        benefit2Desc: '20+ лет',
-        benefit3Title: 'Бесплатная Оценка',
-        benefit3Desc: '100% Бесплатно',
-        benefit4Title: 'Прозрачный Процесс',
-        benefit4Desc: 'Четкие Цены'
-      },
-
+      
+      // Contact Form Section - Russian (duplicate removed, merged above)
+      
       // FAQ Section - Russian
       faq: {
         badge: 'Часто Задаваемые Вопросы',

@@ -359,7 +359,7 @@ export default function TimelineProcessEnhanced() {
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test to check your eligibility"
         >
-          {t('timelineProcess.mainCta')}
+          {t('hero.cta')}
         </MainCTA>
       </div>
     </section>
