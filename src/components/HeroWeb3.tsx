@@ -46,17 +46,6 @@ const HeroWeb3 = () => {
         </div>
       </div>
 
-      {/* Old Town Future Hero Image - Full Width Background */}
-      <div className="w-full mb-32 md:mb-20">
-        <img 
-          src={oldTownFuture} 
-          alt="Old Town Future - Historic buildings with holographic facades" 
-          className="w-full h-auto opacity-60" 
-          style={{
-            filter: 'brightness(0.7)'
-          }} 
-        />
-      </div>
 
       {/* Stats Badges */}
       <div className="container relative z-10 px-4 mx-auto pb-20">
