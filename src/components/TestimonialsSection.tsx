@@ -140,7 +140,7 @@ export default function TestimonialsSection() {
         </div>
 
         <MainCTA
-          wrapperClassName="flex justify-center animate-fade-in mt-16"
+          wrapperClassName="flex justify-center animate-fade-in mt-40 mb-20"
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test to check your eligibility"
         >
