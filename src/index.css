@@ -197,7 +197,7 @@ All colors MUST be HSL.
     
     --shadow-glow: 0 0 50px hsl(343 95% 35% / 0.35) !important;
     --shadow-glow-secondary: 0 0 40px hsl(343 95% 35% / 0.25) !important;
-    --gradient-web3: linear-gradient(135deg, hsl(343 95% 25%) 0%, hsl(343 95% 45%) 50%, hsl(343 95% 60%) 100%) !important;
+    --gradient-web3: linear-gradient(135deg, hsl(343 95% 20%) 0%, hsl(343 95% 50%) 50%, hsl(343 95% 70%) 100%) !important;
     
     /* Light shadow system */
     --shadow-card-light: 0 2px 8px hsl(345 50% 15% / 0.08), 0 4px 16px hsl(345 50% 15% / 0.04);
