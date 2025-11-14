@@ -43,7 +43,7 @@ export function ThemeSwitcher() {
   const getIconConfig = () => {
     const [mode, color] = theme.split('-') as ['dark' | 'light', 'red' | 'blue'];
     const Icon = mode === 'dark' ? Moon : Sun;
-    const iconColor = color === 'red' ? '#D94565' : 'hsl(221 83% 53%)';
+    const iconColor = color === 'red' ? 'hsl(343 79% 53%)' : 'hsl(221 83% 53%)';
     return { Icon, iconColor };
   };
 

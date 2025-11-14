@@ -135,9 +135,9 @@ const PricingSection = () => {
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-[#7C1328]/30">
-              <Zap className="w-4 h-4 text-[#D94565]" />
-              <span className="text-sm font-medium bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent">Transparent Real Pricing</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
+              <Zap className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Transparent Real Pricing</span>
             </div>
             
             <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
