@@ -1,8 +1,14 @@
 import Navigation from "@/components/Navigation";
 import AboutSection from "@/components/AboutSection";
 import ServicesWeb3 from "@/components/ServicesWeb3";
-import FooterWeb3 from "@/components/FooterWeb3";
+import DemoHeroWithImage from "@/components/demo/DemoHeroWithImage";
+import DemoFooterSection from "@/components/demo/DemoFooterSection";
+import SkylineDivider from "@/components/SkylineDivider";
 import { GlobalBackground } from "@/components/GlobalBackground";
+
+// Import European city skyline silhouettes
+import pragueSkyline from "@/assets/skylines/prague.png";
+import budapestSkyline from "@/assets/skylines/budapest.png";
 
 const TranslationDemo = () => {
   return (
@@ -21,11 +27,23 @@ const TranslationDemo = () => {
           </span>
         </div>
         
-        <div className="pt-20">
-          <AboutSection />
-          <ServicesWeb3 />
-        </div>
-        <FooterWeb3 />
+        {/* Hero Section with Warsaw Image */}
+        <DemoHeroWithImage />
+        
+        {/* About Section */}
+        <AboutSection />
+        
+        {/* Prague Skyline Divider */}
+        <SkylineDivider imageSrc={pragueSkyline} alt="Prague skyline" />
+        
+        {/* Services Section */}
+        <ServicesWeb3 />
+        
+        {/* Budapest Skyline Divider */}
+        <SkylineDivider imageSrc={budapestSkyline} alt="Budapest skyline" />
+        
+        {/* Footer Section with Landmark Unity Background */}
+        <DemoFooterSection />
       </div>
     </div>
   );
