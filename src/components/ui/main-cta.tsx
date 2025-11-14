@@ -65,14 +65,13 @@ export function MainCTA({
     >
       <Button 
         size="lg" 
-        className="text-xl md:text-2xl font-bold px-12 py-6 md:px-24 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg bg-gradient-to-r from-[#7C1328] to-[#4A0C18] hover:from-[#8B1D3D] hover:to-[#5B0E20] shadow-[0_0_40px_rgba(124,19,40,0.6)] hover:shadow-[0_0_60px_rgba(124,19,40,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-[#7C1328]/60 hover:border-[#A01D48]/80 transition-all duration-300 hover:scale-105"
+        className="text-xl md:text-2xl font-bold px-12 py-6 md:px-24 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg glass-card hover-glow shadow-[0_0_20px_rgba(217,69,101,0.3)] group relative overflow-hidden backdrop-blur-md border border-primary/20 transition-all duration-300 hover:scale-105 bg-background/10"
         onClick={onClick}
         aria-label={ariaLabel}
       >
-        <span className="relative z-10 font-bold drop-shadow-lg text-white">
+        <span className="relative z-10 font-bold drop-shadow-lg bg-gradient-to-r from-[#D94565] to-[#F06585] bg-clip-text text-transparent">
           {children}
         </span>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#4A0C18]/30 to-[#7C1328]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </Button>
     </div>
   );
