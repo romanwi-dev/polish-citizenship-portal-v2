@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import warsawSkyline from "@/assets/warsaw-skyline-white.png";
+import warsawSkylineWhite from "@/assets/warsaw-skyline-white.png";
+import warsawSkylineBlack from "@/assets/warsaw-skyline-black.png";
 
 interface SkylineDividerProps {
   imageSrc?: string;
   alt?: string;
+  cityName?: 'warsaw' | 'london' | 'budapest';
 }
 
-const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: SkylineDividerProps) => {
+const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }: SkylineDividerProps) => {
   const [isDark, setIsDark] = useState(true);
   const [themeColor, setThemeColor] = useState<'red' | 'blue'>('red');
 
@@ -34,6 +36,20 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
     return () => observer.disconnect();
   }, []);
 
+  // Select the correct skyline image based on theme
+  const getSkylineImage = () => {
+    if (imageSrc) return imageSrc; // Allow manual override
+    
+    // Use black skylines for light mode, white for dark mode
+    const skylineMap = {
+      warsaw: { light: warsawSkylineBlack, dark: warsawSkylineWhite },
+      london: { light: '/src/assets/london-skyline-black.png', dark: '/src/assets/london-skyline-white.png' },
+      budapest: { light: '/src/assets/budapest-skyline-black.png', dark: '/src/assets/budapest-skyline-white.png' }
+    };
+    
+    return isDark ? skylineMap[cityName].dark : skylineMap[cityName].light;
+  };
+
   // Enhanced light theme background for better contrast
   const lightBackgroundImage = `
     radial-gradient(circle at 20% 30%, hsl(var(--primary) / 0.14), transparent 50%),
@@ -49,23 +65,18 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
   // Dark theme background
   const darkBackgroundImage = 'radial-gradient(circle at 20% 50%, hsl(0, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(240, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(0, 50%, 10%), hsl(240, 50%, 10%), hsl(0, 50%, 10%))';
 
-  // Enhanced skyline filter and opacity for better visibility
+  // Simplified filters since we're using theme-appropriate images
   const getSkylineFilter = () => {
     if (isDark) {
-      return 'brightness(0.7)';
+      return 'brightness(0.8)'; // Slightly brighter for white images
     }
-    // Light theme: stronger dark silhouette with theme-specific adjustments
-    if (themeColor === 'blue') {
-      return 'brightness(0.12) saturate(0) contrast(1.6)';
-    }
-    // Red theme
-    return 'brightness(0.15) saturate(0) contrast(1.5)';
+    // Light theme: minimal filter for black images
+    return 'brightness(0.85) contrast(1.1)';
   };
 
   const getSkylineOpacity = () => {
-    if (isDark) return 0.6;
-    // Significantly increased opacity for light themes
-    return themeColor === 'blue' ? 0.65 : 0.55;
+    // Higher opacity since we're using the right colored images
+    return isDark ? 0.65 : 0.75;
   };
 
   return (
@@ -78,16 +89,15 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
         }}
       />
       
-      {/* Full-width skyline silhouette with enhanced visibility */}
+      {/* Full-width skyline silhouette - theme-aware images */}
       <div className="absolute inset-0">
         <img 
-          src={imageSrc} 
+          src={getSkylineImage()} 
           alt={alt} 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-opacity duration-500"
           style={{
             filter: getSkylineFilter(),
             opacity: getSkylineOpacity(),
-            mixBlendMode: isDark ? 'normal' : 'multiply'
           }}
         />
       </div>
