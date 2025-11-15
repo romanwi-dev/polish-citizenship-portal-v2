@@ -56,9 +56,9 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
     }
     // Light theme: colorize based on theme variant
     if (themeColor === 'blue') {
-      return 'brightness(0.3) sepia(1) saturate(3) hue-rotate(200deg)';
+      return 'brightness(0.8) sepia(0.6) saturate(2) hue-rotate(200deg) contrast(1.1)';
     }
-    return 'brightness(0.3) sepia(1) saturate(3) hue-rotate(340deg)';
+    return 'brightness(0.75) sepia(0.6) saturate(2) hue-rotate(340deg) contrast(1.1)';
   };
 
   return (
@@ -79,8 +79,8 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
           className="w-full h-full object-cover"
           style={{
             filter: getSkylineFilter(),
-            opacity: isDark ? 0.6 : 0.45
-          }} 
+            opacity: isDark ? 0.6 : 0.7
+          }}
         />
       </div>
       
