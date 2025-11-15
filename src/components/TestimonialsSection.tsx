@@ -94,7 +94,7 @@ export default function TestimonialsSection() {
 
         {/* Five Sequential Arrows Animation */}
         <div 
-          className="flex justify-center mt-16 mb-8 cursor-pointer hover:opacity-80 transition-opacity relative z-10"
+          className="flex justify-center mt-16 mb-2 cursor-pointer hover:opacity-80 transition-opacity relative z-10"
           onClick={() => {
             const videoButton = document.getElementById('video-testimonials-cta');
             if (videoButton) {
@@ -136,7 +136,7 @@ export default function TestimonialsSection() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Watch Real Video Testimonials
+              Watch Video Testimonials
             </span>
           </MainCTA>
         </div>
