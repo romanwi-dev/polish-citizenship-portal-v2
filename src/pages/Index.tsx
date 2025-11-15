@@ -1,7 +1,8 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { GlobalBackground } from "@/components/GlobalBackground";
 import { SEOHead } from "@/components/SEOHead";
 import { StructuredData } from "@/components/StructuredData";
+import { PerformanceMonitor } from "@/components/performance/PerformanceMonitor";
 
 // Eagerly load critical above-the-fold components for LCP
 import Navigation from "@/components/Navigation";
@@ -44,11 +45,19 @@ const SectionLoader = () => (
 );
 
 const Index = () => {
+  useEffect(() => {
+    // Enable performance monitor in development
+    if (import.meta.env.DEV) {
+      localStorage.setItem('showPerformanceMonitor', 'true');
+    }
+  }, []);
+
   return (
     <>
       {/* SEO Meta Tags */}
       <SEOHead page="home" />
       <StructuredData />
+      <PerformanceMonitor />
       
       <div className="min-h-screen overflow-x-hidden relative">
         {/* Global Background - Adapts to theme */}
