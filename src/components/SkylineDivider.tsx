@@ -18,14 +18,18 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
   useEffect(() => {
     const checkTheme = () => {
       const htmlElement = document.documentElement;
-      setIsDark(htmlElement.classList.contains('dark'));
+      const newIsDark = htmlElement.classList.contains('dark');
+      const newThemeColor = htmlElement.classList.contains('theme-blue') ? 'blue' : 'red';
       
-      // Detect theme color variant
-      if (htmlElement.classList.contains('theme-blue')) {
-        setThemeColor('blue');
-      } else {
-        setThemeColor('red');
-      }
+      setIsDark(newIsDark);
+      setThemeColor(newThemeColor);
+      
+      console.log('🎨 SkylineDivider theme update:', { 
+        isDark: newIsDark, 
+        themeColor: newThemeColor,
+        cityName,
+        willUseImage: newIsDark ? 'white' : newThemeColor
+      });
     };
     
     checkTheme();
@@ -37,7 +41,7 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
     });
     
     return () => observer.disconnect();
-  }, []);
+  }, [cityName]);
 
   // Select the correct colored skyline based on theme mode AND color
   const getSkylineImage = () => {
