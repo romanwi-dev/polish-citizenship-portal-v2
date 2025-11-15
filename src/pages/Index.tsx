@@ -60,7 +60,7 @@ const Index = () => {
         
         <AIAnalysisSection />
         
-        <SkylineDivider cityName="prague" alt="Prague skyline" />
+        <SkylineDivider cityName="london" alt="London skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
