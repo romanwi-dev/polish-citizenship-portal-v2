@@ -1,4 +1,4 @@
-import { Star, Quote } from 'lucide-react';
+import { Star, Quote, Award } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { MainCTA } from '@/components/ui/main-cta';
 import { useTranslation } from 'react-i18next';
@@ -20,11 +20,12 @@ export default function TestimonialsSection() {
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
           <div className="flex justify-center mb-6">
-            <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
+              <Award className="w-4 h-4" />
               {t('testimonials.badge', 'Client Success Stories')}
             </div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-6">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('testimonials.title')}
             </span>
