@@ -19,7 +19,7 @@ export default function TestimonialsSection() {
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
               <Award className="w-4 h-4" />
               {t('testimonials.badge', 'Client Success Stories')}
