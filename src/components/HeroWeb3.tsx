@@ -72,7 +72,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center gap-2">
                 <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-shadow-primary">&gt;20</h3>
-                <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{t('hero.stats.experience')}</p>
+                <p className="text-sm md:text-base font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight">{t('hero.stats.experience')}</p>
               </div>
             </div>
 
@@ -82,7 +82,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center gap-2">
                 <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-shadow-primary">&gt;25,000</h3>
-                <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{t('hero.stats.cases')}</p>
+                <p className="text-sm md:text-base font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight">{t('hero.stats.cases')}</p>
               </div>
             </div>
 
@@ -92,7 +92,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center gap-2">
                 <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-shadow-primary">100%</h3>
-                <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{t('hero.stats.success')}</p>
+                <p className="text-sm md:text-base font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight">{t('hero.stats.success')}</p>
               </div>
             </div>
           </div>
