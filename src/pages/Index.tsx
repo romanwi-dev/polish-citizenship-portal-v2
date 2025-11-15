@@ -60,7 +60,7 @@ const Index = () => {
         
         <AIAnalysisSection />
         
-        <SkylineDivider cityName="warsaw" alt="Prague skyline" />
+        <SkylineDivider cityName="prague" alt="Prague skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
@@ -72,31 +72,31 @@ const Index = () => {
           <TimelineProcessEnhanced />
         </Suspense>
         
-        <SkylineDivider cityName="warsaw" alt="Berlin skyline" />
+        <SkylineDivider cityName="berlin" alt="Berlin skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
         
-        <SkylineDivider cityName="warsaw" alt="Paris skyline" />
+        <SkylineDivider cityName="paris" alt="Paris skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
         </Suspense>
         
-        <SkylineDivider cityName="london" alt="Vienna skyline" />
+        <SkylineDivider cityName="vienna" alt="Vienna skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsSection />
         </Suspense>
         
-        <SkylineDivider cityName="budapest" alt="Rome skyline" />
+        <SkylineDivider cityName="rome" alt="Rome skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <FAQSection />
         </Suspense>
         
-        <SkylineDivider cityName="warsaw" alt="Brussels skyline" />
+        <SkylineDivider cityName="brussels" alt="Brussels skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />

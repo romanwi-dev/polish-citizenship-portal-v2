@@ -4,11 +4,32 @@ import warsawSkylineBlue from "@/assets/warsaw-skyline-blue.png";
 import warsawSkylineRed from "@/assets/warsaw-skyline-red.png";
 import londonSkylineBlue from "@/assets/london-skyline-blue.png";
 import londonSkylineRed from "@/assets/london-skyline-red.png";
+import pragueSkylineWhite from "@/assets/prague-skyline-white.png";
+import pragueSkylineBlue from "@/assets/prague-skyline-blue.png";
+import pragueSkylineRed from "@/assets/prague-skyline-red.png";
+import budapestSkylineWhite from "@/assets/budapest-skyline-white.png";
+import budapestSkylineBlue from "@/assets/budapest-skyline-blue.png";
+import budapestSkylineRed from "@/assets/budapest-skyline-red.png";
+import berlinSkylineWhite from "@/assets/berlin-skyline-white.png";
+import berlinSkylineBlue from "@/assets/berlin-skyline-blue.png";
+import berlinSkylineRed from "@/assets/berlin-skyline-red.png";
+import parisSkylineWhite from "@/assets/paris-skyline-white.png";
+import parisSkylineBlue from "@/assets/paris-skyline-blue.png";
+import parisSkylineRed from "@/assets/paris-skyline-red.png";
+import viennaSkylineWhite from "@/assets/vienna-skyline-white.png";
+import viennaSkylineBlue from "@/assets/vienna-skyline-blue.png";
+import viennaSkylineRed from "@/assets/vienna-skyline-red.png";
+import romeSkylineWhite from "@/assets/rome-skyline-white.png";
+import romeSkylineBlue from "@/assets/rome-skyline-blue.png";
+import romeSkylineRed from "@/assets/rome-skyline-red.png";
+import brusselsSkylineWhite from "@/assets/brussels-skyline-white.png";
+import brusselsSkylineBlue from "@/assets/brussels-skyline-blue.png";
+import brusselsSkylineRed from "@/assets/brussels-skyline-red.png";
 
 interface SkylineDividerProps {
   imageSrc?: string;
   alt?: string;
-  cityName?: 'warsaw' | 'london' | 'budapest';
+  cityName?: 'warsaw' | 'london' | 'prague' | 'budapest' | 'berlin' | 'paris' | 'vienna' | 'rome' | 'brussels';
 }
 
 const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }: SkylineDividerProps) => {
@@ -48,15 +69,32 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
     if (imageSrc) return imageSrc; // Allow manual override
     
     if (isDark) {
-      // Dark mode: always white skylines
-      return warsawSkylineWhite;
+      // Dark mode: use white skylines for all cities
+      const darkSkylineMap = {
+        warsaw: warsawSkylineWhite,
+        london: warsawSkylineWhite,
+        prague: pragueSkylineWhite,
+        budapest: budapestSkylineWhite,
+        berlin: berlinSkylineWhite,
+        paris: parisSkylineWhite,
+        vienna: viennaSkylineWhite,
+        rome: romeSkylineWhite,
+        brussels: brusselsSkylineWhite
+      };
+      return darkSkylineMap[cityName];
     }
     
     // Light mode: use theme-colored skylines (blue or red)
     const lightSkylineMap = {
       warsaw: themeColor === 'blue' ? warsawSkylineBlue : warsawSkylineRed,
       london: themeColor === 'blue' ? londonSkylineBlue : londonSkylineRed,
-      budapest: themeColor === 'blue' ? warsawSkylineBlue : warsawSkylineRed // fallback to warsaw
+      prague: themeColor === 'blue' ? pragueSkylineBlue : pragueSkylineRed,
+      budapest: themeColor === 'blue' ? budapestSkylineBlue : budapestSkylineRed,
+      berlin: themeColor === 'blue' ? berlinSkylineBlue : berlinSkylineRed,
+      paris: themeColor === 'blue' ? parisSkylineBlue : parisSkylineRed,
+      vienna: themeColor === 'blue' ? viennaSkylineBlue : viennaSkylineRed,
+      rome: themeColor === 'blue' ? romeSkylineBlue : romeSkylineRed,
+      brussels: themeColor === 'blue' ? brusselsSkylineBlue : brusselsSkylineRed
     };
     
     return lightSkylineMap[cityName];
