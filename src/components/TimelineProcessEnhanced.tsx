@@ -7,8 +7,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTranslation } from 'react-i18next';
 
-// Using pure CSS animations for optimal performance
-
 // Optimized WebP images for better performance
 import timeline01 from "@/assets/timeline-01-first-steps.webp";
 import timeline02 from "@/assets/timeline-02-terms-pricing.webp";
@@ -32,10 +30,17 @@ export default function TimelineProcessEnhanced() {
   const [firstCardAnimated, setFirstCardAnimated] = useState(false);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
+  const [, forceUpdate] = useState({});
+
+  // Force re-render when language changes
+  useEffect(() => {
+    console.log('🌍 Timeline language changed to:', i18n.language);
+    forceUpdate({});
+  }, [i18n.language]);
 
   // Debug: Log current language and first translation
-  console.log('🌍 Timeline language:', i18n.language);
-  console.log('🔤 Timeline title translation:', t('timelineProcess.title'));
+  console.log('🔤 Timeline rendering with language:', i18n.language);
+  console.log('🔤 Timeline title:', t('timelineProcess.title'));
 
   const timelineSteps = [{
     number: "1",
