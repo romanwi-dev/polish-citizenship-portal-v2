@@ -544,7 +544,14 @@ All colors MUST be HSL.
 
   .glass-card {
     @apply backdrop-blur-xl bg-card/40 border border-border/50;
+  }
+  
+  .dark .glass-card {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+  
+  .light .glass-card {
+    box-shadow: 0 2px 16px 0 hsla(var(--foreground), 0.06), 0 4px 32px 0 hsla(var(--foreground), 0.03);
   }
 
   .glow-text {
