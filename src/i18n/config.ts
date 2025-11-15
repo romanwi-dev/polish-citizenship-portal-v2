@@ -330,7 +330,7 @@ const resources = {
       onboarding: {
         badge: 'Client Journey',
         title: 'How to Start?',
-        description: 'Follow these 8 clear steps to become our registered client and start your citizenship case',
+        description: 'Follow these 5 clear steps to become our registered client and start your citizenship case',
         subtitle: 'Your step-by-step journey to obtaining Polish citizenship and EU passport through your Polish heritage',
         clickToFlip: 'Click to flip',
         flipBack: 'Flip Back',
@@ -850,7 +850,7 @@ const resources = {
       onboarding: {
         badge: 'Recorrido del Cliente',
         title: '¿Cómo Empezar?',
-        description: 'Sigue estos 8 pasos claros para convertirte en nuestro cliente registrado y comenzar tu caso de ciudadanía',
+        description: 'Sigue estos 5 pasos claros para convertirte en nuestro cliente registrado y comenzar tu caso de ciudadanía',
         subtitle: 'Tu camino paso a paso para obtener la ciudadanía polaca y el pasaporte de la UE a través de tu herencia polaca',
         clickToFlip: 'Haz clic para voltear',
         flipBack: 'Voltear',
@@ -1192,7 +1192,7 @@ const resources = {
       onboarding: {
         badge: 'Jornada do Cliente',
         title: 'Como Começar?',
-        description: 'Siga estes 8 passos claros para se tornar nosso cliente registrado e iniciar seu processo de cidadania',
+        description: 'Siga estes 5 passos claros para se tornar nosso cliente registrado e iniciar seu processo de cidadania',
         subtitle: 'Sua jornada passo a passo para obter a cidadania polonesa e o passaporte da UE através de sua herança polonesa',
         clickToFlip: 'Clique para virar',
         flipBack: 'Voltar',
@@ -1718,7 +1718,7 @@ const resources = {
       onboarding: {
         badge: 'Kundenreise',
         title: 'Wie Beginnen?',
-        description: 'Befolgen Sie diese 8 klaren Schritte, um unser registrierter Kunde zu werden und Ihren Staatsbürgerschaftsfall zu beginnen',
+        description: 'Befolgen Sie diese 5 klaren Schritte, um unser registrierter Kunde zu werden und Ihren Staatsbürgerschaftsfall zu beginnen',
         subtitle: 'Ihre schrittweise Reise zur Erlangung der polnischen Staatsbürgerschaft und des EU-Passes durch Ihre polnische Abstammung',
         clickToFlip: 'Klicken zum Umdrehen',
         flipBack: 'Zurück',
@@ -2245,7 +2245,7 @@ const resources = {
       onboarding: {
         badge: 'Parcours Client',
         title: 'Comment Commencer?',
-        description: 'Suivez ces 8 étapes claires pour devenir notre client enregistré et commencer votre dossier de citoyenneté',
+        description: 'Suivez ces 5 étapes claires pour devenir notre client enregistré et commencer votre dossier de citoyenneté',
         subtitle: 'Votre parcours étape par étape pour obtenir la citoyenneté polonaise et le passeport de l\'UE grâce à votre héritage polonais',
         clickToFlip: 'Cliquer pour retourner',
         flipBack: 'Retourner',
@@ -2773,7 +2773,7 @@ const resources = {
       onboarding: {
         badge: 'מסע הלקוח',
         title: 'איך להתחיל?',
-        description: 'עקוב אחר 8 השלבים הברורים הללו כדי להפוך ללקוח רשום שלנו ולהתחיל את תיק האזרחות שלך',
+        description: 'עקוב אחר 5 השלבים הברורים הללו כדי להפוך ללקוח רשום שלנו ולהתחיל את תיק האזרחות שלך',
         subtitle: 'המסע שלך צעד אחר צעד להשגת אזרחות פולנית ודרכון EU דרך מורשת פולנית שלך',
         clickToFlip: 'לחץ להפוך',
         flipBack: 'חזרה',
@@ -3301,7 +3301,7 @@ const resources = {
       onboarding: {
         badge: 'Путь Клиента',
         title: 'Как Начать?',
-        description: 'Следуйте этим 8 четким шагам, чтобы стать нашим зарегистрированным клиентом и начать ваше дело о гражданстве',
+        description: 'Следуйте этим 5 четким шагам, чтобы стать нашим зарегистрированным клиентом и начать ваше дело о гражданстве',
         subtitle: 'Ваш пошаговый путь к получению польского гражданства и паспорта ЕС через ваше польское наследие',
         clickToFlip: 'Нажмите, чтобы перевернуть',
         flipBack: 'Вернуть',
@@ -3879,7 +3879,7 @@ const resources = {
       onboarding: {
         badge: 'Шлях Клієнта',
         title: 'Як Почати?',
-        description: 'Дотримуйтесь цих 8 чітких кроків, щоб стати нашим зареєстрованим клієнтом і розпочати вашу справу про громадянство',
+        description: 'Дотримуйтесь цих 5 чітких кроків, щоб стати нашим зареєстрованим клієнтом і розпочати вашу справу про громадянство',
         subtitle: 'Ваш покроковий шлях до отримання польського громадянства та паспорта ЄС через вашу польську спадщину',
         clickToFlip: 'Натисніть, щоб перевернути',
         flipBack: 'Повернути',
