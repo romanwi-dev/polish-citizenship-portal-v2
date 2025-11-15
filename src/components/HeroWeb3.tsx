@@ -66,33 +66,33 @@ const HeroWeb3 = () => {
       <div className="container relative z-10 px-4 mx-auto pb-20">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
-            {/* Card 1 */}
+            {/* Card 1 - Dark Blue with glow */}
             <div 
-              className="glass-card hover-glow p-6 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none backdrop-blur-md border border-primary/20 theme-red.light:bg-white/40 theme-blue.light:bg-white/40"
+              className="glass-card hover-glow p-4 md:p-8 rounded-lg text-center relative min-h-[120px] md:min-h-[160px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
             >
               <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary">&gt;20</h3>
-                <p className="text-sm md:text-base font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight">{t('hero.stats.experience')}</p>
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">&gt;20</h3>
+                <p className="text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight">{t('hero.stats.experience')}</p>
               </div>
             </div>
 
-            {/* Card 2 */}
+            {/* Card 2 - Dark Red with glow */}
             <div 
-              className="glass-card hover-glow p-6 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none backdrop-blur-md border border-primary/20 theme-red.light:bg-white/40 theme-blue.light:bg-white/40"
+              className="glass-card hover-glow p-4 md:p-8 rounded-lg text-center relative min-h-[120px] md:min-h-[160px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-secondary/20 light:border-red-500/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(0_80%_30%)] light:to-[hsl(0_80%_22%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(239,68,68,0.4)]"
             >
               <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary">&gt;25,000</h3>
-                <p className="text-sm md:text-base font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight">{t('hero.stats.cases')}</p>
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-secondary light:text-white light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">&gt;25,000</h3>
+                <p className="text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight">{t('hero.stats.cases')}</p>
               </div>
             </div>
 
-            {/* Card 3 */}
+            {/* Card 3 - Dark Blue with glow */}
             <div 
-              className="glass-card hover-glow p-6 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none backdrop-blur-md border border-primary/20 theme-red.light:bg-white/40 theme-blue.light:bg-white/40"
+              className="glass-card hover-glow p-4 md:p-8 rounded-lg text-center relative min-h-[120px] md:min-h-[160px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
             >
               <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary">100%</h3>
-                <p className="text-sm md:text-base font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight">{t('hero.stats.success')}</p>
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">100%</h3>
+                <p className="text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight">{t('hero.stats.success')}</p>
               </div>
             </div>
           </div>
