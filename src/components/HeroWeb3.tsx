@@ -47,7 +47,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-base md:text-lg lg:text-xl font-medium mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-foreground">
+          <p className="text-lg md:text-xl lg:text-2xl font-semibold mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-foreground dark:font-medium light:font-bold light:text-foreground/90">
             {t('hero.description')}
           </p>
           
