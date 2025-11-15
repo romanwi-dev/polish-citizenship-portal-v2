@@ -25,7 +25,7 @@ export default function TestimonialsSection() {
               {t('testimonials.badge', 'Client Success Stories')}
             </div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-6">
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('testimonials.title')}
             </span>
