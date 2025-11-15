@@ -63,34 +63,7 @@ export default function ClientOnboardingSection() {
       gradient: "from-secondary to-accent",
       cta: t('onboarding.step5Cta'),
       link: "#"
-    },
-    {
-      number: t('onboarding.step6Number'),
-      title: t('onboarding.step6Title'),
-      description: t('onboarding.step6Desc'),
-      icon: Brain,
-      gradient: "from-accent to-primary",
-      cta: t('onboarding.step6Cta'),
-      link: "#"
-    },
-    {
-      number: t('onboarding.step7Number'),
-      title: t('onboarding.step7Title'),
-      description: t('onboarding.step7Desc'),
-      icon: FileCheck2,
-      gradient: "from-primary to-secondary",
-      cta: t('onboarding.step7Cta'),
-      link: "#"
-    },
-    {
-      number: t('onboarding.step8Number'),
-      title: t('onboarding.step8Title'),
-      description: t('onboarding.step8Desc'),
-      icon: Globe,
-      gradient: "from-secondary to-accent",
-      cta: t('onboarding.step8Cta'),
-      link: "#contact"
-    },
+    }
   ];
 
   return (
