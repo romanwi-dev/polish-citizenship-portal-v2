@@ -27,7 +27,6 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
       <html lang={currentLang} />
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
@@ -59,6 +58,16 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
         />
       ))}
       
+      {/* Regional English variants for USA, UK, Canada, Australia */}
+      {englishRegions.map(region => (
+        <link
+          key={`hreflang-${region}`}
+          rel="alternate"
+          hrefLang={region}
+          href={baseUrl}
+        />
+      ))}
+      
       {/* x-default for users not matching any language */}
       <link rel="alternate" hrefLang="x-default" href={baseUrl} />
       
@@ -82,3 +91,6 @@ function getOGLocale(lang: string): string {
   };
   return localeMap[lang] || 'en_US';
 }
+
+// Regional English variants for hreflang
+const englishRegions = ['en-US', 'en-GB', 'en-CA', 'en-AU'];
