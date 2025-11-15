@@ -80,7 +80,8 @@ function ScrollToTop() {
               "h-12 w-12 rounded-full shadow-lg",
               "bg-gradient-to-r from-primary to-secondary",
               "hover:shadow-xl hover:scale-110",
-              "transition-all duration-300"
+              "transition-all duration-300",
+              "dark:opacity-100 opacity-30 hover:opacity-60"
             )}
             style={{
               boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.3)'
