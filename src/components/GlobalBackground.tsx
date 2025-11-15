@@ -11,12 +11,7 @@ export const GlobalBackground = () => {
   useEffect(() => {
     // Check if dark or light mode
     const checkTheme = () => {
-      const isDarkMode = document.documentElement.classList.contains('dark');
-      console.log('🎨 GlobalBackground theme check:', {
-        isDark: isDarkMode,
-        classes: document.documentElement.className
-      });
-      setIsDark(isDarkMode);
+      setIsDark(document.documentElement.classList.contains('dark'));
     };
     
     checkTheme();
@@ -45,10 +40,7 @@ export const GlobalBackground = () => {
 
   // DARK themes: Show 3D heritage with loading
   // LIGHT themes: Show beautiful light background immediately
-  console.log('🎨 GlobalBackground rendering:', { isDark, show3D });
-  
   if (!isDark) {
-    console.log('✨ Rendering light theme background');
     return (
       <div className="fixed inset-0 z-0">
         <StaticHeritageLightTheme />
