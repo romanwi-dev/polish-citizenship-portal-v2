@@ -412,7 +412,7 @@ const ContactFormWeb3 = () => {
                         }}
                       >
                       <div className="text-center flex-1 flex flex-col items-center justify-center gap-3">
-                          <stat.icon className="w-10 h-10 md:w-12 md:h-12 text-primary" strokeWidth={2} />
+                          <stat.icon className="w-6 h-6 md:w-7 md:h-7 text-primary" strokeWidth={1.5} />
                           <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                             {stat.value}
                           </div>
