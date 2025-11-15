@@ -1,9 +1,8 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
-import { StaticHeritagePlaceholderLight } from "@/components/heroes/StaticHeritagePlaceholderLight";
+import { StaticHeritageLightTheme } from "@/components/heroes/StaticHeritageLightTheme";
 
 const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
-const StaticHeritageLightTheme = lazy(() => import("@/components/heroes/StaticHeritageLightTheme").then(m => ({ default: m.StaticHeritageLightTheme })));
 
 export const GlobalBackground = () => {
   const [show3D, setShow3D] = useState(false);
@@ -39,18 +38,12 @@ export const GlobalBackground = () => {
     }
   }, [isDark]);
 
-  // DARK themes: Show 3D heritage
-  // LIGHT themes: Show beautiful light background
+  // DARK themes: Show 3D heritage with loading
+  // LIGHT themes: Show beautiful light background immediately
   if (!isDark) {
     return (
       <div className="fixed inset-0 z-0">
-        {show3D ? (
-          <Suspense fallback={<StaticHeritagePlaceholderLight />}>
-            <StaticHeritageLightTheme />
-          </Suspense>
-        ) : (
-          <StaticHeritagePlaceholderLight />
-        )}
+        <StaticHeritageLightTheme />
       </div>
     );
   }
