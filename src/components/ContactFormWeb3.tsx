@@ -150,7 +150,7 @@ const ContactFormWeb3 = () => {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.nameLabel')} *</Label>
+                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.nameLabel')} *</Label>
                         <input
                           id="name"
                           name="name"
@@ -164,7 +164,7 @@ const ContactFormWeb3 = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.emailLabel')} *</Label>
+                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.emailLabel')} *</Label>
                         <input
                           id="email"
                           name="email"
@@ -182,7 +182,7 @@ const ContactFormWeb3 = () => {
                     {/* Row 2: Country + Polish Ancestor */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.countryLabel')}</Label>
+                        <Label htmlFor="country" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.countryLabel')}</Label>
                         <Select
                           value={formData.country}
                           onValueChange={(value) => handleSelectChange("country", value)}
@@ -205,7 +205,7 @@ const ContactFormWeb3 = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.ancestorLabel')}</Label>
+                        <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.ancestorLabel')}</Label>
                         <Select
                           value={formData.polishAncestor}
                           onValueChange={(value) => handleSelectChange("polishAncestor", value)}
@@ -228,7 +228,7 @@ const ContactFormWeb3 = () => {
                     {/* Row 3: Year of Emigration + Polish Documents */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="yearOfEmigration" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.yearLabel')}</Label>
+                        <Label htmlFor="yearOfEmigration" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.yearLabel')}</Label>
                         <Select
                           value={formData.yearOfEmigration}
                           onValueChange={(value) => handleSelectChange("yearOfEmigration", value)}
@@ -249,7 +249,7 @@ const ContactFormWeb3 = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.polishDocuments')}</Label>
+                        <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.polishDocuments')}</Label>
                         <Select
                           value={formData.polishDocuments}
                           onValueChange={(value) => handleSelectChange("polishDocuments", value)}
