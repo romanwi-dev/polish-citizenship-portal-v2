@@ -53,6 +53,23 @@ export const StaticHeritageLightTheme = memo(() => {
         .animate-shine {
           animation: shine 20s ease-in-out infinite;
         }
+        
+        /* Reduced motion for accessibility and mobile battery saving */
+        @media (prefers-reduced-motion: reduce) {
+          .animate-light-wave,
+          .animate-shine {
+            animation: none;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .animate-light-wave {
+            animation-duration: 40s; /* Slower on mobile */
+          }
+          .animate-shine {
+            animation-duration: 35s;
+          }
+        }
       `}</style>
     </div>
   );
