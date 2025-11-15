@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- Homepage - English (default) -->
+  <url>
+    <loc>https://yoursite.lovable.app/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yoursite.lovable.app/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yoursite.lovable.app/es" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yoursite.lovable.app/pt" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yoursite.lovable.app/de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yoursite.lovable.app/fr" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://yoursite.lovable.app/he" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yoursite.lovable.app/ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://yoursite.lovable.app/uk" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yoursite.lovable.app/" />
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- Spanish -->
+  <url>
+    <loc>https://yoursite.lovable.app/es</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yoursite.lovable.app/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yoursite.lovable.app/es" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yoursite.lovable.app/pt" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yoursite.lovable.app/de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yoursite.lovable.app/fr" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://yoursite.lovable.app/he" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yoursite.lovable.app/ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://yoursite.lovable.app/uk" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yoursite.lovable.app/" />
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- Portuguese -->
+  <url>
+    <loc>https://yoursite.lovable.app/pt</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yoursite.lovable.app/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yoursite.lovable.app/es" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yoursite.lovable.app/pt" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yoursite.lovable.app/de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yoursite.lovable.app/fr" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://yoursite.lovable.app/he" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yoursite.lovable.app/ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://yoursite.lovable.app/uk" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yoursite.lovable.app/" />
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- German -->
+  <url>
+    <loc>https://yoursite.lovable.app/de</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yoursite.lovable.app/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yoursite.lovable.app/es" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yoursite.lovable.app/pt" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yoursite.lovable.app/de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yoursite.lovable.app/fr" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://yoursite.lovable.app/he" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yoursite.lovable.app/ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://yoursite.lovable.app/uk" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yoursite.lovable.app/" />
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- French -->
+  <url>
+    <loc>https://yoursite.lovable.app/fr</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yoursite.lovable.app/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yoursite.lovable.app/es" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yoursite.lovable.app/pt" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yoursite.lovable.app/de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yoursite.lovable.app/fr" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://yoursite.lovable.app/he" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yoursite.lovable.app/ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://yoursite.lovable.app/uk" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yoursite.lovable.app/" />
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- Hebrew -->
+  <url>
+    <loc>https://yoursite.lovable.app/he</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yoursite.lovable.app/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yoursite.lovable.app/es" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yoursite.lovable.app/pt" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yoursite.lovable.app/de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yoursite.lovable.app/fr" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://yoursite.lovable.app/he" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yoursite.lovable.app/ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://yoursite.lovable.app/uk" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yoursite.lovable.app/" />
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- Russian -->
+  <url>
+    <loc>https://yoursite.lovable.app/ru</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yoursite.lovable.app/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yoursite.lovable.app/es" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yoursite.lovable.app/pt" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yoursite.lovable.app/de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yoursite.lovable.app/fr" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://yoursite.lovable.app/he" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yoursite.lovable.app/ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://yoursite.lovable.app/uk" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yoursite.lovable.app/" />
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- Ukrainian -->
+  <url>
+    <loc>https://yoursite.lovable.app/uk</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yoursite.lovable.app/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://yoursite.lovable.app/es" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://yoursite.lovable.app/pt" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://yoursite.lovable.app/de" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yoursite.lovable.app/fr" />
+    <xhtml:link rel="alternate" hreflang="he" href="https://yoursite.lovable.app/he" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://yoursite.lovable.app/ru" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://yoursite.lovable.app/uk" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yoursite.lovable.app/" />
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+</urlset>
