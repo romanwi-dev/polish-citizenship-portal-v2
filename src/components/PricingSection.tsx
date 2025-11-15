@@ -67,7 +67,7 @@ const FlippablePricingCard = ({
               <Icon className={`w-6 h-6 ${iconColor}`} />
             </div>
             <div>
-              <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{title}</h3>
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{title}</h3>
               <p className="text-sm text-muted-foreground">{subtitle}</p>
             </div>
           </div>
@@ -95,7 +95,7 @@ const FlippablePricingCard = ({
 
           <div className="mt-auto pt-4">
             <Button 
-              className="w-full bg-blue-900/50 hover:bg-blue-900/60 text-white border-2 border-blue-800/30 hover:border-blue-700/50 shadow-[0_0_20px_rgba(29,78,216,0.4)] hover:shadow-[0_0_30px_rgba(29,78,216,0.6)] transition-all duration-300 hover:scale-105" 
+              className="w-full bg-primary/10 hover:bg-primary/20 text-primary border-2 border-primary/30 hover:border-primary/50 shadow-[0_0_20px_hsl(var(--primary)/0.2)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)] transition-all duration-300 hover:scale-105" 
               onClick={(e) => {
                 e.stopPropagation();
                 onClick();
