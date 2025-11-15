@@ -1,5 +1,7 @@
 import { lazy, Suspense } from "react";
 import { GlobalBackground } from "@/components/GlobalBackground";
+import { SEOHead } from "@/components/SEOHead";
+import { StructuredData } from "@/components/StructuredData";
 
 // Eagerly load critical above-the-fold components for LCP
 import Navigation from "@/components/Navigation";
@@ -40,14 +42,19 @@ const SectionLoader = () => (
 
 const Index = () => {
   return (
-    <div className="min-h-screen overflow-x-hidden relative">
-      {/* Global Background - Adapts to theme */}
-      <GlobalBackground />
+    <>
+      {/* SEO Meta Tags */}
+      <SEOHead page="home" />
+      <StructuredData />
       
-      <div className="relative z-10">
-        <Navigation />
-        <HeroWeb3 />
-        <AboutSection />
+      <div className="min-h-screen overflow-x-hidden relative">
+        {/* Global Background - Adapts to theme */}
+        <GlobalBackground />
+        
+        <div className="relative z-10">
+          <Navigation />
+          <HeroWeb3 />
+          <AboutSection />
         
         <SkylineDivider imageSrc={londonSkyline} alt="London skyline" />
         
@@ -106,8 +113,9 @@ const Index = () => {
         <Suspense fallback={<SectionLoader />}>
           <ScrollToTop />
         </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

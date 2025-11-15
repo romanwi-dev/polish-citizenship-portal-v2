@@ -522,6 +522,19 @@ const resources = {
           q5: 'What about dual citizenship?',
           a5: 'Poland allows dual citizenship. Confirming Polish citizenship does not require renouncing other citizenships, and most countries (including the US, Canada, UK) also allow dual citizenship.'
         }
+      },
+      
+      // SEO Meta Tags
+      seo: {
+        home: {
+          title: 'Polish Citizenship by Descent | Expert Legal Services Since 2003',
+          description: 'Expert legal guidance for obtaining Polish citizenship and EU passports through Polish ancestry. 100% success rate, realistic timeline, transparent pricing.',
+          ogTitle: 'Polish Citizenship Portal | AI-Powered Legal Services',
+          ogDescription: 'Revolutionary Polish citizenship services powered by AI and Web3 technology. Expert guidance for Polish and Polish-Jewish descent worldwide.',
+          twitterTitle: 'Polish Citizenship by Descent - Expert Legal Services',
+          twitterDescription: 'Get Polish citizenship through ancestry. 100% success rate, transparent pricing, realistic timeline.',
+          keywords: 'Polish citizenship, EU passport, citizenship by descent, Polish ancestry, legal services, Polish citizenship by descent, Polish passport'
+        }
       }
     },
   },
@@ -1026,6 +1039,19 @@ const resources = {
           a4: 'Sí, una vez que confirme su ciudadanía polaca, sus hijos menores pueden registrarse como ciudadanos polacos. El proceso es sencillo para niños menores de 16 años.',
           q5: '¿Qué pasa con la doble ciudadanía?',
           a5: 'Polonia permite la doble ciudadanía. Confirmar la ciudadanía polaca no requiere renunciar a otras ciudadanías, y la mayoría de los países (incluidos EE. UU., Canadá, Reino Unido) también permiten la doble ciudadanía.'
+        }
+      },
+      
+      // SEO Meta Tags
+      seo: {
+        home: {
+          title: 'Ciudadanía Polaca por Descendencia | Servicios Legales Expertos Desde 2003',
+          description: 'Orientación legal experta para obtener la ciudadanía polaca y pasaportes de la UE a través de ascendencia polaca. Tasa de éxito del 100%, cronograma realista, precios transparentes.',
+          ogTitle: 'Portal de Ciudadanía Polaca | Servicios Legales Impulsados por IA',
+          ogDescription: 'Servicios revolucionarios de ciudadanía polaca impulsados por IA y tecnología Web3. Orientación experta para descendientes polacos y judío-polacos en todo el mundo.',
+          twitterTitle: 'Ciudadanía Polaca por Descendencia - Servicios Legales Expertos',
+          twitterDescription: 'Obtenga la ciudadanía polaca a través de la ascendencia. Tasa de éxito del 100%, precios transparentes, cronograma realista.',
+          keywords: 'ciudadanía polaca, pasaporte UE, ciudadanía por descendencia, ascendencia polaca, servicios legales, ciudadanía polaca por descendencia, pasaporte polaco'
         }
       }
     }
@@ -1538,6 +1564,19 @@ const resources = {
         privacy: 'Política de Privacidade',
         terms: 'Termos de Serviço',
         contactUs: 'Entre em Contato'
+      },
+      
+      // SEO Meta Tags
+      seo: {
+        home: {
+          title: 'Cidadania Polonesa por Descendência | Serviços Jurídicos Especializados Desde 2003',
+          description: 'Orientação jurídica especializada para obter cidadania polonesa e passaportes da UE através de ascendência polonesa. Taxa de sucesso de 100%, cronograma realista, preços transparentes.',
+          ogTitle: 'Portal de Cidadania Polonesa | Serviços Jurídicos Impulsionados por IA',
+          ogDescription: 'Serviços revolucionários de cidadania polonesa impulsionados por IA e tecnologia Web3. Orientação especializada para descendentes poloneses e judeus-poloneses em todo o mundo.',
+          twitterTitle: 'Cidadania Polonesa por Descendência - Serviços Jurídicos Especializados',
+          twitterDescription: 'Obtenha cidadania polonesa através de ascendência. Taxa de sucesso de 100%, preços transparentes, cronograma realista.',
+          keywords: 'cidadania polonesa, passaporte UE, cidadania por descendência, ascendência polonesa, serviços jurídicos, cidadania polonesa por descendência, passaporte polonês'
+        }
       }
     }
   },
@@ -2050,6 +2089,19 @@ const resources = {
         privacy: 'Datenschutz',
         terms: 'Nutzungsbedingungen',
         contactUs: 'Kontaktieren Sie Uns'
+      },
+      
+      // SEO Meta Tags
+      seo: {
+        home: {
+          title: 'Polnische Staatsbürgerschaft durch Abstammung | Expertenrechtsdienste Seit 2003',
+          description: 'Fachkundige rechtliche Beratung für den Erwerb der polnischen Staatsbürgerschaft und EU-Pässe durch polnische Abstammung. 100% Erfolgsquote, realistischer Zeitplan, transparente Preise.',
+          ogTitle: 'Polnisches Staatsbürgerschaftsportal | KI-gestützte Rechtsdienste',
+          ogDescription: 'Revolutionäre polnische Staatsbürgerschaftsdienste powered by KI und Web3-Technologie. Expertenberatung für polnische und polnisch-jüdische Abstammung weltweit.',
+          twitterTitle: 'Polnische Staatsbürgerschaft durch Abstammung - Expertenrechtsdienste',
+          twitterDescription: 'Erhalten Sie die polnische Staatsbürgerschaft durch Abstammung. 100% Erfolgsquote, transparente Preise, realistischer Zeitplan.',
+          keywords: 'polnische Staatsbürgerschaft, EU-Pass, Staatsbürgerschaft durch Abstammung, polnische Abstammung, Rechtsdienste, polnische Staatsbürgerschaft durch Abstammung, polnischer Pass'
+        }
       }
     }
   },
@@ -2563,6 +2615,19 @@ const resources = {
         privacy: 'Politique de Confidentialité',
         terms: 'Conditions de Service',
         contactUs: 'Nous Contacter'
+      },
+      
+      // SEO Meta Tags
+      seo: {
+        home: {
+          title: 'Citoyenneté Polonaise par Descendance | Services Juridiques Experts Depuis 2003',
+          description: 'Conseils juridiques experts pour obtenir la citoyenneté polonaise et les passeports de l\'UE par ascendance polonaise. Taux de réussite de 100%, calendrier réaliste, prix transparents.',
+          ogTitle: 'Portail de Citoyenneté Polonaise | Services Juridiques Alimentés par IA',
+          ogDescription: 'Services révolutionnaires de citoyenneté polonaise alimentés par IA et technologie Web3. Conseils experts pour les descendants polonais et judéo-polonais du monde entier.',
+          twitterTitle: 'Citoyenneté Polonaise par Descendance - Services Juridiques Experts',
+          twitterDescription: 'Obtenez la citoyenneté polonaise par ascendance. Taux de réussite de 100%, prix transparents, calendrier réaliste.',
+          keywords: 'citoyenneté polonaise, passeport UE, citoyenneté par descendance, ascendance polonaise, services juridiques, citoyenneté polonaise par descendance, passeport polonais'
+        }
       }
     }
   },
@@ -3076,6 +3141,19 @@ const resources = {
         privacy: 'מדיניות פרטיות',
         terms: 'תנאי שירות',
         contactUs: 'צור קשר'
+      },
+      
+      // SEO Meta Tags
+      seo: {
+        home: {
+          title: 'אזרחות פולנית לפי מוצא | שירותים משפטיים מומחים מאז 2003',
+          description: 'הדרכה משפטית מומחית להשגת אזרחות פולנית ודרכוני האיחוד האירופי דרך מוצא פולני. שיעור הצלחה של 100%, לוח זמנים ריאלי, תמחור שקוף.',
+          ogTitle: 'פורטל אזרחות פולנית | שירותים משפטיים מונעי AI',
+          ogDescription: 'שירותי אזרחות פולנית מהפכניים המונעים על ידי AI וטכנולוגיית Web3. הדרכה מומחית לצאצאים פולנים ויהודים-פולנים ברחבי העולם.',
+          twitterTitle: 'אזרחות פולנית לפי מוצא - שירותים משפטיים מומחים',
+          twitterDescription: 'השג אזרחות פולנית דרך מוצא. שיעור הצלחה של 100%, תמחור שקוף, לוח זמנים ריאלי.',
+          keywords: 'אזרחות פולנית, דרכון האיחוד האירופי, אזרחות לפי מוצא, מוצא פולני, שירותים משפטיים, אזרחות פולנית לפי מוצא, דרכון פולני'
+        }
       }
     }
   },
@@ -3638,6 +3716,19 @@ const resources = {
         privacy: 'Политика Конфиденциальности',
         terms: 'Условия Обслуживания',
         contactUs: 'Свяжитесь с Нами'
+      },
+      
+      // SEO Meta Tags
+      seo: {
+        home: {
+          title: 'Польское Гражданство по Происхождению | Экспертные Юридические Услуги с 2003 года',
+          description: 'Экспертные юридические консультации по получению польского гражданства и паспортов ЕС через польское происхождение. 100% успех, реалистичные сроки, прозрачные цены.',
+          ogTitle: 'Портал Польского Гражданства | Юридические Услуги на Основе ИИ',
+          ogDescription: 'Революционные услуги по польскому гражданству на основе ИИ и технологии Web3. Экспертная помощь людям польского и польско-еврейского происхождения по всему миру.',
+          twitterTitle: 'Польское Гражданство по Происхождению - Экспертные Юридические Услуги',
+          twitterDescription: 'Получите польское гражданство через происхождение. 100% успех, прозрачные цены, реалистичные сроки.',
+          keywords: 'польское гражданство, паспорт ЕС, гражданство по происхождению, польское происхождение, юридические услуги, польское гражданство по происхождению, польский паспорт'
+        }
       }
     }
   },
@@ -4146,6 +4237,19 @@ const resources = {
         privacy: 'Політика Конфіденційності',
         terms: 'Умови Обслуговування',
         contactUs: "Зв'яжіться з Нами"
+      },
+      
+      // SEO Meta Tags
+      seo: {
+        home: {
+          title: 'Польське Громадянство за Походженням | Експертні Юридичні Послуги з 2003 року',
+          description: 'Експертні юридичні консультації щодо отримання польського громадянства та паспортів ЄС через польське походження. 100% успіх, реалістичні терміни, прозорі ціни.',
+          ogTitle: 'Портал Польського Громадянства | Юридичні Послуги на Основі ШІ',
+          ogDescription: 'Революційні послуги з польського громадянства на основі ШІ та технології Web3. Експертна допомога людям польського та польсько-єврейського походження в усьому світі.',
+          twitterTitle: 'Польське Громадянство за Походженням - Експертні Юридичні Послуги',
+          twitterDescription: 'Отримайте польське громадянство через походження. 100% успіх, прозорі ціни, реалістичні терміни.',
+          keywords: 'польське громадянство, паспорт ЄС, громадянство за походженням, польське походження, юридичні послуги, польське громадянство за походженням, польський паспорт'
+        }
       }
     }
   }
