@@ -34,13 +34,8 @@ export default function TimelineProcessEnhanced() {
 
   // Force re-render when language changes
   useEffect(() => {
-    console.log('🌍 Timeline language changed to:', i18n.language);
     forceUpdate({});
   }, [i18n.language]);
-
-  // Debug: Log current language and first translation
-  console.log('🔤 Timeline rendering with language:', i18n.language);
-  console.log('🔤 Timeline title:', t('timelineProcess.title'));
 
   const timelineSteps = [{
     number: "1",
