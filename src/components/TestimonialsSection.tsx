@@ -19,6 +19,11 @@ export default function TestimonialsSection() {
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary">
+              {t('testimonials.badge', 'Client Success Stories')}
+            </div>
+          </div>
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('testimonials.title')}
@@ -116,7 +121,7 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        <div id="video-testimonials-cta" className="flex justify-center animate-fade-in -mt-12">
+        <div id="video-testimonials-cta" className="flex justify-center animate-fade-in -mt-16">
           <MainCTA
             onClick={() => {
               const contactSection = document.getElementById('contact');
