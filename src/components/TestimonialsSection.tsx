@@ -116,7 +116,7 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        <div id="video-testimonials-cta" className="flex justify-center animate-fade-in">
+        <div id="video-testimonials-cta" className="flex justify-center animate-fade-in -mt-2">
           <MainCTA
             onClick={() => {
               const contactSection = document.getElementById('contact');
