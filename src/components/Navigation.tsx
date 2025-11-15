@@ -53,7 +53,7 @@ const Navigation = () => {
             <LanguageSelector />
             
             {/* User Icon */}
-            <button onClick={() => navigate('/admin/cases')} className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Management">
+            <button onClick={() => navigate('/admin/cases')} className="h-9 w-9 md:h-11 md:w-11 rounded-full dark:bg-background/50 light:bg-primary/10 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Management">
               <User className="h-4 w-4 md:h-5 md:w-5 text-primary dark:text-foreground" />
             </button>
             
@@ -65,7 +65,7 @@ const Navigation = () => {
             {/* Desktop Navigation - Dropdown Menu */}
             <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <DropdownMenuTrigger asChild className="hidden md:flex">
-                <button className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Open menu">
+                <button className="h-9 w-9 md:h-11 md:w-11 rounded-full dark:bg-background/50 light:bg-primary/10 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Open menu">
                   <Menu className="h-4 w-4 md:h-5 md:w-5 text-primary dark:text-foreground" />
                 </button>
               </DropdownMenuTrigger>
