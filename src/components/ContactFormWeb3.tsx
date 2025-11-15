@@ -190,7 +190,7 @@ const ContactFormWeb3 = () => {
                           <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder={t('contact.countryPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
-                          <SelectContent className="bg-background border-2 z-[100]">
+                          <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
                             {COUNTRIES.map((country) => (
                               <SelectItem
                                 key={country}
@@ -213,7 +213,7 @@ const ContactFormWeb3 = () => {
                           <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder={t('contact.ancestorPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
-                          <SelectContent className="bg-background border-2 z-[100]">
+                          <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
                             <SelectItem value="mother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorMother')}</SelectItem>
                             <SelectItem value="father" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorFather')}</SelectItem>
                             <SelectItem value="grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGrandmother')}</SelectItem>
@@ -236,7 +236,7 @@ const ContactFormWeb3 = () => {
                           <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder="Select year range" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
-                          <SelectContent className="bg-background border-2 z-[100]">
+                          <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
                             <SelectItem value="before-1920" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">before 1920</SelectItem>
                             <SelectItem value="1920-1939" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">1920 - 1939</SelectItem>
                             <SelectItem value="1939-1951" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">1939 - 1951</SelectItem>
@@ -257,7 +257,7 @@ const ContactFormWeb3 = () => {
                           <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder={t('contact.selectOption')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
-                          <SelectContent className="bg-background border-2 z-[100]">
+                          <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
                             <SelectItem value="have-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">{t('contact.haveDocuments')}</SelectItem>
                             <SelectItem value="no-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">{t('contact.noDocuments')}</SelectItem>
                             <SelectItem value="need-check" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">{t('contact.needCheck')}</SelectItem>
