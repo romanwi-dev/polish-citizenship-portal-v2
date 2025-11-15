@@ -47,7 +47,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-sm md:text-base lg:text-lg font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-muted-foreground">
+          <p className="text-base md:text-lg lg:text-xl font-medium mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-foreground">
             {t('hero.description')}
           </p>
           
@@ -68,31 +68,31 @@ const HeroWeb3 = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
             {/* Card 1 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative min-h-[120px] md:min-h-[140px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none backdrop-blur-md border border-primary/20 theme-red.light:bg-[hsl(343_79%_53%/0.08)] theme-blue.light:bg-[hsl(221_83%_53%/0.08)]"
             >
-              <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 text-shadow-primary">&gt;20</h3>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground leading-tight">{t('hero.stats.experience')}</p>
+              <div className="w-full h-full flex flex-col items-center justify-center gap-2">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-shadow-primary">&gt;20</h3>
+                <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{t('hero.stats.experience')}</p>
               </div>
             </div>
 
             {/* Card 2 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative min-h-[120px] md:min-h-[140px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none backdrop-blur-md border border-primary/20 theme-red.light:bg-[hsl(343_79%_53%/0.08)] theme-blue.light:bg-[hsl(221_83%_53%/0.08)]"
             >
-              <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 text-shadow-primary">&gt;25,000</h3>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground leading-tight">{t('hero.stats.cases')}</p>
+              <div className="w-full h-full flex flex-col items-center justify-center gap-2">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-shadow-primary">&gt;25,000</h3>
+                <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{t('hero.stats.cases')}</p>
               </div>
             </div>
 
             {/* Card 3 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative min-h-[120px] md:min-h-[140px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none backdrop-blur-md border border-primary/20 theme-red.light:bg-[hsl(343_79%_53%/0.08)] theme-blue.light:bg-[hsl(221_83%_53%/0.08)]"
             >
-              <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 text-shadow-primary">100%</h3>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground leading-tight">{t('hero.stats.success')}</p>
+              <div className="w-full h-full flex flex-col items-center justify-center gap-2">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-shadow-primary">100%</h3>
+                <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{t('hero.stats.success')}</p>
               </div>
             </div>
           </div>
