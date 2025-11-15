@@ -26,7 +26,7 @@ const HeroWeb3 = () => {
           alt="Warsaw Futuristic Cityscape" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/75 to-background/95" />
+        <div className="absolute inset-0 dark:bg-gradient-to-b dark:from-background/85 dark:via-background/75 dark:to-background/95 light:bg-gradient-to-b light:from-background/40 light:via-background/30 light:to-background/50" />
       </div>
 
       {/* Content */}
@@ -47,7 +47,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-foreground/90 dark:text-foreground/80 light:text-foreground">
+          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-muted-foreground">
             {t('hero.description')}
           </p>
           
@@ -68,31 +68,31 @@ const HeroWeb3 = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
             {/* Card 1 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">&gt;20</h3>
-                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">{t('hero.stats.experience')}</p>
+                <p className="text-base md:text-lg font-medium text-muted-foreground">{t('hero.stats.experience')}</p>
               </div>
             </div>
 
             {/* Card 2 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">&gt;25,000</h3>
-                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">{t('hero.stats.cases')}</p>
+                <p className="text-base md:text-lg font-medium text-muted-foreground">{t('hero.stats.cases')}</p>
               </div>
             </div>
 
             {/* Card 3 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">100%</h3>
-                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">{t('hero.stats.success')}</p>
+                <p className="text-base md:text-lg font-medium text-muted-foreground">{t('hero.stats.success')}</p>
               </div>
             </div>
           </div>
