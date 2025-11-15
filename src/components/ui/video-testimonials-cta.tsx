@@ -1,14 +1,9 @@
-import { useTheme } from 'next-themes';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useState } from 'react';
 
 export function VideoTestimonialsCTA() {
-  const { theme } = useTheme();
   const prefersReducedMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
-
-  // Detect if using red theme variant
-  const isRedTheme = theme?.includes('red');
 
   const scrollToContact = () => {
     const contactSection = document.getElementById('contact');
@@ -17,20 +12,6 @@ export function VideoTestimonialsCTA() {
     }
   };
 
-  // Theme-based colors
-  const blueGradient = 'linear-gradient(135deg, hsl(221, 83%, 53%), hsl(221, 83%, 35%), hsl(221, 83%, 45%))';
-  const redGradient = 'linear-gradient(135deg, hsl(343, 79%, 53%), hsl(343, 79%, 35%), hsl(343, 79%, 45%))';
-  
-  const blueGlow = '0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.1)';
-  const redGlow = '0 0 20px rgba(239, 68, 68, 0.4), 0 0 40px rgba(239, 68, 68, 0.3), inset 0 0 20px rgba(239, 68, 68, 0.1)';
-  
-  const blueGlowHover = '0 0 40px rgba(59, 130, 246, 0.6), 0 0 80px rgba(59, 130, 246, 0.4), 0 0 120px rgba(59, 130, 246, 0.3), inset 0 0 30px rgba(59, 130, 246, 0.2)';
-  const redGlowHover = '0 0 40px rgba(239, 68, 68, 0.6), 0 0 80px rgba(239, 68, 68, 0.4), 0 0 120px rgba(239, 68, 68, 0.3), inset 0 0 30px rgba(239, 68, 68, 0.2)';
-
-  const gradient = isRedTheme ? redGradient : blueGradient;
-  const glow = isRedTheme ? redGlow : blueGlow;
-  const glowHover = isRedTheme ? redGlowHover : blueGlowHover;
-
   return (
     <div className="flex justify-center mt-40 mb-20 animate-fade-in">
       <button
@@ -38,73 +19,127 @@ export function VideoTestimonialsCTA() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         aria-label="Request video testimonials - scroll to contact form"
-        className="group relative overflow-hidden rounded-2xl px-12 py-6 md:px-20 md:py-6 text-lg md:text-xl font-bold text-white transition-all duration-500 ease-out focus:outline-none focus:ring-4 focus:ring-primary/50"
+        className="group relative overflow-hidden rounded-2xl px-12 py-6 md:px-20 md:py-6 text-lg md:text-xl font-bold text-primary-foreground transition-all duration-500 ease-out focus:outline-none focus:ring-4 focus:ring-primary/50 bg-gradient-to-br from-primary via-primary/90 to-secondary hover:shadow-2xl hover:shadow-primary/40 dark:hover:shadow-primary/60"
         style={{
-          background: gradient,
-          boxShadow: isHovered ? glowHover : glow,
           transform: prefersReducedMotion 
             ? 'none' 
             : isHovered 
-              ? 'perspective(1000px) rotateX(-5deg) rotateY(5deg) translateZ(20px) scale(1.08)' 
+              ? 'perspective(1000px) rotateX(-8deg) rotateY(8deg) translateZ(30px) scale(1.1)' 
               : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px) scale(1)',
           transition: prefersReducedMotion 
-            ? 'box-shadow 0.4s ease-out' 
-            : 'all 0.4s ease-out',
-          animation: prefersReducedMotion ? 'none' : 'glow-pulse 2s ease-in-out infinite',
+            ? 'box-shadow 0.5s ease-out, background 0.3s ease' 
+            : 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          boxShadow: isHovered 
+            ? '0 25px 50px -12px hsl(var(--primary) / 0.5), 0 0 80px hsl(var(--primary) / 0.4), inset 0 2px 20px hsl(var(--primary-foreground) / 0.2)' 
+            : '0 10px 30px -10px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.2)',
         }}
       >
-        {/* Gradient Overlay */}
+        {/* Animated gradient overlay */}
         <div 
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-tr from-secondary/40 via-accent/30 to-primary/40"
           style={{
-            background: isRedTheme 
-              ? 'radial-gradient(circle at center, rgba(239, 68, 68, 0.3), transparent 70%)'
-              : 'radial-gradient(circle at center, rgba(59, 130, 246, 0.3), transparent 70%)',
+            animation: prefersReducedMotion ? 'none' : 'gradient-shift 3s ease infinite',
           }}
         />
         
-        {/* Shimmer Effect */}
+        {/* Shimmer effect */}
         <div 
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
-            animation: prefersReducedMotion ? 'none' : 'shimmer 2s infinite',
+            background: 'linear-gradient(110deg, transparent 25%, hsl(var(--primary-foreground) / 0.4) 50%, transparent 75%)',
+            animation: prefersReducedMotion ? 'none' : 'shimmer-slide 2.5s ease-in-out infinite',
           }}
         />
 
-        {/* Button Text */}
-        <span className="relative z-10 flex items-center gap-3">
-          Request Video Testimonials
+        {/* Glow particles effect */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-primary-foreground/60 animate-pulse" />
+          <div className="absolute top-3/4 right-1/4 w-1.5 h-1.5 rounded-full bg-accent/70 animate-pulse delay-75" />
+          <div className="absolute bottom-1/3 left-2/3 w-1 h-1 rounded-full bg-secondary/60 animate-pulse delay-150" />
+        </div>
+
+        {/* Border glow */}
+        <div 
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: 'linear-gradient(45deg, hsl(var(--accent) / 0.3), hsl(var(--secondary) / 0.3), hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3))',
+            backgroundSize: '300% 300%',
+            animation: prefersReducedMotion ? 'none' : 'border-glow 4s ease infinite',
+            padding: '2px',
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
+          }}
+        />
+
+        {/* Button Text with icon */}
+        <span className="relative z-10 flex items-center gap-3 drop-shadow-lg">
           <svg 
-            className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" 
+            className="w-6 h-6 transition-transform duration-500 group-hover:scale-125 group-hover:rotate-12" 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24"
             style={{
-              transform: prefersReducedMotion ? 'none' : undefined
+              filter: 'drop-shadow(0 2px 4px hsl(var(--primary) / 0.5))'
             }}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          Request Video Testimonials
+          <svg 
+            className="w-5 h-5 transition-all duration-500 group-hover:translate-x-2 group-hover:scale-110" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </span>
       </button>
 
       <style>{`
-        @keyframes glow-pulse {
+        @keyframes gradient-shift {
           0%, 100% { 
-            filter: brightness(1);
+            background-position: 0% 50%;
+            opacity: 0.6;
           }
           50% { 
-            filter: brightness(1.15);
+            background-position: 100% 50%;
+            opacity: 1;
           }
         }
 
-        @keyframes shimmer {
+        @keyframes shimmer-slide {
           0% {
-            transform: translateX(-100%);
+            transform: translateX(-150%) translateY(-150%) rotate(110deg);
           }
           100% {
-            transform: translateX(100%);
+            transform: translateX(150%) translateY(150%) rotate(110deg);
+          }
+        }
+
+        @keyframes border-glow {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+
+        .delay-75 {
+          animation-delay: 75ms;
+        }
+        
+        .delay-150 {
+          animation-delay: 150ms;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
           }
         }
       `}</style>
