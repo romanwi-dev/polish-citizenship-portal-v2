@@ -1,7 +1,5 @@
-import { lazy, Suspense, useState, useEffect } from "react";
-import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
-
-const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
+import { lazy, Suspense } from "react";
+import { GlobalBackground } from "@/components/GlobalBackground";
 
 // Eagerly load critical above-the-fold components for LCP
 import Navigation from "@/components/Navigation";
@@ -41,48 +39,10 @@ const SectionLoader = () => (
 );
 
 const Index = () => {
-  const [show3D, setShow3D] = useState(false);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    
-    const handleInteraction = () => {
-      setShow3D(true);
-      cleanup();
-    };
-    
-    const cleanup = () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleInteraction);
-      window.removeEventListener('click', handleInteraction);
-    };
-    
-    // Listen for user interaction
-    window.addEventListener('scroll', handleInteraction, { once: true });
-    window.addEventListener('click', handleInteraction, { once: true });
-    
-    // Fallback: load after 2 seconds anyway
-    timer = setTimeout(() => {
-      setShow3D(true);
-      cleanup();
-    }, 2000);
-    
-    return cleanup;
-  }, []);
-
-  // Render all 12 sections with permanent dark background
   return (
     <div className="min-h-screen overflow-x-hidden relative">
-      {/* Global Background - Permanent Dark Mode */}
-      <div className="fixed inset-0 z-0">
-        {show3D ? (
-          <Suspense fallback={<StaticHeritagePlaceholder />}>
-            <StaticHeritage />
-          </Suspense>
-        ) : (
-          <StaticHeritagePlaceholder />
-        )}
-      </div>
+      {/* Global Background - Adapts to theme */}
+      <GlobalBackground />
       
       <div className="relative z-10">
         <Navigation />
