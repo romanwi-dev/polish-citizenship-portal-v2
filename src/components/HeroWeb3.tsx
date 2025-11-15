@@ -26,7 +26,7 @@ const HeroWeb3 = () => {
           alt="Warsaw Futuristic Cityscape" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 dark:bg-gradient-to-b dark:from-background/85 dark:via-background/75 dark:to-background/95 light:bg-gradient-to-b light:from-background/40 light:via-background/30 light:to-background/50" />
+        <div className="absolute inset-0 hero-overlay dark:bg-gradient-to-b dark:from-background/85 dark:via-background/75 dark:to-background/95 light:bg-gradient-to-b light:from-background/60 light:via-background/50 light:to-background/70 md:light:from-background/40 md:light:via-background/30 md:light:to-background/50" />
       </div>
 
       {/* Content */}
@@ -37,7 +37,7 @@ const HeroWeb3 = () => {
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('hero.badge')}</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
           contentVisibility: 'auto'
         }}>
             <span className={`bg-clip-text text-transparent ${
@@ -47,7 +47,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-muted-foreground">
+          <p className="text-sm md:text-base lg:text-lg font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-muted-foreground">
             {t('hero.description')}
           </p>
           
@@ -68,31 +68,31 @@ const HeroWeb3 = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
             {/* Card 1 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative min-h-[120px] md:min-h-[140px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">&gt;20</h3>
-                <p className="text-base md:text-lg font-medium text-muted-foreground">{t('hero.stats.experience')}</p>
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 text-shadow-primary">&gt;20</h3>
+                <p className="text-xs md:text-sm font-medium text-muted-foreground leading-tight">{t('hero.stats.experience')}</p>
               </div>
             </div>
 
             {/* Card 2 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative min-h-[120px] md:min-h-[140px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">&gt;25,000</h3>
-                <p className="text-base md:text-lg font-medium text-muted-foreground">{t('hero.stats.cases')}</p>
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 text-shadow-primary">&gt;25,000</h3>
+                <p className="text-xs md:text-sm font-medium text-muted-foreground leading-tight">{t('hero.stats.cases')}</p>
               </div>
             </div>
 
             {/* Card 3 */}
             <div 
-              className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
+              className="glass-card hover-glow p-6 rounded-lg text-center relative min-h-[120px] md:min-h-[140px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">100%</h3>
-                <p className="text-base md:text-lg font-medium text-muted-foreground">{t('hero.stats.success')}</p>
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 text-shadow-primary">100%</h3>
+                <p className="text-xs md:text-sm font-medium text-muted-foreground leading-tight">{t('hero.stats.success')}</p>
               </div>
             </div>
           </div>

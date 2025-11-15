@@ -113,7 +113,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 14% 96%;
-    --muted-foreground: 215 25% 30%;
+    --muted-foreground: 221 13% 38%;
 
     --accent: 204 70% 53%;
     --accent-foreground: 0 0% 100%;
@@ -198,7 +198,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 100% !important;
     
     --muted: 343 15% 96% !important;
-    --muted-foreground: 343 40% 28% !important;
+    --muted-foreground: 343 13% 38% !important;
     
     --accent: 343 65% 62% !important;
     --accent-foreground: 0 0% 100% !important;
@@ -211,8 +211,8 @@ All colors MUST be HSL.
     --ring: 343 75% 38% !important;
     
     /* Refined gradient - smooth burgundy to rose progression */
-    --gradient-web3: linear-gradient(135deg, hsl(343 75% 38%) 0%, hsl(343 70% 50%) 50%, hsl(343 65% 62%) 100%) !important;
-    --shadow-glow: 0 0 40px hsl(343 70% 45% / 0.25) !important;
+    --gradient-web3: linear-gradient(135deg, hsl(343 79% 45%) 0%, hsl(343 70% 55%) 50%, hsl(343 60% 65%) 100%) !important;
+    --shadow-glow: 0 10px 40px -10px hsl(343 79% 53% / 0.15) !important;
     --shadow-glow-secondary: 0 0 30px hsl(343 65% 55% / 0.20) !important;
     
     /* Light shadow system */
@@ -278,7 +278,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 100% !important;
     
     --muted: 221 15% 96% !important;
-    --muted-foreground: 221 45% 28% !important;
+    --muted-foreground: 221 13% 38% !important;
     
     --accent: 221 65% 60% !important;
     --accent-foreground: 0 0% 100% !important;
@@ -291,8 +291,8 @@ All colors MUST be HSL.
     --ring: 221 80% 35% !important;
     
     /* Refined gradient - smooth progression from medium to lighter blues */
-    --gradient-web3: linear-gradient(135deg, hsl(221 80% 38%) 0%, hsl(221 75% 50%) 50%, hsl(221 70% 62%) 100%) !important;
-    --shadow-glow: 0 0 40px hsl(221 75% 45% / 0.25) !important;
+    --gradient-web3: linear-gradient(135deg, hsl(221 83% 45%) 0%, hsl(221 70% 55%) 50%, hsl(221 60% 65%) 100%) !important;
+    --shadow-glow: 0 10px 40px -10px hsl(221 83% 53% / 0.15) !important;
     --shadow-glow-secondary: 0 0 30px hsl(221 70% 55% / 0.20) !important;
     
     /* Light shadow system */
@@ -545,17 +545,17 @@ All colors MUST be HSL.
   }
 
   .glass-card {
-    @apply backdrop-blur-xl border border-border/50;
+    @apply backdrop-blur-xl;
   }
   
   .dark .glass-card {
-    @apply bg-card/40;
+    @apply bg-card/40 border border-border/50;
     box-shadow: 0 8px 32px 0 hsl(0 0% 0% / 0.37);
   }
   
   .light .glass-card {
-    @apply bg-background/60;
-    box-shadow: 0 2px 16px 0 hsl(var(--foreground) / 0.06), 0 4px 32px 0 hsl(var(--foreground) / 0.03);
+    @apply bg-background/80 border-2 border-primary/30;
+    box-shadow: 0 8px 24px -4px hsl(var(--primary) / 0.05);
   }
 
   .glow-text {
