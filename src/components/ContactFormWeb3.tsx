@@ -214,12 +214,12 @@ const ContactFormWeb3 = () => {
                             <SelectValue placeholder={t('contact.ancestorPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="bg-background border-2 z-[100]">
-                            <SelectItem value="mother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorParent')}</SelectItem>
-                            <SelectItem value="father" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorParent')}</SelectItem>
-                            <SelectItem value="grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGrandparent')}</SelectItem>
-                            <SelectItem value="grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGrandparent')}</SelectItem>
-                            <SelectItem value="great-grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGreatGrandparent')}</SelectItem>
-                            <SelectItem value="great-grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGreatGrandparent')}</SelectItem>
+                            <SelectItem value="mother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorMother')}</SelectItem>
+                            <SelectItem value="father" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorFather')}</SelectItem>
+                            <SelectItem value="grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGrandmother')}</SelectItem>
+                            <SelectItem value="grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGrandfather')}</SelectItem>
+                            <SelectItem value="great-grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGreatGrandmother')}</SelectItem>
+                            <SelectItem value="great-grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGreatGrandfather')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
