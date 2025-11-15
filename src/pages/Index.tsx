@@ -29,7 +29,10 @@ const PricingSection = lazy(() => import("@/components/PricingSection"));
 const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const FAQSection = lazy(() => import("@/components/FAQSection"));
 const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
-const LandmarkUnity = lazy(() => import("@/components/heroes/LandmarkUnity").then(m => ({ default: m.LandmarkUnity })));
+// Preload LandmarkUnity only when user scrolls near it
+const LandmarkUnity = lazy(() => 
+  import("@/components/heroes/LandmarkUnity").then(m => ({ default: m.LandmarkUnity }))
+);
 const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
 const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
 
@@ -100,10 +103,6 @@ const Index = () => {
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />
-        </Suspense>
-        
-        <Suspense fallback={<SectionLoader />}>
-          <LandmarkUnity />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
