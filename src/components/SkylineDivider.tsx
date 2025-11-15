@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import warsawSkylineWhite from "@/assets/warsaw-skyline-white.png";
-import warsawSkylineBlack from "@/assets/warsaw-skyline-black.png";
+import warsawSkylineBlue from "@/assets/warsaw-skyline-blue.png";
+import warsawSkylineRed from "@/assets/warsaw-skyline-red.png";
+import londonSkylineBlue from "@/assets/london-skyline-blue.png";
+import londonSkylineRed from "@/assets/london-skyline-red.png";
 
 interface SkylineDividerProps {
   imageSrc?: string;
@@ -36,18 +39,23 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
     return () => observer.disconnect();
   }, []);
 
-  // Select the correct skyline image based on theme
+  // Select the correct colored skyline based on theme mode AND color
   const getSkylineImage = () => {
     if (imageSrc) return imageSrc; // Allow manual override
     
-    // Use black skylines for light mode, white for dark mode
-    const skylineMap = {
-      warsaw: { light: warsawSkylineBlack, dark: warsawSkylineWhite },
-      london: { light: '/src/assets/london-skyline-black.png', dark: '/src/assets/london-skyline-white.png' },
-      budapest: { light: '/src/assets/budapest-skyline-black.png', dark: '/src/assets/budapest-skyline-white.png' }
+    if (isDark) {
+      // Dark mode: always white skylines
+      return warsawSkylineWhite;
+    }
+    
+    // Light mode: use theme-colored skylines (blue or red)
+    const lightSkylineMap = {
+      warsaw: themeColor === 'blue' ? warsawSkylineBlue : warsawSkylineRed,
+      london: themeColor === 'blue' ? londonSkylineBlue : londonSkylineRed,
+      budapest: themeColor === 'blue' ? warsawSkylineBlue : warsawSkylineRed // fallback to warsaw
     };
     
-    return isDark ? skylineMap[cityName].dark : skylineMap[cityName].light;
+    return lightSkylineMap[cityName];
   };
 
   // Enhanced light theme background for better contrast
@@ -65,18 +73,18 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
   // Dark theme background
   const darkBackgroundImage = 'radial-gradient(circle at 20% 50%, hsl(0, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(240, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(0, 50%, 10%), hsl(240, 50%, 10%), hsl(0, 50%, 10%))';
 
-  // Simplified filters since we're using theme-appropriate images
+  // Simplified filters - colored images don't need heavy filtering
   const getSkylineFilter = () => {
     if (isDark) {
-      return 'brightness(0.8)'; // Slightly brighter for white images
+      return 'brightness(0.85)'; // Slightly dim white for dark mode
     }
-    // Light theme: minimal filter for black images
-    return 'brightness(0.85) contrast(1.1)';
+    // Light mode: no filter needed for colored images
+    return 'none';
   };
 
   const getSkylineOpacity = () => {
-    // Higher opacity since we're using the right colored images
-    return isDark ? 0.65 : 0.75;
+    // Consistent opacity for both modes
+    return isDark ? 0.7 : 0.8;
   };
 
   return (
