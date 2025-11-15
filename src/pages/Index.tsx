@@ -56,47 +56,47 @@ const Index = () => {
           <HeroWeb3 />
           <AboutSection />
         
-        <SkylineDivider imageSrc={londonSkyline} alt="London skyline" />
+        <SkylineDivider cityName="london" alt="London skyline" />
         
         <AIAnalysisSection />
         
-        <SkylineDivider imageSrc={pragueSkyline} alt="Prague skyline" />
+        <SkylineDivider cityName="warsaw" alt="Prague skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
         </Suspense>
         
-        <SkylineDivider imageSrc={budapestSkyline} alt="Budapest skyline" />
+        <SkylineDivider cityName="budapest" alt="Budapest skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <TimelineProcessEnhanced />
         </Suspense>
         
-        <SkylineDivider imageSrc={berlinSkyline} alt="Berlin skyline" />
+        <SkylineDivider cityName="warsaw" alt="Berlin skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
         
-        <SkylineDivider imageSrc={parisSkyline} alt="Paris skyline" />
+        <SkylineDivider cityName="warsaw" alt="Paris skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
         </Suspense>
         
-        <SkylineDivider imageSrc={viennaSkyline} alt="Vienna skyline" />
+        <SkylineDivider cityName="london" alt="Vienna skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsSection />
         </Suspense>
         
-        <SkylineDivider imageSrc={romeSkyline} alt="Rome skyline" />
+        <SkylineDivider cityName="budapest" alt="Rome skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <FAQSection />
         </Suspense>
         
-        <SkylineDivider imageSrc={brusselsSkyline} alt="Brussels skyline" />
+        <SkylineDivider cityName="warsaw" alt="Brussels skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />
