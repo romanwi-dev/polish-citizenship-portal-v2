@@ -76,7 +76,7 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
           className="w-full h-full object-cover"
           style={{
             filter: getSkylineFilter(),
-            opacity: isDark ? 0.6 : 0.15
+            opacity: isDark ? 0.6 : 0.25
           }}
         />
       </div>
