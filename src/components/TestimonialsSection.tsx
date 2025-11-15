@@ -93,8 +93,8 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Five Sequential Arrows Animation */}
-        <div 
-          className="flex justify-center mt-16 mb-2 cursor-pointer hover:opacity-80 transition-opacity relative z-10"
+        <div
+          className="flex justify-center mt-8 mb-2 cursor-pointer hover:opacity-80 transition-opacity relative z-10"
           onClick={() => {
             const videoButton = document.getElementById('video-testimonials-cta');
             if (videoButton) {
