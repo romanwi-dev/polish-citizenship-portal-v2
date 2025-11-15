@@ -56,7 +56,7 @@ const Index = () => {
           <HeroWeb3 />
           <AboutSection />
         
-        <SkylineDivider cityName="warsaw" alt="Warsaw skyline" />
+        <SkylineDivider cityName="athens" alt="Athens skyline" />
         
         <AIAnalysisSection />
         

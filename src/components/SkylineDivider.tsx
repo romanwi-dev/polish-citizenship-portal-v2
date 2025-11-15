@@ -25,11 +25,14 @@ import romeSkylineRed from "@/assets/rome-skyline-red.png";
 import brusselsSkylineWhite from "@/assets/brussels-skyline-white.png";
 import brusselsSkylineBlue from "@/assets/brussels-skyline-blue.png";
 import brusselsSkylineRed from "@/assets/brussels-skyline-red.png";
+import athensSkylineWhite from "@/assets/athens-skyline-white.png";
+import athensSkylineBlue from "@/assets/athens-skyline-blue.png";
+import athensSkylineRed from "@/assets/athens-skyline-red.png";
 
 interface SkylineDividerProps {
   imageSrc?: string;
   alt?: string;
-  cityName?: 'warsaw' | 'london' | 'prague' | 'budapest' | 'berlin' | 'paris' | 'vienna' | 'rome' | 'brussels';
+  cityName?: 'warsaw' | 'london' | 'prague' | 'budapest' | 'berlin' | 'paris' | 'vienna' | 'rome' | 'brussels' | 'athens';
 }
 
 const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }: SkylineDividerProps) => {
@@ -79,7 +82,8 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
         paris: parisSkylineWhite,
         vienna: viennaSkylineWhite,
         rome: romeSkylineWhite,
-        brussels: brusselsSkylineWhite
+        brussels: brusselsSkylineWhite,
+        athens: athensSkylineWhite
       };
       return darkSkylineMap[cityName];
     }
@@ -94,7 +98,8 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
       paris: themeColor === 'blue' ? parisSkylineBlue : parisSkylineRed,
       vienna: themeColor === 'blue' ? viennaSkylineBlue : viennaSkylineRed,
       rome: themeColor === 'blue' ? romeSkylineBlue : romeSkylineRed,
-      brussels: themeColor === 'blue' ? brusselsSkylineBlue : brusselsSkylineRed
+      brussels: themeColor === 'blue' ? brusselsSkylineBlue : brusselsSkylineRed,
+      athens: themeColor === 'blue' ? athensSkylineBlue : athensSkylineRed
     };
     
     return lightSkylineMap[cityName];
