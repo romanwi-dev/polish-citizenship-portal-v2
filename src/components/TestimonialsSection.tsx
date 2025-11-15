@@ -1,7 +1,6 @@
 import { Star, Quote } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { MainCTA } from '@/components/ui/main-cta';
+import { VideoTestimonialsCTA } from '@/components/ui/video-testimonials-cta';
 import { useTranslation } from 'react-i18next';
 
 export default function TestimonialsSection() {
@@ -93,13 +92,7 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        <MainCTA
-          wrapperClassName="mt-40 mb-20"
-          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-          ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-        >
-          {t('hero.cta')}
-        </MainCTA>
+        <VideoTestimonialsCTA />
 
       </div>
     </section>
