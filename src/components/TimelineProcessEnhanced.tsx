@@ -212,7 +212,7 @@ export default function TimelineProcessEnhanced() {
     }));
   };
   return (
-    <section id="timeline" className="relative py-24 overflow-hidden overflow-x-hidden">
+    <section key={i18n.language} id="timeline" className="relative py-24 overflow-hidden overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
