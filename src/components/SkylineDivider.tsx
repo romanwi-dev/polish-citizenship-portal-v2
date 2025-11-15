@@ -34,14 +34,14 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
     return () => observer.disconnect();
   }, []);
 
-  // Light theme background (matching StaticHeritageLightTheme)
+  // Enhanced light theme background for better contrast
   const lightBackgroundImage = `
-    radial-gradient(circle at 20% 30%, hsl(var(--primary) / 0.06), transparent 40%),
-    radial-gradient(circle at 80% 70%, hsl(var(--secondary) / 0.05), transparent 40%),
-    radial-gradient(circle at 50% 50%, hsl(var(--muted) / 0.3), transparent 60%),
+    radial-gradient(circle at 20% 30%, hsl(var(--primary) / 0.14), transparent 50%),
+    radial-gradient(circle at 80% 70%, hsl(var(--secondary) / 0.12), transparent 50%),
+    radial-gradient(circle at 50% 50%, hsl(var(--muted) / 0.45), transparent 70%),
     linear-gradient(135deg, 
       hsl(var(--background)), 
-      hsl(var(--muted) / 0.15), 
+      hsl(var(--muted) / 0.3), 
       hsl(var(--background))
     )
   `;
@@ -49,13 +49,23 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
   // Dark theme background
   const darkBackgroundImage = 'radial-gradient(circle at 20% 50%, hsl(0, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(240, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(0, 50%, 10%), hsl(240, 50%, 10%), hsl(0, 50%, 10%))';
 
-  // Skyline filter for light themes
+  // Enhanced skyline filter and opacity for better visibility
   const getSkylineFilter = () => {
     if (isDark) {
       return 'brightness(0.7)';
     }
-    // Light theme: dark silhouette on white background
-    return 'brightness(0) saturate(0)';
+    // Light theme: stronger dark silhouette with theme-specific adjustments
+    if (themeColor === 'blue') {
+      return 'brightness(0.12) saturate(0) contrast(1.6)';
+    }
+    // Red theme
+    return 'brightness(0.15) saturate(0) contrast(1.5)';
+  };
+
+  const getSkylineOpacity = () => {
+    if (isDark) return 0.6;
+    // Significantly increased opacity for light themes
+    return themeColor === 'blue' ? 0.65 : 0.55;
   };
 
   return (
@@ -68,7 +78,7 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
         }}
       />
       
-      {/* Full-width skyline silhouette */}
+      {/* Full-width skyline silhouette with enhanced visibility */}
       <div className="absolute inset-0">
         <img 
           src={imageSrc} 
@@ -76,7 +86,8 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
           className="w-full h-full object-cover"
           style={{
             filter: getSkylineFilter(),
-            opacity: isDark ? 0.6 : 0.25
+            opacity: getSkylineOpacity(),
+            mixBlendMode: isDark ? 'normal' : 'multiply'
           }}
         />
       </div>
