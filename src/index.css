@@ -141,84 +141,83 @@ All colors MUST be HSL.
     --shadow-card: 0 2px 8px hsl(222 40% 20% / 0.06), 0 4px 16px hsl(222 40% 20% / 0.03);
   }
 
-  /* Red Theme - Burgundy Accents */
+  /* Red Theme - Dark Bordeaux Palette */
   .theme-red {
-    /* Same dark background as default theme */
     --background: 222 47% 11%;
-    --foreground: 345 50% 92% !important;  /* Light rose/pink shade */
+    --foreground: 343 20% 88% !important;
     
     --card: 217 33% 17%;
-    --card-foreground: 345 45% 88% !important;  /* Slightly darker rose */
+    --card-foreground: 343 18% 85% !important;
     
     --popover: 217 33% 17%;
-    --popover-foreground: 345 45% 88% !important;
+    --popover-foreground: 343 18% 85% !important;
     
     --muted: 215 28% 17%;
-    --muted-foreground: 345 35% 68% !important;  /* Medium rose shade */
+    --muted-foreground: 343 12% 65% !important;
     
-    /* Pure red accents - GRADIENT: dark burgundy → bright red → glowing white */
-    --primary: 343 79% 53% !important;
+    /* Deep dark bordeaux - less saturated, more elegant */
+    --primary: 343 55% 35% !important;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 345 66% 58% !important;
+    --secondary: 343 50% 42% !important;
     --secondary-foreground: 0 0% 100%;
 
-    --accent: 0 0% 98% !important;  /* Almost white for gradient end */
-    --accent-foreground: 222 47% 11%;
+    --accent: 343 45% 48% !important;
+    --accent-foreground: 0 0% 100%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 343 40% 28% !important;  /* Dark red border */
-    --input: 343 35% 22% !important;   /* Darker red input bg */
-    --ring: 343 79% 53% !important;
+    --border: 343 25% 26% !important;
+    --input: 343 20% 20% !important;
+    --ring: 343 55% 35% !important;
 
-    /* Gradient: dark wine → bright red → glowing white */
-    --gradient-web3: linear-gradient(135deg, hsl(343 70% 25%) 0%, hsl(343 79% 53%) 50%, hsl(0 0% 98%) 100%) !important;
-    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(345 66% 58% / 0.15) 0%, transparent 70%) !important;
-    --shadow-glow: 0 0 40px hsl(345 66% 58% / 0.2) !important;
-    --shadow-glow-secondary: 0 0 40px hsl(343 79% 53% / 0.15) !important;
+    /* Subtle bordeaux gradient - minimal glow */
+    --gradient-web3: linear-gradient(135deg, hsl(343 55% 30%) 0%, hsl(343 50% 38%) 50%, hsl(343 45% 45%) 100%) !important;
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(343 55% 35% / 0.12) 0%, transparent 70%) !important;
+    --shadow-glow: 0 0 30px hsl(343 55% 35% / 0.15) !important;
+    --shadow-glow-secondary: 0 0 25px hsl(343 50% 38% / 0.10) !important;
   }
 
   .theme-red.light {
     --background: 0 0% 99% !important;
-    --foreground: 343 65% 18% !important;
+    --foreground: 343 60% 22% !important;
     
     --card: 0 0% 100% !important;
-    --card-foreground: 343 65% 18% !important;
+    --card-foreground: 343 60% 22% !important;
     
     --popover: 0 0% 100% !important;
-    --popover-foreground: 343 65% 18% !important;
+    --popover-foreground: 343 60% 22% !important;
     
-    /* Balanced reds - elegant burgundy to soft rose */
-    --primary: 343 75% 38% !important;
+    /* Dark bordeaux for light mode - subtle and elegant */
+    --primary: 343 60% 32% !important;
     --primary-foreground: 0 0% 100% !important;
     
-    --secondary: 343 70% 52% !important;
+    --secondary: 343 55% 40% !important;
     --secondary-foreground: 0 0% 100% !important;
     
-    --muted: 343 15% 96% !important;
-    --muted-foreground: 343 13% 38% !important;
+    --muted: 343 12% 95% !important;
+    --muted-foreground: 343 15% 40% !important;
     
-    --accent: 343 65% 62% !important;
+    --accent: 343 50% 48% !important;
     --accent-foreground: 0 0% 100% !important;
     
     --destructive: 0 84.2% 60.2% !important;
     --destructive-foreground: 0 0% 98% !important;
     
-    --border: 343 25% 88% !important;
-    --input: 343 20% 94% !important;
-    --ring: 343 75% 38% !important;
+    --border: 343 20% 86% !important;
+    --input: 343 15% 92% !important;
+    --ring: 343 60% 32% !important;
     
-    /* Refined gradient - smooth burgundy to rose progression */
-    --gradient-web3: linear-gradient(135deg, hsl(343 79% 45%) 0%, hsl(343 70% 55%) 50%, hsl(343 60% 65%) 100%) !important;
-    --shadow-glow: 0 10px 40px -10px hsl(343 79% 53% / 0.15) !important;
-    --shadow-glow-secondary: 0 0 30px hsl(343 65% 55% / 0.20) !important;
+    /* Subtle bordeaux gradient - minimal shine */
+    --gradient-web3: linear-gradient(135deg, hsl(343 60% 28%) 0%, hsl(343 55% 36%) 50%, hsl(343 50% 44%) 100%) !important;
+    --shadow-glow: 0 8px 30px -8px hsl(343 60% 32% / 0.12) !important;
+    --shadow-glow-secondary: 0 0 20px hsl(343 55% 40% / 0.10) !important;
     
-    /* Light shadow system */
-    --shadow-card-light: 0 2px 8px hsl(343 50% 20% / 0.06), 0 4px 16px hsl(343 50% 20% / 0.03);
-    --shadow-elevated-light: 0 4px 16px hsl(343 50% 20% / 0.10), 0 8px 32px hsl(343 50% 20% / 0.06);
-    --shadow-hover-light: 0 8px 24px hsl(343 50% 20% / 0.14), 0 16px 48px hsl(343 50% 20% / 0.10);
+    /* Light shadow system - very subtle */
+    --shadow-card-light: 0 2px 8px hsl(343 40% 20% / 0.04), 0 4px 16px hsl(343 40% 20% / 0.02);
+    --shadow-elevated-light: 0 4px 16px hsl(343 40% 20% / 0.08), 0 8px 32px hsl(343 40% 20% / 0.04);
+    --shadow-hover-light: 0 8px 24px hsl(343 40% 20% / 0.10), 0 16px 48px hsl(343 40% 20% / 0.06);
   }
 
   /* Blue Theme - Existing Blue Accents */
