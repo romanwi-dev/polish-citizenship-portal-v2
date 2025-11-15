@@ -64,28 +64,11 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
     return () => observer.disconnect();
   }, [cityName]);
 
-  // Select the correct colored skyline based on theme mode AND color
+  // Select the correct colored skyline based on theme color only (same in light and dark modes)
   const getSkylineImage = () => {
     if (imageSrc) return imageSrc; // Allow manual override
     
-    if (isDark) {
-      // Dark mode: use white skylines for all cities
-      const darkSkylineMap = {
-        warsaw: warsawSkylineWhite,
-        london: warsawSkylineWhite,
-        prague: pragueSkylineWhite,
-        budapest: budapestSkylineWhite,
-        berlin: berlinSkylineWhite,
-        paris: parisSkylineWhite,
-        vienna: viennaSkylineWhite,
-        rome: romeSkylineWhite,
-        brussels: brusselsSkylineWhite
-      };
-      return darkSkylineMap[cityName];
-    }
-    
-    // Light mode: use theme-colored skylines (blue or red)
-    const lightSkylineMap = {
+    const skylineMap = {
       warsaw: themeColor === 'blue' ? warsawSkylineBlue : warsawSkylineRed,
       london: themeColor === 'blue' ? londonSkylineBlue : londonSkylineRed,
       prague: themeColor === 'blue' ? pragueSkylineBlue : pragueSkylineRed,
@@ -96,8 +79,7 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
       rome: themeColor === 'blue' ? romeSkylineBlue : romeSkylineRed,
       brussels: themeColor === 'blue' ? brusselsSkylineBlue : brusselsSkylineRed
     };
-    
-    return lightSkylineMap[cityName];
+    return skylineMap[cityName];
   };
 
   // Enhanced light theme background for better contrast
