@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    sourcemap: true,
+    sourcemap: mode === 'production' ? 'hidden' : true,
     cssCodeSplit: true,
     chunkSizeWarningLimit: 500,
     reportCompressedSize: true,
