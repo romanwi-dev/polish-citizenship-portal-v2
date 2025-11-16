@@ -149,7 +149,10 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
                 return href.startsWith('#') ? (
                   <button
                     key={`${href}-${link.label}`}
-                    onClick={(e) => handleClick(e, href)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClick(e, href);
+                    }}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-left"
                   >
                     {Icon && <Icon className="h-4 w-4 text-primary" />}
@@ -161,7 +164,10 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
                   <Link
                     key={`${href}-${link.label}`}
                     to={href}
-                    onClick={() => onNavigate()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onNavigate();
+                    }}
                     className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     {Icon && <Icon className="h-4 w-4 text-primary" />}
