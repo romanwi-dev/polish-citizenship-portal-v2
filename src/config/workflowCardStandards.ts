@@ -13,7 +13,7 @@
 
 export const WORKFLOW_CARD_STANDARDS = {
   // Card dimensions
-  cardHeight: '480px',
+  cardHeight: '440px',
   
   // Layout proportions (MUST MATCH across all workflows)
   layout: {

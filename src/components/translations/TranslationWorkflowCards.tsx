@@ -176,7 +176,7 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                   {/* Card */}
                   <div className="w-full md:w-[42%]">
                     <div 
-                      className="relative h-[480px]"
+                      className="relative h-[440px]"
                       style={{ perspective: '1000px' }}
                     >
                     <div
