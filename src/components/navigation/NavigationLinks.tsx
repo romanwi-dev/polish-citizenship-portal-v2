@@ -144,12 +144,24 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
               {section.links.map((link) => {
                 const Icon = link.icon;
                 const isFeatured = link.featured;
+                const { href } = link;
                 
-                return (
+                return href.startsWith('#') ? (
+                  <button
+                    key={`${href}-${link.label}`}
+                    onClick={(e) => handleClick(e, href)}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-left"
+                  >
+                    {Icon && <Icon className="h-4 w-4 text-primary" />}
+                    <span className="font-medium">
+                      {link.label}
+                    </span>
+                  </button>
+                ) : (
                   <Link
-                    key={`${link.href}-${link.label}`}
-                    to={link.href}
-                    onClick={(e) => handleClick(e, link.href)}
+                    key={`${href}-${link.label}`}
+                    to={href}
+                    onClick={() => onNavigate()}
                     className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     {Icon && <Icon className="h-4 w-4 text-primary" />}
