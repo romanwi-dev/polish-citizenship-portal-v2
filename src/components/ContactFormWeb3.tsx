@@ -150,7 +150,7 @@ const ContactFormWeb3 = () => {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.nameLabel')} *</Label>
+                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">Name *</Label>
                         <input
                           id="name"
                           name="name"
@@ -164,7 +164,7 @@ const ContactFormWeb3 = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.emailLabel')} *</Label>
+                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">Email *</Label>
                         <input
                           id="email"
                           name="email"
