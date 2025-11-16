@@ -32,11 +32,15 @@ function FloatingPyramid({ position, color }: { position: [number, number, numbe
 
 export const HeroFloatingPyramids = () => {
   const { t } = useTranslation();
-  const [email, setEmail] = useState('');
+  const [formData, setFormData] = useState({ name: '', email: '', country: '' });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank');
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -55,29 +59,74 @@ export const HeroFloatingPyramids = () => {
       <div className="container relative z-10 px-4 mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <h1 className="text-6xl md:text-8xl font-heading font-black">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-black">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
                 {t('hero.title')}
               </span>
             </h1>
-            <p className="text-xl text-foreground/80">
+            <p className="text-lg md:text-xl text-foreground/80">
               {t('hero.description')}
             </p>
+            
+            {/* 3 Feature Cards */}
+            <div className="grid grid-cols-3 gap-4 pt-4">
+              <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/20">
+                <div className="text-2xl font-bold text-primary">Expert</div>
+                <div className="text-xs text-foreground/70">Legal Team</div>
+              </div>
+              <div className="text-center p-4 rounded-lg bg-secondary/10 border border-secondary/20">
+                <div className="text-2xl font-bold text-secondary">EU</div>
+                <div className="text-xs text-foreground/70">Passport</div>
+              </div>
+              <div className="text-center p-4 rounded-lg bg-accent/10 border border-accent/20">
+                <div className="text-2xl font-bold text-accent">Secure</div>
+                <div className="text-xs text-foreground/70">Process</div>
+              </div>
+            </div>
           </div>
 
-          <div className="glass-card p-8 rounded-2xl border border-border/50 backdrop-blur-xl">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">Email</label>
+          <div className="glass-card p-8 rounded-2xl border border-primary/20 backdrop-blur-xl shadow-lg">
+            <h3 className="text-xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Start Your Journey
+            </h3>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor="name" className="text-sm font-medium text-foreground/80">Name</label>
                 <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary outline-none"
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary outline-none transition-colors text-foreground"
                   required
                 />
               </div>
-              <MainCTA ariaLabel="Start your Polish citizenship journey" wrapperClassName="">Get Started</MainCTA>
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-foreground/80">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary outline-none transition-colors text-foreground"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="country" className="text-sm font-medium text-foreground/80">Country</label>
+                <input
+                  type="text"
+                  id="country"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary outline-none transition-colors text-foreground"
+                  required
+                />
+              </div>
+              <MainCTA ariaLabel="Start your Polish citizenship journey" wrapperClassName="mt-6">Get Started</MainCTA>
             </form>
           </div>
         </div>
