@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { useTranslation } from 'react-i18next';
 import { MainCTA } from '@/components/ui/main-cta';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { Award, Users, Trophy } from 'lucide-react';
+import { Award, Users, Trophy, Sparkles } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
@@ -105,7 +105,7 @@ export const HeroWavingFlags = () => {
             <div className={`space-y-8 md:pt-8 lg:pt-12 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
               <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mb-6">
-                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {t('hero.badge')}
                 </span>
