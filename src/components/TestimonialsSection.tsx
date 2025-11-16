@@ -140,8 +140,6 @@ export default function TestimonialsSection() {
             </span>
           </MainCTA>
         </div>
-
-      </div>
-    </section>
+    </SectionLayout>
   );
 }
