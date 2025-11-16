@@ -105,7 +105,7 @@ export const HeroWavingFlags = () => {
             <div className={`space-y-8 md:pt-8 lg:pt-12 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
               <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary inline-block">
+                <span className="bg-clip-text text-transparent inline-block" style={{ backgroundImage: 'var(--gradient-title)' }}>
                   {t('hero.title')}
                 </span>
               </h1>
