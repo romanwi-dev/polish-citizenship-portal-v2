@@ -65,12 +65,12 @@ export default function TimelineProcessEnhanced() {
     icon: FileText,
     gradient: "from-blue-500 to-cyan-500",
     image: timeline01,
-    detailedInfo: "Your journey begins with the initial contact where you reach out to express your interest in Polish citizenship. During this phase, you'll engage in preliminary communication to understand your unique situation and family background. We'll answer your initial questions and guide you toward the next steps in your citizenship application process.",
+    detailedInfo: "The first steps in your Polish citizenship journey include your initial contact with us, taking our comprehensive citizenship test, filling out the family tree form, undergoing eligibility examination, and having an eligibility call with our experts. This foundational phase establishes your case and determines your qualification path.",
     keyPoints: [
-      "Your first inquiry initiates the citizenship journey",
-      "Your questions receive preliminary answers",
-      "Your case is evaluated for eligibility",
-      "Your next steps are clearly outlined"
+      "Make first contact via website, email, or WhatsApp",
+      "Complete Polish citizenship eligibility test online",
+      "Fill out detailed family tree with ancestor information",
+      "Receive eligibility examination and consultation call"
     ]
   }, {
     number: "2",
@@ -82,12 +82,12 @@ export default function TimelineProcessEnhanced() {
     icon: CreditCard,
     gradient: "from-cyan-500 to-blue-500",
     image: timeline02,
-    detailedInfo: "Your citizenship eligibility is assessed through a comprehensive citizenship test. This detailed examination analyzes your family history, ancestral connections, and documentation to determine your qualification for Polish citizenship by descent. The test reveals exactly which documents you need and what path your application will follow.",
+    detailedInfo: "We provide you with an initial assessment of your case, send full process information with transparent pricing, receive your confirmation to proceed, and email you the complete list of all needed documents. This stage ensures you understand the costs, timeline, and requirements before moving forward.",
     keyPoints: [
-      "Your family history receives thorough analysis",
-      "Your ancestral line is verified for citizenship eligibility",
-      "Your required documents are identified",
-      "Your citizenship path is mapped out clearly"
+      "Receive initial assessment of your citizenship case",
+      "Get full process information with detailed pricing breakdown",
+      "Confirm your decision to proceed with the application",
+      "Receive comprehensive list of required documents"
     ]
   }, {
     number: "3",
@@ -99,12 +99,12 @@ export default function TimelineProcessEnhanced() {
     icon: CheckCircle,
     gradient: "from-blue-500 to-indigo-500",
     image: timeline03,
-    detailedInfo: "Your complete family tree is professionally constructed, tracing your lineage back through multiple generations to establish your Polish ancestry. This genealogical research identifies the key Polish ancestor through whom you claim citizenship and documents the unbroken chain of descent that qualifies you for citizenship recognition.",
+    detailedInfo: "Once you decide to proceed, you make the advance payment which secures your case processing slot. Your client portal account is then opened, giving you 24/7 access to track your case, upload documents, view progress, and communicate with your legal team throughout the entire citizenship journey.",
     keyPoints: [
-      "Your ancestral line is professionally researched",
-      "Your family tree is documented with historical records",
-      "Your key Polish ancestor is identified and verified",
-      "Your citizenship chain is established and proven"
+      "Make advance payment to secure your case slot",
+      "Client portal account is opened for you",
+      "Gain 24/7 access to track application progress",
+      "Communicate directly with your legal team"
     ]
   }, {
     number: "4",
@@ -116,12 +116,12 @@ export default function TimelineProcessEnhanced() {
     icon: FileCheck,
     gradient: "from-indigo-500 to-purple-500",
     image: timeline04,
-    detailedInfo: "Your eligibility confirmation is followed by a detailed discussion about the terms and pricing for your citizenship case. You'll receive a transparent breakdown of all costs, a clear explanation of the service agreement, and the complete list of documents required for your specific case. This stage ensures you understand exactly what's needed and what you'll receive.",
+    detailedInfo: "You provide your basic details including passport copy, current address, birth certificate copy, phone number, and essential family history. We then prepare the official Powers of Attorney documents. Once signed, you send these POA documents by FedEx to our Warsaw office so we can legally represent you with Polish authorities.",
     keyPoints: [
-      "Your pricing is presented with complete transparency",
-      "Your service terms are explained in detail",
-      "Your required documents are listed specifically",
-      "Your questions about costs are answered fully"
+      "Provide passport copy, address, and birth certificate",
+      "Share phone number and essential family history details",
+      "We prepare official Power of Attorney documents",
+      "Sign and send POAs by FedEx to Warsaw office"
     ]
   }, {
     number: "5",
@@ -133,12 +133,12 @@ export default function TimelineProcessEnhanced() {
     icon: Send,
     gradient: "from-purple-500 to-pink-500",
     image: timeline05,
-    detailedInfo: "Your case officially begins when you make your advance payment and your secure account is created on our client portal. This payment confirms your commitment and activates all services. Your portal account gives you 24/7 access to track progress, upload documents, and communicate with your legal team throughout the entire citizenship process.",
+    detailedInfo: "You fill out the comprehensive MASTER FORM on your portal account which includes all data needed to process your complete citizenship case. Our AI Agent then generates all necessary paperwork automatically. Finally, we draft and submit your official Polish citizenship application to the Masovian Voivoda office in Warsaw.",
     keyPoints: [
-      "Your advance payment secures your case slot",
-      "Your portal account provides real-time tracking",
-      "Your documents can be uploaded securely",
-      "Your legal team becomes directly accessible"
+      "Complete detailed MASTER FORM with all required data",
+      "AI Agent automatically generates all necessary paperwork",
+      "Draft Polish citizenship application is created",
+      "Official application submitted to Polish authorities"
     ]
   }, {
     number: "6",
@@ -150,12 +150,12 @@ export default function TimelineProcessEnhanced() {
     icon: FolderSearch,
     gradient: "from-pink-500 to-rose-500",
     image: timeline06,
-    detailedInfo: "Your essential details are collected through our comprehensive intake process where you provide passport information, birth details, address, phone number, and key family history. This information forms the foundation for preparing your Power of Attorney documents, which will authorize us to represent you in all dealings with Polish authorities.",
+    detailedInfo: "We work with you to clarify exactly which local documents are needed (birth certificates, marriage certificates, naturalization records). You gather these documents from your country, with advice from our local agents. We can connect you to our partner network to help with document collection in various countries worldwide.",
     keyPoints: [
-      "Your personal information is securely collected",
-      "Your passport details are recorded accurately",
-      "Your family data is documented for POA preparation",
-      "Your authorization forms are prepared professionally"
+      "Document list clarification for your specific case",
+      "Gather local birth and marriage certificates",
+      "Obtain naturalization and military service records if applicable",
+      "Partner assistance available for document collection"
     ]
   }, {
     number: "7",
@@ -167,12 +167,12 @@ export default function TimelineProcessEnhanced() {
     icon: Archive,
     gradient: "from-rose-500 to-red-500",
     image: timeline07,
-    detailedInfo: "Your Power of Attorney documents are professionally prepared by our legal team, then emailed to you for signature. After you sign these critical documents, you'll send them via FedEx to our Warsaw office. These POAs legally authorize us to act on your behalf with Polish government agencies, submit applications, and handle all official correspondence throughout your citizenship case.",
+    detailedInfo: "We conduct comprehensive searches in Polish state archives, international archives where Polish records may be held, and explore family possessions for any old Polish documents. We connect you to our partner network to process each search efficiently. These archival documents provide crucial historical proof of your Polish ancestry.",
     keyPoints: [
-      "Your POA documents are drafted by legal experts",
-      "Your signatures are collected on official forms",
-      "Your signed POAs are shipped securely to Warsaw",
-      "Your legal representation is officially established"
+      "Polish state archives are searched for birth/marriage records",
+      "International archives searched for displaced Polish records",
+      "Family possessions examined for old Polish documents",
+      "Partner network processes all archive searches"
     ]
   }, {
     number: "8",
@@ -184,12 +184,12 @@ export default function TimelineProcessEnhanced() {
     icon: Languages,
     gradient: "from-red-500 to-orange-500",
     image: timeline08,
-    detailedInfo: "Your master data form is completed through our comprehensive digital interface where you provide all necessary information about yourself and your family. This detailed form, containing approximately 140 fields, captures everything needed for your citizenship application. Our AI-powered system helps ensure accuracy and completeness as you fill in dates, places, names, and family relationships.",
+    detailedInfo: "All collected documents undergo professional translation using our AI translation service on the portal, then certification by a Polish Certified Sworn Translator. Our dedicated translations agent supervises the entire process. Finally, an independent agent double-checks all translations for errors to ensure perfect accuracy before submission.",
     keyPoints: [
-      "Your complete family information is systematically collected",
-      "Your data is validated for accuracy by AI assistance",
-      "Your application becomes ready for official submission",
-      "Your information is securely stored in your portal"
+      "AI-powered translation service processes documents",
+      "Polish Certified Sworn Translator certifies all translations",
+      "Dedicated translations agent supervises the workflow",
+      "Independent quality check ensures translation accuracy"
     ]
   }, {
     number: "9",
@@ -201,12 +201,12 @@ export default function TimelineProcessEnhanced() {
     icon: Upload,
     gradient: "from-orange-500 to-amber-500",
     image: timeline09,
-    detailedInfo: "Your local documents from your country of residence are gathered and submitted, including birth certificates, marriage certificates, naturalization records, and other vital documents. Our global partner network assists you in obtaining these documents from local authorities. Each document must be properly certified, apostilled, and prepared for submission to Polish authorities.",
+    detailedInfo: "We submit all your local documents (birth and marriage certificates, naturalization acts, military records) along with Polish archival documents and detailed family information to the Polish authorities. This comprehensive document package is filed BEFORE receiving the initial response from the government whenever possible to expedite your case.",
     keyPoints: [
-      "Your local birth and marriage certificates are obtained",
-      "Your documents receive apostille certification as required",
-      "Your partner assistance is arranged when needed",
-      "Your vital records are verified for authenticity"
+      "Local birth and marriage certificates submitted",
+      "Naturalization and military service records filed",
+      "Polish archival documents included in submission",
+      "Complete family information package delivered to authorities"
     ]
   }, {
     number: "10",
@@ -218,12 +218,12 @@ export default function TimelineProcessEnhanced() {
     icon: Stamp,
     gradient: "from-amber-500 to-yellow-500",
     image: timeline10,
-    detailedInfo: "Your Polish archival documents are professionally searched for and retrieved from archives across Poland and internationally. Our expert researchers access birth, marriage, and death records from Polish state archives, church archives, and international repositories. These historical documents are crucial evidence of your Polish ancestry and citizenship chain.",
+    detailedInfo: "We prepare applications for Polish birth and marriage certificates (civil acts) for you and your ancestors from the relevant Polish Civil Registry offices. After charging the payment for this service, our dedicated Civil Acts Agent submits the applications and manages the entire process until we receive the official Polish birth and marriage certificates.",
     keyPoints: [
-      "Your ancestral documents are located in Polish archives",
-      "Your church and civil records are professionally retrieved",
-      "Your international archives are searched when applicable",
-      "Your historical proof of Polish connection is secured"
+      "Applications prepared for Polish birth/marriage certificates",
+      "Payment charged for civil acts processing service",
+      "Applications submitted to relevant Polish registry offices",
+      "Dedicated agent manages process until certificates received"
     ]
   }, {
     number: "11",
@@ -235,12 +235,12 @@ export default function TimelineProcessEnhanced() {
     icon: Clock,
     gradient: "from-yellow-500 to-lime-500",
     image: timeline11,
-    detailedInfo: "Your non-Polish documents undergo professional certified translation by Polish sworn translators. Every birth certificate, marriage record, and legal document not in Polish must be translated by a certified sworn translator whose work is recognized by Polish authorities. Our translation partners ensure accuracy and legal compliance with strict government requirements.",
+    detailedInfo: "The initial response letter arrives from the Masovian Voivoda's office regarding your Polish citizenship case. We evaluate the government's demands and requirements, send you a copy with explanations, extend the processing term if needed, and await any additional evidence requested by the authorities before the final decision.",
     keyPoints: [
-      "Your documents are translated by certified sworn translators",
-      "Your translations meet official Polish legal standards",
-      "Your translated documents include required certifications",
-      "Your translation quality is verified for accuracy"
+      "Initial response letter received from Polish government",
+      "Government demands are evaluated and explained to you",
+      "Processing term extension requested when necessary",
+      "Additional evidence gathered and submitted as required"
     ]
   }, {
     number: "12",
@@ -252,12 +252,12 @@ export default function TimelineProcessEnhanced() {
     icon: Zap,
     gradient: "from-lime-500 to-green-500",
     image: timeline12,
-    detailedInfo: "Your complete documentation package is professionally filed with the Polish authorities. All your collected documents—local certificates, Polish archival records, certified translations, and your application—are organized, verified, and submitted to the Masovian Voivodeship office. Your filing is tracked and you receive confirmation of official submission.",
+    detailedInfo: "We offer our special pushing schemes (PUSH, NUDGE, SIT-DOWN) to help accelerate your citizenship case processing. We explain each scheme in detail, collect payment if you choose one, and implement the strategy with Polish authorities. After receiving the 2nd response, we can introduce these schemes again if needed to further expedite the decision.",
     keyPoints: [
-      "Your complete document set is organized professionally",
-      "Your application is submitted to the correct authority",
-      "Your filing is confirmed with official receipt",
-      "Your case enters the government review queue"
+      "PUSH, NUDGE, and SIT-DOWN acceleration schemes explained",
+      "Payment collected for chosen acceleration strategy",
+      "Pushing schemes implemented with Polish authorities",
+      "Schemes can be reintroduced after 2nd government response"
     ]
   }, {
     number: "13",
@@ -269,12 +269,12 @@ export default function TimelineProcessEnhanced() {
     icon: Award,
     gradient: "from-green-500 to-emerald-500",
     image: timeline13,
-    detailedInfo: "Your Polish civil acts are obtained from Polish registry offices, providing you with official Polish birth and marriage certificates. After your application is filed, you can request these documents which serve as official Polish records. The process involves applications to specific civil registry offices, payment of fees, and professional coordination to receive these important Polish documents.",
+    detailedInfo: "The Polish citizenship confirmation decision is officially received from the government, confirming your Polish citizenship status. We email you a copy of this historic decision and add it to your portal account. If the decision is negative, we have just 2 weeks maximum to prepare and file an appeal to the Ministry of Interior.",
     keyPoints: [
-      "Your Polish birth certificate is obtained from registry",
-      "Your Polish marriage certificate is requested if applicable",
-      "Your civil acts fees are processed",
-      "Your official Polish documents are delivered"
+      "Polish citizenship confirmation decision received",
+      "Copy of decision emailed to you immediately",
+      "Decision document added to your portal account",
+      "Appeal prepared within 2 weeks if decision is negative"
     ]
   }, {
     number: "14",
@@ -286,12 +286,12 @@ export default function TimelineProcessEnhanced() {
     icon: Shield,
     gradient: "from-emerald-500 to-teal-500",
     image: timeline14,
-    detailedInfo: "Your initial response arrives from the Polish government, typically 10-18 months after submission. This letter may request additional evidence, clarifications, or documents to support your claim. Our team analyzes every requirement, explains what's needed, and coordinates the response. We can also implement acceleration strategies like PUSH, NUDGE, or SIT-DOWN to expedite your case.",
+    detailedInfo: "We prepare all documents needed for your Polish passport application, charge the final payment for passport services, send all documents by FedEx, and schedule your visit at the Polish Consulate. You then apply for your Polish passport at the consulate, completing your journey to full Polish citizenship with travel document.",
     keyPoints: [
-      "Your government letter is received and analyzed",
-      "Your required additional evidence is identified",
-      "Your acceleration options are presented (PUSH/NUDGE/SIT-DOWN)",
-      "Your response strategy is professionally coordinated"
+      "All Polish passport documents prepared professionally",
+      "Final payment charged for passport application service",
+      "Complete document package sent by FedEx",
+      "Consulate appointment scheduled for passport application"
     ]
   }, {
     number: "15",
@@ -303,12 +303,12 @@ export default function TimelineProcessEnhanced() {
     icon: Users,
     gradient: "from-teal-500 to-cyan-500",
     image: timeline15,
-    detailedInfo: "Your citizenship decision is officially confirmed by the Polish government, recognizing your Polish citizenship status. Upon receiving this positive decision, your Polish passport application process begins. We prepare all necessary documents, schedule your consulate appointment, and guide you through obtaining your Polish passport—the final step in your citizenship journey.",
+    detailedInfo: "After successfully obtaining your Polish citizenship, extended family legal services become available. We can help your family members (spouse, children, parents, siblings) pursue their own Polish citizenship claims, leveraging your successful case as a foundation for their applications.",
     keyPoints: [
-      "Your citizenship is officially confirmed by decision",
-      "Your Polish passport documents are prepared",
-      "Your consulate appointment is scheduled",
-      "Your Polish passport is issued to complete the process"
+      "Extended family services available after your citizenship",
+      "Spouse and children can apply based on your citizenship",
+      "Family members benefit from your established case",
+      "Ongoing legal support for your extended family"
     ]
   }];
 
