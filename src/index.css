@@ -175,7 +175,7 @@ All colors MUST be HSL.
 
     /* Subtle bordeaux gradient - minimal glow */
     --gradient-web3: linear-gradient(135deg, hsl(343 55% 30%) 0%, hsl(343 50% 38%) 50%, hsl(343 45% 45%) 100%) !important;
-    --gradient-title: linear-gradient(to right, hsl(343 55% 35%), hsl(343 50% 42%), hsl(343 45% 58%)) !important;
+    --gradient-title: linear-gradient(to right, hsl(343 55% 35%), hsl(343 50% 42%), hsl(0 0% 98%)) !important;
     --gradient-glow: radial-gradient(circle at 50% 50%, hsl(343 55% 35% / 0.12) 0%, transparent 70%) !important;
     --shadow-glow: 0 0 30px hsl(343 55% 35% / 0.15) !important;
     --shadow-glow-secondary: 0 0 25px hsl(343 50% 38% / 0.10) !important;
@@ -213,7 +213,7 @@ All colors MUST be HSL.
     
     /* Subtle bordeaux gradient - minimal shine */
     --gradient-web3: linear-gradient(135deg, hsl(343 60% 28%) 0%, hsl(343 55% 36%) 50%, hsl(343 50% 44%) 100%) !important;
-    --gradient-title: linear-gradient(to right, hsl(343 60% 32%), hsl(343 55% 40%), hsl(343 50% 55%)) !important;
+    --gradient-title: linear-gradient(to right, hsl(343 60% 32%), hsl(343 55% 40%), hsl(0 0% 98%)) !important;
     --shadow-glow: 0 8px 30px -8px hsl(343 60% 32% / 0.12) !important;
     --shadow-glow-secondary: 0 0 20px hsl(343 55% 40% / 0.10) !important;
     
