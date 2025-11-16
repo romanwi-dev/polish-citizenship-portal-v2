@@ -1,15 +1,14 @@
 import { Shield, Users, Globe } from "lucide-react";
-import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { SectionLayout } from "./layout/SectionLayout";
 
 const FlippableAboutCard = ({ 
   icon: Icon, 
   title, 
   description, 
   gradient, 
-  textColor, 
   index,
   flipBackText
 }: { 
@@ -17,7 +16,6 @@ const FlippableAboutCard = ({
   title: string; 
   description: string; 
   gradient: string; 
-  textColor: string; 
   index: number;
   flipBackText: string;
 }) => {
@@ -39,7 +37,6 @@ const FlippableAboutCard = ({
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
         }}
       >
-        {/* Front */}
         <div 
           className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex items-center justify-center"
           style={{ backfaceVisibility: 'hidden' }}
@@ -55,7 +52,6 @@ const FlippableAboutCard = ({
           </div>
         </div>
 
-        {/* Back */}
         <div 
           className="absolute inset-0 glass-card p-8 rounded-lg flex items-center justify-center"
           style={{ 
@@ -79,77 +75,51 @@ const AboutSection = () => {
   const { t } = useTranslation();
   
   return (
-    <section className="relative py-24 overflow-hidden overflow-x-hidden">
-      
-      <div className="container relative z-10 px-4 mx-auto">
-        <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
-            <Shield className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('about.badge')}</span>
-          </div>
-          
-          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight animate-scale-in">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              {t('about.title')}
-            </span>
-          </h2>
-          
-          <div className="mb-16 max-w-6xl mx-auto px-2 md:px-0">
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 font-body font-light tracking-normal">
-              {t('about.description')}
-            </p>
-            
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal">
-              {t('about.subtitle')}
-            </p>
-          </div>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
-          <FlippableAboutCard 
-            icon={Shield}
-            title={t('about.card1Title')}
-            description={t('about.card1Text')}
-            gradient="from-primary to-secondary"
-            textColor="text-white"
-            index={0}
-            flipBackText={t('about.flipBack')}
-          />
-          
-          <FlippableAboutCard 
-            icon={Users}
-            title={t('about.card2Title')}
-            description={t('about.card2Text')}
-            gradient="from-secondary to-accent"
-            textColor="text-white"
-            index={1}
-            flipBackText={t('about.flipBack')}
-          />
-          
-          <FlippableAboutCard 
-            icon={Globe}
-            title={t('about.card3Title')}
-            description={t('about.card3Text')}
-            gradient="from-accent to-primary"
-            textColor="text-white"
-            index={2}
-            flipBackText={t('about.flipBack')}
-          />
-        </div>
+    <SectionLayout
+      id="about"
+      badge={{ icon: Shield, text: t('about.badge') }}
+      title={t('about.title')}
+      subtitle={
+        <>
+          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 font-body font-light tracking-normal">
+            {t('about.description')}
+          </p>
+          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal">
+            {t('about.subtitle')}
+          </p>
+        </>
+      }
+      cta={<MainCTA ariaLabel="Start your Polish citizenship application">{t('hero.cta')}</MainCTA>}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <FlippableAboutCard
+          icon={Users}
+          title={t('about.card1Title')}
+          description={t('about.card1Description')}
+          gradient="from-primary to-secondary"
+          index={0}
+          flipBackText={t('about.card1FlipBack')}
+        />
         
-        {/* CTA Section */}
-        <div className="text-center animate-fade-in" style={{ animationDelay: '400ms' }}>
-          <MainCTA
-            wrapperClassName="flex justify-center"
-            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-            ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-          >
-            {t('hero.cta')}
-          </MainCTA>
-        </div>
+        <FlippableAboutCard
+          icon={Shield}
+          title={t('about.card2Title')}
+          description={t('about.card2Description')}
+          gradient="from-secondary to-accent"
+          index={1}
+          flipBackText={t('about.card2FlipBack')}
+        />
+        
+        <FlippableAboutCard
+          icon={Globe}
+          title={t('about.card3Title')}
+          description={t('about.card3Description')}
+          gradient="from-accent to-primary"
+          index={2}
+          flipBackText={t('about.card3FlipBack')}
+        />
       </div>
-    </section>
+    </SectionLayout>
   );
 };
 
