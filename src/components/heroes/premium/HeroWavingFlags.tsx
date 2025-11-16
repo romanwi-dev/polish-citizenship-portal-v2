@@ -152,6 +152,15 @@ export const HeroWavingFlags = () => {
                   {t('hero.subtitle2')}
                 </p>
               </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <MainCTA 
+                  size="lg" 
+                  className="text-lg px-10 py-7 rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                >
+                  {t('hero.cta')}
+                </MainCTA>
+              </div>
             </div>
           </div>
 
