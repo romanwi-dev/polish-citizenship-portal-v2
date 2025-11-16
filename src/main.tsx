@@ -23,6 +23,11 @@ if (!import.meta.env.DEV) {
   import("./lib/webVitals").then(({ initWebVitals }) => {
     initWebVitals();
   });
+  
+  // Register service worker in production
+  import("./lib/serviceWorker").then(({ registerServiceWorker }) => {
+    registerServiceWorker();
+  });
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
