@@ -90,7 +90,7 @@ export const HeroWavingFlags = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background py-16 md:py-20">
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-32 pb-16 md:pt-40 md:pb-20 lg:pt-32">
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
           <SmoothFlowingParticles />
@@ -100,7 +100,7 @@ export const HeroWavingFlags = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
 
       <div className="container relative z-10 px-4 mx-auto">
-        <div className="grid lg:grid-cols-[1.2fr,400px] gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
           <div className="space-y-8">
             <div className="space-y-6 text-center lg:text-left">
               <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
@@ -117,17 +117,17 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0">
-            <div className="mb-6 rounded-xl overflow-hidden opacity-70">
+          <div className="glass-card p-5 md:p-6 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0">
+            <div className="mb-4 rounded-xl overflow-hidden opacity-70">
               <img 
                 src={professionalWoman} 
                 alt="Professional consultation" 
                 className="w-full h-auto object-cover"
               />
             </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="name" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   Name *
                 </Label>
                 <input
@@ -136,12 +136,12 @@ export const HeroWavingFlags = () => {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                  className="h-10 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+              <div className="space-y-1.5">
+                <Label htmlFor="email" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   Email *
                 </Label>
                 <input
@@ -150,19 +150,19 @@ export const HeroWavingFlags = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                  className="h-10 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="country" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+              <div className="space-y-1.5">
+                <Label htmlFor="country" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   Country
                 </Label>
                 <Select
                   value={formData.country}
                   onValueChange={(value) => setFormData({...formData, country: value})}
                 >
-                  <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                  <SelectTrigger className="!h-10 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                     <SelectValue placeholder={t('contact.countryPlaceholder') || 'Select your country'} />
                   </SelectTrigger>
                   <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -176,7 +176,7 @@ export const HeroWavingFlags = () => {
               </div>
               <button
                 type="submit"
-                className="w-full h-14 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-lg font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30"
+                className="w-full h-10 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30"
               >
                 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Request More Info</span>
               </button>
