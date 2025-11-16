@@ -5,7 +5,7 @@ import { StructuredData } from "@/components/StructuredData";
 
 // Eagerly load critical above-the-fold components for LCP
 import Navigation from "@/components/Navigation";
-import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
+import { HeroWaveBackground } from "@/components/heroes/demos/HeroWaveBackground";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 
@@ -50,7 +50,7 @@ const Index = () => {
         
         <div className="relative z-10">
           <Navigation />
-          <HeroWavingFlags />
+          <HeroWaveBackground />
           <AboutSection />
         
         <AIAnalysisSection />
