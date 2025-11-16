@@ -25,6 +25,7 @@ const ClientLogin = lazy(() => import("./pages/ClientLogin"));
 const ClientDashboard = lazy(() => import("./pages/ClientDashboard"));
 const ClientSecurity = lazy(() => import("./pages/ClientSecurity"));
 const ClientIntakeWizard = lazy(() => import("./pages/ClientIntakeWizard"));
+const RequestAccess = lazy(() => import("./pages/RequestAccess"));
 
 // Lazy load admin pages to avoid loading Sidebar on home page
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -212,6 +213,11 @@ const App = () => {
             <Route path="/contact-forms-demo" element={
               <Suspense fallback={<AdminLoader />}>
                 <ContactFormsDemo />
+              </Suspense>
+            } />
+            <Route path="/request-access" element={
+              <Suspense fallback={<AdminLoader />}>
+                <RequestAccess />
               </Suspense>
             } />
             <Route path="/login" element={<Login />} />
