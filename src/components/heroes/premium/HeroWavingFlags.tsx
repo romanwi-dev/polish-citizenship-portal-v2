@@ -122,12 +122,6 @@ export const HeroWavingFlags = () => {
                 className="w-full h-auto object-cover"
               />
             </div>
-            <h2 className="text-xl md:text-2xl font-heading font-bold mb-2 text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {t('contact.formTitle') || 'Get Your Free Assessment'}
-            </h2>
-            <p className="text-sm text-center text-muted-foreground mb-6">
-              Start your Polish citizenship journey today
-            </p>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
