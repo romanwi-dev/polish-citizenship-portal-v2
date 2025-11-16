@@ -94,7 +94,7 @@ const AIAnalysisSection = () => {
         <FlippableAICard
           icon={TrendingUp}
           title={t('aiAnalysis.card1Title')}
-          description={t('aiAnalysis.card1Description')}
+          description={t('aiAnalysis.card1Desc')}
           gradient="from-primary to-secondary"
           index={0}
         />
@@ -102,7 +102,7 @@ const AIAnalysisSection = () => {
         <FlippableAICard
           icon={AlertTriangle}
           title={t('aiAnalysis.card2Title')}
-          description={t('aiAnalysis.card2Description')}
+          description={t('aiAnalysis.card2Desc')}
           gradient="from-secondary to-accent"
           index={1}
         />
@@ -110,7 +110,7 @@ const AIAnalysisSection = () => {
         <FlippableAICard
           icon={Clock}
           title={t('aiAnalysis.card3Title')}
-          description={t('aiAnalysis.card3Description')}
+          description={t('aiAnalysis.card3Desc')}
           gradient="from-accent to-primary"
           index={2}
         />

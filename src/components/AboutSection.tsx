@@ -95,28 +95,28 @@ const AboutSection = () => {
         <FlippableAboutCard
           icon={Users}
           title={t('about.card1Title')}
-          description={t('about.card1Description')}
+          description={t('about.card1Text')}
           gradient="from-primary to-secondary"
           index={0}
-          flipBackText={t('about.card1FlipBack')}
+          flipBackText={t('about.flipBack')}
         />
         
         <FlippableAboutCard
           icon={Shield}
           title={t('about.card2Title')}
-          description={t('about.card2Description')}
+          description={t('about.card2Text')}
           gradient="from-secondary to-accent"
           index={1}
-          flipBackText={t('about.card2FlipBack')}
+          flipBackText={t('about.flipBack')}
         />
         
         <FlippableAboutCard
           icon={Globe}
           title={t('about.card3Title')}
-          description={t('about.card3Description')}
+          description={t('about.card3Text')}
           gradient="from-accent to-primary"
           index={2}
-          flipBackText={t('about.card3FlipBack')}
+          flipBackText={t('about.flipBack')}
         />
       </div>
     </SectionLayout>
