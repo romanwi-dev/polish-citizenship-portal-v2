@@ -176,7 +176,7 @@ export const HeroWavingFlags = () => {
               </div>
               <button
                 type="submit"
-                className="w-full h-14 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 mt-12"
+                className="w-full h-14 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 mt-16"
               >
                 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('contact.requestInfo')}</span>
               </button>
