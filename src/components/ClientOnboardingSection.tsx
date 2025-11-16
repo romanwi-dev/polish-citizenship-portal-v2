@@ -33,12 +33,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step1Cta'),
       link: "#contact",
       illustration: consultationImg,
-      detailedInfo: "During your free consultation, you'll connect with experienced legal experts who will analyze your family background and Polish ancestry. We'll review your eligibility, explain the complete citizenship process, provide realistic timeline expectations, and answer all your questions about requirements and documentation.",
+      detailedInfo: "Your citizenship journey begins with your first contact. Reach out to us through our website contact form, email, WhatsApp, or through a personal recommendation. This initial connection starts the conversation about your Polish ancestry and citizenship eligibility. We'll provide preliminary information and guide you toward the next step in the process.",
       keyPoints: [
-        "Free 30-minute consultation with a citizenship specialist",
-        "Personalized eligibility assessment based on your family history",
-        "Clear explanation of the process, timeline, and requirements",
-        "No-obligation discussion - decide if you want to proceed"
+        "Contact us via website, email, WhatsApp, or recommendation",
+        "Share your initial questions about Polish citizenship",
+        "Receive preliminary guidance about the process",
+        "Learn about the next steps in your journey"
       ]
     },
     {
@@ -50,12 +50,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step2Cta'),
       link: "https://polishcitizenship.typeform.com/to/PS5ecU",
       illustration: reviewImg,
-      detailedInfo: "Our expert team conducts a comprehensive review of your submitted documents including birth certificates, marriage records, and historical family documents. We verify authenticity, check for completeness, and identify any missing documentation needed for your citizenship application to ensure you have the strongest possible case.",
+      detailedInfo: "Take our comprehensive Polish citizenship test and fill out the family tree form to help us determine your eligibility. Our system analyzes your family history, ancestry line, and documentation to assess whether you qualify for Polish citizenship. If eligible based on this initial assessment, we'll move forward to the detailed document examination stage.",
       keyPoints: [
-        "Thorough verification of all document authenticity",
-        "Detailed analysis of citizenship eligibility requirements",
-        "Identification of any missing or additional documents needed",
-        "Professional assessment report with clear next steps"
+        "Complete our Polish citizenship eligibility test online",
+        "Fill out detailed family tree with ancestor information",
+        "Receive initial eligibility assessment based on your responses",
+        "If eligible, proceed to next stage of document examination"
       ]
     },
     {
@@ -67,12 +67,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step3Cta'),
       link: "#",
       illustration: agreementImg,
-      detailedInfo: "After your case assessment, we'll present a transparent service agreement outlining all responsibilities, timelines, and fees. Our pricing is competitive with absolutely no hidden costs. The agreement details every step we'll take on your behalf from document collection to final citizenship decision. Upon signing, you gain immediate access to your personal client portal.",
+      detailedInfo: "We carefully examine all your documents, with special attention to Polish documents of your ancestors and any naturalization or military service records. This thorough examination verifies document authenticity, identifies any missing pieces, and ensures we have everything needed for a strong citizenship application. We analyze historical records to build your complete ancestry case.",
       keyPoints: [
-        "Completely transparent pricing with zero hidden fees",
-        "Detailed service agreement covering all deliverables",
-        "Secure payment processing through trusted platforms",
-        "Immediate portal access upon agreement confirmation"
+        "Detailed examination of Polish ancestor documents",
+        "Special focus on naturalization and military service records",
+        "Verification of document authenticity and completeness",
+        "Identification of any additional documentation needed"
       ]
     },
     {
@@ -84,12 +84,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step4Cta'),
       link: "#contact",
       illustration: initiationImg,
-      detailedInfo: "Your citizenship journey officially begins with full access to our advanced client portal. Upload documents securely, track progress in real-time, and communicate directly with your assigned legal team. We coordinate everything with Polish authorities, manage all paperwork professionally, and keep you informed at every milestone throughout the process.",
+      detailedInfo: "We analyze your complete case and provide a comprehensive assessment of your citizenship chances, realistic timeline expectations, and detailed breakdown of all costs involved. This professional evaluation gives you a clear picture of what to expect, including success probability, estimated processing duration, and transparent pricing for our services.",
       keyPoints: [
-        "24/7 portal access for maximum convenience",
-        "Real-time application status tracking",
-        "Direct communication with your dedicated legal team",
-        "Regular updates at every important milestone"
+        "Comprehensive analysis of your citizenship chances",
+        "Realistic timeline estimate for your specific case",
+        "Detailed cost breakdown with transparent pricing",
+        "Professional assessment report with recommendations"
       ]
     },
     {
@@ -101,12 +101,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step5Cta'),
       link: "#",
       illustration: reviewImg,
-      detailedInfo: "We handle all communication with Polish authorities, submit all required documentation, and ensure your application meets every legal requirement. Our team monitors your case continuously, providing regular updates and addressing any questions or concerns that arise throughout the process.",
+      detailedInfo: "Once ready, send all required documents by FedEx to our Warsaw office for processing. Our team receives and securely handles your original documents, including birth certificates, marriage records, passports, and any Polish ancestor documents. All materials are carefully cataloged and prepared for the next stages of your citizenship application.",
       keyPoints: [
-        "Professional handling of all government correspondence",
-        "Regular status updates and milestone notifications",
-        "Expedited processing where possible",
-        "Comprehensive support until citizenship granted"
+        "Send all required documents via FedEx to Warsaw office",
+        "Secure handling of original birth, marriage, and ancestor documents",
+        "Professional cataloging and organization of all materials",
+        "Documents prepared for AI processing and application filing"
       ]
     }
   ];
