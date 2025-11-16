@@ -33,12 +33,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step1Cta'),
       link: "#contact",
       illustration: consultationImg,
-      detailedInfo: "Your free consultation connects you with experienced legal experts who will thoroughly review your family history and discuss all potential paths to Polish citizenship. You'll receive a complete explanation of the entire process, realistic timeline expectations, and answers to all your questions. This no-obligation session ensures you understand exactly what to expect and how your citizenship goals can be achieved.",
+      detailedInfo: "During your free consultation, you'll connect with experienced legal experts who will analyze your family background and Polish ancestry. We'll review your eligibility, explain the complete citizenship process, provide realistic timeline expectations, and answer all your questions about requirements and documentation.",
       keyPoints: [
-        "Your 30-minute consultation with a citizenship expert is completely free",
-        "Your family history receives a personalized eligibility assessment",
-        "Your questions about timeline and requirements get clear answers",
-        "Your citizenship path is discussed with no obligation to proceed"
+        "Free 30-minute consultation with a citizenship specialist",
+        "Personalized eligibility assessment based on your family history",
+        "Clear explanation of the process, timeline, and requirements",
+        "No-obligation discussion - decide if you want to proceed"
       ]
     },
     {
@@ -50,12 +50,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step2Cta'),
       link: "https://polishcitizenship.typeform.com/to/PS5ecU",
       illustration: reviewImg,
-      detailedInfo: "Your expert legal team conducts a comprehensive review of all submitted documents, including birth certificates, marriage records, and historical family documents. Your documents undergo authenticity verification, completeness checks, and analysis to identify any missing pieces crucial to your application. This thorough assessment ensures the strongest possible case for your citizenship claim.",
+      detailedInfo: "Our expert team conducts a comprehensive review of your submitted documents including birth certificates, marriage records, and historical family documents. We verify authenticity, check for completeness, and identify any missing documentation needed for your citizenship application to ensure you have the strongest possible case.",
       keyPoints: [
-        "Your documents receive comprehensive authenticity verification",
-        "Your citizenship eligibility undergoes detailed analysis",
-        "Your application needs are identified, including additional documentation",
-        "Your case receives a professional assessment report with clear recommendations"
+        "Thorough verification of all document authenticity",
+        "Detailed analysis of citizenship eligibility requirements",
+        "Identification of any missing or additional documents needed",
+        "Professional assessment report with clear next steps"
       ]
     },
     {
@@ -67,12 +67,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step3Cta'),
       link: "#",
       illustration: agreementImg,
-      detailedInfo: "Your case assessment leads to a transparent service agreement that clearly outlines all responsibilities, timeline commitments, and fee structure. Your pricing is presented clearly and competitively, with absolutely no hidden costs. The agreement details every step to be taken on your behalf, from initial document collection through to final citizenship decision. Upon signing and payment, you gain immediate access to your personal client portal.",
+      detailedInfo: "After your case assessment, we'll present a transparent service agreement outlining all responsibilities, timelines, and fees. Our pricing is competitive with absolutely no hidden costs. The agreement details every step we'll take on your behalf from document collection to final citizenship decision. Upon signing, you gain immediate access to your personal client portal.",
       keyPoints: [
-        "Your pricing is completely transparent with zero hidden fees",
-        "Your service agreement details all deliverables clearly",
-        "Your payment is processed through secure, trusted options",
-        "Your portal access is granted immediately upon confirmation"
+        "Completely transparent pricing with zero hidden fees",
+        "Detailed service agreement covering all deliverables",
+        "Secure payment processing through trusted platforms",
+        "Immediate portal access upon agreement confirmation"
       ]
     },
     {
@@ -84,12 +84,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step4Cta'),
       link: "#contact",
       illustration: initiationImg,
-      detailedInfo: "Your citizenship journey officially begins with full access to an advanced client portal. You can upload documents securely, track real-time progress, and communicate directly with your assigned legal team. Your case will be coordinated with Polish authorities, all paperwork will be managed professionally, and you'll be informed at every important milestone.",
+      detailedInfo: "Your citizenship journey officially begins with full access to our advanced client portal. Upload documents securely, track progress in real-time, and communicate directly with your assigned legal team. We coordinate everything with Polish authorities, manage all paperwork professionally, and keep you informed at every milestone throughout the process.",
       keyPoints: [
-        "Your portal access is available 24/7 for maximum convenience",
-        "Your application status can be tracked in real-time at any moment",
-        "Your dedicated legal team is accessible for direct communication",
-        "Your official correspondence is handled by expert professionals"
+        "24/7 portal access for maximum convenience",
+        "Real-time application status tracking",
+        "Direct communication with your dedicated legal team",
+        "Regular updates at every important milestone"
       ]
     },
     {
@@ -142,7 +142,7 @@ export default function ClientOnboardingSection() {
             return (
             <div
               key={step.number}
-              className={`mb-24 md:mb-16 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''} relative`}
+              className={`mb-32 md:mb-28 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''} relative`}
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
