@@ -1,10 +1,11 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef, useState } from 'react';
+import * as THREE from 'three';
 import { useTranslation } from 'react-i18next';
 import { MainCTA } from '@/components/ui/main-cta';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import * as THREE from 'three';
-import { Shield, Clock, Award } from 'lucide-react';
+import { Award, Users, Trophy } from 'lucide-react';
+import { CountrySelect } from '@/components/CountrySelect';
 
 function WavingFlags() {
   const polishFlagRef = useRef<THREE.Group>(null);
@@ -67,8 +68,7 @@ export const HeroWavingFlags = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    message: ''
+    country: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -77,9 +77,9 @@ export const HeroWavingFlags = () => {
   };
 
   const features = [
-    { icon: Shield, title: 'Legal Expertise', description: 'Professional guidance through every step' },
-    { icon: Clock, title: 'Time Efficient', description: 'Streamlined application process' },
-    { icon: Award, title: 'High Success Rate', description: 'Proven track record of approvals' }
+    { icon: Award, stat: '>20', text: t('hero.stats.experience') },
+    { icon: Users, stat: '>25,000', text: t('hero.stats.cases') },
+    { icon: Trophy, stat: '100%', text: t('hero.stats.success') }
   ];
 
   return (
@@ -106,11 +106,14 @@ export const HeroWavingFlags = () => {
 
             <div className="grid gap-4 mt-8">
               {features.map((feature, index) => (
-                <div key={index} className="flex items-start gap-3 p-4 rounded-lg bg-background/50 backdrop-blur-sm border border-border/50">
-                  <feature.icon className="w-5 h-5 text-primary flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-sm">{feature.title}</h3>
-                    <p className="text-xs text-foreground/70">{feature.description}</p>
+                <div 
+                  key={index} 
+                  className="glass-card hover-glow p-4 rounded-lg text-center backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                >
+                  <div className="flex flex-col items-center justify-center gap-3">
+                    <feature.icon className="w-6 h-6 dark:text-primary light:text-white/90 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
+                    <h3 className="text-4xl font-bold dark:text-primary light:text-white light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{feature.stat}</h3>
+                    <p className="text-sm font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)]">{feature.text}</p>
                   </div>
                 </div>
               ))}
@@ -145,25 +148,11 @@ export const HeroWavingFlags = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  {t('contact.form.phone')}
+                  {t('contact.form.country')}
                 </label>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="w-full px-4 py-2.5 rounded-lg bg-background/50 border border-border focus:border-primary outline-none text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  {t('contact.form.message')}
-                </label>
-                <textarea
-                  value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
-                  rows={3}
-                  className="w-full px-4 py-2.5 rounded-lg bg-background/50 border border-border focus:border-primary outline-none resize-none text-sm"
-                  required
+                <CountrySelect
+                  value={formData.country}
+                  onChange={(value) => setFormData({...formData, country: value})}
                 />
               </div>
               <MainCTA ariaLabel="Start your Polish citizenship journey" wrapperClassName="w-full">
