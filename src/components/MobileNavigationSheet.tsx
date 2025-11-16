@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Menu, Sparkles, LogIn, LogOut, Plus, Image, Mic, Zap, Upload, Share2, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -11,6 +12,7 @@ import { NavigationLinks } from './navigation/NavigationLinks';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
 export const MobileNavigationSheet = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { user, signOut } = useAuth(false);
@@ -147,7 +149,7 @@ export const MobileNavigationSheet = () => {
                 className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
                 aria-label="Take the Polish Citizenship Test to check your eligibility"
               >
-                Take Polish Citizenship Test
+                {t('hero.cta')}
               </Button>
             </div>
           </div>
