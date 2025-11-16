@@ -90,10 +90,10 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
       
       const sectionId = href.substring(1);
       
-      if (window.location.pathname !== '/') {
-        // Navigate to homepage with hash
+      // Always navigate to homepage first if not already there
+      if (window.location.pathname !== '/' && window.location.pathname !== '/en' && window.location.pathname !== '/pl') {
         navigate('/' + href);
-        onNavigate(); // Close menu immediately for page navigation
+        onNavigate();
       } else {
         // We're on homepage - scroll with retry logic
         let attempts = 0;
@@ -109,7 +109,6 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
             setTimeout(scrollToElement, 100);
           } else {
             // Failed to find element after max attempts
-            // Element not found for scroll
             onNavigate(); // Close menu anyway
           }
         };
