@@ -7,6 +7,10 @@ import { MainCTA } from "./ui/main-cta";
 import { Card } from "./ui/card";
 import { useTranslation } from 'react-i18next';
 import { SectionLayout } from "./layout/SectionLayout";
+import consultationImg from "@/assets/onboarding-consultation.png";
+import reviewImg from "@/assets/onboarding-review.png";
+import agreementImg from "@/assets/onboarding-agreement.png";
+import initiationImg from "@/assets/onboarding-initiation.png";
 
 export default function ClientOnboardingSection() {
   const { t } = useTranslation();
@@ -27,7 +31,15 @@ export default function ClientOnboardingSection() {
       icon: MessageSquare,
       gradient: "from-primary to-secondary",
       cta: t('onboarding.step1Cta'),
-      link: "#contact"
+      link: "#contact",
+      illustration: consultationImg,
+      detailedInfo: "During your free consultation, our experienced legal experts will review your family history and discuss potential paths to Polish citizenship. We'll explain the entire process, timeline expectations, and answer all your questions. This no-obligation session helps you understand exactly what to expect and how we can help you achieve your citizenship goals.",
+      keyPoints: [
+        "Free 30-minute consultation with citizenship expert",
+        "Personalized eligibility assessment based on your family history",
+        "Clear explanation of process timeline and requirements",
+        "No-obligation discussion of your citizenship path"
+      ]
     },
     {
       number: t('onboarding.step2Number'),
@@ -36,7 +48,15 @@ export default function ClientOnboardingSection() {
       icon: ClipboardCheck,
       gradient: "from-secondary to-accent",
       cta: t('onboarding.step2Cta'),
-      link: "https://polishcitizenship.typeform.com/to/PS5ecU"
+      link: "https://polishcitizenship.typeform.com/to/PS5ecU",
+      illustration: reviewImg,
+      detailedInfo: "Our expert team conducts a comprehensive review of all your submitted documents, including birth certificates, marriage records, and historical family documents. We verify authenticity, check for completeness, and identify any missing pieces crucial to your application. This thorough assessment ensures we build the strongest possible case for your citizenship claim.",
+      keyPoints: [
+        "Comprehensive document authenticity verification",
+        "Detailed analysis of your citizenship eligibility",
+        "Identification of required additional documentation",
+        "Professional assessment report with recommendations"
+      ]
     },
     {
       number: t('onboarding.step3Number'),
@@ -45,7 +65,15 @@ export default function ClientOnboardingSection() {
       icon: FileSearch,
       gradient: "from-accent to-primary",
       cta: t('onboarding.step3Cta'),
-      link: "#"
+      link: "#",
+      illustration: agreementImg,
+      detailedInfo: "Once we've assessed your case, we'll present a transparent service agreement outlining our responsibilities, timeline, and fee structure. Our pricing is clear and competitive, with no hidden costs. The agreement details every step we'll take on your behalf, from document collection to final citizenship decision. Upon signing and payment, you'll gain immediate access to your personal client portal.",
+      keyPoints: [
+        "Transparent pricing with no hidden fees",
+        "Clear service agreement detailing all deliverables",
+        "Secure payment processing options",
+        "Immediate portal access upon confirmation"
+      ]
     },
     {
       number: t('onboarding.step4Number'),
@@ -54,7 +82,15 @@ export default function ClientOnboardingSection() {
       icon: Scale,
       gradient: "from-primary to-secondary",
       cta: t('onboarding.step4Cta'),
-      link: "#contact"
+      link: "#contact",
+      illustration: initiationImg,
+      detailedInfo: "Your citizenship journey officially begins with full access to our advanced client portal. Upload documents securely, track real-time progress, and communicate directly with your assigned legal team. We'll coordinate with Polish authorities, manage all paperwork, and keep you informed at every milestone.",
+      keyPoints: [
+        "24/7 access to secure client portal",
+        "Real-time application status tracking",
+        "Direct communication with dedicated legal team",
+        "Expert handling of all official correspondence"
+      ]
     },
     {
       number: t('onboarding.step5Number'),
@@ -63,7 +99,15 @@ export default function ClientOnboardingSection() {
       icon: Send,
       gradient: "from-secondary to-accent",
       cta: t('onboarding.step5Cta'),
-      link: "#"
+      link: "#",
+      illustration: reviewImg,
+      detailedInfo: "We handle all communication with Polish authorities, submit all required documentation, and ensure your application meets every legal requirement. Our team monitors your case continuously, providing regular updates and addressing any questions or concerns that arise throughout the process.",
+      keyPoints: [
+        "Professional handling of all government correspondence",
+        "Regular status updates and milestone notifications",
+        "Expedited processing where possible",
+        "Comprehensive support until citizenship granted"
+      ]
     }
   ];
 
