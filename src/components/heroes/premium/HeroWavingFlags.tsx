@@ -71,12 +71,13 @@ function SmoothFlowingParticles() {
 }
 
 export const HeroWavingFlags = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     country: ''
   });
+  const isRTL = i18n.language === 'he';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,8 +102,8 @@ export const HeroWavingFlags = () => {
 
       <div className="container relative z-10 px-4 mx-auto">
         <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
-          <div className="space-y-8 md:pt-8 lg:pt-12">
-            <div className="space-y-10 text-center lg:text-left">
+            <div className={`space-y-8 md:pt-8 lg:pt-12 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
+              <div className="space-y-10 text-center lg:text-inherit">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight break-words hyphens-auto">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary inline-block">
                   {t('hero.title')}
@@ -129,7 +130,7 @@ export const HeroWavingFlags = () => {
             </div>
             <form onSubmit={handleSubmit} className="space-y-1.5">
               <div className="space-y-1.5">
-                <Label htmlFor="name" className="text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words">
+                <Label htmlFor="name" className={`text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('contact.nameLabel')} *
                 </Label>
                 <input
@@ -143,7 +144,7 @@ export const HeroWavingFlags = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words">
+                <Label htmlFor="email" className={`text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('contact.emailLabel')} *
                 </Label>
                 <input
@@ -157,7 +158,7 @@ export const HeroWavingFlags = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="country" className="text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words">
+                <Label htmlFor="country" className={`text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('contact.countryLabel')}
                 </Label>
                 <Select
