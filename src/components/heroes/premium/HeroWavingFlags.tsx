@@ -127,7 +127,7 @@ export const HeroWavingFlags = () => {
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="name" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   {t('contact.name')} *
                 </Label>
                 <input
@@ -141,7 +141,7 @@ export const HeroWavingFlags = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   {t('contact.email')} *
                 </Label>
                 <input
@@ -162,7 +162,7 @@ export const HeroWavingFlags = () => {
                   value={formData.country}
                   onValueChange={(value) => setFormData({...formData, country: value})}
                 >
-                  <SelectTrigger className="!h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base">
+                  <SelectTrigger className="!h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                     <SelectValue placeholder={t('contact.countrySelect')} />
                   </SelectTrigger>
                   <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
