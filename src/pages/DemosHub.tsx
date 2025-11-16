@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText, Target, Image } from "lucide-react";
+import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText, Target, Image, Layout } from "lucide-react";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 import secretary16 from "@/assets/secretaries/secretary-16.png";
 import secretary17 from "@/assets/secretaries/secretary-17.png";
@@ -72,6 +72,15 @@ const DemosHub = () => {
   ];
 
   const demos = [
+    {
+      id: "hero-gallery",
+      title: "Hero Sections Gallery ⭐",
+      description: "10 stunning hero section designs with 3D, video, and particle effects - 5 with lead capture forms",
+      icon: Layout,
+      path: "/hero-gallery",
+      gradient: "from-violet-600 to-fuchsia-600",
+      features: ["3D Backgrounds", "Video Effects", "Lead Forms"]
+    },
     {
       id: "main-cta-reference",
       title: "Main CTA Reference ⭐",
