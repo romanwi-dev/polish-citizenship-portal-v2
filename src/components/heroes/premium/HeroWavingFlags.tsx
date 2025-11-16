@@ -155,7 +155,7 @@ export const HeroWavingFlags = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="country" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="country" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   {t('contact.country')}
                 </Label>
                 <Select
