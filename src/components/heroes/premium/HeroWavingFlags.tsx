@@ -125,7 +125,7 @@ export const HeroWavingFlags = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
 
       <div className="container relative z-10 px-4 mx-auto">
-        <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-[1.2fr,450px] gap-8 lg:gap-16 items-start max-w-7xl mx-auto">
             <div className={`space-y-8 md:pt-8 lg:pt-0 lg:-mt-20 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
               <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mb-6">
@@ -156,10 +156,13 @@ export const HeroWavingFlags = () => {
           </div>
 
           <div 
-            className="relative w-full max-w-md mx-auto lg:mx-0"
+            className="relative w-full lg:sticky lg:top-32"
             style={{ 
               perspective: '1000px',
-              height: '700px'
+              height: '700px',
+              maxWidth: '450px',
+              marginLeft: 'auto',
+              marginRight: isRTL ? 'auto' : '0'
             }}
           >
             <div 
