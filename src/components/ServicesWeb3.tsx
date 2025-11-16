@@ -1,8 +1,8 @@
 import { FileText, Users, CheckCircle, Globe, Cpu, Shield, Zap } from "lucide-react";
 import { useState } from "react";
-import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { useTranslation } from 'react-i18next';
+import { SectionLayout } from "./layout/SectionLayout";
 
 const FlippableServiceCard = ({ 
   icon: Icon,
@@ -36,7 +36,6 @@ const FlippableServiceCard = ({
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
         }}
       >
-        {/* Front of card */}
         <div 
           className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-1"
           style={{ backfaceVisibility: 'hidden' }}
@@ -60,7 +59,6 @@ const FlippableServiceCard = ({
           <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${color} opacity-20 blur-2xl rounded-full`} />
         </div>
 
-        {/* Back of card */}
         <div 
           className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center"
           style={{ 
@@ -85,79 +83,66 @@ const ServicesWeb3 = () => {
   const { t } = useTranslation();
   
   return (
-    <section id="services" className="py-24 relative overflow-hidden overflow-x-hidden">
-      
-      <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
-            <Zap className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('services.badge')}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight animate-scale-in">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              {t('services.title')}
-            </span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-16">
-            {t('services.description')}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          <FlippableServiceCard
-            icon={Cpu}
-            title={t('services.service1Title')}
-            description={t('services.service1Desc')}
-            color="from-primary to-accent"
-            index={0}
-          />
-          <FlippableServiceCard
-            icon={Shield}
-            title={t('services.service2Title')}
-            description={t('services.service2Desc')}
-            color="from-secondary to-primary"
-            index={1}
-          />
-          <FlippableServiceCard
-            icon={Users}
-            title={t('services.service3Title')}
-            description={t('services.service3Desc')}
-            color="from-accent to-secondary"
-            index={2}
-          />
-          <FlippableServiceCard
-            icon={FileText}
-            title={t('services.service4Title')}
-            description={t('services.service4Desc')}
-            color="from-primary to-secondary"
-            index={3}
-          />
-          <FlippableServiceCard
-            icon={CheckCircle}
-            title={t('services.service5Title')}
-            description={t('services.service5Desc')}
-            color="from-secondary to-accent"
-            index={4}
-          />
-          <FlippableServiceCard
-            icon={Globe}
-            title={t('services.service6Title')}
-            description={t('services.service6Desc')}
-            color="from-accent to-primary"
-            index={5}
-          />
-        </div>
-        
-          <MainCTA
-            wrapperClassName="flex justify-center mt-40 mb-20 animate-fade-in"
-            animationDelay="400ms"
-            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-            ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-          >
-            {t('hero.cta')}
-          </MainCTA>
+    <SectionLayout
+      id="services"
+      badge={{ icon: Zap, text: t('services.badge') }}
+      title={t('services.title')}
+      subtitle={t('services.description')}
+      cta={
+        <MainCTA
+          animationDelay="400ms"
+          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+          ariaLabel="Take the Polish Citizenship Test to check your eligibility"
+        >
+          {t('hero.cta')}
+        </MainCTA>
+      }
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <FlippableServiceCard
+          icon={Cpu}
+          title={t('services.service1Title')}
+          description={t('services.service1Desc')}
+          color="from-primary to-accent"
+          index={0}
+        />
+        <FlippableServiceCard
+          icon={Shield}
+          title={t('services.service2Title')}
+          description={t('services.service2Desc')}
+          color="from-secondary to-primary"
+          index={1}
+        />
+        <FlippableServiceCard
+          icon={Users}
+          title={t('services.service3Title')}
+          description={t('services.service3Desc')}
+          color="from-accent to-secondary"
+          index={2}
+        />
+        <FlippableServiceCard
+          icon={FileText}
+          title={t('services.service4Title')}
+          description={t('services.service4Desc')}
+          color="from-primary to-secondary"
+          index={3}
+        />
+        <FlippableServiceCard
+          icon={CheckCircle}
+          title={t('services.service5Title')}
+          description={t('services.service5Desc')}
+          color="from-secondary to-accent"
+          index={4}
+        />
+        <FlippableServiceCard
+          icon={Globe}
+          title={t('services.service6Title')}
+          description={t('services.service6Desc')}
+          color="from-accent to-primary"
+          index={5}
+        />
       </div>
-    </section>
+    </SectionLayout>
   );
 };
 
