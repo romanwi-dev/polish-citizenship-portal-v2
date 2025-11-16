@@ -1,6 +1,7 @@
 import { Shield, Zap, Globe } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useTranslation } from 'react-i18next';
+import { SocialShare } from "@/components/social/SocialShare";
 
 const FooterWeb3 = () => {
   const { t } = useTranslation();
@@ -85,7 +86,11 @@ const FooterWeb3 = () => {
           </div>
         </div>
         
-        <div className="glass-card p-6 rounded-lg">
+        <div className="glass-card p-6 rounded-lg space-y-6">
+          <div className="flex justify-center">
+            <SocialShare variant="minimal" />
+          </div>
+          
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-muted-foreground text-sm">
               © {new Date().getFullYear()} {t('footer.copyright')}
