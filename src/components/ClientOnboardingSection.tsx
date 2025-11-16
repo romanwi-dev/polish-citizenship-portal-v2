@@ -33,12 +33,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step1Cta'),
       link: "#contact",
       illustration: consultationImg,
-      detailedInfo: "During your free consultation, our experienced legal experts will review your family history and discuss potential paths to Polish citizenship. We'll explain the entire process, timeline expectations, and answer all your questions. This no-obligation session helps you understand exactly what to expect and how we can help you achieve your citizenship goals.",
+      detailedInfo: "Your free consultation connects you with experienced legal experts who will thoroughly review your family history and discuss all potential paths to Polish citizenship. You'll receive a complete explanation of the entire process, realistic timeline expectations, and answers to all your questions. This no-obligation session ensures you understand exactly what to expect and how your citizenship goals can be achieved.",
       keyPoints: [
-        "Free 30-minute consultation with citizenship expert",
-        "Personalized eligibility assessment based on your family history",
-        "Clear explanation of process timeline and requirements",
-        "No-obligation discussion of your citizenship path"
+        "Your 30-minute consultation with a citizenship expert is completely free",
+        "Your family history receives a personalized eligibility assessment",
+        "Your questions about timeline and requirements get clear answers",
+        "Your citizenship path is discussed with no obligation to proceed"
       ]
     },
     {
@@ -50,12 +50,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step2Cta'),
       link: "https://polishcitizenship.typeform.com/to/PS5ecU",
       illustration: reviewImg,
-      detailedInfo: "Our expert team conducts a comprehensive review of all your submitted documents, including birth certificates, marriage records, and historical family documents. We verify authenticity, check for completeness, and identify any missing pieces crucial to your application. This thorough assessment ensures we build the strongest possible case for your citizenship claim.",
+      detailedInfo: "Your expert legal team conducts a comprehensive review of all submitted documents, including birth certificates, marriage records, and historical family documents. Your documents undergo authenticity verification, completeness checks, and analysis to identify any missing pieces crucial to your application. This thorough assessment ensures the strongest possible case for your citizenship claim.",
       keyPoints: [
-        "Comprehensive document authenticity verification",
-        "Detailed analysis of your citizenship eligibility",
-        "Identification of required additional documentation",
-        "Professional assessment report with recommendations"
+        "Your documents receive comprehensive authenticity verification",
+        "Your citizenship eligibility undergoes detailed analysis",
+        "Your application needs are identified, including additional documentation",
+        "Your case receives a professional assessment report with clear recommendations"
       ]
     },
     {
@@ -67,12 +67,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step3Cta'),
       link: "#",
       illustration: agreementImg,
-      detailedInfo: "Once we've assessed your case, we'll present a transparent service agreement outlining our responsibilities, timeline, and fee structure. Our pricing is clear and competitive, with no hidden costs. The agreement details every step we'll take on your behalf, from document collection to final citizenship decision. Upon signing and payment, you'll gain immediate access to your personal client portal.",
+      detailedInfo: "Your case assessment leads to a transparent service agreement that clearly outlines all responsibilities, timeline commitments, and fee structure. Your pricing is presented clearly and competitively, with absolutely no hidden costs. The agreement details every step to be taken on your behalf, from initial document collection through to final citizenship decision. Upon signing and payment, you gain immediate access to your personal client portal.",
       keyPoints: [
-        "Transparent pricing with no hidden fees",
-        "Clear service agreement detailing all deliverables",
-        "Secure payment processing options",
-        "Immediate portal access upon confirmation"
+        "Your pricing is completely transparent with zero hidden fees",
+        "Your service agreement details all deliverables clearly",
+        "Your payment is processed through secure, trusted options",
+        "Your portal access is granted immediately upon confirmation"
       ]
     },
     {
@@ -84,12 +84,12 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step4Cta'),
       link: "#contact",
       illustration: initiationImg,
-      detailedInfo: "Your citizenship journey officially begins with full access to our advanced client portal. Upload documents securely, track real-time progress, and communicate directly with your assigned legal team. We'll coordinate with Polish authorities, manage all paperwork, and keep you informed at every milestone.",
+      detailedInfo: "Your citizenship journey officially begins with full access to an advanced client portal. You can upload documents securely, track real-time progress, and communicate directly with your assigned legal team. Your case will be coordinated with Polish authorities, all paperwork will be managed professionally, and you'll be informed at every important milestone.",
       keyPoints: [
-        "24/7 access to secure client portal",
-        "Real-time application status tracking",
-        "Direct communication with dedicated legal team",
-        "Expert handling of all official correspondence"
+        "Your portal access is available 24/7 for maximum convenience",
+        "Your application status can be tracked in real-time at any moment",
+        "Your dedicated legal team is accessible for direct communication",
+        "Your official correspondence is handled by expert professionals"
       ]
     },
     {
