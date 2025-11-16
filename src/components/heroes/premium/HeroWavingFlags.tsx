@@ -8,6 +8,7 @@ import { Award, Users, Trophy, Sparkles } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
+import { SocialShare } from '@/components/social/SocialShare';
 
 // Smooth Flowing Particles Background Animation
 function SmoothFlowingParticles() {
@@ -217,6 +218,15 @@ export const HeroWavingFlags = () => {
               </div>
             );
           })}
+        </div>
+        
+        {/* Social Share Buttons */}
+        <div className="mt-12 flex justify-center">
+          <SocialShare 
+            title={t('hero.title')}
+            description={t('hero.subtitle1')}
+            variant="default"
+          />
         </div>
       </div>
     </section>
