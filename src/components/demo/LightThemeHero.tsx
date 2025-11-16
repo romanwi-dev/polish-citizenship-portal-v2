@@ -4,10 +4,25 @@ import { Sparkles, TrendingUp, Users, Award } from "lucide-react";
 const LightThemeHero = () => {
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-card to-background">
-      {/* Gradient Background Orbs */}
+      {/* Breathtaking Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        {/* Large floating orbs with different animations */}
+        <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-[-15%] right-[-10%] w-[700px] h-[700px] bg-gradient-to-tl from-secondary/20 via-secondary/10 to-transparent rounded-full blur-3xl animate-float" style={{ animationDelay: '2s', animationDuration: '25s' }} />
+        
+        {/* Medium orbs with faster movement */}
+        <div className="absolute top-[20%] right-[15%] w-[400px] h-[400px] bg-gradient-to-bl from-accent/15 via-accent/8 to-transparent rounded-full blur-2xl animate-float" style={{ animationDelay: '1s', animationDuration: '18s' }} />
+        <div className="absolute bottom-[25%] left-[10%] w-[450px] h-[450px] bg-gradient-to-tr from-primary/15 via-primary/8 to-transparent rounded-full blur-2xl animate-float" style={{ animationDelay: '3s', animationDuration: '22s' }} />
+        
+        {/* Small accent orbs */}
+        <div className="absolute top-[40%] left-[30%] w-[250px] h-[250px] bg-gradient-to-r from-secondary/20 to-transparent rounded-full blur-xl animate-float" style={{ animationDelay: '0.5s', animationDuration: '15s' }} />
+        <div className="absolute top-[60%] right-[25%] w-[300px] h-[300px] bg-gradient-to-l from-accent/20 to-transparent rounded-full blur-xl animate-float" style={{ animationDelay: '2.5s', animationDuration: '20s' }} />
+        
+        {/* Shimmer effect overlay */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent animate-pulse" style={{ animationDuration: '8s' }} />
+        
+        {/* Mesh gradient effect */}
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(var(--primary-rgb)/0.1),transparent_50%)] animate-pulse" style={{ animationDuration: '12s', animationDelay: '1s' }} />
       </div>
 
       <div className="container mx-auto px-4 py-20 relative z-10">
