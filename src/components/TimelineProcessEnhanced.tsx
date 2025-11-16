@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users, Shield } from "lucide-react";
+import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { Card } from "./ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -313,26 +314,55 @@ export default function TimelineProcessEnhanced() {
                     </div>
 
                     {/* Back Side */}
-                    <div className="absolute inset-0 glass-card p-6 rounded-lg hover-glow flex flex-col justify-center" style={{
+                    <div className="absolute inset-0 glass-card p-5 rounded-lg hover-glow flex flex-col" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'
                 }}>
-                      <div className="flex-1 flex flex-col gap-3 justify-center items-center text-center">
-                        <Shield className="w-12 h-12 text-primary mb-3" />
-                        <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                          {t('timelineProcess.detailedInfoTitle')}
-                        </h3>
-                        <div className="flex-1 overflow-auto">
-                          <p className="text-sm text-muted-foreground">
-                            {t('timelineProcess.detailedInfoDesc')}
-                          </p>
-                          <p className="text-sm md:text-xs text-muted-foreground/70 mt-3 italic">
-                            {t('timelineProcess.detailedInfoSignup')}
-                          </p>
-                        </div>
+                      {/* Illustration */}
+                      <div className="w-full h-24 mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
+                        <Shield className="w-12 h-12 text-primary opacity-80" />
                       </div>
-                      <p className="text-sm md:text-xs text-muted-foreground/60 text-center mt-4">{t('timelineProcess.flipBack')}</p>
+                      
+                      {/* Content */}
+                      <div className="flex-1 overflow-auto space-y-3">
+                        <h3 className="text-lg font-heading font-bold tracking-tight text-card-foreground">
+                          {step.title} - Details
+                        </h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          This stage involves {step.description.toLowerCase()}. Our expert team handles all documentation and communication with Polish authorities to ensure a smooth process.
+                        </p>
+                        <ul className="text-xs text-muted-foreground/80 space-y-1.5 pl-4">
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary mt-0.5">•</span>
+                            <span>Professional guidance every step</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary mt-0.5">•</span>
+                            <span>Full documentation support</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-primary mt-0.5">•</span>
+                            <span>Regular status updates</span>
+                          </li>
+                        </ul>
+                      </div>
+                      
+                      {/* CTA Button */}
+                      <div className="mt-4 pt-3 border-t border-border/30">
+                        <Button
+                          variant="default"
+                          size="sm"
+                          className="w-full"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank');
+                          }}
+                        >
+                          Start Your Application →
+                        </Button>
+                        <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center mt-2">Tap card to flip back</p>
+                      </div>
                     </div>
                   </div>
                 </div>
