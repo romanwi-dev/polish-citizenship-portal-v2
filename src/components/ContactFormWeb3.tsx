@@ -110,11 +110,16 @@ const ContactFormWeb3 = () => {
       </div>
       
       <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-16 space-y-8">
+        {/* Badge - Above Title */}
+        <div className="flex justify-center mb-8 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card w-fit max-w-[280px] mx-auto md:max-w-none border border-primary/30">
             <Mail className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('contact.badge')}</span>
           </div>
+        </div>
+        
+        {/* Title */}
+        <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('contact.title')}

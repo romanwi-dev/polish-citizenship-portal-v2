@@ -37,20 +37,22 @@ export const SectionLayout = ({
   return (
     <section id={id} className={`relative py-12 md:py-20 overflow-hidden overflow-x-hidden ${className}`}>
       <div className="container relative z-10 px-4 mx-auto">
-        {/* Header: Badge + Title + Subtitle */}
-        <div className="max-w-4xl mx-auto text-center mb-12 animate-fade-in space-y-8">
-          {/* Badge */}
-          {badge && (
+        {/* Badge - Above Title */}
+        {badge && (
+          <div className="flex justify-center mb-8 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
               {BadgeIcon && <BadgeIcon className="w-4 h-4 text-primary" />}
               <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 {badge.text}
               </span>
             </div>
-          )}
-          
+          </div>
+        )}
+        
+        {/* Header: Title + Subtitle */}
+        <div className="max-w-4xl mx-auto text-center mb-12">
           {/* Title */}
-          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight animate-scale-in">
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight animate-scale-in mb-6">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {title}
             </span>
