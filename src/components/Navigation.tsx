@@ -43,7 +43,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <a href="/" className="flex-shrink-0">
-            <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" width="305" height="56" loading="eager" decoding="async" />
+            <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" width="305" height="56" loading="eager" fetchPriority="high" decoding="async" />
           </a>
 
           {/* User Icon & Desktop/Mobile Menu */}

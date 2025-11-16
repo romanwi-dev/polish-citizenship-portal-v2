@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Mail } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
@@ -390,9 +390,10 @@ const ContactFormWeb3 = () => {
               });
 
               return (
-                <div 
-                  ref={ref}
-                  key={i}
+                <>
+                  <div 
+                    ref={ref}
+                    key={i} 
                     id={stat.id}
                     className={`w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer transition-all duration-700 ${
                       inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
