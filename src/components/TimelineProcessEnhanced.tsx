@@ -464,7 +464,7 @@ export default function TimelineProcessEnhanced() {
                           className="w-full"
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.location.href = '/login';
+                            window.location.href = '/request-access';
                           }}
                         >
                           Open Account
