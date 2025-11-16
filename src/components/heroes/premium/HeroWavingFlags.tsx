@@ -137,91 +137,119 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-20 relative" style={{ perspective: '1000px' }}>
-            <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
+          <div className="relative" style={{ perspective: '1000px' }}>
+            <div 
+              className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} 
+              style={{ transformStyle: 'preserve-3d' }}
+            >
               {/* Front - Form */}
-              <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
-                <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100">
-                  <img 
-                    src={professionalWoman} 
-                    alt="Professional consultation" 
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-                <form onSubmit={handleSubmit} className="space-y-1.5">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="name" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('contact.nameLabel')} *
-                    </Label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="email" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('contact.emailLabel')} *
-                    </Label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="country" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('contact.countryLabel')}
-                    </Label>
-                    <Select
-                      value={formData.country}
-                      onValueChange={(value) => setFormData({...formData, country: value})}
+              <div 
+                className={`w-full h-[900px] ${!isFlipped ? 'pointer-events-auto' : 'pointer-events-none'}`}
+                style={{ 
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  opacity: !isFlipped ? 1 : 0,
+                  transition: 'opacity 0s 0.35s'
+                }}
+              >
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full">
+                  <form onSubmit={handleSubmit} className="space-y-6 h-full flex flex-col justify-center">
+                    <div>
+                      <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                        {t('contact.nameLabel')}
+                      </Label>
+                      <input
+                        id="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary outline-none mt-2"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                        {t('contact.emailLabel')}
+                      </Label>
+                      <input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full px-4 py-3 rounded-lg bg-background/50 border border-border focus:border-primary outline-none mt-2"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="country" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                        {t('contact.countryLabel')}
+                      </Label>
+                      <Select
+                        value={formData.country}
+                        onValueChange={(value) => setFormData({ ...formData, country: value })}
+                      >
+                        <SelectTrigger className="w-full mt-2">
+                          <SelectValue placeholder={t('contact.countryPlaceholder')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {["United States", "Canada", "United Kingdom", "Australia", "Germany", "Other"].map((country) => (
+                            <SelectItem key={country} value={country}>
+                              {country}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <MainCTA 
+                      ariaLabel="Start your Polish citizenship journey" 
+                      wrapperClassName=""
                     >
-                      <SelectTrigger className={`!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
-                        <SelectValue placeholder={t('contact.countryPlaceholder')} />
-                      </SelectTrigger>
-                      <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
-                        {["USA", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France", "Other"].map((country) => (
-                          <SelectItem key={country} value={country} className="cursor-pointer hover:bg-primary/10 text-sm">
-                            {country}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-lg md:text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8 break-words hyphens-auto"
-                  >
-                    <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
-                  </button>
-                </form>
+                      {t('hero.cta')}
+                    </MainCTA>
+                  </form>
+                </div>
               </div>
               
               {/* Back - Success */}
-              <div className={`absolute inset-0 ${isFlipped ? 'visible' : 'invisible'}`} style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                <div className="h-full flex flex-col items-center justify-center text-center space-y-4 py-8 px-4">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+              <div 
+                className={`w-full h-[900px] absolute inset-0 ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
+                style={{ 
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)',
+                  opacity: isFlipped ? 1 : 0,
+                  transition: 'opacity 0s 0.35s'
+                }}
+              >
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col md:flex-row items-center justify-center gap-8 relative overflow-hidden">
+                  {/* Left Side - Image */}
+                  <div className="w-full md:w-1/2 h-1/2 md:h-full relative">
+                    <img 
+                      src={professionalWoman} 
+                      alt="Professional with passport" 
+                      className="w-full h-full object-cover rounded-lg"
+                    />
                   </div>
-                  <h3 className="text-2xl font-bold">{t('contact.successTitle')}</h3>
-                  <p className="text-foreground/70">{t('contact.successMessage')}</p>
-                  <button
-                    onClick={() => setIsFlipped(false)}
-                    className="mt-4 text-primary hover:underline"
-                  >
-                    {t('contact.submitAnother')}
-                  </button>
+                  
+                  {/* Right Side - Message */}
+                  <div className="w-full md:w-1/2 flex flex-col items-center justify-center space-y-12 text-center px-4">
+                    <p className="bg-gradient-to-r from-slate-400 to-slate-600 bg-clip-text text-transparent text-2xl md:text-3xl font-semibold">
+                      Thank you! We will get back to you shortly.
+                    </p>
+                    <Button
+                      onClick={() => {
+                        setIsFlipped(false);
+                        setFormData({ name: '', email: '', country: '' });
+                      }}
+                      variant="outline"
+                      className="hover-glow"
+                    >
+                      Send Another Message
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
