@@ -547,6 +547,44 @@ const resources = {
       }
     },
   },
+  pl: {
+    translation: {
+      nav: {
+        register: 'Zarejestruj / Zaloguj',
+        signOut: 'Wyloguj',
+        navigation: 'Nawigacja',
+        home: 'Strona Główna',
+        about: 'O Nas',
+        services: 'Usługi',
+        howToStart: 'Jak Zacząć',
+        timeline: 'Harmonogram',
+        pricing: 'Cennik',
+        testimonials: 'Opinie',
+        faq: 'FAQ',
+        contact: 'Kontakt'
+      },
+      hero: {
+        badge: 'Usługi Prawne Web3',
+        title: 'Polskie Obywatelstwo przez Pochodzenie',
+        subtitle1: 'Wiodąca polska usługa prawna dla polskiego obywatelstwa przez pochodzenie. Z ponad 20-letnim doświadczeniem i ponad 25 000 udanych spraw, zapewniamy kompleksowe wsparcie na każdym etapie Twojej drogi do obywatelstwa.',
+        subtitle2: 'Nasz udokumentowany sukces i głęboka znajomość polskiego prawa o pochodzeniu zapewniają, że Twoja droga do obywatelstwa UE będzie prowadzona z precyzją i troską. Od wstępnej oceny kwalifikowalności po ostateczne uzyskanie paszportu, oferujemy niezrównany wskaźnik sukcesu i przejrzyste ceny.',
+        description: 'Ekspercka pomoc prawna dla osób polskiego i polsko-żydowskiego pochodzenia z całego świata w uzyskaniu polskiego obywatelstwa i paszportów UE przez polskie pochodzenie - niezrównany wskaźnik sukcesu, realistyczny harmonogram, przejrzyste ceny',
+        cta: 'Wykonaj Test na Polskie Obywatelstwo',
+        stats: {
+          experience: 'Lat Doświadczenia',
+          cases: 'Przetworzonych Spraw',
+          success: 'Wskaźnik Sukcesu'
+        }
+      },
+      contact: {
+        name: 'Imię',
+        email: 'E-mail',
+        country: 'Kraj',
+        countrySelect: 'Wybierz',
+        requestInfo: 'Poproś o Więcej Informacji'
+      }
+    }
+  },
   es: {
     translation: {
       // Navigation
@@ -1616,6 +1654,8 @@ const resources = {
       hero: {
         badge: 'Web3 Rechtsdienstleistungen',
         title: 'Polnische Staatsbürgerschaft durch Abstammung',
+        subtitle1: 'Polens führender juristischer Service für polnische Staatsbürgerschaft durch Abstammung. Mit über 20 Jahren Erfahrung und über 25.000 erfolgreichen Fällen bieten wir umfassende Beratung in jedem Schritt Ihrer Staatsbürgerschaftsreise.',
+        subtitle2: 'Unsere nachgewiesene Erfolgsbilanz und tiefes Verständnis des polnischen Abstammungsrechts gewährleisten, dass Ihr Weg zur EU-Staatsbürgerschaft mit Präzision und Sorgfalt behandelt wird. Von der ersten Berechtigungsprüfung bis zur endgültigen Passerwerbung liefern wir unübertroffene Erfolgsquoten und transparente Preise.',
         description: 'Fachkundige rechtliche Beratung für Menschen polnischer und polnisch-jüdischer Abstammung aus der ganzen Welt zum Erhalt der polnischen Staatsbürgerschaft und EU-Pässe durch polnische Vorfahren - unübertroffene Erfolgsquote, echter realistischer Zeitplan, transparente Preise',
         cta: 'Polnischen Staatsbürgerschaftstest Machen',
         stats: {
@@ -2635,6 +2675,8 @@ const resources = {
       hero: {
         badge: 'שירותים משפטיים Web3',
         title: 'אזרחות פולנית לפי מוצא',
+        subtitle1: 'השירות המשפטי המוביל בפולין לאזרחות פולנית לפי מוצא. עם למעלה מ-20 שנות מומחיות ולמעלה מ-25,000 מקרים מוצלחים, אנו מספקים הדרכה מקיפה בכל שלב של מסע האזרחות שלך.',
+        subtitle2: 'הרקורד המוכח שלנו והבנה עמוקה של חוק המוצא הפולני מבטיחים שהדרך שלך לאזרחות האיחוד האירופי מטופלת בדיוק ובזהירות. מהערכת הכשירות הראשונית ועד רכישת הדרכון הסופית, אנו מספקים שיעורי הצלחה ללא תחרות ומחירים שקופים.',
         description: 'הדרכה משפטית מומחית לאנשים ממוצא פולני ויהודי-פולני מרחבי העולם להשגת אזרחות פולנית ודרכוני EU דרך מוצא פולני - שיעור הצלחה ללא תחרות, ציר זמן ריאלי אמיתי, תמחור שקוף',
         cta: 'בצע מבחן אזרחות פולנית',
         stats: {
@@ -3163,6 +3205,8 @@ const resources = {
       hero: {
         badge: 'Юридические Услуги Web3',
         title: 'Польское Гражданство по Происхождению',
+        subtitle1: 'Ведущий юридический сервис Польши по получению польского гражданства по происхождению. С более чем 20-летним опытом и более 25 000 успешных дел, мы обеспечиваем всестороннее руководство на каждом этапе вашего пути к гражданству.',
+        subtitle2: 'Наш проверенный послужной список и глубокое понимание польского закона о происхождении гарантируют, что ваш путь к гражданству ЕС будет обработан с точностью и заботой. От первоначальной оценки права до окончательного получения паспорта, мы предлагаем непревзойденные показатели успеха и прозрачные цены.',
         description: 'Экспертное юридическое руководство для людей польского и польско-еврейского происхождения со всего мира для получения польского гражданства и паспортов ЕС через польское происхождение - непревзойденный показатель успеха, реальный реалистичный график, прозрачные цены',
         cta: 'Пройти Тест на Польское Гражданство',
         stats: {
@@ -3741,6 +3785,8 @@ const resources = {
       hero: {
         badge: 'Юридичні Послуги Web3',
         title: 'Польське Громадянство за Походженням',
+        subtitle1: 'Провідний юридичний сервіс Польщі для польського громадянства за походженням. Маючи понад 20 років досвіду та понад 25 000 успішних справ, ми надаємо всебічне керівництво на кожному етапі вашого шляху до громадянства.',
+        subtitle2: 'Наша доведена репутація та глибоке розуміння польського закону про походження гарантують, що ваш шлях до громадянства ЄС буде оброблено з точністю та турботою. Від первинної оцінки права до остаточного отримання паспорта, ми пропонуємо неперевершені показники успіху та прозорі ціни.',
         description: 'Експертне юридичне керівництво для людей польського та польсько-єврейського походження з усього світу для отримання польського громадянства та паспортів ЄС через польське походження - неперевершений показник успіху, справжній реалістичний графік, прозорі ціни',
         cta: 'Пройти Тест на Польське Громадянство',
         stats: {
