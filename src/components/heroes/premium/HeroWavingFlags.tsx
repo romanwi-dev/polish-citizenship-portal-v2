@@ -9,61 +9,81 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
 
-// Realistic waving Polish flag
-function WavingPolishFlag() {
-  const meshRef = useRef<THREE.Mesh>(null);
+// European Stars 3D Animation
+function EuropeanStars3D() {
+  const groupRef = useRef<THREE.Group>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useFrame((state) => {
-    if (prefersReducedMotion || !meshRef.current) return;
+    if (prefersReducedMotion || !groupRef.current) return;
     
     const time = state.clock.elapsedTime;
-    const geometry = meshRef.current.geometry;
-    const position = geometry.attributes.position;
-
-    for (let i = 0; i < position.count; i++) {
-      const x = position.getX(i);
-      const y = position.getY(i);
-      
-      // Create realistic wave motion
-      const waveX = Math.sin(x * 0.5 + time * 1.5) * 0.3;
-      const waveY = Math.sin(y * 0.3 + time * 1.2) * 0.2;
-      const waveZ = Math.sin(x * 0.3 + y * 0.2 + time) * 0.5;
-      
-      position.setZ(i, waveX + waveY + waveZ);
-    }
+    groupRef.current.rotation.y = time * 0.1;
     
-    position.needsUpdate = true;
-    geometry.computeVertexNormals();
+    groupRef.current.children.forEach((child, i) => {
+      const mesh = child as THREE.Mesh;
+      mesh.position.y = Math.sin(time + i * 0.5) * 0.5;
+      mesh.rotation.x = time * 0.3 + i;
+      mesh.rotation.z = time * 0.2 + i;
+    });
   });
 
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 5, 5]} intensity={1.2} />
-      <directionalLight position={[-5, -5, -5]} intensity={0.5} />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[10, 10, 5]} intensity={1} />
+      <directionalLight position={[-10, -10, -5]} intensity={0.5} />
+      <pointLight position={[0, 0, 0]} intensity={0.5} color="#ffd700" />
       
-      {/* White half of Polish flag - toned color */}
-      <mesh ref={meshRef} position={[0, 1.5, 0]}>
-        <planeGeometry args={[16, 3, 32, 16]} />
-        <meshStandardMaterial 
-          color="#f5f5f0" 
-          side={THREE.DoubleSide}
-          roughness={0.7}
-          metalness={0.1}
-        />
-      </mesh>
-      
-      {/* Red half of Polish flag - toned color */}
-      <mesh position={[0, -1.5, 0]}>
-        <planeGeometry args={[16, 3, 32, 16]} />
-        <meshStandardMaterial 
-          color="#c4524f" 
-          side={THREE.DoubleSide}
-          roughness={0.7}
-          metalness={0.1}
-        />
-      </mesh>
+      <group ref={groupRef}>
+        {/* EU Circle of 12 stars in 3D */}
+        {[...Array(12)].map((_, i) => {
+          const angle = (i * Math.PI * 2) / 12;
+          const radius = 4;
+          return (
+            <mesh
+              key={i}
+              position={[
+                Math.cos(angle) * radius,
+                Math.sin(angle) * radius,
+                Math.sin(i * 0.5) * 2
+              ]}
+            >
+              <octahedronGeometry args={[0.3, 0]} />
+              <meshStandardMaterial 
+                color="#ffd700"
+                emissive="#ffd700"
+                emissiveIntensity={0.6}
+                metalness={0.8}
+                roughness={0.2}
+              />
+            </mesh>
+          );
+        })}
+        
+        {/* Additional geometric shapes */}
+        {[...Array(8)].map((_, i) => {
+          const angle = (i * Math.PI * 2) / 8 + Math.PI / 8;
+          const radius = 6;
+          return (
+            <mesh
+              key={`outer-${i}`}
+              position={[
+                Math.cos(angle) * radius,
+                Math.sin(angle) * radius,
+                -3
+              ]}
+            >
+              <boxGeometry args={[0.4, 0.4, 0.4]} />
+              <meshStandardMaterial 
+                color="#003399"
+                metalness={0.5}
+                roughness={0.3}
+              />
+            </mesh>
+          );
+        })}
+      </group>
     </>
   );
 }
@@ -90,8 +110,8 @@ export const HeroWavingFlags = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 6], fov: 75 }}>
-          <WavingPolishFlag />
+        <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
+          <EuropeanStars3D />
         </Canvas>
       </div>
 
@@ -105,15 +125,15 @@ export const HeroWavingFlags = () => {
                 {t('hero.title')}
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-foreground/80">
+            <p className="text-xl md:text-2xl font-heading text-foreground/80">
               {t('hero.description')}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mt-8">
               {features.map((feature, index) => (
                 <div 
                   key={index} 
-                  className="glass-card hover-glow p-4 md:p-8 rounded-lg text-center relative min-h-[120px] md:min-h-[160px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                  className="glass-card hover-glow p-6 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] flex items-center justify-center backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
                 >
                   <div className="w-full h-full flex flex-col items-center justify-center gap-3">
                     <feature.icon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
@@ -125,7 +145,7 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/10">
+          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/10 max-w-md mx-auto lg:mx-0">
             <div className="mb-6 rounded-xl overflow-hidden">
               <img 
                 src={professionalWoman} 
@@ -133,9 +153,12 @@ export const HeroWavingFlags = () => {
                 className="w-full h-auto object-cover"
               />
             </div>
-            <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {t('contact.formTitle') || 'Start Your Journey'}
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2 text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              {t('contact.formTitle') || 'Get Your Free Assessment'}
             </h2>
+            <p className="text-center text-muted-foreground mb-6">
+              Start your Polish citizenship journey today
+            </p>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
@@ -186,7 +209,9 @@ export const HeroWavingFlags = () => {
                 </Select>
               </div>
               <MainCTA ariaLabel="Start your Polish citizenship journey" wrapperClassName="w-full">
-                <span className="block w-full text-center py-1">{t('contact.form.submit')}</span>
+                <span className="block w-full text-center py-1 font-semibold">
+                  {t('contact.form.submit') || 'Get Started Now'}
+                </span>
               </MainCTA>
             </form>
           </div>
