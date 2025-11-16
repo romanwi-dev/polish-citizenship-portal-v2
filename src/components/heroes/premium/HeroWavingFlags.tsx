@@ -9,6 +9,7 @@ import { Award, Users, Trophy, Sparkles } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
+import thankYou1 from '@/assets/thank-you/thank-you-1.jpg';
 import { SocialShare } from '@/components/social/SocialShare';
 
 // Smooth Flowing Particles Background Animation
@@ -78,7 +79,8 @@ export const HeroWavingFlags = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    country: ''
+    country: '',
+    phone: ''
   });
   const isRTL = i18n.language === 'he';
 
@@ -137,101 +139,136 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-20">
-            <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100">
-              <img 
-                src={professionalWoman} 
-                alt="Professional consultation" 
-                className="w-full h-auto object-cover"
-              />
-            </div>
-            <form onSubmit={handleSubmit} className="space-y-1.5">
-              <div className="space-y-1.5">
-                <Label htmlFor="name" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {t('contact.nameLabel')} *
-                </Label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="email" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {t('contact.emailLabel')} *
-                </Label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="country" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {t('contact.countryLabel')}
-                </Label>
-                <Select
-                  value={formData.country}
-                  onValueChange={(value) => setFormData({...formData, country: value})}
-                >
-                  <SelectTrigger className={`!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
-                    <SelectValue placeholder={t('contact.countryPlaceholder')} />
-                  </SelectTrigger>
-                  <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
-                    {["USA", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France", "Other"].map((country) => (
-                      <SelectItem key={country} value={country} className="cursor-pointer hover:bg-primary/10 text-sm">
-                        {country}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <button
-                type="submit"
-                className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-lg md:text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8 break-words hyphens-auto"
-              >
-                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats Cards at Bottom */}
-      <div className="container relative z-10 px-4 mx-auto mt-16 md:mt-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {features.map((feature, index) => {
-            const FeatureIcon = feature.icon;
-            return (
+          <div 
+            className="relative w-full max-w-md mx-auto lg:mx-0"
+            style={{ 
+              perspective: '1000px',
+              height: '700px'
+            }}
+          >
+            <div 
+              className="relative w-full h-full transition-transform duration-700"
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+              }}
+            >
+              {/* Front Side - Form */}
               <div 
-                key={index} 
-                className="glass-card hover-glow p-4 md:p-6 lg:p-6 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] lg:min-h-[140px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                className="absolute inset-0"
+                style={{ 
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden'
+                }}
               >
-                <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-                  <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
-                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
-                  <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words hyphens-auto px-2">{feature.text}</p>
+                <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full h-full">
+                  <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100">
+                    <img 
+                      src={professionalWoman} 
+                      alt="Professional consultation" 
+                      className="w-full h-auto object-cover"
+                    />
+                  </div>
+                  <form onSubmit={handleSubmit} className="space-y-1.5">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="name" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                        {t('contact.nameLabel')} *
+                      </Label>
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                        {t('contact.emailLabel')} *
+                      </Label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="country" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                        {t('contact.countryLabel')}
+                      </Label>
+                      <Select
+                        value={formData.country}
+                        onValueChange={(value) => setFormData({...formData, country: value})}
+                      >
+                        <SelectTrigger className={`!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                          <SelectValue placeholder={t('contact.countryPlaceholder')} />
+                        </SelectTrigger>
+                        <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
+                          {["USA", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France", "Other"].map((country) => (
+                            <SelectItem key={country} value={country} className="cursor-pointer hover:bg-primary/10 text-sm">
+                              {country}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full h-14 md:h-12 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-semibold transition-all hover:shadow-lg hover:shadow-primary/30 active:scale-95 text-sm md:text-base"
+                    >
+                      {t('hero.cta')}
+                    </button>
+                  </form>
                 </div>
               </div>
-            );
-          })}
-        </div>
-        
-        {/* Social Share Buttons */}
-        <div className="mt-32 flex justify-center">
-          <SocialShare 
-            title={t('hero.title')}
-            description={t('hero.subtitle1')}
-            variant="minimal"
-          />
+
+              {/* Back Side - Thank You Message */}
+              <div 
+                className={`absolute inset-0 ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
+                style={{ 
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)',
+                  opacity: isFlipped ? 1 : 0,
+                  transition: 'opacity 0s 0.35s'
+                }}
+              >
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col items-center justify-center gap-8 relative overflow-hidden">
+                  {/* Image */}
+                  <div className="w-full h-1/2 relative">
+                    <img 
+                      src={thankYou1} 
+                      alt="Professional with passport" 
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                  </div>
+                  
+                  {/* Message */}
+                  <div className="w-full flex flex-col items-center justify-center space-y-8 text-center px-4">
+                    <p className="bg-gradient-to-r from-slate-400 to-slate-600 bg-clip-text text-transparent text-2xl font-semibold">
+                      {t('contact.thankYouMessage')}
+                    </p>
+                    <Button
+                      onClick={() => {
+                        setIsFlipped(false);
+                        setFormData({ name: "", email: "", country: "", phone: "" });
+                      }}
+                      variant="outline"
+                      className="hover-glow"
+                    >
+                      Send Another Message
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
