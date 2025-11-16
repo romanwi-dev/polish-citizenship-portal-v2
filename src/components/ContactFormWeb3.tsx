@@ -460,14 +460,15 @@ const ContactFormWeb3 = () => {
         </div>
       </div>
 
-      {/* Bottom CTA - Outside container for full width */}
-      <MainCTA
-        wrapperClassName="mt-40 mb-40"
-        onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-        ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-      >
-        {t('hero.cta')}
-      </MainCTA>
+      {/* Bottom CTA */}
+      <div className="flex justify-center mt-16">
+        <MainCTA
+          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+          ariaLabel="Take the Polish Citizenship Test to check your eligibility"
+        >
+          {t('hero.cta')}
+        </MainCTA>
+      </div>
     </section>
   );
 };
