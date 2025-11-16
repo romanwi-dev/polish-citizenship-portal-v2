@@ -252,14 +252,14 @@ const FAQSection = () => {
             </div>
           )}
 
-          <MainCTA
-            wrapperClassName="flex justify-center mt-40 mb-20 animate-fade-in"
-            animationDelay="400ms"
-            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-            ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-          >
-            {t('hero.cta')}
-          </MainCTA>
+          <div className="flex justify-center mt-16 animate-fade-in" style={{ animationDelay: '400ms' }}>
+            <MainCTA
+              onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+              ariaLabel="Take the Polish Citizenship Test to check your eligibility"
+            >
+              {t('hero.cta')}
+            </MainCTA>
+          </div>
 
         </div>
       </div>
