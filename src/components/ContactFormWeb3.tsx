@@ -464,16 +464,6 @@ const ContactFormWeb3 = () => {
           </div>
         </div>
       </div>
-
-      {/* Bottom CTA */}
-      <div className="flex justify-center mt-28">
-        <MainCTA
-          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-          ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-        >
-          {t('hero.cta')}
-        </MainCTA>
-      </div>
     </section>
   );
 };
