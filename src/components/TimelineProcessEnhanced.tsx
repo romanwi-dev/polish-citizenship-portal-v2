@@ -464,7 +464,7 @@ export default function TimelineProcessEnhanced() {
                           className="w-full"
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.location.href = '/request-access';
+                            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                           }}
                         >
                           Open Account
