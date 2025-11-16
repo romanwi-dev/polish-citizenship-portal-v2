@@ -162,7 +162,7 @@ export const HeroWavingFlags = () => {
                   value={formData.country}
                   onValueChange={(value) => setFormData({...formData, country: value})}
                 >
-                  <SelectTrigger className="!h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none">
+                  <SelectTrigger className="!h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none">
                     <SelectValue placeholder={t('contact.countrySelect')} />
                   </SelectTrigger>
                   <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
