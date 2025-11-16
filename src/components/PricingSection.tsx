@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { useTranslation } from 'react-i18next';
 import { useState } from "react";
+import { SectionLayout } from "./layout/SectionLayout";
 
 const FlippablePricingCard = ({ 
   icon: Icon, 
@@ -134,29 +135,16 @@ const PricingSection = () => {
   };
 
   return (
-    <section id="pricing" className="relative py-24 overflow-hidden overflow-x-hidden">
-      
-      <div className="container relative z-10 px-4 mx-auto">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-primary/30">
-              <Zap className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('pricing.badge')}</span>
-            </div>
-            
-            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-6">
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                {t('pricing.title')}
-              </span>
-            </h2>
-            
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal">
-              {t('pricing.subtitle')}
-            </p>
-          </div>
-
-          {/* Pricing Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+    <SectionLayout
+      id="pricing"
+      badge={{ icon: Zap, text: t('pricing.badge') }}
+      title={t('pricing.title')}
+      subtitle={t('pricing.subtitle')}
+      cta={<MainCTA onClick={scrollToContact} ariaLabel="Contact us">{t('pricing.cta')}</MainCTA>}
+    >
+      <div className="max-w-6xl mx-auto">
+        {/* Pricing Cards */}
+        <div className="grid md:grid-cols-3 gap-8">
             <FlippablePricingCard
               icon={Train}
               title={t('pricing.standard')}

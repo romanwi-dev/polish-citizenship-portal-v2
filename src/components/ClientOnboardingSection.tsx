@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { UserCircle } from "lucide-react";
-import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send, Brain, FileCheck2, Globe } from "lucide-react";
+import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { Card } from "./ui/card";
 import { useTranslation } from 'react-i18next';
+import { SectionLayout } from "./layout/SectionLayout";
 
 export default function ClientOnboardingSection() {
   const { t } = useTranslation();
@@ -67,27 +68,22 @@ export default function ClientOnboardingSection() {
   ];
 
   return (
-    <section id="how-to-start" className="relative py-24 overflow-hidden overflow-x-hidden">
-
-      <div className="container relative z-10 mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-primary/30">
-            <UserCircle className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('onboarding.badge')}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black mb-6 tracking-tight animate-scale-in">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              {t('onboarding.title')}
-            </span>
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal">
-            {t('onboarding.description')}
-          </p>
-        </div>
-
-        {/* Steps - Left-Right Alternating Layout */}
-        <div className="relative max-w-6xl mx-auto">
+    <SectionLayout
+      id="how-to-start"
+      badge={{ icon: UserCircle, text: t('onboarding.badge') }}
+      title={t('onboarding.title')}
+      subtitle={t('onboarding.description')}
+      cta={
+        <MainCTA 
+          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+          ariaLabel="Take the Polish Citizenship Test"
+        >
+          {t('onboarding.cta')}
+        </MainCTA>
+      }
+    >
+      {/* Steps - Left-Right Alternating Layout */}
+      <div className="relative max-w-6xl mx-auto">
           {/* Desktop center line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10 hidden md:block" />
           
@@ -230,16 +226,6 @@ export default function ClientOnboardingSection() {
             );
           })}
         </div>
-
-        {/* CTA */}
-        <MainCTA
-          wrapperClassName="mt-40 mb-20"
-          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-          ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-        >
-          {t('hero.cta')}
-        </MainCTA>
-      </div>
-    </section>
+    </SectionLayout>
   );
 }
