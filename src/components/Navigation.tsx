@@ -13,6 +13,8 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useTranslation } from 'react-i18next';
+import { SocialShare } from "@/components/social/SocialShare";
+
 const Navigation = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -136,11 +138,19 @@ const Navigation = () => {
                       </div>
                     </ScrollArea>
                     
-                    {/* Sticky Bottom Button - Red with visible text */}
-                    <div className="p-4 border-t border-border/50">
-                      <Button onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')} className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all" aria-label="Take the Polish Citizenship Test to check your eligibility">
-                        Take Polish Citizenship Test
-                      </Button>
+                    {/* Sticky Bottom Section with Social Links */}
+                    <div className="border-t border-border/50">
+                      {/* Social Share Bar */}
+                      <div className="p-4 pb-3 flex justify-center bg-muted/30">
+                        <SocialShare variant="minimal" />
+                      </div>
+                      
+                      {/* Citizenship Test Button */}
+                      <div className="p-4 pt-3">
+                        <Button onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')} className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all" aria-label="Take the Polish Citizenship Test to check your eligibility">
+                          Take Polish Citizenship Test
+                        </Button>
+                      </div>
                     </div>
                   </div>
               </DropdownMenuContent>
