@@ -118,34 +118,32 @@ export const HeroWavingFlags = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
 
       <div className="container relative z-10 px-4 mx-auto">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
+        <div className="grid lg:grid-cols-[1fr,450px] gap-8 lg:gap-12 items-start">
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading font-black">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
                 {t('hero.title')}
               </span>
             </h1>
-            <p className="text-xl md:text-2xl font-heading text-foreground/80">
+            <p className="text-base md:text-lg font-heading text-foreground/80 text-center">
               {t('hero.description')}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
               {features.map((feature, index) => (
                 <div 
                   key={index} 
-                  className="glass-card hover-glow p-6 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] flex items-center justify-center backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                  className="glass-card hover-glow p-4 md:p-6 rounded-lg text-center backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
                 >
-                  <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-                    <feature.icon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{feature.stat}</h3>
-                    <p className="text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight">{feature.text}</p>
-                  </div>
+                  <feature.icon className="w-6 h-6 md:w-8 md:h-8 mx-auto mb-2 dark:text-primary light:text-white/90 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
+                  <h3 className="text-2xl md:text-3xl font-bold dark:text-primary light:text-white light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)] mb-1">{feature.stat}</h3>
+                  <p className="text-xs md:text-sm font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)]">{feature.text}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/10 max-w-md mx-auto lg:mx-0">
+          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/10 w-full lg:ml-auto">
             <div className="mb-6 rounded-xl overflow-hidden">
               <img 
                 src={professionalWoman} 
@@ -153,10 +151,10 @@ export const HeroWavingFlags = () => {
                 className="w-full h-auto object-cover"
               />
             </div>
-            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2 text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h2 className="text-xl md:text-2xl font-heading font-bold mb-2 text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               {t('contact.formTitle') || 'Get Your Free Assessment'}
             </h2>
-            <p className="text-center text-muted-foreground mb-6">
+            <p className="text-sm text-center text-muted-foreground mb-6">
               Start your Polish citizenship journey today
             </p>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -208,11 +206,12 @@ export const HeroWavingFlags = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <MainCTA ariaLabel="Start your Polish citizenship journey" wrapperClassName="w-full">
-                <span className="block w-full text-center py-1 font-semibold">
-                  {t('contact.form.submit') || 'Get Started Now'}
-                </span>
-              </MainCTA>
+              <button
+                type="submit"
+                className="w-full h-14 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-md text-lg font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              >
+                {t('contact.form.submit') || 'Get Started Now'}
+              </button>
             </form>
           </div>
         </div>
