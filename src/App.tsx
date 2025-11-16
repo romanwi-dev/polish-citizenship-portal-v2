@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 
 const ContactFormsDemo = lazy(() => import("./pages/ContactFormsDemo"));
 const TranslationDemo = lazy(() => import("./pages/TranslationDemo"));
+const HeroGallery = lazy(() => import("./pages/HeroGallery"));
 
 // Client portal pages
 const ClientLogin = lazy(() => import("./pages/ClientLogin"));
