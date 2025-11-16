@@ -3069,6 +3069,7 @@ const resources = {
         badge: 'התחבר אלינו',
         title: 'בדוק את הזכאות והסיכויים שלך',
         subtitle: 'מענה תוך 24 שעות',
+        requestInfo: 'בקש מידע נוסף',
         nameLabel: 'שם מלא',
         namePlaceholder: '',
         emailLabel: 'אימייל',
