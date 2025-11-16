@@ -125,7 +125,7 @@ export const HeroWavingFlags = () => {
                 className="w-full h-auto object-cover"
               />
             </div>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-2.5">
               <div className="space-y-1.5">
                 <Label htmlFor="name" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   {t('contact.name')} *
