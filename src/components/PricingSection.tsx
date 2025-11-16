@@ -68,7 +68,7 @@ const FlippablePricingCard = ({
               <Icon className={`w-6 h-6 ${iconColor}`} />
             </div>
             <div>
-              <h3 className="text-3xl font-bold">{title}</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold leading-tight break-words hyphens-auto">{title}</h3>
               <p className="text-sm text-muted-foreground">{subtitle}</p>
             </div>
           </div>

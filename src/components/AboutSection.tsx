@@ -45,7 +45,7 @@ const FlippableAboutCard = ({
             <div className="w-14 h-14 mb-4 rounded-xl bg-gradient-to-br from-primary/40 to-primary/60 flex items-center justify-center shadow-md">
               <Icon className="w-7 h-7 text-white/90" />
             </div>
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 font-heading text-center">{title}</h3>
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 font-heading text-center leading-tight break-words hyphens-auto px-2">{title}</h3>
           </div>
           <div className="flex-1 flex items-center justify-center">
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed font-body font-light text-center">
