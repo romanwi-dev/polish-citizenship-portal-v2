@@ -215,16 +215,16 @@ export default function TimelineProcessEnhanced() {
     <section key={i18n.language} id="timeline" className="relative py-24 overflow-hidden overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-primary/30">
             <Clock className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('timelineProcess.badge')}</span>
           </div>
-          <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight animate-scale-in" style={{ animationDelay: '150ms' }}>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
+          <h2 className="text-4xl md:text-5xl font-heading font-black mb-6 tracking-tight animate-scale-in">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('timelineProcess.title')}
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 animate-fade-in" style={{ animationDelay: '200ms' }}>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal">
             {t('timelineProcess.subtitle')}
           </p>
         </div>
@@ -354,13 +354,14 @@ export default function TimelineProcessEnhanced() {
         </div>
 
         {/* CTA */}
-        <MainCTA
-          wrapperClassName="mt-40 mb-20"
-          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-          ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-        >
-          {t('hero.cta')}
-        </MainCTA>
+        <div className="flex justify-center mt-12">
+          <MainCTA
+            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+            ariaLabel="Take the Polish Citizenship Test to check your eligibility"
+          >
+            {t('hero.cta')}
+          </MainCTA>
+        </div>
       </div>
     </section>
   );

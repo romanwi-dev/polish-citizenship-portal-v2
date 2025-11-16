@@ -170,16 +170,15 @@ const FAQSection = () => {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-primary/30">
               <HelpCircle className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('faq.badge')}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
+            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-6">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {t('faq.title')}
               </span>
             </h2>
-            <div className="mb-16" />
           </div>
 
           {/* Search Bar */}
