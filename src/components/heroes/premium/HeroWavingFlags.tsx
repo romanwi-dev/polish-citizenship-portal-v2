@@ -141,7 +141,7 @@ export const HeroWavingFlags = () => {
             </div>
             <form onSubmit={handleSubmit} className="space-y-1.5">
               <div className="space-y-1.5">
-                <Label htmlFor="name" className={`text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                <Label htmlFor="name" className={`text-sm sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('contact.nameLabel')} *
                 </Label>
                 <input
@@ -155,7 +155,7 @@ export const HeroWavingFlags = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="email" className={`text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                <Label htmlFor="email" className={`text-sm sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('contact.emailLabel')} *
                 </Label>
                 <input
@@ -169,7 +169,7 @@ export const HeroWavingFlags = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="country" className={`text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                <Label htmlFor="country" className={`text-sm sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('contact.countryLabel')}
                 </Label>
                 <Select
@@ -190,7 +190,7 @@ export const HeroWavingFlags = () => {
               </div>
               <button
                 type="submit"
-                className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-sm sm:text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8 break-words hyphens-auto"
+                className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-base sm:text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8 break-words hyphens-auto"
               >
                 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
               </button>
