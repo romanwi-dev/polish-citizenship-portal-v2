@@ -150,7 +150,7 @@ const ContactFormWeb3 = () => {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">Name *</Label>
+                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.nameLabel')} *</Label>
                         <input
                           id="name"
                           name="name"
@@ -164,7 +164,7 @@ const ContactFormWeb3 = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">Email *</Label>
+                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">{t('contact.emailLabel')} *</Label>
                         <input
                           id="email"
                           name="email"
@@ -234,7 +234,7 @@ const ContactFormWeb3 = () => {
                           onValueChange={(value) => handleSelectChange("yearOfEmigration", value)}
                         >
                           <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                            <SelectValue placeholder="Select year range" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                            <SelectValue placeholder={t('contact.yearPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
                             <SelectItem value="before-1920" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 text-foreground">before 1920</SelectItem>
@@ -272,7 +272,7 @@ const ContactFormWeb3 = () => {
                       className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 h-24 md:h-20 rounded-lg !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/40 dark:hover:!bg-blue-950/40 !border-2 !border-blue-900/30 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur w-full"
                     >
                       <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
-                        Send Your Info
+                        {t('contact.submitButton')}
                       </span>
                     </Button>
                   </form>
