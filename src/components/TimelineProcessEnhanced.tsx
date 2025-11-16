@@ -252,7 +252,7 @@ export default function TimelineProcessEnhanced() {
               key={step.number} 
               initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.05, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 0.5, delay: index * 0.03, ease: [0.25, 0.46, 0.45, 0.94] }}
               viewport={{ once: true, margin: "-200px" }}
               className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
             >
