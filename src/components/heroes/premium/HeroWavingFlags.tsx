@@ -104,16 +104,16 @@ export const HeroWavingFlags = () => {
         <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
             <div className={`space-y-8 md:pt-8 lg:pt-12 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
               <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight break-words hyphens-auto">
+              <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight break-words hyphens-auto">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary inline-block">
                   {t('hero.title')}
                 </span>
               </h1>
               <div className="space-y-3" key={t('hero.subtitle1')}>
-                <p className="text-xs sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
                   {t('hero.subtitle1')}
                 </p>
-                <p className="text-xs sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
                   {t('hero.subtitle2')}
                 </p>
               </div>
