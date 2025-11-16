@@ -24,8 +24,11 @@ export function LanguageSelector() {
 
   const currentLanguage = LANGUAGES.find(lang => lang.code === i18n.language) || LANGUAGES[0];
 
-  const handleLanguageChange = (code: string) => {
-    i18n.changeLanguage(code);
+  const handleLanguageChange = async (code: string) => {
+    console.log('🔄 Changing language to:', code);
+    await i18n.changeLanguage(code);
+    console.log('✅ Language changed to:', i18n.language);
+    console.log('📦 Available resources:', Object.keys(i18n.store.data));
     setOpen(false);
   };
 

@@ -35,9 +35,14 @@ const contactSchema = z.object({
 });
 
 const ContactFormWeb3 = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
+  
+  // Debug logging
+  console.log('📧 Contact form language:', i18n.language);
+  console.log('📧 nameLabel:', t('contact.nameLabel'));
+  console.log('📧 emailLabel:', t('contact.emailLabel'));
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
   const [formData, setFormData] = useState({
     name: "",
