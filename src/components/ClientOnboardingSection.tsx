@@ -142,7 +142,7 @@ export default function ClientOnboardingSection() {
             return (
             <div
               key={step.number}
-              className={`mb-16 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''} relative`}
+              className={`mb-24 md:mb-16 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''} relative`}
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
