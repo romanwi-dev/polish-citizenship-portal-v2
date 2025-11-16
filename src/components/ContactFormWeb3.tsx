@@ -124,7 +124,7 @@ const ContactFormWeb3 = () => {
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2 mt-16">
           <div 
-            className="relative w-full min-h-[900px] md:min-h-[750px] animate-fade-in z-20" 
+            className="relative w-full animate-fade-in z-20" 
             style={{ 
               perspective: '1000px',
               animationDelay: '100ms',
@@ -286,7 +286,7 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className={`w-full h-[900px] md:h-[750px] absolute inset-0 ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
+                className={`w-full h-[900px] absolute inset-0 ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',

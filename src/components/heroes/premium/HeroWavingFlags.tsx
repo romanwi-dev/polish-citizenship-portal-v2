@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useTranslation } from 'react-i18next';
 import { MainCTA } from '@/components/ui/main-cta';
+import { Button } from '@/components/ui/button';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Award, Users, Trophy, Sparkles } from 'lucide-react';
 import { Label } from '@/components/ui/label';
@@ -73,6 +74,7 @@ function SmoothFlowingParticles() {
 
 export const HeroWavingFlags = () => {
   const { t, i18n } = useTranslation();
+  const [isFlipped, setIsFlipped] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -82,7 +84,10 @@ export const HeroWavingFlags = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank');
+    setIsFlipped(true);
+    setTimeout(() => {
+      window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank');
+    }, 300);
   };
 
   const features = [
