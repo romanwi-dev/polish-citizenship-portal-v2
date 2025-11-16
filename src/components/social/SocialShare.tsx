@@ -1,27 +1,26 @@
-import { Facebook, Twitter, Linkedin, Send, Link2, MessageCircle } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
+import { Facebook, Twitter, Linkedin, Send, MessageCircle, Link2 } from "lucide-react";
 import { toast } from "sonner";
+import { SiPinterest } from "react-icons/si";
 
 interface SocialShareProps {
   url?: string;
   title?: string;
   description?: string;
-  variant?: "default" | "floating" | "inline";
+  variant?: "default" | "floating" | "inline" | "minimal";
 }
 
 export function SocialShare({ 
-  url = window.location.href,
+  url = typeof window !== 'undefined' ? window.location.href : '',
   title = "Polish Citizenship Portal",
   description = "Expert assistance with Polish citizenship by descent",
   variant = "default"
 }: SocialShareProps) {
-  const { t } = useTranslation();
 
   const shareUrls = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
     twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    pinterest: `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(description || title)}`,
     whatsapp: `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`,
     telegram: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`
   };
@@ -33,86 +32,73 @@ export function SocialShare({
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(url);
-      toast.success(t('social.linkCopied'));
+      toast.success("Link copied to clipboard!");
     } catch (err) {
-      toast.error(t('social.copyFailed'));
+      toast.error("Failed to copy link");
     }
   };
 
-  const baseButtonClass = variant === "floating" 
-    ? "h-12 w-12 rounded-full shadow-lg hover:shadow-xl"
-    : "gap-2";
+  if (variant === "minimal") {
+    return (
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => handleShare("facebook")}
+          className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+          aria-label="Share on Facebook"
+        >
+          <Facebook className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        </button>
 
-  return (
-    <div 
-      className={`flex ${variant === "floating" ? "flex-col gap-3" : "flex-wrap gap-2"} items-center`}
-      data-social-share
-    >
-      <Button
-        variant="outline"
-        size={variant === "floating" ? "icon" : "sm"}
-        onClick={() => handleShare('facebook')}
-        className={baseButtonClass}
-        aria-label="Share on Facebook"
-      >
-        <Facebook className="h-4 w-4" />
-        {variant !== "floating" && <span>Facebook</span>}
-      </Button>
+        <button
+          onClick={() => handleShare("twitter")}
+          className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+          aria-label="Share on Twitter"
+        >
+          <Twitter className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        </button>
 
-      <Button
-        variant="outline"
-        size={variant === "floating" ? "icon" : "sm"}
-        onClick={() => handleShare('twitter')}
-        className={baseButtonClass}
-        aria-label="Share on Twitter"
-      >
-        <Twitter className="h-4 w-4" />
-        {variant !== "floating" && <span>Twitter</span>}
-      </Button>
+        <button
+          onClick={() => handleShare("linkedin")}
+          className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+          aria-label="Share on LinkedIn"
+        >
+          <Linkedin className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        </button>
 
-      <Button
-        variant="outline"
-        size={variant === "floating" ? "icon" : "sm"}
-        onClick={() => handleShare('linkedin')}
-        className={baseButtonClass}
-        aria-label="Share on LinkedIn"
-      >
-        <Linkedin className="h-4 w-4" />
-        {variant !== "floating" && <span>LinkedIn</span>}
-      </Button>
+        <button
+          onClick={() => handleShare("pinterest")}
+          className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+          aria-label="Share on Pinterest"
+        >
+          <SiPinterest className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        </button>
 
-      <Button
-        variant="outline"
-        size={variant === "floating" ? "icon" : "sm"}
-        onClick={() => handleShare('whatsapp')}
-        className={baseButtonClass}
-        aria-label="Share on WhatsApp"
-      >
-        <MessageCircle className="h-4 w-4" />
-        {variant !== "floating" && <span>WhatsApp</span>}
-      </Button>
+        <button
+          onClick={() => handleShare("whatsapp")}
+          className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+          aria-label="Share on WhatsApp"
+        >
+          <MessageCircle className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        </button>
 
-      <Button
-        variant="outline"
-        size={variant === "floating" ? "icon" : "sm"}
-        onClick={() => handleShare('telegram')}
-        className={baseButtonClass}
-        aria-label="Share on Telegram"
-      >
-        <Send className="h-4 w-4" />
-        {variant !== "floating" && <span>Telegram</span>}
-      </Button>
+        <button
+          onClick={() => handleShare("telegram")}
+          className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+          aria-label="Share on Telegram"
+        >
+          <Send className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        </button>
 
-      <Button
-        variant="outline"
-        size={variant === "floating" ? "icon" : "sm"}
-        onClick={handleCopyLink}
-        className={baseButtonClass}
-        aria-label="Copy link"
-      >
-        <Link2 className="h-4 w-4" />
-        {variant !== "floating" && <span>{t('social.copyLink')}</span>}
-      </Button>
-    </div>
-  );
+        <button
+          onClick={handleCopyLink}
+          className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+          aria-label="Copy link"
+        >
+          <Link2 className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        </button>
+      </div>
+    );
+  }
+
+  return null;
 }
