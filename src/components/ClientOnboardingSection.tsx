@@ -155,7 +155,7 @@ export default function ClientOnboardingSection() {
                 {/* Card - adjusted for mobile spacing */}
                 <div className="w-full md:w-[42%] mt-20 md:mt-0">
                   <div 
-                    className="relative h-[600px]"
+                    className="relative h-[520px]"
                     style={{ 
                       perspective: '1000px'
                     }}
@@ -170,7 +170,7 @@ export default function ClientOnboardingSection() {
                 >
                   {/* Front Side */}
                   <div
-                    className="absolute inset-0 w-full h-[600px] glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center items-center"
+                    className="absolute inset-0 w-full h-[520px] glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center items-center"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -215,7 +215,7 @@ export default function ClientOnboardingSection() {
 
                   {/* Back Side */}
                   <div 
-                    className="absolute inset-0 w-full h-[600px] glass-card p-6 rounded-lg hover-glow flex flex-col"
+                    className="absolute inset-0 w-full h-[520px] glass-card p-6 rounded-lg hover-glow flex flex-col"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
