@@ -90,7 +90,7 @@ export const HeroWavingFlags = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-24 pb-32 md:pt-40 md:pb-40 lg:pt-48 lg:pb-48">
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-28 pb-32 md:pt-40 md:pb-40 lg:pt-48 lg:pb-48">
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
           <SmoothFlowingParticles />
