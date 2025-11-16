@@ -187,7 +187,7 @@ const ContactFormWeb3 = () => {
                           value={formData.country}
                           onValueChange={(value) => handleSelectChange("country", value)}
                         >
-                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder={t('contact.countryPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -210,7 +210,7 @@ const ContactFormWeb3 = () => {
                           value={formData.polishAncestor}
                           onValueChange={(value) => handleSelectChange("polishAncestor", value)}
                         >
-                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder={t('contact.ancestorPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -233,7 +233,7 @@ const ContactFormWeb3 = () => {
                           value={formData.yearOfEmigration}
                           onValueChange={(value) => handleSelectChange("yearOfEmigration", value)}
                         >
-                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder="Select year range" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -254,7 +254,7 @@ const ContactFormWeb3 = () => {
                           value={formData.polishDocuments}
                           onValueChange={(value) => handleSelectChange("polishDocuments", value)}
                         >
-                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder={t('contact.selectOption')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -323,7 +323,7 @@ const ContactFormWeb3 = () => {
 
           {/* Five Sequential Arrows Animation */}
           <div 
-            className="flex justify-center -mt-8 md:-mt-24 mb-2 cursor-pointer hover:opacity-80 transition-opacity relative z-10"
+            className="flex justify-center -mt-8 md:-mt-12 mb-2 cursor-pointer hover:opacity-80 transition-opacity relative z-10"
             onClick={() => {
               const responseCard = document.getElementById('response-time-card');
               if (responseCard) {
@@ -403,9 +403,7 @@ const ContactFormWeb3 = () => {
                     >
                       {/* Front Side */}
                       <div 
-                        className={`glass-card p-6 rounded-lg hover-glow w-full h-[200px] md:h-[240px] flex flex-col ${
-                          stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
-                        }`}
+                        className="glass-card p-6 rounded-lg hover-glow w-full h-[180px] md:h-[200px] flex flex-col"
                         style={{ 
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden'
@@ -423,7 +421,7 @@ const ContactFormWeb3 = () => {
 
                       {/* Back Side */}
                       <div 
-                        className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 h-[200px] md:h-[240px] flex flex-col justify-center"
+                        className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 h-[180px] md:h-[200px] flex flex-col justify-center"
                         style={{ 
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
