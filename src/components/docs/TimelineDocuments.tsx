@@ -104,7 +104,7 @@ export function TimelineDocuments({
                       >
                         {doc.label}
                       </label>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-sm md:text-xs text-muted-foreground mt-1">
                         Step {index + 1} of {documents.length}
                       </p>
                     </div>

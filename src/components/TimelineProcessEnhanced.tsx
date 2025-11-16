@@ -292,7 +292,7 @@ export default function TimelineProcessEnhanced() {
                 }}>
                       <div className="flex-1 flex flex-col gap-3 justify-center items-center text-center w-full">
                         <div className="flex items-center justify-center gap-2 mb-1">
-                          <span className="text-xs text-muted-foreground">{step.duration}</span>
+                          <span className="text-sm md:text-xs text-muted-foreground">{step.duration}</span>
                         </div>
                         <h3 className={`text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
                           {step.title}
@@ -309,7 +309,7 @@ export default function TimelineProcessEnhanced() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails')}</p>
+                      <p className="text-sm md:text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails')}</p>
                     </div>
 
                     {/* Back Side */}
@@ -327,12 +327,12 @@ export default function TimelineProcessEnhanced() {
                           <p className="text-sm text-muted-foreground">
                             {t('timelineProcess.detailedInfoDesc')}
                           </p>
-                          <p className="text-xs text-muted-foreground/70 mt-3 italic">
+                          <p className="text-sm md:text-xs text-muted-foreground/70 mt-3 italic">
                             {t('timelineProcess.detailedInfoSignup')}
                           </p>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground/60 text-center mt-4">{t('timelineProcess.flipBack')}</p>
+                      <p className="text-sm md:text-xs text-muted-foreground/60 text-center mt-4">{t('timelineProcess.flipBack')}</p>
                     </div>
                   </div>
                 </div>

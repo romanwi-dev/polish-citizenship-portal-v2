@@ -211,12 +211,12 @@ const TimelineProcess = () => {
                             <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                               {step.number}
                             </span>
-                            <span className="text-xs text-muted-foreground">{t(`timelineProcess.stage${step.number}Duration`)}</span>
+                            <span className="text-sm md:text-xs text-muted-foreground">{t(`timelineProcess.stage${step.number}Duration`)}</span>
                           </div>
                           <h3 className="text-sm md:text-base font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap">
                             {t(`timelineProcess.stage${step.number}`)}
                           </h3>
-                          <p className="text-xs text-muted-foreground mb-2 px-2 text-center line-clamp-2">
+                          <p className="text-sm md:text-xs text-muted-foreground mb-2 px-2 text-center line-clamp-2">
                             {t(`timelineProcess.stage${step.number}Desc`)}
                           </p>
                           <div className="flex flex-wrap gap-1 justify-center mb-2">
@@ -227,7 +227,7 @@ const TimelineProcess = () => {
                               {step.priority}
                             </span>
                           </div>
-                          <p className="text-xs text-muted-foreground/60">Click to see details</p>
+                          <p className="text-sm md:text-xs text-muted-foreground/60">Click to see details</p>
                         </div>
                       </div>
                     </div>
