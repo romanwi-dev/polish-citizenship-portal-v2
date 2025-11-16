@@ -79,6 +79,25 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
       <meta name="twitter:image" content={`${baseUrl}/og/${currentLang}-og-image.jpg`} />
       <meta name="twitter:image:alt" content={t(`seo.${page}.ogImageAlt`)} />
       
+      {/* Pinterest Rich Pins */}
+      <meta name="pinterest-rich-pin" content="true" />
+      <meta property="og:type" content="article" />
+      <meta property="article:author" content="Polish Citizenship Portal" />
+      <meta property="article:published_time" content="2024-01-01T00:00:00Z" />
+      
+      {/* LinkedIn Article Meta */}
+      <meta property="og:site_name" content="Polish Citizenship Portal" />
+      <meta name="author" content="Polish Citizenship Portal" />
+      
+      {/* WhatsApp Preview Optimization */}
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/jpeg" />
+      
+      {/* Telegram Instant View */}
+      <meta property="telegram:channel" content="@polishcitizenship" />
+      <meta name="telegram:card" content="summary_large_image" />
+      
       {/* Hreflang tags for international SEO */}
       {languages.map(lang => (
         <link
