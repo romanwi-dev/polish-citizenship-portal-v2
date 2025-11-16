@@ -108,12 +108,12 @@ export const HeroWavingFlags = () => {
                   {t('hero.title')}
                 </span>
               </h1>
-              <div className="space-y-3">
+              <div className="space-y-3" key={t('hero.subtitle1')}>
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
-                  Poland&apos;s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey.
+                  {t('hero.subtitle1')}
                 </p>
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
-                  Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care. From initial eligibility assessment to final passport acquisition, we deliver unmatched success rates and transparent pricing.
+                  {t('hero.subtitle2')}
                 </p>
               </div>
             </div>
@@ -130,7 +130,7 @@ export const HeroWavingFlags = () => {
             <form onSubmit={handleSubmit} className="space-y-1.5">
               <div className="space-y-1.5">
                 <Label htmlFor="name" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
-                  {t('contact.name')} *
+                  {t('contact.nameLabel')} *
                 </Label>
                 <input
                   id="name"
@@ -144,7 +144,7 @@ export const HeroWavingFlags = () => {
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
-                  {t('contact.email')} *
+                  {t('contact.emailLabel')} *
                 </Label>
                 <input
                   id="email"
@@ -158,7 +158,7 @@ export const HeroWavingFlags = () => {
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="country" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
-                  {t('contact.country')}
+                  {t('contact.countryLabel')}
                 </Label>
                 <Select
                   value={formData.country}
