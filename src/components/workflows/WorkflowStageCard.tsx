@@ -45,7 +45,7 @@ export function WorkflowStageCard({
 
   return (
     <div 
-      className="relative h-[520px]"
+      className="relative h-[680px]"
       style={{ perspective: '1000px' }}
     >
       <div
@@ -68,7 +68,7 @@ export function WorkflowStageCard({
         {/* Front Side */}
         <div 
           className={cn(
-            "absolute inset-0 glass-card p-6 rounded-lg transition-all duration-300 flex flex-col",
+            "absolute inset-0 w-full h-[680px] glass-card p-6 rounded-lg transition-all duration-300 flex flex-col",
             isCompleted 
               ? "ring-2 ring-green-500/50" 
               : "hover-glow hover:scale-[1.02]"
@@ -203,7 +203,7 @@ export function WorkflowStageCard({
 
         {/* Back Side */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg flex flex-col"
+          className="absolute inset-0 w-full h-[680px] glass-card p-8 rounded-lg flex flex-col"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
