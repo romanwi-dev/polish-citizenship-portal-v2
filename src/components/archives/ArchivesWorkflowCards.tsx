@@ -190,7 +190,7 @@ export default function ArchivesWorkflowCards() {
               >
                 <div className="w-full md:w-[42%]">
                   <div 
-                    className="relative h-[520px]"
+                    className="relative h-[680px]"
                     style={{ perspective: '1000px' }}
                   >
                     <div
@@ -201,10 +201,11 @@ export default function ArchivesWorkflowCards() {
                         transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
                       }}
                     >
+                      {/* Front */}
                       <motion.div
                         whileHover={{ scale: 1.02, y: -3 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group flex flex-col"
+                        className="absolute inset-0 w-full h-[680px] glass-card p-8 rounded-lg hover-glow group flex flex-col"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
@@ -239,8 +240,9 @@ export default function ArchivesWorkflowCards() {
                       </motion.div>
 
                       {/* Back Side */}
+                      {/* Back */}
                       <div 
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex flex-col"
+                        className="absolute inset-0 w-full h-[680px] glass-card p-8 rounded-lg hover-glow flex flex-col"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
@@ -257,7 +259,7 @@ export default function ArchivesWorkflowCards() {
                           <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground">
                             Stage Details
                           </h3>
-                          <div className="flex-1 overflow-auto space-y-3">
+                          <div className="flex-1 space-y-3">
                             <div className="p-3 rounded-lg bg-muted/30">
                               <p className="text-sm text-muted-foreground">
                                 Archive search stage for comprehensive document recovery
