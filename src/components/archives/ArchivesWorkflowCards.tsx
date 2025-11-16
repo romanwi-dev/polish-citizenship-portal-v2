@@ -190,7 +190,7 @@ export default function ArchivesWorkflowCards() {
               >
                 <div className="w-full md:w-[42%]">
                   <div 
-                    className="relative h-[520px]"
+                    className="relative h-[480px]"
                     style={{ perspective: '1000px' }}
                   >
                     <div
@@ -205,7 +205,7 @@ export default function ArchivesWorkflowCards() {
                       <motion.div
                         whileHover={{ scale: 1.02, y: -3 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute inset-0 w-full h-[520px] glass-card p-8 rounded-lg hover-glow group flex flex-col"
+                        className="absolute inset-0 w-full h-[480px] glass-card p-8 rounded-lg hover-glow group flex flex-col"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
@@ -242,7 +242,7 @@ export default function ArchivesWorkflowCards() {
                       {/* Back Side */}
                       {/* Back */}
                       <div 
-                        className="absolute inset-0 w-full h-[520px] glass-card p-8 rounded-lg hover-glow flex flex-col"
+                        className="absolute inset-0 w-full h-[480px] glass-card p-8 rounded-lg hover-glow flex flex-col"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',

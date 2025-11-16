@@ -409,7 +409,7 @@ export default function TimelineProcessEnhanced() {
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}>
                     {/* Front Side */}
-                    <div className="absolute inset-0 w-full h-[520px] glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
+                    <div className="absolute inset-0 w-full h-[480px] glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
@@ -436,7 +436,7 @@ export default function TimelineProcessEnhanced() {
                     </div>
 
                     {/* Back Side */}
-                    <div className="absolute inset-0 w-full h-[520px] glass-card p-5 rounded-lg hover-glow flex flex-col" style={{
+                    <div className="absolute inset-0 w-full h-[480px] glass-card p-5 rounded-lg hover-glow flex flex-col" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'

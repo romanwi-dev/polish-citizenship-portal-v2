@@ -187,7 +187,7 @@ export default function ExtendedServicesWorkflowCards() {
               >
                 <div className="w-full md:w-[42%]">
                   <div 
-                    className="relative h-[520px]"
+                    className="relative h-[480px]"
                     style={{ perspective: '1000px' }}
                   >
                     <div
