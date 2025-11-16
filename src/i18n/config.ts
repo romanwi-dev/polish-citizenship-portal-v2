@@ -93,6 +93,8 @@ const resources = {
       hero: {
         badge: 'Web3 Legal Services',
         title: 'Polish Citizenship by Descent',
+        subtitle1: 'Poland\'s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey.',
+        subtitle2: 'Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care. From initial eligibility assessment to final passport acquisition, we deliver unmatched success rates and transparent pricing.',
         description: 'Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing',
         cta: 'Take Polish Citizenship Test',
         stats: {
@@ -266,6 +268,11 @@ const resources = {
         badge: 'Connect With Us',
         title: 'Check Your Eligibility and Chances',
         subtitle: 'Fill out the form below and we will get back to you within 24 hours',
+        name: 'Name',
+        email: 'Email',
+        country: 'Country',
+        countrySelect: 'Select',
+        requestInfo: 'Request More Info',
         nameLabel: 'Full Name',
         namePlaceholder: '',
         emailLabel: 'Email Address',
@@ -627,6 +634,8 @@ const resources = {
       hero: {
         badge: 'Servicios Legales Web3',
         title: 'Ciudadanía Polaca por Descendencia',
+        subtitle1: 'El principal servicio legal de Polonia para la ciudadanía polaca por descendencia. Con más de 20 años de experiencia y más de 25,000 casos exitosos, proporcionamos orientación integral en cada paso de tu proceso de ciudadanía.',
+        subtitle2: 'Nuestro historial comprobado y profundo conocimiento de la ley de ascendencia polaca garantizan que tu camino hacia la ciudadanía de la UE se maneje con precisión y cuidado. Desde la evaluación inicial de elegibilidad hasta la adquisición final del pasaporte, ofrecemos tasas de éxito incomparables y precios transparentes.',
         description: 'Orientación legal experta para personas de ascendencia polaca y judío-polaca de todo el mundo para obtener la ciudadanía polaca y pasaportes de la UE a través de ancestros polacos - tasa de éxito inigualable, cronograma realista verdadero, precios transparentes',
         cta: 'Realizar Test de Ciudadanía Polaca',
         stats: {
@@ -634,6 +643,16 @@ const resources = {
           cases: 'Casos Procesados',
           success: 'Tasa de Éxito'
         }
+      },
+      contact: {
+        badge: 'Conéctate Con Nosotros',
+        title: 'Comienza Tu Viaje a la Ciudadanía Polaca',
+        subtitle: 'Completa el formulario a continuación y te responderemos en 24 horas',
+        name: 'Nombre',
+        email: 'Correo Electrónico',
+        country: 'País',
+        countrySelect: 'Seleccionar',
+        requestInfo: 'Solicitar Más Información'
       },
       about: {
         badge: 'Experiencia Legal Desde 2003',
@@ -783,50 +802,6 @@ const resources = {
             year: "2024"
           }
         ]
-      },
-      contact: {
-        badge: 'Conéctate',
-        title: 'Verifica Tu Elegibilidad y Posibilidades',
-        subtitle: 'Te responderemos en 24 horas',
-        nameLabel: 'Nombre Completo',
-        namePlaceholder: '',
-        emailLabel: 'Email',
-        emailPlaceholder: '',
-        countryLabel: 'País',
-        countryPlaceholder: 'Selecciona país',
-        ancestorLabel: 'Ancestro Polaco',
-        ancestorPlaceholder: 'Selecciona',
-        ancestorMother: 'Madre',
-        ancestorFather: 'Padre',
-        ancestorGrandmother: 'Abuela',
-        ancestorGrandfather: 'Abuelo',
-        ancestorGreatGrandmother: 'Bisabuela',
-        ancestorGreatGrandfather: 'Bisabuelo',
-        yearLabel: 'Año de Emigración',
-        yearPlaceholder: 'ej. 1920',
-        documentsLabel: '¿Tienes documentos?',
-        documentsPlaceholder: 'Selecciona',
-        documentsYes: 'Sí, tengo',
-        documentsNo: 'No',
-        documentsNotSure: 'No sé',
-        submitButton: 'Enviar',
-        submitting: 'Enviando...',
-        thankYouTitle: '¡Gracias!',
-        thankYouMessage: 'Te responderemos en 24 horas.',
-        cta: 'Realizar Test',
-        polishDocuments: 'Documentos Polacos',
-        selectOption: 'Selecciona una opción',
-        haveDocuments: 'Tengo algunos documentos polacos de mi familia',
-        noDocuments: 'No tengo documentos polacos',
-        needCheck: 'Necesito verificar',
-        benefit1Title: 'Respuesta Inteligente',
-        benefit1Desc: '>5 min.',
-        benefit2Title: 'Comentarios Detallados',
-        benefit2Desc: '>1 Hora',
-        benefit3Title: 'Disponibilidad Online',
-        benefit3Desc: '24/7',
-        benefit4Title: 'Evaluación Inicial',
-        benefit4Desc: 'Gratis'
       },
       footer: {
         description: 'Orientación legal experta para personas de ascendencia polaca y judío-polaca de todo el mundo. Tasa de éxito incomparable del 100%, plazos realistas, precios transparentes. Desde 2003.',
@@ -1147,6 +1122,8 @@ const resources = {
       hero: {
         badge: 'Serviços Jurídicos Web3',
         title: 'Cidadania Polonesa por Descendência',
+        subtitle1: 'Serviço jurídico líder da Polônia para cidadania polonesa por descendência. Com mais de 20 anos de experiência e mais de 25.000 casos bem-sucedidos, fornecemos orientação abrangente em cada etapa de sua jornada de cidadania.',
+        subtitle2: 'Nosso histórico comprovado e profundo conhecimento da lei de ancestralidade polonesa garantem que seu caminho para a cidadania da UE seja tratado com precisão e cuidado. Desde a avaliação inicial de elegibilidade até a aquisição final do passaporte, oferecemos taxas de sucesso incomparáveis e preços transparentes.',
         description: 'Orientação jurídica especializada para pessoas de ascendência polonesa e judaico-polonesa de todo o mundo para obter cidadania polonesa e passaportes da UE através de ancestrais poloneses - taxa de sucesso incomparável, cronograma realista verdadeiro, preços transparentes',
         cta: 'Fazer Teste de Cidadania Polonesa',
         stats: {
@@ -1154,6 +1131,16 @@ const resources = {
           cases: 'Casos Processados',
           success: 'Taxa de Sucesso'
         }
+      },
+      contact: {
+        badge: 'Conecte-se Conosco',
+        title: 'Inicie Sua Jornada de Cidadania Polonesa',
+        subtitle: 'Preencha o formulário abaixo e responderemos em 24 horas',
+        name: 'Nome',
+        email: 'E-mail',
+        country: 'País',
+        countrySelect: 'Selecionar',
+        requestInfo: 'Solicitar Mais Informações'
       },
       about: {
         badge: 'Experiência Jurídica Desde 2003',
@@ -1347,50 +1334,6 @@ const resources = {
             year: "2024"
           }
         ]
-      },
-      contact: {
-        badge: 'Conecte-se',
-        title: 'Verifique Sua Elegibilidade e Chances',
-        subtitle: 'Responderemos em 24 horas',
-        nameLabel: 'Nome Completo',
-        namePlaceholder: '',
-        emailLabel: 'Email',
-        emailPlaceholder: '',
-        countryLabel: 'País',
-        countryPlaceholder: 'Selecione país',
-        ancestorLabel: 'Ancestral Polonês',
-        ancestorPlaceholder: 'Selecione',
-        ancestorMother: 'Mãe',
-        ancestorFather: 'Pai',
-        ancestorGrandmother: 'Avó',
-        ancestorGrandfather: 'Avô',
-        ancestorGreatGrandmother: 'Bisavó',
-        ancestorGreatGrandfather: 'Bisavô',
-        yearLabel: 'Ano Emigração',
-        yearPlaceholder: 'ex. 1920',
-        documentsLabel: 'Tem documentos?',
-        documentsPlaceholder: 'Selecione',
-        documentsYes: 'Sim, tenho',
-        documentsNo: 'Não',
-        documentsNotSure: 'Não sei',
-        submitButton: 'Enviar',
-        submitting: 'Enviando...',
-        thankYouTitle: 'Obrigado!',
-        thankYouMessage: 'Responderemos em 24 horas.',
-        cta: 'Fazer Teste',
-        polishDocuments: 'Documentos Poloneses',
-        selectOption: 'Selecione uma opção',
-        haveDocuments: 'Tenho alguns documentos poloneses da minha família',
-        noDocuments: 'Não tenho documentos poloneses',
-        needCheck: 'Preciso verificar',
-        benefit1Title: 'Resposta Inteligente',
-        benefit1Desc: '>5 min.',
-        benefit2Title: 'Feedback Detalhado',
-        benefit2Desc: '>1 Hora',
-        benefit3Title: 'Disponibilidade Online',
-        benefit3Desc: '24/7',
-        benefit4Title: 'Avaliação Inicial',
-        benefit4Desc: 'Grátis'
       },
 
       // FAQ Section - Portuguese
@@ -2200,6 +2143,8 @@ const resources = {
       hero: {
         badge: 'Services Juridiques Web3',
         title: 'Citoyenneté Polonaise par Descendance',
+        subtitle1: 'Le premier service juridique de Pologne pour la citoyenneté polonaise par filiation. Avec plus de 20 ans d\'expertise et plus de 25 000 cas réussis, nous fournissons des conseils complets à chaque étape de votre parcours de citoyenneté.',
+        subtitle2: 'Notre bilan éprouvé et notre compréhension approfondie du droit de filiation polonais garantissent que votre chemin vers la citoyenneté de l\'UE est géré avec précision et soin. De l\'évaluation initiale d\'éligibilité à l\'acquisition finale du passeport, nous offrons des taux de réussite inégalés et des prix transparents.',
         description: "Conseils juridiques experts pour les personnes d'ascendance polonaise et judéo-polonaise du monde entier pour obtenir la citoyenneté polonaise et les passeports de l'UE par ascendance polonaise - taux de réussite inégalé, calendrier réaliste véritable, tarifs transparents",
         cta: 'Passer le Test de Citoyenneté Polonaise',
         stats: {
@@ -2207,6 +2152,13 @@ const resources = {
           cases: 'Dossiers Traités',
           success: 'Taux de Réussite'
         }
+      },
+      contact: {
+        name: 'Nom',
+        email: 'E-mail',
+        country: 'Pays',
+        countrySelect: 'Sélectionner',
+        requestInfo: 'Demander Plus d\'Informations'
       },
       about: {
         badge: 'Expertise Juridique Depuis 2003',
@@ -2483,51 +2435,6 @@ const resources = {
           }
         ]
       },
-      contact: {
-        badge: 'Contactez-Nous',
-        title: 'Vérifiez Votre Éligibilité et Vos Chances',
-        subtitle: 'Réponse en 24 heures',
-        nameLabel: 'Nom Complet',
-        namePlaceholder: '',
-        emailLabel: 'Email',
-        emailPlaceholder: '',
-        countryLabel: 'Pays',
-        countryPlaceholder: 'Sélectionner pays',
-        ancestorLabel: 'Ancêtre Polonais',
-        ancestorPlaceholder: 'Sélectionner',
-        ancestorMother: 'Mère',
-        ancestorFather: 'Père',
-        ancestorGrandmother: 'Grand-mère',
-        ancestorGrandfather: 'Grand-père',
-        ancestorGreatGrandmother: 'Arrière-grand-mère',
-        ancestorGreatGrandfather: 'Arrière-grand-père',
-        yearLabel: 'Année Émigration',
-        yearPlaceholder: 'ex. 1920',
-        documentsLabel: 'Avez-vous documents?',
-        documentsPlaceholder: 'Sélectionner',
-        documentsYes: 'Oui, j ai',
-        documentsNo: 'Non',
-        documentsNotSure: 'Pas sûr',
-        submitButton: 'Envoyer',
-        submitting: 'Envoi...',
-        thankYouTitle: 'Merci!',
-        thankYouMessage: 'Réponse en 24 heures.',
-        cta: 'Passer le Test',
-        polishDocuments: 'Documents Polonais',
-        selectOption: 'Sélectionner une option',
-        haveDocuments: 'J\'ai des documents polonais de ma famille',
-        noDocuments: 'Je n\'ai aucun document polonais',
-        needCheck: 'Je dois vérifier',
-        benefit1Title: 'Réponse Intelligente',
-        benefit1Desc: '>5 min.',
-        benefit2Title: 'Retour Détaillé',
-        benefit2Desc: '>1 Heure',
-        benefit3Title: 'Disponibilité en Ligne',
-        benefit3Desc: '24/7',
-        benefit4Title: 'Évaluation Initiale',
-        benefit4Desc: 'Gratuit'
-      },
-
       // FAQ Section - French
       faq: {
         badge: 'Questions Fréquemment Posées',
