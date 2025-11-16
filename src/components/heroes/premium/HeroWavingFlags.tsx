@@ -117,17 +117,17 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className="glass-card p-5 md:p-6 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0">
-            <div className="mb-4 rounded-xl overflow-hidden opacity-70">
+          <div className="glass-card p-4 md:p-5 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:mt-8">
+            <div className="mb-3 rounded-xl overflow-hidden opacity-70">
               <img 
                 src={professionalWoman} 
                 alt="Professional consultation" 
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover max-h-[180px]"
               />
             </div>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="name" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div className="space-y-1">
+                <Label htmlFor="name" className="text-xs bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   Name *
                 </Label>
                 <input
@@ -136,12 +136,12 @@ export const HeroWavingFlags = () => {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="h-10 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                  className="h-9 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+              <div className="space-y-1">
+                <Label htmlFor="email" className="text-xs bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   Email *
                 </Label>
                 <input
@@ -150,19 +150,19 @@ export const HeroWavingFlags = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="h-10 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                  className="h-9 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="country" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+              <div className="space-y-1">
+                <Label htmlFor="country" className="text-xs bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   Country
                 </Label>
                 <Select
                   value={formData.country}
                   onValueChange={(value) => setFormData({...formData, country: value})}
                 >
-                  <SelectTrigger className="!h-10 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                  <SelectTrigger className="!h-9 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                     <SelectValue placeholder={t('contact.countryPlaceholder') || 'Select your country'} />
                   </SelectTrigger>
                   <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -176,7 +176,7 @@ export const HeroWavingFlags = () => {
               </div>
               <button
                 type="submit"
-                className="w-full h-10 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30"
+                className="w-full h-9 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-sm font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30"
               >
                 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Request More Info</span>
               </button>
