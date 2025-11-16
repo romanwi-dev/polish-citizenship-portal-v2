@@ -2,6 +2,7 @@ import { Star, Quote, Award } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { MainCTA } from '@/components/ui/main-cta';
 import { useTranslation } from 'react-i18next';
+import { SectionLayout } from './layout/SectionLayout';
 
 export default function TestimonialsSection() {
   const { t } = useTranslation();
@@ -15,21 +16,12 @@ export default function TestimonialsSection() {
   }>;
   
   return (
-    <section id="testimonials" className="py-24 px-4 overflow-x-hidden">
-      <div className="container mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-primary/30">
-            <Award className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {t('testimonials.badge', 'Client Success Stories')}
-            </span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-6">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              {t('testimonials.title')}
-            </span>
-          </h2>
+    <SectionLayout
+      id="testimonials"
+      badge={{ icon: Award, text: t('testimonials.badge', 'Client Success Stories') }}
+      title={t('testimonials.title')}
+      subtitle={
+        <div>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal">
             {t('testimonials.subtitle')}
           </p>
@@ -44,9 +36,11 @@ export default function TestimonialsSection() {
             </span>
           </div>
         </div>
-
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      }
+      cta={<MainCTA onClick={() => window.location.hash = 'contact'} ariaLabel="Contact us">{t('testimonials.cta')}</MainCTA>}
+    >
+      {/* Testimonials Grid */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {testimonials.map((testimonial, index) => (
             <Card 
               key={index} 
