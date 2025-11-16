@@ -138,7 +138,7 @@ export const HeroWavingFlags = () => {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                  className="h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
@@ -152,7 +152,7 @@ export const HeroWavingFlags = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                  className="h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
@@ -164,7 +164,7 @@ export const HeroWavingFlags = () => {
                   value={formData.country}
                   onValueChange={(value) => setFormData({...formData, country: value})}
                 >
-                  <SelectTrigger className="!h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none">
+                  <SelectTrigger className="!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none">
                     <SelectValue placeholder={t('contact.countrySelect')} />
                   </SelectTrigger>
                   <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -178,7 +178,7 @@ export const HeroWavingFlags = () => {
               </div>
               <button
                 type="submit"
-                className="w-full h-14 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8"
+                className="w-full h-12 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8"
               >
                 <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('contact.requestInfo')}</span>
               </button>
