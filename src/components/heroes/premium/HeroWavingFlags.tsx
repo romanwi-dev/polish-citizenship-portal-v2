@@ -101,15 +101,15 @@ export const HeroWavingFlags = () => {
 
       <div className="container relative z-10 px-4 mx-auto flex-1 flex items-center">
         <div className="grid lg:grid-cols-[1fr,450px] gap-8 lg:gap-12 items-start w-full">
-          <div className="space-y-10">
-            <div className="space-y-6">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black">
+          <div className="space-y-12">
+            <div className="space-y-8 text-center lg:text-left">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-black">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
                   {t('hero.title')}
                 </span>
               </h1>
-              <p className="text-base md:text-lg text-foreground/80 text-center font-sans max-w-2xl mx-auto">
-                {t('hero.description')}
+              <p className="text-base md:text-lg lg:text-xl text-foreground/80 font-sans max-w-3xl mx-auto lg:mx-0 leading-relaxed">
+                Poland&apos;s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey. Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care.
               </p>
             </div>
           </div>
