@@ -155,6 +155,11 @@ const App = () => {
                 <DemosHub />
               </Suspense>
             } />
+            <Route path="/hero-gallery" element={
+              <Suspense fallback={<AdminLoader />}>
+                <HeroGallery />
+              </Suspense>
+            } />
             <Route path="/demos/main-cta-reference" element={
               <Suspense fallback={<AdminLoader />}>
                 <MainCTAReference />
