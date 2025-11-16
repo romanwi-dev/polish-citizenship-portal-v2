@@ -222,34 +222,19 @@ export default function ClientOnboardingSection() {
                       transform: 'rotateY(180deg)',
                     }}
                   >
-                    {/* Illustration */}
-                    <div className="w-full h-24 mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/10 to-accent/10 flex items-center justify-center">
-                      <step.icon className="w-12 h-12 text-secondary opacity-80" />
-                    </div>
-                    
                     {/* Content */}
-                    <div className="flex-1 overflow-auto space-y-3">
-                      <h3 className="text-lg font-heading font-bold tracking-tight text-card-foreground">
-                        {step.title} - What to Expect
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        In this step, we {step.description.toLowerCase()}. Our team ensures everything is handled professionally and efficiently.
+                    <div className="flex-1 overflow-auto space-y-4">
+                      <p className="text-sm text-foreground/90 leading-relaxed">
+                        {step.detailedInfo}
                       </p>
                       <div className="space-y-2">
-                        <p className="text-xs font-semibold text-card-foreground">Key Points:</p>
-                        <ul className="text-xs text-muted-foreground/80 space-y-1.5 pl-4">
-                          <li className="flex items-start gap-2">
-                            <span className="text-secondary mt-0.5">✓</span>
-                            <span>Fast and reliable service</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-secondary mt-0.5">✓</span>
-                            <span>Expert legal guidance</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-secondary mt-0.5">✓</span>
-                            <span>Transparent communication</span>
-                          </li>
+                        <ul className="text-xs text-muted-foreground space-y-2">
+                          {step.keyPoints.map((point: string, idx: number) => (
+                            <li key={idx} className="flex items-start gap-2">
+                              <span className="text-primary mt-1">✓</span>
+                              <span>{point}</span>
+                            </li>
+                          ))}
                         </ul>
                       </div>
                     </div>
@@ -262,12 +247,11 @@ export default function ClientOnboardingSection() {
                         className="w-full"
                         onClick={(e) => {
                           e.stopPropagation();
-                          window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank');
+                          window.open('https://form.typeform.com/to/QDnlB0fk', '_blank');
                         }}
                       >
-                        Create Account & Learn More →
+                        Open Account
                       </Button>
-                      <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center mt-2">Tap card to flip back</p>
                     </div>
                   </div>
                   </div>
