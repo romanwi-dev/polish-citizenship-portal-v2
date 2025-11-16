@@ -9,60 +9,61 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
 
-// European symbols: EU stars, monuments, cultural icons
-function WavingFlags() {
-  const polishFlagRef = useRef<THREE.Group>(null);
-  const euStarsRef = useRef<THREE.Group>(null);
+// Realistic waving Polish flag
+function WavingPolishFlag() {
+  const meshRef = useRef<THREE.Mesh>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useFrame((state) => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || !meshRef.current) return;
     
-    if (polishFlagRef.current) {
-      polishFlagRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
-      polishFlagRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3;
+    const time = state.clock.elapsedTime;
+    const geometry = meshRef.current.geometry;
+    const position = geometry.attributes.position;
+
+    for (let i = 0; i < position.count; i++) {
+      const x = position.getX(i);
+      const y = position.getY(i);
+      
+      // Create realistic wave motion
+      const waveX = Math.sin(x * 0.5 + time * 1.5) * 0.3;
+      const waveY = Math.sin(y * 0.3 + time * 1.2) * 0.2;
+      const waveZ = Math.sin(x * 0.3 + y * 0.2 + time) * 0.5;
+      
+      position.setZ(i, waveX + waveY + waveZ);
     }
-    if (euStarsRef.current) {
-      euStarsRef.current.rotation.y = state.clock.elapsedTime * 0.1;
-    }
+    
+    position.needsUpdate = true;
+    geometry.computeVertexNormals();
   });
 
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[5, 5, 5]} intensity={1.2} />
+      <directionalLight position={[-5, -5, -5]} intensity={0.5} />
       
-      {/* Polish Flag */}
-      <group ref={polishFlagRef} position={[-2, 0, 0]}>
-        <mesh>
-          <planeGeometry args={[3, 2]} />
-          <meshStandardMaterial color="#ffffff" side={THREE.DoubleSide} />
-        </mesh>
-        <mesh position={[0, -1, 0]}>
-          <planeGeometry args={[3, 2]} />
-          <meshStandardMaterial color="#dc2626" side={THREE.DoubleSide} />
-        </mesh>
-      </group>
-
-      {/* EU Stars Circle */}
-      <group ref={euStarsRef} position={[2, 0, 0]}>
-        <mesh>
-          <circleGeometry args={[1.5, 32]} />
-          <meshStandardMaterial color="#003399" side={THREE.DoubleSide} />
-        </mesh>
-        {[...Array(12)].map((_, i) => {
-          const angle = (i * Math.PI * 2) / 12 - Math.PI / 2;
-          return (
-            <mesh
-              key={i}
-              position={[Math.cos(angle) * 1.2, Math.sin(angle) * 1.2, 0.01]}
-            >
-              <sphereGeometry args={[0.1, 16, 16]} />
-              <meshStandardMaterial color="#ffd700" emissive="#ffd700" emissiveIntensity={0.5} />
-            </mesh>
-          );
-        })}
-      </group>
+      {/* White half of Polish flag - toned color */}
+      <mesh ref={meshRef} position={[0, 1.5, 0]}>
+        <planeGeometry args={[16, 3, 32, 16]} />
+        <meshStandardMaterial 
+          color="#f5f5f0" 
+          side={THREE.DoubleSide}
+          roughness={0.7}
+          metalness={0.1}
+        />
+      </mesh>
+      
+      {/* Red half of Polish flag - toned color */}
+      <mesh position={[0, -1.5, 0]}>
+        <planeGeometry args={[16, 3, 32, 16]} />
+        <meshStandardMaterial 
+          color="#c4524f" 
+          side={THREE.DoubleSide}
+          roughness={0.7}
+          metalness={0.1}
+        />
+      </mesh>
     </>
   );
 }
@@ -89,8 +90,8 @@ export const HeroWavingFlags = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
-          <WavingFlags />
+        <Canvas camera={{ position: [0, 0, 6], fov: 75 }}>
+          <WavingPolishFlag />
         </Canvas>
       </div>
 
