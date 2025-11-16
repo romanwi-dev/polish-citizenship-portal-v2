@@ -104,15 +104,14 @@ export const HeroWavingFlags = () => {
         <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
             <div className={`space-y-8 md:pt-8 lg:pt-12 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
               <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
+              <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
                 <span className="inline-block" style={{ 
                   backgroundImage: 'var(--gradient-title)',
                   backgroundClip: 'text',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   color: 'transparent'
-                }}>
-                  {t('hero.title')}
+                }} dangerouslySetInnerHTML={{ __html: t('hero.title') }}>
                 </span>
               </h1>
               <div className="space-y-3" key={t('hero.subtitle1')}>

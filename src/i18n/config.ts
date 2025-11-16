@@ -92,7 +92,7 @@ const resources = {
       // Hero Section - Homepage
       hero: {
         badge: 'Web3 Legal Services',
-        title: 'Polish Citizenship by Descent',
+        title: 'Polish Citizenship<br />by Descent',
         subtitle1: 'Poland\'s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey.',
         subtitle2: 'Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care. From initial eligibility assessment to final passport acquisition, we deliver unmatched success rates and transparent pricing.',
         description: 'Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing',
@@ -565,7 +565,7 @@ const resources = {
       },
       hero: {
         badge: 'Usługi Prawne Web3',
-        title: 'Polskie Obywatelstwo przez Pochodzenie',
+        title: 'Polskie Obywatelstwo<br />przez Pochodzenie',
         subtitle1: 'Wiodąca polska usługa prawna dla polskiego obywatelstwa przez pochodzenie. Z ponad 20-letnim doświadczeniem i ponad 25 000 udanych spraw, zapewniamy kompleksowe wsparcie na każdym etapie Twojej drogi do obywatelstwa.',
         subtitle2: 'Nasz udokumentowany sukces i głęboka znajomość polskiego prawa o pochodzeniu zapewniają, że Twoja droga do obywatelstwa UE będzie prowadzona z precyzją i troską. Od wstępnej oceny kwalifikowalności po ostateczne uzyskanie paszportu, oferujemy niezrównany wskaźnik sukcesu i przejrzyste ceny.',
         description: 'Ekspercka pomoc prawna dla osób polskiego i polsko-żydowskiego pochodzenia z całego świata w uzyskaniu polskiego obywatelstwa i paszportów UE przez polskie pochodzenie - niezrównany wskaźnik sukcesu, realistyczny harmonogram, przejrzyste ceny',
@@ -1721,7 +1721,7 @@ const resources = {
       },
       hero: {
         badge: 'Web3 Rechtsdienstleistungen',
-        title: 'Polnische Staatsbürgerschaft durch Abstammung',
+        title: 'Polnische Staatsbürgerschaft<br />durch Abstammung',
         subtitle1: 'Polens führender juristischer Service für polnische Staatsbürgerschaft durch Abstammung. Mit über 20 Jahren Erfahrung und über 25.000 erfolgreichen Fällen bieten wir umfassende Beratung in jedem Schritt Ihrer Staatsbürgerschaftsreise.',
         subtitle2: 'Unsere nachgewiesene Erfolgsbilanz und tiefes Verständnis des polnischen Abstammungsrechts gewährleisten, dass Ihr Weg zur EU-Staatsbürgerschaft mit Präzision und Sorgfalt behandelt wird. Von der ersten Berechtigungsprüfung bis zur endgültigen Passerwerbung liefern wir unübertroffene Erfolgsquoten und transparente Preise.',
         description: 'Fachkundige rechtliche Beratung für Menschen polnischer und polnisch-jüdischer Abstammung aus der ganzen Welt zum Erhalt der polnischen Staatsbürgerschaft und EU-Pässe durch polnische Vorfahren - unübertroffene Erfolgsquote, echter realistischer Zeitplan, transparente Preise',
@@ -3310,7 +3310,7 @@ const resources = {
       },
       hero: {
         badge: 'Юридические Услуги Web3',
-        title: 'Польское Гражданство по Происхождению',
+        title: 'Польское Гражданство<br />по Происхождению',
         subtitle1: 'Ведущий юридический сервис Польши по получению польского гражданства по происхождению. С более чем 20-летним опытом и более 25 000 успешных дел, мы обеспечиваем всестороннее руководство на каждом этапе вашего пути к гражданству.',
         subtitle2: 'Наш проверенный послужной список и глубокое понимание польского закона о происхождении гарантируют, что ваш путь к гражданству ЕС будет обработан с точностью и заботой. От первоначальной оценки права до окончательного получения паспорта, мы предлагаем непревзойденные показатели успеха и прозрачные цены.',
         description: 'Экспертное юридическое руководство для людей польского и польско-еврейского происхождения со всего мира для получения польского гражданства и паспортов ЕС через польское происхождение - непревзойденный показатель успеха, реальный реалистичный график, прозрачные цены',
