@@ -247,7 +247,7 @@ export default function ClientOnboardingSection() {
                         className="w-full"
                         onClick={(e) => {
                           e.stopPropagation();
-                          window.location.href = '/client/login';
+                          window.location.href = '/login';
                         }}
                       >
                         Open Account
