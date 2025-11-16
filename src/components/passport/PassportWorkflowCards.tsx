@@ -12,6 +12,13 @@ const passportSteps = [
     icon: FileCheck,
     gradient: "from-primary to-secondary",
     cta: "Prepare Documents",
+    detailedInfo: "Your citizenship confirmation decision and all supporting documents are prepared for Polish passport application. This includes organizing the decision document, photos, and completing the passport application form.",
+    keyPoints: [
+      "Your citizenship decision is prepared for consulate submission",
+      "Your passport photos are verified for Polish government specifications",
+      "Your application form is completed accurately in Polish",
+      "Your checklist ensures all required documents are ready"
+    ]
   },
   {
     number: "02",
@@ -20,6 +27,13 @@ const passportSteps = [
     icon: Building2,
     gradient: "from-secondary to-accent",
     cta: "Find Consulate",
+    detailedInfo: "Your nearest Polish consulate or embassy is identified, and their specific passport application requirements are reviewed. Each consulate may have slightly different procedures or appointment systems.",
+    keyPoints: [
+      "Your nearest Polish consulate location is identified",
+      "Your consulate's specific requirements are documented",
+      "Your consulate's appointment system is explained",
+      "Your required documents list is customized to that consulate"
+    ]
   },
   {
     number: "03",
@@ -28,6 +42,13 @@ const passportSteps = [
     icon: Calendar,
     gradient: "from-accent to-primary",
     cta: "Schedule Appointment",
+    detailedInfo: "Your passport application appointment is scheduled at the Polish consulate. You receive detailed instructions on the exact date, time, location, and what to bring to your appointment.",
+    keyPoints: [
+      "Your appointment is booked through the consulate's system",
+      "Your date and time are confirmed with confirmation number",
+      "Your appointment location and directions are provided",
+      "Your checklist specifies what to bring on appointment day"
+    ]
   },
   {
     number: "04",
@@ -36,6 +57,13 @@ const passportSteps = [
     icon: Award,
     gradient: "from-primary to-secondary",
     cta: "Review Checklist",
+    detailedInfo: "Your passport application package undergoes final review before the consulate visit. Every document, photo, and form is checked to ensure completeness and compliance with Polish requirements.",
+    keyPoints: [
+      "Your documents are verified against consulate checklist",
+      "Your photos are confirmed to meet Polish specifications",
+      "Your application form is reviewed for any errors",
+      "Your payment method is prepared for consulate fees"
+    ]
   },
   {
     number: "05",
@@ -44,6 +72,13 @@ const passportSteps = [
     icon: MapPin,
     gradient: "from-secondary to-accent",
     cta: "Visit Details",
+    detailedInfo: "You visit the Polish consulate for your appointment. Your application is submitted, fingerprints and photo are taken for biometric passport, and passport fees are paid. You receive a receipt and tracking number.",
+    keyPoints: [
+      "Your application is submitted at the consulate",
+      "Your biometrics (fingerprints, photo) are captured",
+      "Your passport fees are paid at the consulate",
+      "Your receipt and tracking number are provided"
+    ]
   },
   {
     number: "06",
@@ -52,6 +87,13 @@ const passportSteps = [
     icon: Clock,
     gradient: "from-accent to-primary",
     cta: "Track Status",
+    detailedInfo: "Your passport application is processed by the consulate and forwarded to Poland for passport production. The processing time typically ranges from 4-12 weeks depending on the consulate.",
+    keyPoints: [
+      "Your application is verified by consulate staff",
+      "Your documents are forwarded to Poland for passport production",
+      "Your processing time is typically 4-12 weeks",
+      "Your status can be tracked using your reference number"
+    ]
   },
   {
     number: "07",
@@ -60,6 +102,13 @@ const passportSteps = [
     icon: Plane,
     gradient: "from-primary to-secondary",
     cta: "Production Status",
+    detailedInfo: "Your Polish passport is produced in Poland with all modern security features, biometric chip containing your fingerprints and photo, and official Polish government authentication.",
+    keyPoints: [
+      "Your passport is produced with biometric chip technology",
+      "Your security features include holograms and watermarks",
+      "Your photo and fingerprints are embedded in the chip",
+      "Your passport is produced to EU and international standards"
+    ]
   },
   {
     number: "08",
@@ -68,6 +117,13 @@ const passportSteps = [
     icon: CheckCircle,
     gradient: "from-secondary to-accent",
     cta: "Collect Passport",
+    detailedInfo: "Your Polish passport is ready! You're notified to collect it from the consulate (or it's mailed to you, depending on consulate policy). You now have full Polish and EU citizenship with all associated rights and privileges.",
+    keyPoints: [
+      "Your passport is ready for pickup or delivery",
+      "Your notification arrives via email or phone",
+      "Your passport grants full Polish and EU citizenship rights",
+      "Your journey to Polish citizenship is successfully complete!"
+    ]
   },
 ];
 

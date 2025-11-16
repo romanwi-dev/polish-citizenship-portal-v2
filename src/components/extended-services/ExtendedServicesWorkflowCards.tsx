@@ -12,6 +12,13 @@ const extendedServicesSteps = [
     icon: Users,
     gradient: "from-primary to-secondary",
     cta: "Family Services",
+    detailedInfo: "Your extended family members can pursue Polish citizenship together. Coordinated multi-person applications benefit from shared research, document collection, and strategic timing for maximum efficiency and success.",
+    keyPoints: [
+      "Your spouse and children can apply simultaneously or sequentially",
+      "Your shared family documents reduce costs across applications",
+      "Your coordinated strategy optimizes processing timelines",
+      "Your multi-generation cases benefit from bulk service discounts"
+    ]
   },
   {
     number: "02",
@@ -20,6 +27,13 @@ const extendedServicesSteps = [
     icon: FileText,
     gradient: "from-secondary to-accent",
     cta: "Document Help",
+    detailedInfo: "Your difficult-to-obtain documents receive specialized procurement services. This includes international searches, genealogical detective work, and accessing restricted or hard-to-find records globally.",
+    keyPoints: [
+      "Your international records are pursued across multiple countries",
+      "Your genealogical gaps are filled through expert research",
+      "Your restricted archives can be accessed through special channels",
+      "Your complex document needs receive dedicated specialist attention"
+    ]
   },
   {
     number: "03",
@@ -28,6 +42,13 @@ const extendedServicesSteps = [
     icon: Heart,
     gradient: "from-accent to-primary",
     cta: "Research Services",
+    detailedInfo: "Your Polish heritage is researched in depth through professional genealogical investigation. This goes beyond citizenship requirements to explore your complete family history and Polish roots.",
+    keyPoints: [
+      "Your family tree is researched back multiple generations",
+      "Your Polish ancestral villages and towns are identified",
+      "Your historical context is provided for your family's story",
+      "Your heritage research creates lasting family legacy documentation"
+    ]
   },
   {
     number: "04",
@@ -36,6 +57,13 @@ const extendedServicesSteps = [
     icon: Globe,
     gradient: "from-primary to-secondary",
     cta: "International Help",
+    detailedInfo: "Your documents from multiple countries are coordinated through professional international networks. Partnerships with local experts ensure efficient document procurement from any jurisdiction worldwide.",
+    keyPoints: [
+      "Your multi-country document needs are coordinated efficiently",
+      "Your international partners have local expertise and contacts",
+      "Your foreign language documents are handled professionally",
+      "Your complex international cases receive specialized support"
+    ]
   },
   {
     number: "05",
@@ -44,6 +72,13 @@ const extendedServicesSteps = [
     icon: Briefcase,
     gradient: "from-secondary to-accent",
     cta: "Relocation Guide",
+    detailedInfo: "Your relocation to Poland is supported with comprehensive assistance. From finding housing and schools to understanding Polish systems and culture, you receive guidance for successful settlement.",
+    keyPoints: [
+      "Your housing search is assisted with local market knowledge",
+      "Your school options for children are researched and explained",
+      "Your practical needs (banking, healthcare, etc.) are guided",
+      "Your cultural integration is supported with local connections"
+    ]
   },
   {
     number: "06",
@@ -52,6 +87,13 @@ const extendedServicesSteps = [
     icon: Shield,
     gradient: "from-accent to-primary",
     cta: "Legal Advice",
+    detailedInfo: "Your complex legal questions receive expert attorney consultation. This covers dual citizenship implications, Polish law interpretation, special circumstances, and strategic legal planning.",
+    keyPoints: [
+      "Your dual citizenship status is analyzed for your country",
+      "Your complex legal questions receive attorney-level answers",
+      "Your special circumstances are evaluated by legal experts",
+      "Your strategic legal planning is guided for optimal outcomes"
+    ]
   },
   {
     number: "07",
@@ -60,6 +102,13 @@ const extendedServicesSteps = [
     icon: Award,
     gradient: "from-primary to-secondary",
     cta: "VIP Details",
+    detailedInfo: "Your VIP service provides premium white-glove treatment with a dedicated senior attorney, priority processing, direct communication channels, and expedited handling at every stage.",
+    keyPoints: [
+      "Your dedicated senior attorney manages your entire case",
+      "Your priority processing accelerates timelines where possible",
+      "Your direct communication line ensures immediate responses",
+      "Your VIP status receives preferential treatment throughout"
+    ]
   },
   {
     number: "08",
@@ -68,6 +117,13 @@ const extendedServicesSteps = [
     icon: Sparkles,
     gradient: "from-secondary to-accent",
     cta: "Concierge Help",
+    detailedInfo: "Your concierge service provides full-spectrum support for everything related to your Polish citizenship journey and potential relocation. No task is too small - from document apostilles to apartment hunting.",
+    keyPoints: [
+      "Your every need is handled by a dedicated concierge team",
+      "Your time is saved through comprehensive service handling",
+      "Your stress is minimized with white-glove personal attention",
+      "Your entire journey is managed from start to settlement"
+    ]
   },
 ];
 

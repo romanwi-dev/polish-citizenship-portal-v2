@@ -12,6 +12,13 @@ const civilActsSteps = [
     icon: FileText,
     gradient: "from-primary to-secondary",
     cta: "Prepare Application",
+    detailedInfo: "Your Polish civil registry applications (akty stanu cywilnego) are professionally prepared to obtain official Polish birth or marriage certificates required for your citizenship case. Each application is tailored to the specific registry office jurisdiction.",
+    keyPoints: [
+      "Your application is prepared for the correct USC jurisdiction",
+      "Your family details are formatted per Polish civil registry requirements",
+      "Your application includes all necessary genealogical references",
+      "Your request specifies the exact document type needed"
+    ]
   },
   {
     number: "02",
@@ -20,6 +27,13 @@ const civilActsSteps = [
     icon: CreditCard,
     gradient: "from-secondary to-accent",
     cta: "Process Payment",
+    detailedInfo: "Your civil acts fees are processed, covering both the Polish government's official charges and the professional service fee. Payment is secure and tracked for your records.",
+    keyPoints: [
+      "Your Polish government fees are calculated per document type",
+      "Your service fee covers professional application preparation",
+      "Your payment is processed securely with receipt confirmation",
+      "Your fees are transparent with no hidden costs"
+    ]
   },
   {
     number: "03",
@@ -28,6 +42,13 @@ const civilActsSteps = [
     icon: Send,
     gradient: "from-accent to-primary",
     cta: "Track Submission",
+    detailedInfo: "Your application is officially submitted to the appropriate Polish civil registry office (Urząd Stanu Cywilnego). The submission is tracked and monitored for response.",
+    keyPoints: [
+      "Your application reaches the correct USC office",
+      "Your submission is tracked with reference numbers",
+      "Your filing date is recorded for timeline monitoring",
+      "Your USC contact information is logged for follow-up"
+    ]
   },
   {
     number: "04",
@@ -36,6 +57,13 @@ const civilActsSteps = [
     icon: Building2,
     gradient: "from-primary to-secondary",
     cta: "Check Status",
+    detailedInfo: "Your application is processed by the Polish civil registry office. They verify the information against their records and prepare the official certified certificates with government seals.",
+    keyPoints: [
+      "Your information is verified in Polish civil registry records",
+      "Your certificates are prepared with official government authentication",
+      "Your processing follows Polish administrative law timelines",
+      "Your application status is monitored for any queries"
+    ]
   },
   {
     number: "05",
@@ -44,6 +72,13 @@ const civilActsSteps = [
     icon: Clock,
     gradient: "from-secondary to-accent",
     cta: "View Timeline",
+    detailedInfo: "Your civil acts application is monitored during the processing period. Any delays trigger follow-up communications with the USC office to ensure timely certificate issuance.",
+    keyPoints: [
+      "Your timeline is tracked (typically 4-12 weeks for Polish USC)",
+      "Your delayed applications receive prompt follow-up",
+      "Your status is updated in your portal regularly",
+      "Your urgent cases can be expedited when legally possible"
+    ]
   },
   {
     number: "06",
@@ -52,6 +87,13 @@ const civilActsSteps = [
     icon: UserCheck,
     gradient: "from-accent to-primary",
     cta: "Agent Dashboard",
+    detailedInfo: "Your received certificates are verified by the dedicated Civil Acts Agent. Each document is checked for accuracy, completeness, proper authentication, and suitability for citizenship case use.",
+    keyPoints: [
+      "Your certificates are verified by a specialized agent",
+      "Your document details are cross-checked against application",
+      "Your government seals and signatures are authenticated",
+      "Your certificates are evaluated for citizenship case requirements"
+    ]
   },
   {
     number: "07",
@@ -60,6 +102,13 @@ const civilActsSteps = [
     icon: Award,
     gradient: "from-primary to-secondary",
     cta: "Review Certificate",
+    detailedInfo: "Your Polish civil acts undergo legal review to ensure all required details are present and accurate. Any discrepancies or missing information triggers corrective action or additional applications.",
+    keyPoints: [
+      "Your certificates contain all legally required information",
+      "Your names, dates, and places are verified for accuracy",
+      "Your parent information is complete and matches other documents",
+      "Your certificates meet WSC citizenship application standards"
+    ]
   },
   {
     number: "08",
@@ -68,6 +117,13 @@ const civilActsSteps = [
     icon: CheckCircle,
     gradient: "from-secondary to-accent",
     cta: "Add to Case",
+    detailedInfo: "Your Polish civil acts are certified, verified, and ready to be included as official evidence in your citizenship application. They strengthen your case with authentic Polish government documentation.",
+    keyPoints: [
+      "Your certificates are certified with official Polish seals",
+      "Your civil acts are ready for inclusion in WSC submission",
+      "Your documents are cataloged in your case file",
+      "Your citizenship case now has stronger Polish documentary evidence"
+    ]
   },
 ];
 

@@ -12,6 +12,13 @@ const archivesSteps = [
     icon: Archive,
     gradient: "from-primary to-secondary",
     cta: "View Archives",
+    detailedInfo: "Your relevant archives are identified based on your ancestors' locations and time periods. Polish state archives, civil registry offices (USC), and international repositories are researched to determine which institutions likely possess your family's historical records.",
+    keyPoints: [
+      "Your family locations are cross-referenced with archive jurisdictions",
+      "Your time periods are matched to existing archive collections",
+      "Your ancestor names are prepared for Polish archive searches",
+      "Your research strategy is customized for maximum document recovery"
+    ]
   },
   {
     number: "02",
@@ -20,6 +27,13 @@ const archivesSteps = [
     icon: FileSearch,
     gradient: "from-secondary to-accent",
     cta: "Prepare Requests",
+    detailedInfo: "Your archive requests are professionally prepared in Polish following official protocols. Each request includes precise genealogical data, time periods, and specific document types needed for your citizenship case.",
+    keyPoints: [
+      "Your requests are written in formal Polish archive language",
+      "Your genealogical details are formatted per archive requirements",
+      "Your document types are specified (birth, marriage, death, residence)",
+      "Your requests are optimized for comprehensive archive searches"
+    ]
   },
   {
     number: "03",
@@ -28,6 +42,13 @@ const archivesSteps = [
     icon: Send,
     gradient: "from-accent to-primary",
     cta: "Track Submissions",
+    detailedInfo: "Your requests are officially submitted to relevant Polish state archives, civil registry offices, and any necessary international repositories. Each submission is tracked and monitored for responses.",
+    keyPoints: [
+      "Your requests reach Polish Archiwum Państwowe institutions",
+      "Your civil registry (USC) inquiries are submitted properly",
+      "Your international archive requests are coordinated when needed",
+      "Your submission dates and reference numbers are logged for tracking"
+    ]
   },
   {
     number: "04",
@@ -36,6 +57,13 @@ const archivesSteps = [
     icon: Users,
     gradient: "from-primary to-secondary",
     cta: "View Partners",
+    detailedInfo: "Your case benefits from coordination with trusted local genealogy partners in Poland who have established relationships with archives and can expedite searches or access restricted collections.",
+    keyPoints: [
+      "Your searches are supported by on-site Polish genealogy professionals",
+      "Your partners have direct archive access and established contacts",
+      "Your complex cases receive specialized local expertise",
+      "Your restricted records may be accessible through partner connections"
+    ]
   },
   {
     number: "05",
@@ -44,6 +72,13 @@ const archivesSteps = [
     icon: Clock,
     gradient: "from-secondary to-accent",
     cta: "Check Status",
+    detailedInfo: "Your archive requests are actively monitored as Polish archives can take weeks to months to respond. Any delays or incomplete responses trigger follow-up inquiries to ensure complete document recovery.",
+    keyPoints: [
+      "Your response timeline is tracked (typically 2-8 weeks for Polish archives)",
+      "Your delayed requests receive prompt follow-up communications",
+      "Your incomplete responses trigger additional clarification requests",
+      "Your case status is updated regularly with archive progress"
+    ]
   },
   {
     number: "06",
@@ -52,6 +87,13 @@ const archivesSteps = [
     icon: Award,
     gradient: "from-accent to-primary",
     cta: "Verify Documents",
+    detailedInfo: "Your received archive documents undergo thorough verification to confirm authenticity, completeness, and relevance to your citizenship case. Any gaps or inconsistencies are identified for additional research.",
+    keyPoints: [
+      "Your documents are authenticated for official government seals and signatures",
+      "Your information is cross-verified against known family data",
+      "Your document completeness is assessed for citizenship requirements",
+      "Your missing pieces are identified for targeted additional searches"
+    ]
   },
   {
     number: "07",
@@ -60,6 +102,13 @@ const archivesSteps = [
     icon: Building2,
     gradient: "from-primary to-secondary",
     cta: "USC Tracking",
+    detailedInfo: "Your civil registry records undergo specialized USC procedures: umiejscowienie (determining which registry office holds records) and uzupełnienie (requesting complete certificate copies from the located office).",
+    keyPoints: [
+      "Your umiejscowienie request identifies the correct USC office location",
+      "Your uzupełnienie request obtains full certified certificate copies",
+      "Your USC procedures are tracked as separate workflow tasks",
+      "Your certificates arrive with official Polish government authentication"
+    ]
   },
   {
     number: "08",
@@ -68,6 +117,13 @@ const archivesSteps = [
     icon: CheckCircle,
     gradient: "from-secondary to-accent",
     cta: "View Results",
+    detailedInfo: "Your archive documents are verified, authenticated, and prepared for the next stages. They're ready for sworn translation and eventual submission as evidence in your citizenship application.",
+    keyPoints: [
+      "Your documents are authenticated with official archive seals",
+      "Your certificates are ready for certified Polish translation",
+      "Your evidence package is organized and cataloged",
+      "Your case moves forward to translation and filing stages"
+    ]
   },
 ];
 
