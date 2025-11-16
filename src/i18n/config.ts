@@ -349,7 +349,7 @@ const resources = {
         step2Number: '02',
         step2Title: 'Eligibility Check',
         step2Desc: 'Take our Polish citizenship test and fill the family tree so we can determine your eligibility. If eligible, we move to the next stage.',
-        step2Cta: 'Take Test',
+        step2Cta: 'Take Polish Citizenship Test',
         step3Number: '03',
         step3Title: 'Document Examination',
         step3Desc: 'We carefully examine your documents, especially Polish documents of ancestors and naturalization/military service documents.',
@@ -817,13 +817,13 @@ const resources = {
         vipFeature7: 'Todos los esquemas incluidos',
         vipButton: 'Ir VIP',
         flipBack: 'Clic para voltear',
-        cta: 'Realizar Test'
+        cta: 'Realizar Test de Ciudadanía Polaca'
       },
       testimonials: {
         title: 'Testimonios Reales de Clientes',
         subtitle: 'Clientes que recuperaron su ciudadanía polaca',
         rating: '5.0 de 200+ clientes',
-        cta: 'Realizar Test',
+        cta: 'Realizar Test de Ciudadanía Polaca',
         reviews: [
           {
             name: "Michael K.",
@@ -1297,7 +1297,7 @@ const resources = {
         step2Number: '02',
         step2Title: 'Verificação de Elegibilidade',
         step2Desc: 'Faça nosso teste de cidadania polonesa e preencha a árvore genealógica para que possamos determinar sua elegibilidade. Se elegível, passamos para a próxima etapa.',
-        step2Cta: 'Fazer Teste',
+        step2Cta: 'Fazer Teste de Cidadania Polonesa',
         step3Number: '03',
         step3Title: 'Exame de Documentos',
         step3Desc: 'Examinamos cuidadosamente seus documentos, especialmente documentos poloneses de ancestrais e documentos de naturalização/serviço militar.',
@@ -1338,7 +1338,7 @@ const resources = {
         card4Title: 'Atualizações ao Vivo',
         card4Desc: 'Rastreamento em tempo real com previsões IA.',
         flipBack: 'Clique para virar',
-        cta: 'Fazer Teste'
+        cta: 'Fazer Teste de Cidadania Polonesa'
       },
       pricing: {
         badge: 'Preços Transparentes',
@@ -1383,13 +1383,13 @@ const resources = {
         vipFeature7: 'Todos os esquemas incluídos',
         vipButton: 'Ir VIP',
         flipBack: 'Clique para virar',
-        cta: 'Fazer Teste'
+        cta: 'Fazer Teste de Cidadania Polonesa'
       },
       testimonials: {
         title: 'Testemunhos Reais de Clientes',
         subtitle: 'Clientes que recuperaram cidadania polonesa',
         rating: '5.0 de 200+ clientes',
-        cta: 'Fazer Teste',
+        cta: 'Fazer Teste de Cidadania Polonesa',
         reviews: [
           {
             name: "Michael K.",
@@ -1781,7 +1781,7 @@ const resources = {
         step2Number: '02',
         step2Title: 'Berechtigungsprüfung',
         step2Desc: 'Machen Sie unseren polnischen Staatsbürgerschaftstest und füllen Sie den Stammbaum aus, damit wir Ihre Berechtigung bestimmen können. Bei Berechtigung geht es zur nächsten Stufe.',
-        step2Cta: 'Test Machen',
+        step2Cta: 'Polnischen Staatsbürgerschaftstest Machen',
         step3Number: '03',
         step3Title: 'Dokumentenprüfung',
         step3Desc: 'Wir prüfen sorgfältig Ihre Dokumente, insbesondere polnische Dokumente von Vorfahren und Einbürgerungs-/Militärdienstdokumente.',
@@ -1822,7 +1822,7 @@ const resources = {
         card4Title: 'Live-Updates',
         card4Desc: 'Echtzeit-Tracking mit KI-Vorhersagen.',
         flipBack: 'Klicken zum Umdrehen',
-        cta: 'Test Machen'
+        cta: 'Polnischen Staatsbürgerschaftstest Machen'
       },
       pricing: {
         badge: 'Transparente Preise',
@@ -1867,7 +1867,7 @@ const resources = {
         vipFeature7: 'Alle Schemata enthalten',
         vipButton: 'VIP Wählen',
         flipBack: 'Klicken zum Umdrehen',
-        cta: 'Test Machen'
+        cta: 'Polnischen Staatsbürgerschaftstest Machen'
       },
       timelineProcess: {
         badge: 'Unser Prozess',
@@ -1954,7 +1954,7 @@ const resources = {
         title: 'Echte Kunden-Testimonials',
         subtitle: 'Kunden die polnische Staatsbürgerschaft erhielten',
         rating: '5.0 von 200+ Kunden',
-        cta: 'Test Machen',
+        cta: 'Polnischen Staatsbürgerschaftstest Machen',
         reviews: [
           {
             name: "Michael K.",
@@ -2035,7 +2035,7 @@ const resources = {
         submitting: 'Sende...',
         thankYouTitle: 'Danke!',
         thankYouMessage: 'Antwort in 24 Stunden.',
-        cta: 'Test Machen',
+        cta: 'Polnischen Staatsbürgerschaftstest Machen',
         polishDocuments: 'Polnische Dokumente',
         selectOption: 'Option wählen',
         haveDocuments: 'Ich habe einige polnische Dokumente meiner Familie',
@@ -2354,7 +2354,7 @@ const resources = {
         step2Number: '02',
         step2Title: 'Vérification d\'Éligibilité',
         step2Desc: 'Passez notre test de citoyenneté polonaise et remplissez l\'arbre généalogique afin que nous puissions déterminer votre éligibilité. Si éligible, nous passons à l\'étape suivante.',
-        step2Cta: 'Passer le Test',
+        step2Cta: 'Passer le Test de Citoyenneté Polonaise',
         step3Number: '03',
         step3Title: 'Examen des Documents',
         step3Desc: 'Nous examinons attentivement vos documents, en particulier les documents polonais des ancêtres et les documents de naturalisation/service militaire.',
@@ -2477,7 +2477,7 @@ const resources = {
         card4Title: 'Mises à Jour en Direct',
         card4Desc: 'Suivi en temps réel avec prédictions IA.',
         flipBack: 'Cliquer pour retourner',
-        cta: 'Passer le Test'
+        cta: 'Passer le Test de Citoyenneté Polonaise'
       },
       pricing: {
         badge: 'Tarifs Transparents',
@@ -2522,13 +2522,13 @@ const resources = {
         vipFeature7: 'Tous les schémas inclus',
         vipButton: 'Choisir VIP',
         flipBack: 'Cliquer pour retourner',
-        cta: 'Passer le Test'
+        cta: 'Passer le Test de Citoyenneté Polonaise'
       },
       testimonials: {
         title: 'Témoignages Réels de Clients',
         subtitle: 'Clients qui ont récupéré leur citoyenneté polonaise',
         rating: '5.0 de 200+ clients',
-        cta: 'Passer le Test',
+        cta: 'Passer le Test de Citoyenneté Polonaise',
         reviews: [
           {
             name: "Michael K.",
@@ -2839,7 +2839,7 @@ const resources = {
         step2Number: '02',
         step2Title: 'בדיקת זכאות',
         step2Desc: 'בצע את מבחן האזרחות הפולנית שלנו ומלא את עץ המשפחה כדי שנוכל לקבוע את הזכאות שלך. אם זכאי, עוברים לשלב הבא.',
-        step2Cta: 'בצע מבחן',
+        step2Cta: 'בצע מבחן אזרחות פולנית',
         step3Number: '03',
         step3Title: 'בדיקת מסמכים',
         step3Desc: 'אנו בוחנים בקפידה את המסמכים שלך, במיוחד מסמכים פולניים של אבות קדומים ומסמכי התאזרחות/שירות צבאי.',
@@ -2962,7 +2962,7 @@ const resources = {
         card4Title: 'עדכונים בזמן אמת',
         card4Desc: 'מעקב בזמן אמת עם חיזויי בינה מלאכותית.',
         flipBack: 'לחץ להפוך חזרה',
-        cta: 'עבור מבחן'
+        cta: 'בצע מבחן אזרחות פולנית'
       },
       pricing: {
         badge: 'תמחור שקוף',
@@ -3007,13 +3007,13 @@ const resources = {
         vipFeature7: 'כל התכניות כלולות',
         vipButton: 'עבור VIP',
         flipBack: 'לחץ להפוך',
-        cta: 'עבור מבחן'
+        cta: 'בצע מבחן אזרחות פולנית'
       },
       testimonials: {
         title: 'המלצות אמיתיות מלקוחות',
         subtitle: 'לקוחות שהחזירו אזרחות פולנית',
         rating: '5.0 ממוצע מ-200+ לקוחות',
-        cta: 'עבור מבחן',
+        cta: 'בצע מבחן אזרחות פולנית',
         reviews: [
           {
             name: "מייקל ק.",
@@ -3095,7 +3095,7 @@ const resources = {
         submitting: 'שולח...',
         thankYouTitle: 'תודה!',
         thankYouMessage: 'נענה תוך 24 שעות.',
-        cta: 'עבור מבחן',
+        cta: 'בצע מבחן אזרחות פולנית',
         polishDocuments: 'מסמכים פולניים',
         selectOption: 'בחר אפשרות',
         haveDocuments: 'יש לי כמה מסמכים פולניים של המשפחה שלי',
@@ -3370,7 +3370,7 @@ const resources = {
         step2Number: '02',
         step2Title: 'Проверка Права',
         step2Desc: 'Пройдите наш тест на польское гражданство и заполните генеалогическое древо, чтобы мы могли определить ваше право. Если право есть, переходим к следующему этапу.',
-        step2Cta: 'Пройти Тест',
+        step2Cta: 'Пройти Тест на Польское Гражданство',
         step3Number: '03',
         step3Title: 'Проверка Документов',
         step3Desc: 'Мы тщательно проверяем ваши документы, особенно польские документы предков и документы о натурализации/военной службе.',
@@ -3483,7 +3483,7 @@ const resources = {
         card4Title: 'Обновления в Реальном Времени',
         card4Desc: 'Отслеживание в реальном времени с прогнозами ИИ.',
         flipBack: 'Нажмите, чтобы вернуть',
-        cta: 'Пройти Тест'
+        cta: 'Пройти Тест на Польское Гражданство'
       },
       pricing: {
         badge: 'Прозрачное Ценообразование',
@@ -3528,13 +3528,13 @@ const resources = {
         vipFeature7: 'Все схемы включены',
         vipButton: 'Выбрать VIP',
         flipBack: 'Нажмите, чтобы вернуть',
-        cta: 'Пройти Тест'
+        cta: 'Пройти Тест на Польское Гражданство'
       },
       testimonials: {
         title: 'Настоящие Отзывы Клиентов',
         subtitle: 'Клиенты, которые вернули польское гражданство',
         rating: '5.0 в среднем от 200+ клиентов',
-        cta: 'Пройти Тест',
+        cta: 'Пройти Тест на Польское Гражданство',
         reviews: [
           {
             name: "Майкл К.",
@@ -3621,7 +3621,7 @@ const resources = {
         benefit4Desc: 'Бесплатно',
         thankYouTitle: 'Спасибо!',
         thankYouMessage: 'Мы ответим в течение 24 часов.',
-        cta: 'Пройти Тест',
+        cta: 'Пройти Тест на Польское Гражданство',
         stage1Desc: 'Первый контакт, тест на гражданство, генеалогическое древо, проверка приемлемости и звонок по приемлемости',
         stage1Duration: 'Неделя 1',
         stage1Action: 'Первоначальная Настройка и Оплата',
@@ -3950,7 +3950,7 @@ const resources = {
         step2Number: '02',
         step2Title: 'Перевірка Права',
         step2Desc: 'Пройдіть наш тест на польське громадянство та заповніть генеалогічне дерево, щоб ми могли визначити ваше право. Якщо право є, переходимо до наступного етапу.',
-        step2Cta: 'Пройти Тест',
+        step2Cta: 'Пройти Тест на Польське Громадянство',
         step3Number: '03',
         step3Title: 'Перевірка Документів',
         step3Desc: 'Ми ретельно перевіряємо ваші документи, особливо польські документи предків та документи про натуралізацію/військову службу.',
@@ -4073,7 +4073,7 @@ const resources = {
         card4Title: 'Оновлення в Реальному Часі',
         card4Desc: 'Відстеження в реальному часі з прогнозами ШІ.',
         flipBack: 'Натисніть, щоб повернути',
-        cta: 'Пройти Тест'
+        cta: 'Пройти Тест на Польське Громадянство'
       },
       pricing: {
         badge: 'Прозоре Ціноутворення',
@@ -4118,13 +4118,13 @@ const resources = {
         vipFeature7: 'Всі схеми включені',
         vipButton: 'Обрати VIP',
         flipBack: 'Натисніть, щоб повернути',
-        cta: 'Пройти Тест'
+        cta: 'Пройти Тест на Польське Громадянство'
       },
       testimonials: {
         title: 'Справжні Відгуки Клієнтів',
         subtitle: 'Клієнти, які повернули польське громадянство',
         rating: '5.0 в середньому від 200+ клієнтів',
-        cta: 'Пройти Тест',
+        cta: 'Пройти Тест на Польське Громадянство',
         reviews: [
           {
             name: "Майкл К.",
@@ -4205,7 +4205,7 @@ const resources = {
         submitting: 'Надсилання...',
         thankYouTitle: 'Дякуємо!',
         thankYouMessage: 'Ми відповімо протягом 24 годин.',
-        cta: 'Пройти Тест',
+        cta: 'Пройти Тест на Польське Громадянство',
         benefit1Title: 'Розумна Відповідь',
         benefit1Desc: '>5 хв.',
         benefit2Title: 'Детальний Відгук',
