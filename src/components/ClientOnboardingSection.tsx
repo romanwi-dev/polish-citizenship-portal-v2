@@ -247,7 +247,7 @@ export default function ClientOnboardingSection() {
                         className="w-full"
                         onClick={(e) => {
                           e.stopPropagation();
-                          window.open('https://form.typeform.com/to/QDnlB0fk', '_blank');
+                          window.location.href = '/client/login';
                         }}
                       >
                         Open Account
