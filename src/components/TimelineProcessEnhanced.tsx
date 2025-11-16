@@ -297,7 +297,7 @@ export default function TimelineProcessEnhanced() {
                         <h3 className={`text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
                           {step.title}
                         </h3>
-                        <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 px-2">
+                        <p className="text-sm md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 px-2">
                           {step.description}
                         </p>
                         <div className="flex flex-wrap gap-1.5 justify-center">
@@ -309,7 +309,7 @@ export default function TimelineProcessEnhanced() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-sm md:text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails')}</p>
+                      <p className="text-base md:text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails')}</p>
                     </div>
 
                     {/* Back Side */}
