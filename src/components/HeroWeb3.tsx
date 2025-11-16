@@ -45,7 +45,7 @@ const HeroWeb3 = () => {
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('hero.badge')}</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
+          <h1 className="text-5xl md:text-7xl lg:text-9xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
           contentVisibility: 'auto'
         }}>
             <span className={`bg-clip-text text-transparent ${
