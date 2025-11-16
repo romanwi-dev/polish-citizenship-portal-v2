@@ -33,7 +33,10 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
       <meta property="og:url" content={window.location.href} />
       <meta property="og:title" content={ogTitle} />
       <meta property="og:description" content={ogDescription} />
-      <meta property="og:image" content={`${baseUrl}/lovable-uploads/banner.jpg`} />
+      <meta property="og:image" content={`${baseUrl}/og/${currentLang}-og-image.jpg`} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={t(`seo.${page}.ogImageAlt`)} />
       <meta property="og:locale" content={getOGLocale(currentLang)} />
       
       {/* Alternate locales for Facebook */}
@@ -46,7 +49,8 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
       <meta name="twitter:url" content={window.location.href} />
       <meta name="twitter:title" content={twitterTitle} />
       <meta name="twitter:description" content={twitterDescription} />
-      <meta name="twitter:image" content={`${baseUrl}/lovable-uploads/banner.jpg`} />
+      <meta name="twitter:image" content={`${baseUrl}/og/${currentLang}-og-image.jpg`} />
+      <meta name="twitter:image:alt" content={t(`seo.${page}.ogImageAlt`)} />
       
       {/* Hreflang tags for international SEO */}
       {languages.map(lang => (
