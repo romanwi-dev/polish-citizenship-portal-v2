@@ -135,10 +135,10 @@ export function TranslationWorkflowTimeline({
                     {stageConf.label}
                   </p>
                   {isCompleted && (
-                    <p className="text-xs text-muted-foreground">Completed</p>
+                    <p className="text-sm md:text-xs text-muted-foreground">Completed</p>
                   )}
                   {isCurrent && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm md:text-xs text-muted-foreground">
                       Started {format(new Date(job.stage_entered_at), 'MMM d, HH:mm')}
                     </p>
                   )}
