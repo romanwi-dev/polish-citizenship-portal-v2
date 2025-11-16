@@ -29,6 +29,16 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       
+      {/* AI Engine Meta Tags */}
+      <meta name="openai:description" content={description} />
+      <meta name="openai:keywords" content={keywords} />
+      <meta name="ai-content-declaration" content="human-authored-legal-guidance" />
+      <meta name="perplexity:category" content="legal-services" />
+      <meta name="perplexity:region" content="europe" />
+      <meta name="article:author" content="Polish Citizenship Portal" />
+      <meta name="article:published_time" content="2024-01-01T00:00:00Z" />
+      <meta name="article:modified_time" content={new Date().toISOString()} />
+      
       {/* Performance: Resource Hints */}
       <link rel="preconnect" href="https://oogmuakyqadpynnrasnd.supabase.co" />
       <link rel="preconnect" href="https://www.googletagmanager.com" />

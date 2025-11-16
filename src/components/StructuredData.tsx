@@ -103,6 +103,70 @@ export function StructuredData() {
     ]
   };
 
+  // ContactPoint Schema for AI Engines
+  const contactPointData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPoint",
+    "telephone": "+48-22-123-4567",
+    "email": "contact@polishcitizenshipportal.com",
+    "contactType": "customer service",
+    "availableLanguage": ["en", "pl", "es", "pt", "de", "fr", "he", "ru", "uk"],
+    "areaServed": "Worldwide"
+  };
+
+  // Service Catalog Schema
+  const serviceData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Polish Citizenship by Descent",
+    "provider": {
+      "@type": "LegalService",
+      "name": "Polish Citizenship Portal"
+    },
+    "areaServed": [
+      { "@type": "Country", "name": "United States" },
+      { "@type": "Country", "name": "United Kingdom" },
+      { "@type": "Country", "name": "Canada" },
+      { "@type": "Country", "name": "Australia" }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Citizenship Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Full Citizenship Application",
+            "description": "Complete assistance with Polish citizenship by descent application"
+          },
+          "price": "8500",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Document Retrieval",
+            "description": "Archive search and document retrieval from Polish archives"
+          },
+          "price": "2500",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Eligibility Assessment",
+            "description": "Professional evaluation of citizenship eligibility"
+          },
+          "price": "500",
+          "priceCurrency": "EUR"
+        }
+      ]
+    }
+  };
+
   // LocalBusiness Schema
   const localBusinessData = {
     "@context": "https://schema.org",
@@ -245,7 +309,7 @@ export function StructuredData() {
     ]
   };
 
-  // Organization Schema
+  // Organization Schema with Knowledge Graph Optimization
   const organizationData = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -254,24 +318,44 @@ export function StructuredData() {
     "alternateName": "PolishCitizenship.pl",
     "url": baseUrl,
     "logo": `${baseUrl}/lovable-uploads/logo.png`,
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+48-22-123-4567",
-      "contactType": "customer service",
-      "email": "contact@polishcitizenshipportal.com",
-      "availableLanguage": ["en", "es", "pt", "de", "fr", "he", "ru", "uk"],
-      "areaServed": "Worldwide"
+    "foundingDate": "2020-01-01",
+    "foundingLocation": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Warsaw",
+        "addressCountry": "PL"
+      }
     },
+    "knowsAbout": [
+      "Polish Citizenship Law",
+      "Citizenship by Descent",
+      "Polish Archives",
+      "Document Authentication",
+      "Genealogy Research"
+    ],
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+48-22-123-4567",
+        "email": "contact@polishcitizenshipportal.com",
+        "contactType": "customer service",
+        "availableLanguage": ["en", "pl", "es", "pt", "de", "fr", "he", "ru", "uk"],
+        "areaServed": "Worldwide"
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/polishcitizenshipportal",
+      "https://www.linkedin.com/company/polishcitizenshipportal",
+      "https://twitter.com/polishcitizen"
+    ],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Aleje Jerozolimskie 123",
       "addressLocality": "Warsaw",
+      "addressRegion": "Mazowieckie",
       "postalCode": "00-001",
       "addressCountry": "PL"
-    },
-    "founder": {
-      "@type": "Organization",
-      "name": "Polish Citizenship Portal"
     }
   };
 
@@ -300,6 +384,12 @@ export function StructuredData() {
       </script>
       <script type="application/ld+json">
         {JSON.stringify(faqData)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(contactPointData)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(serviceData)}
       </script>
       <script type="application/ld+json">
         {JSON.stringify(localBusinessData)}
