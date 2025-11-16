@@ -84,12 +84,28 @@ export const HeroWavingFlags = () => {
   });
   const isRTL = i18n.language === 'he';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsFlipped(true);
-    setTimeout(() => {
-      window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank');
-    }, 300);
+    
+    try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            message: `Country: ${formData.country}, Phone: ${formData.phone || 'Not provided'}`
+          }
+        ]);
+
+      if (error) throw error;
+
+      setIsFlipped(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setIsFlipped(true);
+    }
   };
 
   const features = [
