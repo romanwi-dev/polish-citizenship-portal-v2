@@ -38,7 +38,7 @@ export const SectionLayout = ({
     <section id={id} className={`relative py-24 overflow-hidden overflow-x-hidden ${className}`}>
       <div className="container relative z-10 px-4 mx-auto">
         {/* Header: Badge + Title + Subtitle */}
-        <div className="max-w-4xl mx-auto text-center mb-20 animate-fade-in pt-8">
+        <div className="max-w-4xl mx-auto text-center mb-20 animate-fade-in pt-16">
           {/* Badge */}
           {badge && (
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-12 border border-primary/30">
