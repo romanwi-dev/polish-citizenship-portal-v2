@@ -169,7 +169,7 @@ const FAQSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-16 space-y-16">
+          <div className="text-center mb-16 space-y-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
               <HelpCircle className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('faq.badge')}</span>
