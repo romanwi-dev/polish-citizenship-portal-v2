@@ -41,7 +41,7 @@ export const SectionLayout = ({
         <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-in">
           {/* Badge */}
           {badge && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-primary/30">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-10 border border-primary/30">
               {BadgeIcon && <BadgeIcon className="w-4 h-4 text-primary" />}
               <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 {badge.text}
