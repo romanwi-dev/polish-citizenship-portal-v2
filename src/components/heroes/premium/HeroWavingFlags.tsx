@@ -90,7 +90,7 @@ export const HeroWavingFlags = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-background py-12">
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background py-16 md:py-20">
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
           <SmoothFlowingParticles />
@@ -99,22 +99,25 @@ export const HeroWavingFlags = () => {
 
       <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
 
-      <div className="container relative z-10 px-4 mx-auto flex-1 flex items-center">
-        <div className="grid lg:grid-cols-[1fr,450px] gap-8 lg:gap-12 items-start w-full">
-          <div className="space-y-12">
-            <div className="space-y-8 text-center lg:text-left">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-black">
+      <div className="container relative z-10 px-4 mx-auto">
+        <div className="grid lg:grid-cols-[1.2fr,400px] gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
+          <div className="space-y-8">
+            <div className="space-y-6 text-center lg:text-left">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
                   {t('hero.title')}
                 </span>
               </h1>
-              <p className="text-base md:text-lg lg:text-xl text-foreground/80 font-sans max-w-3xl mx-auto lg:mx-0 leading-relaxed">
-                Poland&apos;s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey. Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care.
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
+                Poland&apos;s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey.
+              </p>
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
+                Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care. From initial eligibility assessment to final passport acquisition, we deliver unmatched success rates and transparent pricing.
               </p>
             </div>
           </div>
 
-          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full lg:ml-auto">
+          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0">
             <div className="mb-6 rounded-xl overflow-hidden opacity-70">
               <img 
                 src={professionalWoman} 
@@ -153,7 +156,7 @@ export const HeroWavingFlags = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="country" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
-                  {t('contact.countryLabel') || 'Country'}
+                  Country
                 </Label>
                 <Select
                   value={formData.country}
@@ -183,7 +186,7 @@ export const HeroWavingFlags = () => {
       </div>
 
       {/* Stats Cards at Bottom */}
-      <div className="container relative z-10 px-4 mx-auto mt-12">
+      <div className="container relative z-10 px-4 mx-auto mt-16 md:mt-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {features.map((feature, index) => {
             const FeatureIcon = feature.icon;
