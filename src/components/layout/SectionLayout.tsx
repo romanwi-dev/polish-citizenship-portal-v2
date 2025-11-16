@@ -39,7 +39,7 @@ export const SectionLayout = ({
       <div className="container relative z-10 px-4 mx-auto">
         {/* Badge - Above Title */}
         {badge && (
-          <div className="flex justify-center mb-6 animate-fade-in">
+          <div className="flex justify-center mb-12 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
               {BadgeIcon && <BadgeIcon className="w-4 h-4 text-primary" />}
               <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
