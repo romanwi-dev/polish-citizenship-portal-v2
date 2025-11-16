@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,15 +21,27 @@ const LANGUAGES = [
 
 export function LanguageSelector() {
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
+  const { lang } = useParams<{ lang: string }>();
   const [open, setOpen] = useState(false);
 
   const currentLanguage = LANGUAGES.find(lang => lang.code === i18n.language) || LANGUAGES[0];
 
   const handleLanguageChange = async (code: string) => {
     console.log('🔄 Changing language to:', code);
+    
+    // Change i18n language
     await i18n.changeLanguage(code);
+    
+    // Store preference
+    localStorage.setItem('preferredLanguage', code);
+    
+    // Navigate to new language URL
+    const currentPath = window.location.pathname;
+    const pathWithoutLang = currentPath.replace(/^\/(en|es|pt|de|fr|he|ru|uk)(\/|$)/, '/');
+    navigate(`/${code}${pathWithoutLang === '/' ? '' : pathWithoutLang}`);
+    
     console.log('✅ Language changed to:', i18n.language);
-    console.log('📦 Available resources:', Object.keys(i18n.store.data));
     setOpen(false);
   };
 

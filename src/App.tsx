@@ -7,6 +7,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
+import { LanguageRedirect } from "@/components/LanguageRedirect";
+import { LanguageSyncWrapper } from "@/components/LanguageSyncWrapper";
 import Index from "./pages/Index";
 import Cases from "./pages/Cases";
 import Login from "./pages/Login";
@@ -145,7 +147,15 @@ const App = () => {
               <Sonner />
               <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            {/* Language redirect at root */}
+            <Route path="/" element={<LanguageRedirect />} />
+            
+            {/* Language-prefixed routes for homepage */}
+            <Route path="/:lang" element={
+              <LanguageSyncWrapper>
+                <Index />
+              </LanguageSyncWrapper>
+            } />
             <Route path="/translation-demo" element={
               <Suspense fallback={<AdminLoader />}>
                 <TranslationDemo />
