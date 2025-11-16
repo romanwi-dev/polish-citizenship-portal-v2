@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Mail } from "lucide-react";
-import { useInView } from "react-intersection-observer";
+import { Mail, Zap, Clock, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MainCTA } from "@/components/ui/main-cta";
 import { Input } from "@/components/ui/input";
@@ -13,12 +12,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Zap, CheckCircle2, Clock, Gift } from "lucide-react";
 import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
 import EUCelebrationSection from "./EUCelebrationSection";
 import thankYou1 from "@/assets/thank-you/thank-you-1.jpg";
 import { useTranslation } from "react-i18next";
+import { BenefitCard } from "./BenefitCard";
 
 const COUNTRIES = [
   "USA", "UK", "Canada", "Australia", "South Africa", "Brazil", 
@@ -39,10 +38,7 @@ const ContactFormWeb3 = () => {
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
   
-  // Debug logging
-  console.log('📧 Contact form language:', i18n.language);
-  console.log('📧 nameLabel:', t('contact.nameLabel'));
-  console.log('📧 emailLabel:', t('contact.emailLabel'));
+  // Debug logging removed for production
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
   const [formData, setFormData] = useState({
     name: "",
@@ -383,84 +379,19 @@ const ContactFormWeb3 = () => {
                 value: t('contact.benefit4Desc'),
                 details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment."
               }
-            ].map((stat, i) => {
-              const { ref, inView } = useInView({
-                triggerOnce: true,
-                threshold: 0.1,
-              });
-
-              return (
-                <>
-                  <div 
-                    ref={ref}
-                    key={i} 
-                    id={stat.id}
-                    className={`w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer transition-all duration-700 ${
-                      inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                    }`}
-                    style={{ 
-                      perspective: '1000px',
-                      transitionDelay: `${i * 100}ms`
-                    }}
-                    onClick={() => toggleCardFlip(i)}
-                  >
-                    <div 
-                      className="relative w-full h-full transition-transform duration-700"
-                      style={{ 
-                        transformStyle: 'preserve-3d',
-                        transform: flippedCards.has(i) ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                      }}
-                    >
-                      {/* Front Side */}
-                      <div 
-                        className="glass-card p-6 rounded-lg hover-glow w-full h-[180px] md:h-[200px] flex flex-col"
-                        style={{ 
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden'
-                        }}
-                      >
-                      <div className="text-center flex-1 flex flex-col items-center justify-center gap-3">
-                          <stat.icon className="w-6 h-6 md:w-7 md:h-7 text-primary" strokeWidth={1.5} />
-                          <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                            {stat.value}
-                          </div>
-                          <div className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
-                        </div>
-                        <div className="text-xs text-primary/50 text-center mt-4">Click for details</div>
-                      </div>
-
-                      {/* Back Side */}
-                      <div 
-                        className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 h-[180px] md:h-[200px] flex flex-col justify-center"
-                        style={{ 
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          transform: 'rotateY(180deg)'
-                        }}
-                      >
-                        <div className="text-lg md:text-2xl text-primary font-bold mb-3">{stat.label}</div>
-                        <p className="text-sm md:text-lg text-muted-foreground/70 leading-relaxed">
-                          {stat.details}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Three arrows between cards (not after last card) */}
-                  {i < 3 && (
-                    <div className="flex justify-center my-1 -mb-5 cursor-pointer hover:opacity-80 transition-opacity">
-                      <div className="flex flex-col items-center gap-1">
-                        <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-primary/40 animate-[bounce_1.5s_ease-in-out_infinite]" />
-                        <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-primary/70 animate-[bounce_1.5s_ease-in-out_infinite]" 
-                          style={{ animationDelay: '0.2s' }} />
-                        <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-primary animate-[bounce_1.5s_ease-in-out_infinite]" 
-                          style={{ animationDelay: '0.4s' }} />
-                      </div>
-                    </div>
-                  )}
-                </>
-              );
-            })}
+            ].map((stat, i) => (
+              <BenefitCard
+                key={`benefit-${i}`}
+                icon={stat.icon}
+                label={stat.label}
+                value={stat.value}
+                details={stat.details}
+                id={stat.id}
+                index={i}
+                isFlipped={flippedCards.has(i)}
+                onToggleFlip={() => toggleCardFlip(i)}
+              />
+            ))}
           </div>
         </div>
       </div>
