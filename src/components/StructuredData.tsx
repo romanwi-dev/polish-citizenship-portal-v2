@@ -4,92 +4,222 @@ import { useTranslation } from 'react-i18next';
 export function StructuredData() {
   const { t, i18n } = useTranslation();
   const baseUrl = window.location.origin;
+  const currentLang = i18n.language;
   
+  // Legal Service Schema
   const legalServiceData = {
     "@context": "https://schema.org",
     "@type": "LegalService",
     "name": t('seo.home.title'),
     "description": t('seo.home.description'),
     "url": baseUrl,
-    "inLanguage": i18n.language,
+    "inLanguage": currentLang,
     "telephone": "+48-22-123-4567",
     "email": "contact@polishcitizenshipportal.com",
+    "priceRange": "€3,500 - €12,500",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Aleje Jerozolimskie 123",
+      "addressLocality": "Warsaw",
+      "addressRegion": "Mazowieckie",
+      "postalCode": "00-001",
+      "addressCountry": "PL"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "52.2297",
+      "longitude": "21.0122"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "200",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "areaServed": [
+      { "@type": "Country", "name": "United States" },
+      { "@type": "Country", "name": "United Kingdom" },
+      { "@type": "Country", "name": "Canada" },
+      { "@type": "Country", "name": "Australia" },
+      { "@type": "Country", "name": "Israel" },
+      { "@type": "Country", "name": "Germany" },
+      { "@type": "Country", "name": "France" },
+      { "@type": "Country", "name": "Spain" }
+    ],
     "sameAs": [
       "https://www.facebook.com/polishcitizenshipportal",
       "https://www.linkedin.com/company/polishcitizenshipportal",
       "https://twitter.com/polishcitizen"
-    ],
-    "areaServed": [
-      { "@type": "Country", "name": "Poland" },
-      { "@type": "Country", "name": "United States" },
-      { "@type": "Country", "name": "Canada" },
-      { "@type": "Country", "name": "United Kingdom" },
-      { "@type": "Country", "name": "Australia" },
-      { "@type": "Country", "name": "Germany" },
-      { "@type": "Country", "name": "France" },
-      { "@type": "Country", "name": "Spain" },
-      { "@type": "Country", "name": "Israel" },
-      { "@type": "Country", "name": "Ukraine" }
-    ],
-    "priceRange": "€3,500 - €12,500+",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "5000",
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "PL",
-      "addressLocality": "Warsaw",
-      "streetAddress": "Aleje Jerozolimskie 123"
-    },
-    "founder": {
-      "@type": "Organization",
-      "name": "Polish Citizenship Portal"
-    }
+    ]
   };
 
+  // Multilingual FAQ Schema
   const faqData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "inLanguage": currentLang,
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "How long does the Polish citizenship process take?",
+        "name": t('faq.eligibility.q1'),
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The Polish citizenship confirmation process typically takes 10-18 months for the initial response, with the entire process ranging from 18 months to 3 years depending on case complexity and documentation availability."
+          "text": t('faq.eligibility.a1')
         }
       },
       {
         "@type": "Question",
-        "name": "Who is eligible for Polish citizenship by descent?",
+        "name": t('faq.eligibility.q2'),
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "You may be eligible if you have Polish ancestors who maintained their citizenship continuously. Eligibility depends on when your ancestor emigrated and whether they naturalized in another country before having children."
+          "text": t('faq.eligibility.a2')
         }
       },
       {
         "@type": "Question",
-        "name": "What documents are required for Polish citizenship application?",
+        "name": t('faq.timeline.q1'),
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Required documents typically include birth certificates, marriage certificates, naturalization records, and Polish archival documents for your ancestors. All documents must be translated into Polish by a certified sworn translator."
+          "text": t('faq.timeline.a1')
         }
       },
       {
         "@type": "Question",
-        "name": "How much does the Polish citizenship process cost?",
+        "name": t('faq.timeline.q3'),
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Professional service costs range from €3,500 to €12,500+ depending on case complexity. This includes legal representation, document gathering, translations, and government fees."
+          "text": t('faq.timeline.a3')
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t('faq.costs.q1'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.costs.a1')
         }
       }
     ]
   };
 
+  // LocalBusiness Schema
+  const localBusinessData = {
+    "@context": "https://schema.org",
+    "@type": "LegalService",
+    "@id": `${baseUrl}/#organization`,
+    "name": "Polish Citizenship Portal",
+    "alternateName": "PolishCitizenship.pl",
+    "description": t('seo.home.description'),
+    "url": baseUrl,
+    "logo": `${baseUrl}/lovable-uploads/logo.png`,
+    "image": `${baseUrl}/og/${currentLang}-og-image.jpg`,
+    "telephone": "+48-22-123-4567",
+    "email": "contact@polishcitizenshipportal.com",
+    "priceRange": "€€",
+    "currenciesAccepted": "USD, EUR, GBP, PLN",
+    "paymentAccepted": "Credit Card, Bank Transfer, PayPal",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Aleje Jerozolimskie 123",
+      "addressLocality": "Warsaw",
+      "addressRegion": "Mazowieckie",
+      "postalCode": "00-001",
+      "addressCountry": "PL"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "52.2297",
+      "longitude": "21.0122"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5.0",
+      "reviewCount": "200",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "sameAs": [
+      "https://www.facebook.com/polishcitizenshipportal",
+      "https://www.linkedin.com/company/polishcitizenshipportal",
+      "https://twitter.com/polishcitizen"
+    ]
+  };
+
+  // Review Schema with real testimonials
+  const reviewsData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "Review",
+        "itemReviewed": {
+          "@type": "LegalService",
+          "@id": `${baseUrl}/#organization`,
+          "name": "Polish Citizenship Portal"
+        },
+        "author": {
+          "@type": "Person",
+          "name": t('testimonials.reviews.0.name')
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": t('testimonials.reviews.0.text'),
+        "inLanguage": currentLang
+      },
+      {
+        "@type": "Review",
+        "itemReviewed": {
+          "@type": "LegalService",
+          "@id": `${baseUrl}/#organization`,
+          "name": "Polish Citizenship Portal"
+        },
+        "author": {
+          "@type": "Person",
+          "name": t('testimonials.reviews.1.name')
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": t('testimonials.reviews.1.text'),
+        "inLanguage": currentLang
+      },
+      {
+        "@type": "Review",
+        "itemReviewed": {
+          "@type": "LegalService",
+          "@id": `${baseUrl}/#organization`,
+          "name": "Polish Citizenship Portal"
+        },
+        "author": {
+          "@type": "Person",
+          "name": t('testimonials.reviews.2.name')
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": t('testimonials.reviews.2.text'),
+        "inLanguage": currentLang
+      }
+    ]
+  };
+
+  // Breadcrumb Schema
   const breadcrumbData = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -115,31 +245,44 @@ export function StructuredData() {
     ]
   };
 
+  // Organization Schema
   const organizationData = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${baseUrl}/#organization`,
     "name": "Polish Citizenship Portal",
+    "alternateName": "PolishCitizenship.pl",
     "url": baseUrl,
     "logo": `${baseUrl}/lovable-uploads/logo.png`,
-    "sameAs": [
-      "https://www.facebook.com/polishcitizenshipportal",
-      "https://www.linkedin.com/company/polishcitizenshipportal",
-      "https://twitter.com/polishcitizen"
-    ],
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+48-22-123-4567",
       "contactType": "customer service",
       "email": "contact@polishcitizenshipportal.com",
-      "availableLanguage": ["en", "es", "pt", "de", "fr", "he", "ru", "uk"]
+      "availableLanguage": ["en", "es", "pt", "de", "fr", "he", "ru", "uk"],
+      "areaServed": "Worldwide"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Aleje Jerozolimskie 123",
+      "addressLocality": "Warsaw",
+      "postalCode": "00-001",
+      "addressCountry": "PL"
+    },
+    "founder": {
+      "@type": "Organization",
+      "name": "Polish Citizenship Portal"
     }
   };
 
+  // WebSite Schema
   const webSiteData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": t('seo.home.title'),
+    "name": "Polish Citizenship Portal",
+    "alternateName": "PolishCitizenship.pl",
     "url": baseUrl,
+    "inLanguage": ["en", "es", "pt", "de", "fr", "he", "ru", "uk"],
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -147,10 +290,9 @@ export function StructuredData() {
         "urlTemplate": `${baseUrl}/search?q={search_term_string}`
       },
       "query-input": "required name=search_term_string"
-    },
-    "inLanguage": ["en", "es", "pt", "de", "fr", "he", "ru", "uk"]
+    }
   };
-  
+
   return (
     <Helmet>
       <script type="application/ld+json">
@@ -158,6 +300,12 @@ export function StructuredData() {
       </script>
       <script type="application/ld+json">
         {JSON.stringify(faqData)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(localBusinessData)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(reviewsData)}
       </script>
       <script type="application/ld+json">
         {JSON.stringify(breadcrumbData)}
