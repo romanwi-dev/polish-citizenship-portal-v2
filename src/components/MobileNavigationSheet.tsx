@@ -10,6 +10,7 @@ import { NavigationSearch } from './navigation/NavigationSearch';
 import { LastVisitedLinks } from './navigation/LastVisitedLinks';
 import { NavigationLinks } from './navigation/NavigationLinks';
 import { ThemeSwitcher } from './ThemeSwitcher';
+import { SocialShare } from '@/components/social/SocialShare';
 
 export const MobileNavigationSheet = () => {
   const { t } = useTranslation();
@@ -142,15 +143,23 @@ export const MobileNavigationSheet = () => {
               </div>
             </ScrollArea>
 
-            {/* Citizenship Test Button - Always Visible */}
-            <div className="p-4 border-t border-border/50">
-              <Button
-                onClick={handleCitizenshipTest}
-                className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
-                aria-label="Take the Polish Citizenship Test to check your eligibility"
-              >
-                {t('hero.cta')}
-              </Button>
+            {/* Sticky Bottom Section with Social Links */}
+            <div className="border-t border-border/50">
+              {/* Social Share Bar */}
+              <div className="p-4 pb-3 flex justify-center bg-muted/30">
+                <SocialShare variant="minimal" />
+              </div>
+              
+              {/* Citizenship Test Button */}
+              <div className="p-4 pt-3">
+                <Button
+                  onClick={handleCitizenshipTest}
+                  className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
+                  aria-label="Take the Polish Citizenship Test to check your eligibility"
+                >
+                  {t('hero.cta')}
+                </Button>
+              </div>
             </div>
           </div>
       </SheetContent>
