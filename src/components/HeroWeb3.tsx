@@ -4,9 +4,7 @@ import Award from "lucide-react/dist/esm/icons/award";
 import Users from "lucide-react/dist/esm/icons/users";
 import Trophy from "lucide-react/dist/esm/icons/trophy";
 import { useState } from "react";
-import warsawAnimation from "@/assets/hero/warsaw-animation.png";
 import { useTranslation } from "react-i18next";
-import { OptimizedImage } from "@/components/OptimizedImage";
 
 const HeroWeb3 = () => {
   const { t, i18n } = useTranslation();
@@ -22,20 +20,10 @@ const HeroWeb3 = () => {
       behavior: 'smooth'
     });
   };
-  return <section className="relative min-h-[60vh] md:min-h-screen flex flex-col items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <OptimizedImage
-          src={warsawAnimation}
-          alt="Warsaw Futuristic Cityscape"
-          width={1920}
-          height={1080}
-          priority={true}
-          placeholder="blur"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 hero-overlay dark:bg-gradient-to-b dark:from-background/85 dark:via-background/75 dark:to-background/95 light:bg-gradient-to-b light:from-background/60 light:via-background/50 light:to-background/70 md:light:from-background/40 md:light:via-background/30 md:light:to-background/50" />
-      </div>
+  return <section className="relative min-h-[60vh] md:min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-background via-background/95 to-background">
+      {/* Solid background - no images */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
+
 
       {/* Content */}
       <div className="container relative z-10 px-4 pt-32 pb-20 mx-auto">

@@ -10,19 +10,9 @@ import HeroWeb3 from "@/components/HeroWeb3";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 
-// Lazy load SkylineDivider for better performance
-const SkylineDivider = lazy(() => import("@/components/SkylineDivider"));
+// SkylineDivider removed - no images
 
-// Import European city skyline silhouettes
-import warsawSkyline from "@/assets/warsaw-skyline-overlay.png";
-import pragueSkyline from "@/assets/skylines/prague.png";
-import budapestSkyline from "@/assets/skylines/budapest.png";
-import berlinSkyline from "@/assets/skylines/berlin.png";
-import parisSkyline from "@/assets/skylines/paris.png";
-import viennaSkyline from "@/assets/skylines/vienna.png";
-import romeSkyline from "@/assets/skylines/rome.png";
-import brusselsSkyline from "@/assets/skylines/brussels.png";
-import londonSkyline from "@/assets/skylines/london.png";
+// Skyline images removed - using pure design system now
 
 // Lazy load below-the-fold components for better code splitting
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
@@ -61,13 +51,7 @@ const Index = () => {
       <StructuredData />
       <PerformanceMonitor />
       
-      {/* Preload LCP image for faster hero load */}
-      <link
-        rel="preload"
-        as="image"
-        href="/src/assets/hero/warsaw-animation.png"
-        // @ts-ignore - preload is valid but not in types
-      />
+      {/* No image preloading needed - using design system only */}
       
       <div className="min-h-screen overflow-x-hidden relative">
         {/* Global Background - Adapts to theme */}
@@ -78,62 +62,30 @@ const Index = () => {
           <HeroWeb3 />
           <AboutSection />
         
-        <Suspense fallback={null}>
-          <SkylineDivider cityName="athens" alt="Athens skyline" />
-        </Suspense>
-        
         <AIAnalysisSection />
-        
-        <Suspense fallback={null}>
-          <SkylineDivider cityName="prague" alt="Prague skyline" />
-        </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
-        </Suspense>
-        
-        <Suspense fallback={null}>
-          <SkylineDivider cityName="budapest" alt="Budapest skyline" />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
           <TimelineProcessEnhanced />
         </Suspense>
         
-        <Suspense fallback={null}>
-          <SkylineDivider cityName="berlin" alt="Berlin skyline" />
-        </Suspense>
-        
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
-        </Suspense>
-        
-        <Suspense fallback={null}>
-          <SkylineDivider cityName="paris" alt="Paris skyline" />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
         </Suspense>
         
-        <Suspense fallback={null}>
-          <SkylineDivider cityName="vienna" alt="Vienna skyline" />
-        </Suspense>
-        
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsSection />
         </Suspense>
         
-        <Suspense fallback={null}>
-          <SkylineDivider cityName="rome" alt="Rome skyline" />
-        </Suspense>
-        
         <Suspense fallback={<SectionLoader />}>
           <FAQSection />
-        </Suspense>
-        
-        <Suspense fallback={null}>
-          <SkylineDivider cityName="brussels" alt="Brussels skyline" />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
