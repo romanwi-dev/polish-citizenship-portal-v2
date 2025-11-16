@@ -127,7 +127,7 @@ export const HeroWavingFlags = () => {
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="name" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="name" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   {t('contact.name')} *
                 </Label>
                 <input
@@ -141,7 +141,7 @@ export const HeroWavingFlags = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="email" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   {t('contact.email')} *
                 </Label>
                 <input
@@ -155,7 +155,7 @@ export const HeroWavingFlags = () => {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="country" className="text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="country" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
                   {t('contact.country')}
                 </Label>
                 <Select
