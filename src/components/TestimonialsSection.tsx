@@ -94,26 +94,11 @@ export default function TestimonialsSection() {
 
         {/* Five Sequential Arrows Animation */}
         <div
-          className="flex justify-center mt-8 mb-4 cursor-pointer hover:opacity-80 transition-opacity relative z-10"
-          onClick={() => {
-            const videoButton = document.getElementById('video-testimonials-cta');
-            if (videoButton) {
-              videoButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-          }}
+          className="flex justify-center mt-8 mb-4 relative z-10"
         >
-          <div className="flex flex-col items-center gap-1.5">
-            <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary/20 animate-[bounce_1.5s_ease-in-out_infinite]" 
-              style={{ animationDelay: '0s' }} />
-            <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary/40 animate-[bounce_1.5s_ease-in-out_infinite]" 
-              style={{ animationDelay: '0.15s' }} />
-            <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary/60 animate-[bounce_1.5s_ease-in-out_infinite]" 
-              style={{ animationDelay: '0.3s' }} />
-            <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary/80 animate-[bounce_1.5s_ease-in-out_infinite]" 
-              style={{ animationDelay: '0.45s' }} />
-            <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary animate-[bounce_1.5s_ease-in-out_infinite]" 
-              style={{ animationDelay: '0.6s' }} />
-          </div>
+          <button className="px-8 py-4 bg-primary/10 hover:bg-primary/20 text-primary border-2 border-primary/30 hover:border-primary/50 shadow-[0_0_20px_hsl(var(--primary)/0.2)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)] transition-all duration-300 hover:scale-105 rounded-lg font-semibold">
+            Request Video Testimonials
+          </button>
         </div>
     </SectionLayout>
   );
