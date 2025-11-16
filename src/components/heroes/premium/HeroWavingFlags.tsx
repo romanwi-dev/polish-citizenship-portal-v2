@@ -101,7 +101,7 @@ export const HeroWavingFlags = () => {
 
       <div className="container relative z-10 px-4 mx-auto">
         <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
-          <div className="space-y-8 pt-2 md:pt-8 lg:pt-12">
+          <div className="space-y-8 md:pt-8 lg:pt-12">
             <div className="space-y-6 text-center lg:text-left">
               <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
