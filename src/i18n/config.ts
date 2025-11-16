@@ -336,7 +336,7 @@ const resources = {
       // Client Onboarding Section
       onboarding: {
         badge: 'Client Journey',
-        title: 'How to Start?',
+        title: 'How to Start the Procedure?',
         description: 'Follow these 5 clear steps to become our registered client and start your citizenship case',
         subtitle: 'Your step-by-step journey to obtaining Polish citizenship and EU passport through your Polish heritage',
         clickToFlip: 'Click to flip',
