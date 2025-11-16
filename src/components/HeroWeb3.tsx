@@ -11,6 +11,12 @@ const HeroWeb3 = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const isRTL = i18n.language === 'he';
 
+  // Debug logging
+  console.log('🌍 Current language:', i18n.language);
+  console.log('📝 subtitle1 translation:', t('hero.subtitle1'));
+  console.log('📝 subtitle2 translation:', t('hero.subtitle2'));
+  console.log('📦 i18n store:', i18n.store.data);
+
   const toggleFlip = (id: string) => {
     setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
   };
