@@ -13,7 +13,7 @@ const EuropeanFlags = () => {
   ];
 
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden">
+    <section className="relative py-12 md:py-20 overflow-hidden">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

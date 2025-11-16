@@ -164,7 +164,7 @@ const FAQSection = () => {
   })).filter(category => category.questions.length > 0);
 
   return (
-    <section id="faq" className="py-24 relative overflow-hidden overflow-x-hidden" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
+    <section id="faq" className="py-12 md:py-20 relative overflow-hidden overflow-x-hidden" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">

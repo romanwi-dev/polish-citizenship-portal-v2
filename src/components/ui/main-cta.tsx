@@ -56,7 +56,7 @@ export function MainCTA({
   ariaLabel,
   icon: Icon,
   animationDelay,
-  wrapperClassName = "mt-40 mb-20"
+  wrapperClassName = "mt-12 mb-12"
 }: MainCTAProps) {
   return (
     <div 
