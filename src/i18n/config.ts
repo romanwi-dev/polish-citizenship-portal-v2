@@ -4339,6 +4339,14 @@ i18n
     interpolation: {
       escapeValue: false, // React already escapes
     },
+    react: {
+      useSuspense: true,
+      bindI18n: 'languageChanged loaded',
+      bindI18nStore: 'added removed',
+      transEmptyNodeValue: '',
+      transSupportBasicHtmlNodes: true,
+      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
+    },
   });
 
 // Handle RTL for Hebrew
