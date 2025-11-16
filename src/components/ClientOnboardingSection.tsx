@@ -171,32 +171,61 @@ export default function ClientOnboardingSection() {
 
                   {/* Back Side */}
                   <div 
-                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex flex-col"
+                    className="absolute inset-0 glass-card p-6 rounded-lg hover-glow flex flex-col"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)',
                     }}
                   >
-                    <div className="mb-4 relative">
-                      <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
-                        <step.icon className="w-16 h-16 text-secondary opacity-60" />
+                    {/* Illustration */}
+                    <div className="w-full h-24 mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/10 to-accent/10 flex items-center justify-center">
+                      <step.icon className="w-12 h-12 text-secondary opacity-80" />
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex-1 overflow-auto space-y-3">
+                      <h3 className="text-lg font-heading font-bold tracking-tight text-card-foreground">
+                        {step.title} - What to Expect
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        In this step, we {step.description.toLowerCase()}. Our team ensures everything is handled professionally and efficiently.
+                      </p>
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-card-foreground">Key Points:</p>
+                        <ul className="text-xs text-muted-foreground/80 space-y-1.5 pl-4">
+                          <li className="flex items-start gap-2">
+                            <span className="text-secondary mt-0.5">✓</span>
+                            <span>Fast and reliable service</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-secondary mt-0.5">✓</span>
+                            <span>Expert legal guidance</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-secondary mt-0.5">✓</span>
+                            <span>Transparent communication</span>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                     
-                    <div className="flex-1 flex flex-col gap-4">
-                      <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground">
-                        Additional Information
-                      </h3>
-                      <div className="flex-1 overflow-auto">
-                        <p className="text-sm text-muted-foreground italic">
-                          [Admin: Add detailed information about {step.title} here. This section can include specific requirements, documents needed, timelines, tips, or important notes that clients should know about this step.]
-                        </p>
-                      </div>
+                    {/* CTA Button */}
+                    <div className="mt-4 pt-3 border-t border-border/30">
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="w-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank');
+                        }}
+                      >
+                        Create Account & Learn More →
+                      </Button>
+                      <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center mt-2">Tap card to flip back</p>
                     </div>
-                      
-                      <p className="text-xs text-muted-foreground/60 text-center mt-auto">{t('onboarding.flipBack')}</p>
-                    </div>
+                  </div>
                   </div>
                   </div>
                 </div>
