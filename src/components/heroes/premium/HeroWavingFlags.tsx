@@ -117,7 +117,7 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-20">
+          <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-24">
             <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100">
               <img 
                 src={professionalWoman} 
