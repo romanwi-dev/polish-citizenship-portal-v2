@@ -230,7 +230,7 @@ export default function TimelineProcessEnhanced() {
         </div>
 
         {/* Timeline */}
-        <div className="relative max-w-5xl mx-auto mt-16">
+        <div className="relative max-w-5xl mx-auto mt-24">
           {/* Desktop center line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10 hidden md:block" />
           

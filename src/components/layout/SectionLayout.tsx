@@ -71,7 +71,7 @@ export const SectionLayout = ({
         </div>
 
         {/* Content (Cards, etc.) */}
-        <div className="mb-12 mt-16">
+        <div className="mb-12 mt-24">
           {children}
         </div>
 
