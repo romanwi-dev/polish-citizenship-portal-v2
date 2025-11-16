@@ -1,0 +1,43 @@
+# Security Headers for Polish Citizenship Portal
+# Optimized for production deployment
+
+/*
+  # Prevent clickjacking attacks
+  X-Frame-Options: DENY
+  
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+  
+  # Enable XSS protection
+  X-XSS-Protection: 1; mode=block
+  
+  # Referrer policy for privacy
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # Permissions policy - restrict sensitive features
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=()
+  
+  # Content Security Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://oogmuakyqadpynnrasnd.supabase.co https://www.google-analytics.com https://analytics.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
+  
+  # Strict Transport Security - Force HTTPS (2 years)
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  
+  # Cache control for static assets
+  Cache-Control: public, max-age=31536000, immutable
+
+# Special cache rules for HTML files
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Service worker cache rules
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Sitemap cache
+/sitemap.xml
+  Cache-Control: public, max-age=86400
+
+# Robots cache
+/robots.txt
+  Cache-Control: public, max-age=86400

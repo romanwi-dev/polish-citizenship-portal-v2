@@ -9,6 +9,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import { LanguageSyncWrapper } from "@/components/LanguageSyncWrapper";
+import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
+import { AppRouter } from "@/components/AppRouter";
 import Index from "./pages/Index";
 import Cases from "./pages/Cases";
 import Login from "./pages/Login";
@@ -146,6 +148,7 @@ const App = () => {
               <Toaster />
               <Sonner />
               <BrowserRouter>
+                <AppRouter>
           <Routes>
             {/* Language redirect at root */}
             <Route path="/" element={<LanguageRedirect />} />
@@ -858,6 +861,7 @@ const App = () => {
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
           </Routes>
+                </AppRouter>
           </BrowserRouter>
             </Suspense>
           </TooltipProvider>
