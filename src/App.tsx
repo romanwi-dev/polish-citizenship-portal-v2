@@ -140,9 +140,10 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <AccessibilityProvider>
           <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+            <Suspense fallback={<AdminLoader />}>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/translation-demo" element={
@@ -848,6 +849,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
           </Routes>
           </BrowserRouter>
+            </Suspense>
           </TooltipProvider>
         </AccessibilityProvider>
       </QueryClientProvider>
