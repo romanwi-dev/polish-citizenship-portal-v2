@@ -108,12 +108,14 @@ export const HeroWavingFlags = () => {
                   {t('hero.title')}
                 </span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
-                Poland&apos;s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey.
-              </p>
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
-                Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care. From initial eligibility assessment to final passport acquisition, we deliver unmatched success rates and transparent pricing.
-              </p>
+              <div className="space-y-3">
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
+                  Poland&apos;s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey.
+                </p>
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
+                  Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care. From initial eligibility assessment to final passport acquisition, we deliver unmatched success rates and transparent pricing.
+                </p>
+              </div>
             </div>
           </div>
 
