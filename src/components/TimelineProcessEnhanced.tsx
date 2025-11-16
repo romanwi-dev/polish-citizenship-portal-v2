@@ -215,7 +215,7 @@ export default function TimelineProcessEnhanced() {
     <section key={i18n.language} id="timeline" className="relative py-12 md:py-20 overflow-hidden overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
         {/* Badge - Above Title */}
-        <div className="flex justify-center mb-12 animate-fade-in">
+        <div className="flex justify-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
             <Clock className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('timelineProcess.badge')}</span>
@@ -223,13 +223,13 @@ export default function TimelineProcessEnhanced() {
         </div>
         
         {/* Title */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-24">
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('timelineProcess.title')}
             </span>
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal mt-8">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal mt-10">
             {t('timelineProcess.subtitle')}
           </p>
         </div>
