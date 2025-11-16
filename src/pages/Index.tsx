@@ -6,7 +6,7 @@ import { PerformanceMonitor } from "@/components/performance/PerformanceMonitor"
 
 // Eagerly load critical above-the-fold components for LCP
 import Navigation from "@/components/Navigation";
-import HeroWeb3 from "@/components/HeroWeb3";
+import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 
@@ -59,7 +59,7 @@ const Index = () => {
         
         <div className="relative z-10">
           <Navigation />
-          <HeroWeb3 />
+          <HeroWavingFlags />
           <AboutSection />
         
         <AIAnalysisSection />
