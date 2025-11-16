@@ -114,8 +114,8 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/10 w-full lg:ml-auto">
-            <div className="mb-6 rounded-xl overflow-hidden">
+          <div className="glass-card p-6 md:p-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full lg:ml-auto">
+            <div className="mb-6 rounded-xl overflow-hidden opacity-70">
               <img 
                 src={professionalWoman} 
                 alt="Professional consultation" 
@@ -179,7 +179,7 @@ export const HeroWavingFlags = () => {
               </div>
               <button
                 type="submit"
-                className="w-full h-14 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-md text-lg font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                className="w-full h-14 bg-slate-900 dark:bg-slate-950 hover:bg-slate-800 dark:hover:bg-slate-900 text-white rounded-md text-lg font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border border-slate-700"
               >
                 Request More Info
               </button>
