@@ -20,6 +20,16 @@ import { HeroLightBeams } from '@/components/heroes/premium/HeroLightBeams';
 import { HeroSpiralingCubes } from '@/components/heroes/premium/HeroSpiralingCubes';
 import { HeroFloatingDiamonds } from '@/components/heroes/premium/HeroFloatingDiamonds';
 import { HeroVortexParticles } from '@/components/heroes/premium/HeroVortexParticles';
+import { HeroWavingFlags } from '@/components/heroes/premium/HeroWavingFlags';
+import { HeroFloatingFlags3D } from '@/components/heroes/premium/HeroFloatingFlags3D';
+import { HeroRippleFlags } from '@/components/heroes/premium/HeroRippleFlags';
+import { HeroSpinningFlagCircle } from '@/components/heroes/premium/HeroSpinningFlagCircle';
+import { HeroPulsingFlagSphere } from '@/components/heroes/premium/HeroPulsingFlagSphere';
+import { HeroHelixFlags } from '@/components/heroes/premium/HeroHelixFlags';
+import { HeroOrbitalFlags } from '@/components/heroes/premium/HeroOrbitalFlags';
+import { HeroFlagWaveField } from '@/components/heroes/premium/HeroFlagWaveField';
+import { HeroTwistingFlags } from '@/components/heroes/premium/HeroTwistingFlags';
+import { HeroFlagConstellation } from '@/components/heroes/premium/HeroFlagConstellation';
 import { Hero3DCrystalForm } from '@/components/heroes/demos/Hero3DCrystalForm';
 import { HeroVideoForm } from '@/components/heroes/demos/HeroVideoForm';
 import { HeroGradientForm } from '@/components/heroes/demos/HeroGradientForm';
@@ -33,6 +43,16 @@ import { HeroNorthernLights } from '@/components/heroes/demos/HeroNorthernLights
 import { Button } from '@/components/ui/button';
 
 const heroes = [
+  { id: 'waving-flags', name: 'Waving Flags', component: HeroWavingFlags, hasForm: true },
+  { id: 'floating-flags-3d', name: 'Floating Flags 3D', component: HeroFloatingFlags3D, hasForm: true },
+  { id: 'ripple-flags', name: 'Ripple Flags', component: HeroRippleFlags, hasForm: true },
+  { id: 'spinning-flag-circle', name: 'Spinning Flag Circle', component: HeroSpinningFlagCircle, hasForm: true },
+  { id: 'pulsing-flag-sphere', name: 'Pulsing Flag Sphere', component: HeroPulsingFlagSphere, hasForm: true },
+  { id: 'helix-flags', name: 'Helix Flags', component: HeroHelixFlags, hasForm: true },
+  { id: 'orbital-flags', name: 'Orbital Flags', component: HeroOrbitalFlags, hasForm: true },
+  { id: 'flag-wave-field', name: 'Flag Wave Field', component: HeroFlagWaveField, hasForm: true },
+  { id: 'twisting-flags', name: 'Twisting Flags', component: HeroTwistingFlags, hasForm: true },
+  { id: 'flag-constellation', name: 'Flag Constellation', component: HeroFlagConstellation, hasForm: true },
   { id: 'flag-wave', name: '3D Waving Flags', component: Hero3DFlagWave, hasForm: true },
   { id: 'crystal-flags', name: 'Crystal Flags', component: Hero3DCrystalFlags, hasForm: true },
   { id: 'holographic-flags', name: 'Holographic Flags', component: HeroHolographicFlags, hasForm: true },
