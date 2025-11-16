@@ -221,11 +221,11 @@ export const HeroWavingFlags = () => {
         </div>
         
         {/* Social Share Buttons */}
-        <div className="mt-20 flex justify-center">
+        <div className="mt-32 flex justify-center">
           <SocialShare 
             title={t('hero.title')}
             description={t('hero.subtitle1')}
-            variant="default"
+            variant="minimal"
           />
         </div>
       </div>
