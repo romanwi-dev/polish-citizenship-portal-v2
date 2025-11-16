@@ -78,7 +78,7 @@ export default function ClientOnboardingSection() {
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test"
         >
-          {t('onboarding.cta')}
+          Take Polish Citizenship Test
         </MainCTA>
       }
     >
