@@ -43,7 +43,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <div className="space-y-6 mb-12 md:mb-16 animate-fade-in">
+          <div className="space-y-6 mb-12 md:mb-16 animate-fade-in" key={i18n.language}>
             <p className="text-lg md:text-xl font-medium leading-relaxed max-w-full md:max-w-[95%] mx-auto px-4 md:px-0 text-foreground/90">
               {t('hero.subtitle1')}
             </p>
