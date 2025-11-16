@@ -27,6 +27,23 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
       <html lang={currentLang} />
       <title>{title}</title>
       <meta name="description" content={description} />
+      <meta name="keywords" content={keywords} />
+      
+      {/* Performance: Resource Hints */}
+      <link rel="preconnect" href="https://oogmuakyqadpynnrasnd.supabase.co" />
+      <link rel="preconnect" href="https://www.googletagmanager.com" />
+      <link rel="preconnect" href="https://www.google-analytics.com" />
+      <link rel="dns-prefetch" href="https://oogmuakyqadpynnrasnd.supabase.co" />
+      <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+      <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+      
+      {/* Preload critical assets */}
+      <link
+        rel="preload"
+        as="image"
+        href={`${baseUrl}/og/${currentLang}-og-image.jpg`}
+        type="image/jpeg"
+      />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
