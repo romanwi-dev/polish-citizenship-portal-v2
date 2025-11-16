@@ -169,7 +169,7 @@ const FAQSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           {/* Badge - Above Title */}
-          <div className="flex justify-center mb-12 animate-fade-in">
+          <div className="flex justify-center mb-16 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
               <HelpCircle className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('faq.badge')}</span>
@@ -177,7 +177,7 @@ const FAQSection = () => {
           </div>
           
           {/* Header */}
-          <div className="text-center mb-20">
+          <div className="text-center mb-24">
             <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {t('faq.title')}
