@@ -96,12 +96,8 @@ export default function ClientOnboardingSection() {
             const isLeft = index % 2 === 0;
             
             return (
-            <motion.div
+            <div
               key={step.number}
-              initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.05 }}
-              viewport={{ once: true, margin: "-200px" }}
               className={`mb-16 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''} relative`}
             >
               {/* Mobile timeline dot - positioned in center */}
@@ -115,10 +111,9 @@ export default function ClientOnboardingSection() {
                 {/* Card - adjusted for mobile spacing */}
                 <div className="w-full md:w-[42%] mt-20 md:mt-0">
                   <div 
-                    className="relative h-[520px] animate-fade-in"
+                    className="relative h-[520px]"
                     style={{ 
-                      perspective: '1000px',
-                      animationDelay: `${(index + 1) * 100}ms`
+                      perspective: '1000px'
                     }}
                   >
                 <div
@@ -149,7 +144,7 @@ export default function ClientOnboardingSection() {
                       <h3 className="text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                         {step.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed px-2">
+                      <p className="text-base md:text-sm text-muted-foreground leading-relaxed px-2">
                         {step.description}
                       </p>
                     </div>
@@ -171,7 +166,7 @@ export default function ClientOnboardingSection() {
                         {step.cta} →
                       </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground/60 text-center">Tap card for details</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center">Tap card for details</p>
                   </div>
 
                   {/* Back Side */}
@@ -222,7 +217,7 @@ export default function ClientOnboardingSection() {
                 {/* Empty space on other side */}
                 <div className="hidden md:block md:w-[42%]" />
               </div>
-            </motion.div>
+            </div>
             );
           })}
         </div>
