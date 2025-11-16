@@ -214,12 +214,12 @@ export default function TimelineProcessEnhanced() {
   return (
     <section key={i18n.language} id="timeline" className="relative py-24 overflow-hidden overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-primary/30">
+        <div className="text-center mb-16 animate-fade-in space-y-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
             <Clock className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('timelineProcess.badge')}</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black mb-6 tracking-tight animate-scale-in">
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('timelineProcess.title')}
             </span>
@@ -230,7 +230,7 @@ export default function TimelineProcessEnhanced() {
         </div>
 
         {/* Timeline */}
-        <div className="relative max-w-5xl mx-auto">
+        <div className="relative max-w-5xl mx-auto mt-16">
           {/* Desktop center line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10 hidden md:block" />
           
