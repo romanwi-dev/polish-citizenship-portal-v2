@@ -103,16 +103,16 @@ export const HeroWavingFlags = () => {
         <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
           <div className="space-y-8 md:pt-8 lg:pt-12">
             <div className="space-y-10 text-center lg:text-left">
-              <h1 className="text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight break-words hyphens-auto">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary inline-block">
                   {t('hero.title')}
                 </span>
               </h1>
               <div className="space-y-3" key={t('hero.subtitle1')}>
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
+                <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
                   {t('hero.subtitle1')}
                 </p>
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0">
+                <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
                   {t('hero.subtitle2')}
                 </p>
               </div>
@@ -129,7 +129,7 @@ export const HeroWavingFlags = () => {
             </div>
             <form onSubmit={handleSubmit} className="space-y-1.5">
               <div className="space-y-1.5">
-                <Label htmlFor="name" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="name" className="text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words">
                   {t('contact.nameLabel')} *
                 </Label>
                 <input
@@ -138,12 +138,12 @@ export const HeroWavingFlags = () => {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                  className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="email" className="text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words">
                   {t('contact.emailLabel')} *
                 </Label>
                 <input
@@ -152,24 +152,24 @@ export const HeroWavingFlags = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                  className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="country" className="text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold">
+                <Label htmlFor="country" className="text-xs sm:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words">
                   {t('contact.countryLabel')}
                 </Label>
                 <Select
                   value={formData.country}
                   onValueChange={(value) => setFormData({...formData, country: value})}
                 >
-                  <SelectTrigger className="!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none">
-                    <SelectValue placeholder={t('contact.countrySelect')} />
+                  <SelectTrigger className="!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none">
+                    <SelectValue placeholder={t('contact.countryPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
                     {["USA", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France", "Other"].map((country) => (
-                      <SelectItem key={country} value={country} className="cursor-pointer hover:bg-primary/10">
+                      <SelectItem key={country} value={country} className="cursor-pointer hover:bg-primary/10 text-sm">
                         {country}
                       </SelectItem>
                     ))}
@@ -178,9 +178,9 @@ export const HeroWavingFlags = () => {
               </div>
               <button
                 type="submit"
-                className="w-full h-16 md:h-12 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8"
+                className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md text-sm sm:text-base font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8 break-words hyphens-auto"
               >
-                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('contact.requestInfo')}</span>
+                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
               </button>
             </form>
           </div>
@@ -195,12 +195,12 @@ export const HeroWavingFlags = () => {
             return (
               <div 
                 key={index} 
-                className="glass-card hover-glow p-4 md:p-8 rounded-lg text-center relative min-h-[120px] md:min-h-[160px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                className="glass-card hover-glow p-4 md:p-8 rounded-lg text-center relative min-h-[140px] md:min-h-[180px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
               >
                 <div className="w-full h-full flex flex-col items-center justify-center gap-3">
                   <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
                   <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{feature.stat}</h3>
-                  <p className="text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight">{feature.text}</p>
+                  <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:text-gray-200 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words hyphens-auto px-2">{feature.text}</p>
                 </div>
               </div>
             );
