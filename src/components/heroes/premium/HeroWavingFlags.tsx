@@ -101,7 +101,7 @@ export const HeroWavingFlags = () => {
 
       <div className="container relative z-10 px-4 mx-auto">
         <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
-          <div className="space-y-8 pt-8 md:pt-12">
+          <div className="space-y-8 md:pt-8 lg:pt-12">
             <div className="space-y-6 text-center lg:text-left">
               <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
@@ -118,7 +118,7 @@ export const HeroWavingFlags = () => {
           </div>
 
           <div className="glass-card p-5 md:p-6 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-8">
-            <div className="mb-4 rounded-xl overflow-hidden opacity-70">
+            <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100">
               <img 
                 src={professionalWoman} 
                 alt="Professional consultation" 
