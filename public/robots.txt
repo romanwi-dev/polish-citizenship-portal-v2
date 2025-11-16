@@ -1,8 +1,13 @@
+# Polish Citizenship Portal - Robots Configuration
+# Optimized for multilingual SEO across 8 languages
+
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 0
 
 User-agent: Twitterbot
 Allow: /
@@ -12,5 +17,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
-Sitemap: https://yoursite.lovable.app/sitemap.xml
+# Sitemap
+Sitemap: https://polishcitizenshipportal.com/sitemap.xml
+
+# Disallow admin/internal paths (if any in future)
+# User-agent: *
+# Disallow: /admin/
+# Disallow: /api/internal/

@@ -97,22 +97,58 @@ export function StructuredData() {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
+        "name": t('nav.home'),
         "item": baseUrl
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Polish Citizenship Services",
+        "name": t('nav.services'),
         "item": `${baseUrl}#services`
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Citizenship Timeline",
+        "name": t('nav.timeline'),
         "item": `${baseUrl}#timeline`
       }
     ]
+  };
+
+  const organizationData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Polish Citizenship Portal",
+    "url": baseUrl,
+    "logo": `${baseUrl}/lovable-uploads/logo.png`,
+    "sameAs": [
+      "https://www.facebook.com/polishcitizenshipportal",
+      "https://www.linkedin.com/company/polishcitizenshipportal",
+      "https://twitter.com/polishcitizen"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+48-22-123-4567",
+      "contactType": "customer service",
+      "email": "contact@polishcitizenshipportal.com",
+      "availableLanguage": ["en", "es", "pt", "de", "fr", "he", "ru", "uk"]
+    }
+  };
+
+  const webSiteData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": t('seo.home.title'),
+    "url": baseUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${baseUrl}/search?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "inLanguage": ["en", "es", "pt", "de", "fr", "he", "ru", "uk"]
   };
   
   return (
@@ -125,6 +161,12 @@ export function StructuredData() {
       </script>
       <script type="application/ld+json">
         {JSON.stringify(breadcrumbData)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(organizationData)}
+      </script>
+      <script type="application/ld+json">
+        {JSON.stringify(webSiteData)}
       </script>
     </Helmet>
   );
