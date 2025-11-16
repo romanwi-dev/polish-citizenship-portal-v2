@@ -269,7 +269,7 @@ const ContactFormWeb3 = () => {
                     <Button 
                       type="submit" 
                       size="lg"
-                      className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 h-24 md:h-20 rounded-lg !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/40 dark:hover:!bg-blue-950/40 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all backdrop-blur w-full"
+                      className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 h-24 md:h-20 rounded-lg !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/40 dark:hover:!bg-blue-950/40 !border-2 !border-blue-900/30 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur w-full"
                     >
                       <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
                         Send Your Info
