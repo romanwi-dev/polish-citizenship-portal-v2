@@ -64,7 +64,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: FileText,
     gradient: "from-blue-500 to-cyan-500",
-    image: timeline01
+    image: timeline01,
+    detailedInfo: "We begin with understanding your unique citizenship case through a comprehensive consultation. Our expert team reviews your initial eligibility, discusses your family history, and outlines the complete path ahead.",
+    keyPoints: [
+      "Free initial eligibility assessment",
+      "Expert consultation on your citizenship path",
+      "Clear timeline and process explanation",
+      "Personalized case strategy development"
+    ]
   }, {
     number: "2",
     title: t('timelineProcess.stage2'),
@@ -74,7 +81,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.foundationBuilding'),
     icon: CreditCard,
     gradient: "from-cyan-500 to-blue-500",
-    image: timeline02
+    image: timeline02,
+    detailedInfo: "Take our comprehensive citizenship test to evaluate your eligibility. This assessment analyzes your family history, documents, and eligibility criteria to determine your chances of success.",
+    keyPoints: [
+      "Comprehensive eligibility evaluation",
+      "Family history analysis",
+      "Document requirements assessment",
+      "Detailed eligibility report"
+    ]
   }, {
     number: "3",
     title: t('timelineProcess.stage3'),
@@ -84,7 +98,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: CheckCircle,
     gradient: "from-blue-500 to-indigo-500",
-    image: timeline03
+    image: timeline03,
+    detailedInfo: "We build your complete family tree, tracing your Polish ancestry and identifying the key ancestor through whom you claim citizenship. This genealogical research is crucial for your application.",
+    keyPoints: [
+      "Professional genealogical research",
+      "Multi-generation family tree construction",
+      "Key ancestor identification",
+      "Historical records verification"
+    ]
   }, {
     number: "4",
     title: t('timelineProcess.stage4'),
@@ -94,7 +115,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.foundationBuilding'),
     icon: FileCheck,
     gradient: "from-indigo-500 to-purple-500",
-    image: timeline04
+    image: timeline04,
+    detailedInfo: "Receive transparent pricing for your specific case. We provide clear cost breakdowns with no hidden fees, and present flexible payment options to suit your needs.",
+    keyPoints: [
+      "Transparent pricing structure",
+      "No hidden fees guarantee",
+      "Flexible payment options",
+      "Detailed cost breakdown"
+    ]
   }, {
     number: "5",
     title: t('timelineProcess.stage5'),
@@ -104,7 +132,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: Send,
     gradient: "from-purple-500 to-pink-500",
-    image: timeline05
+    image: timeline05,
+    detailedInfo: "Complete your payment and officially begin your citizenship journey. Gain immediate access to your personal client portal where you can track progress and communicate with our team.",
+    keyPoints: [
+      "Secure payment processing",
+      "Immediate portal access",
+      "Dedicated case manager assignment",
+      "Official process initiation"
+    ]
   }, {
     number: "6",
     title: t('timelineProcess.stage6'),
@@ -114,7 +149,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: FolderSearch,
     gradient: "from-pink-500 to-rose-500",
-    image: timeline06
+    image: timeline06,
+    detailedInfo: "Create your secure account on our advanced client portal. Access all forms, upload documents, track your case status in real-time, and communicate directly with your legal team.",
+    keyPoints: [
+      "Secure portal account creation",
+      "Real-time case tracking",
+      "Document upload system",
+      "Direct team communication"
+    ]
   }, {
     number: "7",
     title: t('timelineProcess.stage7'),
@@ -124,7 +166,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: Archive,
     gradient: "from-rose-500 to-red-500",
-    image: timeline07
+    image: timeline07,
+    detailedInfo: "Complete our comprehensive master data form with all required information. Our AI-assisted system helps ensure accuracy and completeness, reducing errors and processing delays.",
+    keyPoints: [
+      "AI-assisted data entry",
+      "Comprehensive information collection",
+      "Error detection and prevention",
+      "Secure data storage"
+    ]
   }, {
     number: "8",
     title: t('timelineProcess.stage8'),
@@ -134,7 +183,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: Languages,
     gradient: "from-red-500 to-orange-500",
-    image: timeline08
+    image: timeline08,
+    detailedInfo: "Our AI agents automatically generate all required paperwork including your citizenship application and supporting documents. Every document is reviewed by our legal experts before submission.",
+    keyPoints: [
+      "Automated document generation",
+      "Legal expert review",
+      "Compliance verification",
+      "Professional formatting"
+    ]
   }, {
     number: "9",
     title: t('timelineProcess.stage9'),
@@ -144,7 +200,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.foundationBuilding'),
     icon: Upload,
     gradient: "from-orange-500 to-amber-500",
-    image: timeline09
+    image: timeline09,
+    detailedInfo: "Collect and submit local documents from your country of residence including birth certificates, marriage certificates, and other vital records. Our partners worldwide assist with document acquisition.",
+    keyPoints: [
+      "Local document guidance",
+      "Partner network assistance",
+      "Apostille coordination",
+      "Document verification"
+    ]
   }, {
     number: "10",
     title: t('timelineProcess.stage10'),
@@ -154,7 +217,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: Stamp,
     gradient: "from-amber-500 to-yellow-500",
-    image: timeline10
+    image: timeline10,
+    detailedInfo: "We conduct comprehensive searches in Polish and international archives to locate historical documents proving your Polish ancestry. Our network includes access to major archives worldwide.",
+    keyPoints: [
+      "Polish archive searches",
+      "International archive access",
+      "Historical document retrieval",
+      "Expert archival research"
+    ]
   }, {
     number: "11",
     title: t('timelineProcess.stage11'),
@@ -164,7 +234,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: Clock,
     gradient: "from-yellow-500 to-lime-500",
-    image: timeline11
+    image: timeline11,
+    detailedInfo: "Professional certified translation of all non-Polish documents by sworn translators. We ensure all translations meet Polish government requirements and legal standards.",
+    keyPoints: [
+      "Certified sworn translators",
+      "Government-approved translations",
+      "Quality assurance review",
+      "Legal compliance verification"
+    ]
   }, {
     number: "12",
     title: t('timelineProcess.stage12'),
@@ -174,7 +251,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.foundationBuilding'),
     icon: Zap,
     gradient: "from-lime-500 to-green-500",
-    image: timeline12
+    image: timeline12,
+    detailedInfo: "Submit all compiled documents and application materials to the Polish authorities. We ensure everything is properly organized, complete, and meets all legal requirements.",
+    keyPoints: [
+      "Complete document submission",
+      "Professional organization",
+      "Legal compliance check",
+      "Official filing confirmation"
+    ]
   }, {
     number: "13",
     title: t('timelineProcess.stage13'),
@@ -184,7 +268,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.majorMilestone'),
     icon: Award,
     gradient: "from-green-500 to-emerald-500",
-    image: timeline13
+    image: timeline13,
+    detailedInfo: "Receive and respond to the initial letter from Polish authorities. We analyze their requests, prepare appropriate responses, and guide you through any additional requirements.",
+    keyPoints: [
+      "Official response analysis",
+      "Strategic response preparation",
+      "Additional document coordination",
+      "Timeline extension management"
+    ]
   }, {
     number: "14",
     title: t('timelineProcess.stage14'),
@@ -194,7 +285,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.foundationBuilding'),
     icon: Shield,
     gradient: "from-emerald-500 to-teal-500",
-    image: timeline14
+    image: timeline14,
+    detailedInfo: "Implement strategic acceleration schemes (PUSH, NUDGE, SITDOWN) to expedite your case processing. These proven methods help move your application forward more quickly.",
+    keyPoints: [
+      "PUSH scheme implementation",
+      "NUDGE strategy execution",
+      "SITDOWN meeting coordination",
+      "Accelerated processing"
+    ]
   }, {
     number: "15",
     title: t('timelineProcess.stage15'),
@@ -204,7 +302,14 @@ export default function TimelineProcessEnhanced() {
     priority: t('timelineProcess.foundationBuilding'),
     icon: Users,
     gradient: "from-teal-500 to-cyan-500",
-    image: timeline15
+    image: timeline15,
+    detailedInfo: "Receive your official Polish citizenship decision. We guide you through obtaining your Polish passport and accessing extended family services to help your relatives claim citizenship.",
+    keyPoints: [
+      "Official citizenship confirmation",
+      "Polish passport application support",
+      "Extended family services",
+      "EU citizenship benefits activation"
+    ]
   }];
 
   // Auto-flip animation for first card
@@ -336,32 +441,18 @@ export default function TimelineProcessEnhanced() {
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'
                 }}>
-                      {/* Illustration */}
-                      <div className="w-full h-24 mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-                        <Shield className="w-12 h-12 text-primary opacity-80" />
-                      </div>
-                      
                       {/* Content */}
-                      <div className="flex-1 overflow-auto space-y-3">
-                        <h3 className="text-lg font-heading font-bold tracking-tight text-card-foreground">
-                          {step.title} - Details
-                        </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          This stage involves {step.description.toLowerCase()}. Our expert team handles all documentation and communication with Polish authorities to ensure a smooth process.
+                      <div className="flex-1 overflow-auto space-y-4">
+                        <p className="text-sm text-foreground/90 leading-relaxed">
+                          {step.detailedInfo}
                         </p>
-                        <ul className="text-xs text-muted-foreground/80 space-y-1.5 pl-4">
-                          <li className="flex items-start gap-2">
-                            <span className="text-primary mt-0.5">•</span>
-                            <span>Professional guidance every step</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-primary mt-0.5">•</span>
-                            <span>Full documentation support</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-primary mt-0.5">•</span>
-                            <span>Regular status updates</span>
-                          </li>
+                        <ul className="text-xs text-muted-foreground space-y-2">
+                          {step.keyPoints.map((point: string, idx: number) => (
+                            <li key={idx} className="flex items-start gap-2">
+                              <span className="text-primary mt-1">✓</span>
+                              <span>{point}</span>
+                            </li>
+                          ))}
                         </ul>
                       </div>
                       
@@ -373,12 +464,11 @@ export default function TimelineProcessEnhanced() {
                           className="w-full"
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank');
+                            window.open('https://form.typeform.com/to/QDnlB0fk', '_blank');
                           }}
                         >
-                          Start Your Application →
+                          Open Account
                         </Button>
-                        <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center mt-2">Tap card to flip back</p>
                       </div>
                     </div>
                   </div>
