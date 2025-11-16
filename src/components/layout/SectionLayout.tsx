@@ -39,7 +39,7 @@ export const SectionLayout = ({
       <div className="container relative z-10 px-4 mx-auto">
         {/* Badge - Above Title */}
         {badge && (
-          <div className="flex justify-center mb-16 animate-fade-in">
+          <div className="flex justify-center mb-20 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
               {BadgeIcon && <BadgeIcon className="w-4 h-4 text-primary" />}
               <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -50,9 +50,9 @@ export const SectionLayout = ({
         )}
         
         {/* Header: Title + Subtitle */}
-        <div className="max-w-4xl mx-auto text-center mb-20">
+        <div className="max-w-4xl mx-auto text-center mb-28">
           {/* Title */}
-          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight animate-scale-in mb-10">
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight animate-scale-in mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {title}
             </span>
@@ -73,13 +73,13 @@ export const SectionLayout = ({
         </div>
 
         {/* Content (Cards, etc.) */}
-        <div className="mb-20">
+        <div className="mb-28">
           {children}
         </div>
 
         {/* CTA */}
         {cta && (
-          <div className="flex justify-center mt-20">
+          <div className="flex justify-center mt-28">
             {cta}
           </div>
         )}
