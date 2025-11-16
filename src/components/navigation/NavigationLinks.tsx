@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain, FileCode, RefreshCw, PartyPopper, MessageSquare, Palette, Layout, Globe, Type, Target } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -147,34 +147,32 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
                 const { href } = link;
                 
                 return href.startsWith('#') ? (
-                  <DropdownMenuItem key={`${href}-${link.label}`} asChild>
-                    <button
-                      onClick={(e) => {
-                        handleClick(e, href);
-                      }}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-left cursor-pointer"
-                    >
-                      {Icon && <Icon className="h-4 w-4 text-primary" />}
-                      <span className="font-medium">
-                        {link.label}
-                      </span>
-                    </button>
-                  </DropdownMenuItem>
+                  <button
+                    key={`${href}-${link.label}`}
+                    onClick={(e) => {
+                      handleClick(e, href);
+                    }}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-left cursor-pointer"
+                  >
+                    {Icon && <Icon className="h-4 w-4 text-primary" />}
+                    <span className="font-medium">
+                      {link.label}
+                    </span>
+                  </button>
                 ) : (
-                  <DropdownMenuItem key={`${href}-${link.label}`} asChild>
-                    <Link
-                      to={href}
-                      onClick={() => {
-                        onNavigate();
-                      }}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
-                    >
-                      {Icon && <Icon className="h-4 w-4 text-primary" />}
-                      <span className="font-medium">
-                        {link.label}
-                      </span>
-                    </Link>
-                  </DropdownMenuItem>
+                  <Link
+                    key={`${href}-${link.label}`}
+                    to={href}
+                    onClick={() => {
+                      onNavigate();
+                    }}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+                  >
+                    {Icon && <Icon className="h-4 w-4 text-primary" />}
+                    <span className="font-medium">
+                      {link.label}
+                    </span>
+                  </Link>
                 );
               })}
             </div>
