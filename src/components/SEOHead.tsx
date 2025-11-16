@@ -54,7 +54,7 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
           key={`hreflang-${lang}`}
           rel="alternate"
           hrefLang={lang}
-          href={`${baseUrl}${lang === 'en' ? '/' : `/${lang}`}`}
+          href={`${baseUrl}/${lang}`}
         />
       ))}
       
@@ -64,12 +64,12 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
           key={`hreflang-${region}`}
           rel="alternate"
           hrefLang={region}
-          href={baseUrl}
+          href={`${baseUrl}/en`}
         />
       ))}
       
       {/* x-default for users not matching any language */}
-      <link rel="alternate" hrefLang="x-default" href={baseUrl} />
+      <link rel="alternate" hrefLang="x-default" href={`${baseUrl}/en`} />
       
       {/* Canonical URL */}
       <link rel="canonical" href={window.location.href} />
