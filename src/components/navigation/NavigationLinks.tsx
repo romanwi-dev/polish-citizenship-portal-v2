@@ -91,7 +91,8 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
       const sectionId = href.substring(1);
       
       // Always navigate to homepage first if not already there
-      if (window.location.pathname !== '/' && window.location.pathname !== '/en' && window.location.pathname !== '/pl') {
+      const isOnHomepage = ['/', '/en', '/es', '/pt', '/de', '/fr', '/he', '/ru', '/uk'].includes(window.location.pathname);
+      if (!isOnHomepage) {
         navigate('/' + href);
         onNavigate();
       } else {
