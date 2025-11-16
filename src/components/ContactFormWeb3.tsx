@@ -110,19 +110,19 @@ const ContactFormWeb3 = () => {
       </div>
       
       <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 w-fit max-w-[280px] mx-auto md:max-w-none border border-primary/30">
+        <div className="text-center mb-16 space-y-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card w-fit max-w-[280px] mx-auto md:max-w-none border border-primary/30">
             <Mail className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('contact.badge')}</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('contact.title')}
             </span>
           </h2>
         </div>
 
-        <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
+        <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2 mt-16">
           <div 
             className="relative w-full min-h-[900px] md:min-h-[750px] animate-fade-in z-20" 
             style={{ 
