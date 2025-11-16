@@ -214,7 +214,7 @@ export default function TimelineProcessEnhanced() {
   return (
     <section key={i18n.language} id="timeline" className="relative py-24 overflow-hidden overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in space-y-10">
+        <div className="text-center mb-16 animate-fade-in space-y-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
             <Clock className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('timelineProcess.badge')}</span>
