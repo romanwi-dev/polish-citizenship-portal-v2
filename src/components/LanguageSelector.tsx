@@ -9,6 +9,7 @@ import {
 
 const LANGUAGES = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'pl', label: 'Polski', flag: '🇵🇱' },
   { code: 'es', label: 'Español', flag: '🇪🇸' },
   { code: 'pt', label: 'Português', flag: '🇵🇹' },
   { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
