@@ -148,7 +148,7 @@ const Navigation = () => {
                       {/* Citizenship Test Button */}
                       <div className="p-4 pt-3">
                         <Button onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')} className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all" aria-label="Take the Polish Citizenship Test to check your eligibility">
-                          Take Polish Citizenship Test
+                          {t('hero.cta')}
                         </Button>
                       </div>
                     </div>
