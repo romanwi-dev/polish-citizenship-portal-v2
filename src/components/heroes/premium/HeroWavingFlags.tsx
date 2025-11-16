@@ -110,10 +110,10 @@ export const HeroWavingFlags = () => {
                 </span>
               </h1>
               <div className="space-y-3" key={t('hero.subtitle1')}>
-                <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
+                <p className="text-xs sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
                   {t('hero.subtitle1')}
                 </p>
-                <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
+                <p className="text-xs sm:text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
                   {t('hero.subtitle2')}
                 </p>
               </div>
