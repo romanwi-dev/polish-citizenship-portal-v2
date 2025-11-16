@@ -25,6 +25,23 @@ import timeline13 from "@/assets/timeline-13-citizenship.webp";
 import timeline14 from "@/assets/timeline-14-passport.webp";
 import timeline15 from "@/assets/timeline-15-extended.webp";
 
+// Compact icon illustrations
+import step1Icon from "@/assets/timeline-step1.png";
+import step2Icon from "@/assets/timeline-step2.png";
+import step3Icon from "@/assets/timeline-step3.png";
+import step4Icon from "@/assets/timeline-step4.png";
+import step5Icon from "@/assets/timeline-step5.png";
+import step6Icon from "@/assets/timeline-step6.png";
+import step7Icon from "@/assets/timeline-step7.png";
+import step8Icon from "@/assets/timeline-step8.png";
+import step9Icon from "@/assets/timeline-step9.png";
+import step10Icon from "@/assets/timeline-step10.png";
+import step11Icon from "@/assets/timeline-step11.png";
+import step12Icon from "@/assets/timeline-step12.png";
+import step13Icon from "@/assets/timeline-step13.png";
+import step14Icon from "@/assets/timeline-step14.png";
+import step15Icon from "@/assets/timeline-step15.png";
+
 export default function TimelineProcessEnhanced() {
   const { t, i18n } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
