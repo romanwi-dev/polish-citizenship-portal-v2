@@ -1,46 +1,48 @@
-import { useState } from 'react';
-import { Hero3DFlagWave } from '@/components/heroes/premium/Hero3DFlagWave';
-import { Hero3DCrystalFlags } from '@/components/heroes/premium/Hero3DCrystalFlags';
-import { HeroHolographicFlags } from '@/components/heroes/premium/HeroHolographicFlags';
-import { HeroParticleUniverse } from '@/components/heroes/premium/HeroParticleUniverse';
-import { Hero3DGlowingOrbs } from '@/components/heroes/premium/Hero3DGlowingOrbs';
-import { Hero3DRotatingCubes } from '@/components/heroes/premium/Hero3DRotatingCubes';
-import { HeroSpinningTorus } from '@/components/heroes/premium/HeroSpinningTorus';
-import { HeroGeometricSpheres } from '@/components/heroes/premium/HeroGeometricSpheres';
-import { HeroPulsingRings } from '@/components/heroes/premium/HeroPulsingRings';
-import { HeroFloatingPyramids } from '@/components/heroes/premium/HeroFloatingPyramids';
-import { HeroGlassOctahedrons } from '@/components/heroes/premium/HeroGlassOctahedrons';
-import { HeroStarField } from '@/components/heroes/premium/HeroStarField';
-import { HeroEUStarRing } from '@/components/heroes/premium/HeroEUStarRing';
-import { HeroNeonGrid } from '@/components/heroes/premium/HeroNeonGrid';
-import { HeroMetallicSpheres } from '@/components/heroes/premium/HeroMetallicSpheres';
-import { HeroDNAHelix } from '@/components/heroes/premium/HeroDNAHelix';
-import { HeroCylinderField } from '@/components/heroes/premium/HeroCylinderField';
-import { HeroLightBeams } from '@/components/heroes/premium/HeroLightBeams';
-import { HeroSpiralingCubes } from '@/components/heroes/premium/HeroSpiralingCubes';
-import { HeroFloatingDiamonds } from '@/components/heroes/premium/HeroFloatingDiamonds';
-import { HeroVortexParticles } from '@/components/heroes/premium/HeroVortexParticles';
-import { HeroWavingFlags } from '@/components/heroes/premium/HeroWavingFlags';
-import { HeroFloatingFlags3D } from '@/components/heroes/premium/HeroFloatingFlags3D';
-import { HeroRippleFlags } from '@/components/heroes/premium/HeroRippleFlags';
-import { HeroSpinningFlagCircle } from '@/components/heroes/premium/HeroSpinningFlagCircle';
-import { HeroPulsingFlagSphere } from '@/components/heroes/premium/HeroPulsingFlagSphere';
-import { HeroHelixFlags } from '@/components/heroes/premium/HeroHelixFlags';
-import { HeroOrbitalFlags } from '@/components/heroes/premium/HeroOrbitalFlags';
-import { HeroFlagWaveField } from '@/components/heroes/premium/HeroFlagWaveField';
-import { HeroTwistingFlags } from '@/components/heroes/premium/HeroTwistingFlags';
-import { HeroFlagConstellation } from '@/components/heroes/premium/HeroFlagConstellation';
-import { Hero3DCrystalForm } from '@/components/heroes/demos/Hero3DCrystalForm';
-import { HeroVideoForm } from '@/components/heroes/demos/HeroVideoForm';
-import { HeroGradientForm } from '@/components/heroes/demos/HeroGradientForm';
-import { HeroParticlesForm } from '@/components/heroes/demos/HeroParticlesForm';
-import { HeroGlassMorphForm } from '@/components/heroes/demos/HeroGlassMorphForm';
-import { Hero3DGeometric } from '@/components/heroes/demos/Hero3DGeometric';
-import { HeroWaveBackground } from '@/components/heroes/demos/HeroWaveBackground';
-import { HeroHolographic } from '@/components/heroes/demos/HeroHolographic';
-import { HeroCinematicVideo } from '@/components/heroes/demos/HeroCinematicVideo';
-import { HeroNorthernLights } from '@/components/heroes/demos/HeroNorthernLights';
+import { useState, lazy, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
+
+// Lazy load all hero components for better performance
+const Hero3DFlagWave = lazy(() => import('@/components/heroes/premium/Hero3DFlagWave').then(m => ({ default: m.Hero3DFlagWave })));
+const Hero3DCrystalFlags = lazy(() => import('@/components/heroes/premium/Hero3DCrystalFlags').then(m => ({ default: m.Hero3DCrystalFlags })));
+const HeroHolographicFlags = lazy(() => import('@/components/heroes/premium/HeroHolographicFlags').then(m => ({ default: m.HeroHolographicFlags })));
+const HeroParticleUniverse = lazy(() => import('@/components/heroes/premium/HeroParticleUniverse').then(m => ({ default: m.HeroParticleUniverse })));
+const Hero3DGlowingOrbs = lazy(() => import('@/components/heroes/premium/Hero3DGlowingOrbs').then(m => ({ default: m.Hero3DGlowingOrbs })));
+const Hero3DRotatingCubes = lazy(() => import('@/components/heroes/premium/Hero3DRotatingCubes').then(m => ({ default: m.Hero3DRotatingCubes })));
+const HeroSpinningTorus = lazy(() => import('@/components/heroes/premium/HeroSpinningTorus').then(m => ({ default: m.HeroSpinningTorus })));
+const HeroGeometricSpheres = lazy(() => import('@/components/heroes/premium/HeroGeometricSpheres').then(m => ({ default: m.HeroGeometricSpheres })));
+const HeroPulsingRings = lazy(() => import('@/components/heroes/premium/HeroPulsingRings').then(m => ({ default: m.HeroPulsingRings })));
+const HeroFloatingPyramids = lazy(() => import('@/components/heroes/premium/HeroFloatingPyramids').then(m => ({ default: m.HeroFloatingPyramids })));
+const HeroGlassOctahedrons = lazy(() => import('@/components/heroes/premium/HeroGlassOctahedrons').then(m => ({ default: m.HeroGlassOctahedrons })));
+const HeroStarField = lazy(() => import('@/components/heroes/premium/HeroStarField').then(m => ({ default: m.HeroStarField })));
+const HeroEUStarRing = lazy(() => import('@/components/heroes/premium/HeroEUStarRing').then(m => ({ default: m.HeroEUStarRing })));
+const HeroNeonGrid = lazy(() => import('@/components/heroes/premium/HeroNeonGrid').then(m => ({ default: m.HeroNeonGrid })));
+const HeroMetallicSpheres = lazy(() => import('@/components/heroes/premium/HeroMetallicSpheres').then(m => ({ default: m.HeroMetallicSpheres })));
+const HeroDNAHelix = lazy(() => import('@/components/heroes/premium/HeroDNAHelix').then(m => ({ default: m.HeroDNAHelix })));
+const HeroCylinderField = lazy(() => import('@/components/heroes/premium/HeroCylinderField').then(m => ({ default: m.HeroCylinderField })));
+const HeroLightBeams = lazy(() => import('@/components/heroes/premium/HeroLightBeams').then(m => ({ default: m.HeroLightBeams })));
+const HeroSpiralingCubes = lazy(() => import('@/components/heroes/premium/HeroSpiralingCubes').then(m => ({ default: m.HeroSpiralingCubes })));
+const HeroFloatingDiamonds = lazy(() => import('@/components/heroes/premium/HeroFloatingDiamonds').then(m => ({ default: m.HeroFloatingDiamonds })));
+const HeroVortexParticles = lazy(() => import('@/components/heroes/premium/HeroVortexParticles').then(m => ({ default: m.HeroVortexParticles })));
+const HeroWavingFlags = lazy(() => import('@/components/heroes/premium/HeroWavingFlags').then(m => ({ default: m.HeroWavingFlags })));
+const HeroFloatingFlags3D = lazy(() => import('@/components/heroes/premium/HeroFloatingFlags3D').then(m => ({ default: m.HeroFloatingFlags3D })));
+const HeroRippleFlags = lazy(() => import('@/components/heroes/premium/HeroRippleFlags').then(m => ({ default: m.HeroRippleFlags })));
+const HeroSpinningFlagCircle = lazy(() => import('@/components/heroes/premium/HeroSpinningFlagCircle').then(m => ({ default: m.HeroSpinningFlagCircle })));
+const HeroPulsingFlagSphere = lazy(() => import('@/components/heroes/premium/HeroPulsingFlagSphere').then(m => ({ default: m.HeroPulsingFlagSphere })));
+const HeroHelixFlags = lazy(() => import('@/components/heroes/premium/HeroHelixFlags').then(m => ({ default: m.HeroHelixFlags })));
+const HeroOrbitalFlags = lazy(() => import('@/components/heroes/premium/HeroOrbitalFlags').then(m => ({ default: m.HeroOrbitalFlags })));
+const HeroFlagWaveField = lazy(() => import('@/components/heroes/premium/HeroFlagWaveField').then(m => ({ default: m.HeroFlagWaveField })));
+const HeroTwistingFlags = lazy(() => import('@/components/heroes/premium/HeroTwistingFlags').then(m => ({ default: m.HeroTwistingFlags })));
+const HeroFlagConstellation = lazy(() => import('@/components/heroes/premium/HeroFlagConstellation').then(m => ({ default: m.HeroFlagConstellation })));
+const Hero3DCrystalForm = lazy(() => import('@/components/heroes/demos/Hero3DCrystalForm').then(m => ({ default: m.Hero3DCrystalForm })));
+const HeroVideoForm = lazy(() => import('@/components/heroes/demos/HeroVideoForm').then(m => ({ default: m.HeroVideoForm })));
+const HeroGradientForm = lazy(() => import('@/components/heroes/demos/HeroGradientForm').then(m => ({ default: m.HeroGradientForm })));
+const HeroParticlesForm = lazy(() => import('@/components/heroes/demos/HeroParticlesForm').then(m => ({ default: m.HeroParticlesForm })));
+const HeroGlassMorphForm = lazy(() => import('@/components/heroes/demos/HeroGlassMorphForm').then(m => ({ default: m.HeroGlassMorphForm })));
+const Hero3DGeometric = lazy(() => import('@/components/heroes/demos/Hero3DGeometric').then(m => ({ default: m.Hero3DGeometric })));
+const HeroWaveBackground = lazy(() => import('@/components/heroes/demos/HeroWaveBackground').then(m => ({ default: m.HeroWaveBackground })));
+const HeroHolographic = lazy(() => import('@/components/heroes/demos/HeroHolographic').then(m => ({ default: m.HeroHolographic })));
+const HeroCinematicVideo = lazy(() => import('@/components/heroes/demos/HeroCinematicVideo').then(m => ({ default: m.HeroCinematicVideo })));
+const HeroNorthernLights = lazy(() => import('@/components/heroes/demos/HeroNorthernLights').then(m => ({ default: m.HeroNorthernLights })));
 
 const heroes = [
   { id: 'waving-flags', name: 'Waving Flags', component: HeroWavingFlags, hasForm: true },
@@ -145,7 +147,16 @@ const HeroGallery = () => {
 
       {/* Hero Display */}
       <div className="pt-32">
-        <SelectedComponent />
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center bg-background">
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+              <p className="text-lg text-foreground/70">Loading hero section...</p>
+            </div>
+          </div>
+        }>
+          <SelectedComponent />
+        </Suspense>
       </div>
 
       {/* Info Panel */}
