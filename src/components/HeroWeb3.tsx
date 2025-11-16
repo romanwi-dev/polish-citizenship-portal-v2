@@ -43,9 +43,14 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl font-semibold mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-foreground dark:font-medium light:font-bold light:text-foreground/90 min-h-[176px]">
-            {t('hero.description')}
-          </p>
+          <div className="space-y-6 mb-12 md:mb-16 animate-fade-in">
+            <p className="text-lg md:text-xl font-medium leading-relaxed max-w-full md:max-w-[95%] mx-auto px-4 md:px-0 text-foreground/90">
+              {t('hero.subtitle1')}
+            </p>
+            <p className="text-base md:text-lg font-normal leading-relaxed max-w-full md:max-w-[90%] mx-auto px-4 md:px-0 text-foreground/80">
+              {t('hero.subtitle2')}
+            </p>
+          </div>
           
           <MainCTA
             wrapperClassName="flex justify-center animate-fade-in"
