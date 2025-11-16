@@ -87,6 +87,7 @@
     "three": "^0.160.1",
     "vaul": "^0.9.9",
     "vite-bundle-visualizer": "^1.2.1",
+    "vite-plugin-remove-console": "^2.2.0",
     "vitest": "^4.0.7",
     "web-vitals": "^5.1.0",
     "zod": "^3.25.76"

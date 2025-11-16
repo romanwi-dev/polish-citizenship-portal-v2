@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import removeConsole from 'vite-plugin-remove-console';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -11,7 +12,8 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(), 
-    mode === "development" && componentTagger()
+    mode === "development" && componentTagger(),
+    mode === 'production' && removeConsole()
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -49,6 +51,10 @@ export default defineConfig(({ mode }) => ({
           'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
           // Utilities
           'utils-vendor': ['date-fns', 'clsx', 'tailwind-merge', 'class-variance-authority'],
+          // Admin-only heavy dependencies (PDF, AI, Dropbox)
+          'admin-heavy': ['pdf-lib', '@huggingface/transformers', 'react-pdf'],
+          // Translation and i18n
+          'i18n-vendor': ['i18next', 'react-i18next'],
         }
       }
     }

@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 export const measurePerformance = () => {
   if (typeof window === 'undefined') return;
   
@@ -9,7 +11,7 @@ export const measurePerformance = () => {
       const fcp = paintEntries.find(entry => entry.name === 'first-contentful-paint');
       
       // Performance metrics logged in development only
-      console.log('🚀 Performance Metrics:', {
+      logger.log('🚀 Performance Metrics:', {
         'First Contentful Paint (FCP)': fcp ? `${fcp.startTime.toFixed(0)}ms` : 'N/A',
         'DOM Interactive (TTI approx)': `${(perfData.domInteractive - perfData.fetchStart).toFixed(0)}ms`,
         'Page Load Complete': `${(perfData.loadEventEnd - perfData.fetchStart).toFixed(0)}ms`,
