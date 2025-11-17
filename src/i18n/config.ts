@@ -2469,53 +2469,6 @@ const resources = {
         contactUs: 'Kontaktieren Sie Uns'
       },
       
-      timelineProcess: {
-        stage1Details: 'Sie stellen grundlegende persönliche Informationen, Passkopie, Geburtsurkundenkopie, Telefonnummer und wesentliche Familiengeschichte bereit. Wir bereiten Vollmachtsdokumente für erwachsene Antragsteller vor, senden sie per E-Mail zur Unterschrift, und Sie senden die unterschriebenen Vollmachten per FedEx an unser Warschauer Büro zur offiziellen Einreichung.',
-        stage1Points: ['Senden Sie grundlegende Kundeninformationen und Identifikationsdokumente', 'Erhalten Sie professionell vorbereitete Vollmachtsdokumente', 'Unterzeichnen Sie Vollmachten mit entsprechender Notarisation wenn erforderlich', 'Senden Sie unterschriebene Dokumente per FedEx an das Warschauer Büro'],
-        
-        stage2Details: 'Sie vervollständigen das umfassende Master-Formular mit allen erforderlichen Daten. Unser KI-Agent generiert alle Antragsunterlagen einschließlich Staatsbürgerschaftsantrag, Stammbaum-Dokumentation und Begleitformulare. Wir reichen den offiziellen Staatsbürgerschaftsantrag in Ihrem Namen bei den polnischen Behörden ein.',
-        stage2Points: ['Vervollständigen Sie detailliertes Master-Formular im Kundenportal', 'KI generiert Staatsbürgerschaftsantrag und Begleitdokumente', 'Überprüfen und genehmigen Sie alle generierten Dokumentationen', 'Offizielle Antragstellung bei Behörden'],
-        
-        stage3Details: 'Wir klären, welche Dokumente aus Ihrer lokalen Gerichtsbarkeit benötigt werden. Sie sammeln oder beantragen Lebensaufzeichnungen wie Geburts-, Heiratsurkunden, Einbürgerungsakten und Militärunterlagen. Unser Partnernetzwerk kann bei schwer zu beschaffenden Aufzeichnungen helfen, falls erforderlich.',
-        stage3Points: ['Erhalten Sie detaillierte Liste benötigter lokaler Dokumente', 'Beantragen Sie Lebensaufzeichnungen von relevanten Regierungsbüros', 'Arbeiten Sie mit unseren Partneragenten für komplexe Dokumentenbeschaffung', 'Reichen Sie gesammelte Dokumente über sicheres Portal ein'],
-        
-        stage4Details: 'Wir führen umfassende Suchen in polnischen Staatsarchiven und internationalen Archiven nach historischen Aufzeichnungen Ihrer polnischen Vorfahren durch. Dies umfasst Geburts-, Heirats-, Sterbe-, Wohnsitz- und Staatsb ürgerschaftsaufzeichnungen. Unser Partnernetzwerk bearbeitet Archivanfragen effizient.',
-        stage4Points: ['Initiieren Sie Suchen in polnischen Staatsarchiven nach Ahnenaufzeichnungen', 'Beantragen Sie Aufzeichnungen aus internationalen Archiven falls zutreffend', 'Partneragenten verwalten komplexe Archivanfragen', 'Erhalten und überprüfen Sie Authentizität von Archivdokumenten'],
-        
-        stage5Details: 'Alle nicht-polnischen Dokumente erfordern beglaubigte Übersetzung durch polnische vereidigte Übersetzer. Unser KI-Übersetzungsservice liefert erste Übersetzungen zur Überprüfung. Zertifizierte Übersetzer finalisieren offizielle vereidigte Übersetzungen. Unser dedizierter Übersetzungsagent überwacht Qualität und Genauigkeit.',
-        stage5Points: ['KI übersetzt Dokumente vorab zur Überprüfung', 'Zertifizierte polnische vereidigte Übersetzer erstellen offizielle Übersetzungen', 'Qualitätskontrolle durch unabhängige Übersetzungsüberprüfung', 'Alle Übersetzungen für rechtliche Einreichung zertifiziert'],
-        
-        stage6Details: 'Wir reichen alle gesammelten und übersetzten Dokumente bei den Behörden vor Erhalt Ihrer Erstantwort ein, wenn möglich. Dies umfasst lokale Lebensaufzeichnungen, polnische Archivdokumente und detaillierte Familieninformationen zur Unterstützung Ihres Staatsbürgerschaftsanspruchs.',
-        stage6Points: ['Organisieren Sie alle gesammelten Dokumente zur Einreichung', 'Stellen Sie sicher, dass alle Übersetzungen zertifiziert und vollständig sind', 'Reichen Sie umfassendes Dokumentenpaket bei Behörden ein', 'Bestätigen Sie Empfang und ordnungsgemäße Einreichung aller Dokumente'],
-        
-        stage7Details: 'Wir bereiten Anträge für polnische Geburts- und Heiratsurkunden (Zivilakte) von den entsprechenden polnischen Standesämtern vor. Zahlung ist für diese offiziellen Dokumente erforderlich. Unser dedizierter Zivilakten-Agent überwacht den gesamten Prozess vom Antrag bis zum Empfang.',
-        stage7Points: ['Vorbereitung polnischer Zivilaktenanträge', 'Bearbeitung der Zahlung für Zivilaktenanträge', 'Einreichen von Anträgen beim entsprechenden polnischen Standesamt', 'Empfang und Verifizierung polnischer Geburts- und Heiratsurkunden'],
-        
-        stage8Details: 'Wir erhalten die ERSTANTWORT vom Büro des Masowischen Woiwoden im polnischen Staatsbürgerschaftsfall. Wir bewerten die von der Regierung gestellten Anforderungen. Wir senden eine Kopie des Schreibens mit Erklärungen an den Kunden. Wir verlängern die Frist des Staatsbürgerschaftsverfahrens und warten auf zusätzliche Nachweise (Dokumente und Informationen) vom Kunden.',
-        stage8Points: ['Empfang und Überprüfung des ersten Antwortschreibens der Regierung', 'Analyse spezifischer Anforderungen und Forderungen', 'Bereitstellung detaillierter Übersetzung und Erklärung für Kunden', 'Koordination der Sammlung zusätzlich angeforderter Nachweise'],
-        
-        stage9Details: 'Wir bieten dem Kunden unsere Druckschemata an: PUSH, NUDGE, SIT-DOWN. Wir erklären die Schemata detailliert und bearbeiten Zahlungen für die Schemata. Wir führen die Schemata durch strategische Korrespondenz und Treffen mit Behörden in die Praxis um. Wir erhalten die zweite Antwort der Regierung im polnischen Staatsbürgerschaftsfall und führen die Schemata erneut ein.',
-        stage9Points: ['Präsentation der Beschleunigungsschema-Optionen (PUSH, NUDGE, SIT-DOWN)', 'Implementierung der gewählten Strategie mit Behörden', 'Durchführung von Follow-up-Korrespondenz oder persönlichen Treffen', 'Überwachung des Fortschritts und der Regierungsantwort'],
-        
-        stage10Details: 'Bestätigung der polnischen Staatsbürgerschaft erhalten. Wir senden per E-Mail eine Kopie der Entscheidung und fügen sie Ihrem Portal-Konto hinzu. Bei negativer Entscheidung bereiten und reichen wir innerhalb von maximal 2 Wochen Berufung beim Innenministerium ein.',
-        stage10Points: ['Empfang der offiziellen polnischen Staatsbürgerschaftsentscheidung', 'Erhalt übersetzte Kopie der Entscheidung per E-Mail', 'Zugriff auf Entscheidung im Kundenportal-Konto', 'Bei Ablehnung: sofortige Einreichung Berufung beim Innenministerium'],
-        
-        stage11Details: 'Wir bereiten alle Dokumente für Sie vor, um Ihren polnischen Pass zu beantragen, verrechnen die Schlusszahlung, senden alle Dokumente per FedEx, planen den Termin beim polnischen Konsulat, und Sie beantragen den Pass. Prozess abgeschlossen mit Erhalt des polnischen Passes.',
-        stage11Points: ['Empfang vollständiges Dokumentenpaket für Passantrag', 'Bearbeitung der Schlusszahlung für Service', 'Empfang Dokumente per FedEx zur konsularischen Vorlage', 'Beantragung und Erhalt polnischer Pass beim Konsulat'],
-        
-        stage12Details: 'Wir bieten erweiterte Familienrechtsdienstleistungen, um anderen Familienmitgliedern zu helfen, die polnische Staatsbürgerschaft zu erlangen. Mit Ihrer etablierten Staatsbürgerschaft können wir jetzt Ihrem Ehepartner, Kindern und anderen berechtigten Familienmitgliedern helfen, ebenfalls die polnische Staatsbürgerschaft zu erlangen und Ihren erfolgreichen Fall zu nutzen.',
-        stage12Points: ['Berechtigung sprüfung von Familienmitgliedern', 'Vereinfachter Prozess basierend auf Ihrer etablierten Staatsbürgerschaft', 'Unterstützung für Ehepartner und Kinder', 'Erweiterte Unterstützung für zusätzliche berechtigte Verwandte'],
-        
-        stage13Details: 'Sie stellen grundlegende persönliche Informationen, Passkopie, Geburtsurkundenkopie, Telefonnummer und wesentliche Familiengeschichte bereit. Wir bereiten Vollmachtsdokumente für erwachsene Antragsteller vor, senden sie per E-Mail zur Unterschrift, und Sie senden die unterschriebenen Vollmachten per FedEx an unser Warschauer Büro zur offiziellen Einreichung.',
-        stage13Points: ['Senden Sie grundlegende Kundeninformationen und Identifikationsdokumente', 'Erhalten Sie professionell vorbereitete Vollmachtsdokumente', 'Unterzeichnen Sie Vollmachten mit entsprechender Notarisation wenn erforderlich', 'Senden Sie unterschriebene Dokumente per FedEx an das Warschauer Büro'],
-        
-        stage14Details: 'Sie vervollständigen das umfassende Master-Formular mit allen erforderlichen Daten. Unser KI-Agent generiert alle Antragsunterlagen einschließlich Staatsbürgerschaftsantrag, Stammbaum-Dokumentation und Begleitformulare. Wir reichen den offiziellen Staatsbürgerschaftsantrag in Ihrem Namen bei den polnischen Behörden ein.',
-        stage14Points: ['Vervollständigen Sie detailliertes Master-Formular im Kundenportal', 'KI generiert Staatsbürgerschaftsantrag und Begleitdokumente', 'Überprüfen und genehmigen Sie alle generierten Dokumentationen', 'Offizielle Antragstellung bei Behörden'],
-        
-        stage15Details: 'Wir bieten erweiterte Familienrechtsdienstleistungen, um anderen Familienmitgliedern zu helfen, die polnische Staatsbürgerschaft zu erlangen. Mit Ihrer etablierten Staatsbürgerschaft können wir jetzt Ihrem Ehepartner, Kindern und anderen berechtigten Familienmitgliedern helfen, ebenfalls die polnische Staatsbürgerschaft zu erlangen und Ihren erfolgreichen Fall zu nutzen.',
-        stage15Points: ['Berechtigungsprüfung von Familienmitgliedern', 'Vereinfachter Prozess basierend auf Ihrer etablierten Staatsbürgerschaft', 'Unterstützung für Ehepartner und Kinder', 'Erweiterte Unterstützung für zusätzliche berechtigte Verwandte'],
-      },
-      
       // SEO Meta Tags
       seo: {
         home: {
