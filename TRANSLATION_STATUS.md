@@ -21,7 +21,7 @@
 
 ### Onboarding Card Backs (onboarding section)
 **Missing DetailedInfo + KeyPoints for steps 1-5 in:**
-- ❌ Spanish (ES) - 10 keys needed
+- ✅ Spanish (ES) - COMPLETE (10 keys added)
 - ❌ Portuguese (PT) - 10 keys needed
 - ❌ German (DE) - 10 keys needed
 - ❌ French (FR) - 10 keys needed
@@ -29,7 +29,7 @@
 - ❌ Russian (RU) - 10 keys needed
 - ❌ Ukrainian (UK) - 10 keys needed
 
-**Total: 70 onboarding keys needed**
+**Total: 60 onboarding keys remaining**
 
 ## 📊 SUMMARY
 - **Total Missing Keys: 266** (homepage only)

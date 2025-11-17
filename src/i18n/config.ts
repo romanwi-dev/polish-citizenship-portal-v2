@@ -991,18 +991,46 @@ const resources = {
         step2Title: 'Verificación de Elegibilidad',
         step2Desc: 'Realiza nuestra prueba de ciudadanía polaca y completa el árbol genealógico para que podamos determinar tu elegibilidad. Si eres elegible, pasamos a la siguiente etapa.',
         step2Cta: 'Realizar Prueba',
+        step2DetailedInfo: "Primero, complete nuestra prueba de ciudadanía polaca en línea, una evaluación rápida de 5 minutos sobre su historia familiar. Luego, cree su árbol genealógico familiar completo con todos los detalles que conozca. Esta información nos ayuda a determinar su elegibilidad para la ciudadanía polaca. Si califica, procedemos con una evaluación legal completa de su caso.",
+        step2KeyPoints: [
+          "Complete la prueba rápida de ciudadanía polaca en línea (5 minutos)",
+          "Cree un árbol genealógico familiar detallado con información conocida",
+          "Reciba evaluación inmediata de elegibilidad preliminar",
+          "Si es elegible, procedemos con evaluación legal completa"
+        ],
         step3Number: '03',
         step3Title: 'Examen de Documentos',
         step3Desc: 'Examinamos cuidadosamente tus documentos, especialmente los documentos polacos de ancestros y documentos de naturalización/servicio militar.',
         step3Cta: 'Panel',
+        step3DetailedInfo: "Revise cuidadosamente todos sus documentos, centrándose en documentos cruciales de ancestros polacos como certificados de nacimiento, registros de matrimonio o registros del viejo mundo. También examinamos cualquier documentación de naturalización o servicio militar que pueda afectar la transmisión de ciudadanía. Este examen minucioso nos ayuda a comprender la solidez de su caso y qué documentos adicionales podríamos necesitar obtener.",
+        step3KeyPoints: [
+          "Revisión detallada de certificados de nacimiento y matrimonio polacos",
+          "Examen de registros de naturalización y servicio militar",
+          "Evaluación de toda la evidencia documental disponible",
+          "Identificación de lagunas de documentos y estrategia de obtención"
+        ],
         step4Number: '04',
         step4Title: 'Evaluación del Caso',
         step4Desc: 'Analizamos tu caso y proporcionamos una evaluación integral de las posibilidades, cronograma y costos involucrados.',
         step4Cta: 'Programar Consulta',
+        step4DetailedInfo: "Después de examinar sus documentos, programamos una llamada integral de elegibilidad para discutir nuestros hallazgos. Esta llamada revisa su caso en detalle, describe el camino a seguir, discute el cronograma y los costos, y confirma si califica para la ciudadanía polaca. Es su oportunidad de hacer preguntas y comprender cada aspecto del proceso antes de avanzar.",
+        step4KeyPoints: [
+          "Revisión integral de su caso y documentación",
+          "Discusión de hallazgos de elegibilidad y calificación",
+          "Explicación detallada del cronograma, costos y próximos pasos",
+          "Oportunidad de hacer preguntas y aclarar cualquier inquietud"
+        ],
         step5Number: '05',
         step5Title: 'Enviar Documentos',
         step5Desc: 'Envía por FedEx a nuestra oficina en Varsovia todos los documentos requeridos para el procesamiento.',
         step5Cta: 'Panel',
+        step5DetailedInfo: "Una vez que decida proceder, enviará por FedEx todos los documentos requeridos a nuestra oficina de Varsovia para el inicio oficial del caso. Esto incluye formularios de poder notarial firmados, originales o copias certificadas de registros vitales y documentación de respaldo. Al recibirlos, abrimos su archivo de caso oficial, lo registramos en nuestro sistema y comenzamos el proceso formal de solicitud de ciudadanía en su nombre.",
+        step5KeyPoints: [
+          "Envíe por FedEx todos los documentos requeridos a nuestra oficina de Varsovia",
+          "Incluya POA firmado y registros vitales certificados",
+          "Archivo de caso oficial abierto y registrado en el sistema",
+          "Comienza el proceso formal de solicitud de ciudadanía"
+        ],
         step6Number: '06',
         step6Title: 'Procesamiento de Documentos con IA',
         step6Desc: 'Todos los documentos son procesados por nuestro Sistema de Documentos IA para generar Poderes Notariales y la solicitud de ciudadanía polaca.',
