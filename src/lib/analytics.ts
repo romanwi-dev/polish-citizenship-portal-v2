@@ -22,7 +22,14 @@ declare global {
   }
 }
 
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX';
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+
+// Validate GA ID in development
+if (import.meta.env.DEV && !GA_MEASUREMENT_ID) {
+  console.error('⚠️ VITE_GA_MEASUREMENT_ID not configured. Analytics will not work.');
+} else if (!GA_MEASUREMENT_ID) {
+  console.error('❌ Google Analytics ID missing. Add VITE_GA_MEASUREMENT_ID to environment variables.');
+}
 
 /**
  * Initialize Google Analytics 4
