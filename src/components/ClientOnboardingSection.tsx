@@ -23,13 +23,6 @@ export default function ClientOnboardingSection() {
     }));
   };
 
-  // Debug: log translation values
-  console.log('🔍 Onboarding Translation Debug:', {
-    step1DetailedInfo: t('onboarding.step1DetailedInfo'),
-    step1KeyPoints: t('onboarding.step1KeyPoints', { returnObjects: true }),
-    language: t('common.language')
-  });
-
   const onboardingSteps = [
     {
       number: t('onboarding.step1Number'),
