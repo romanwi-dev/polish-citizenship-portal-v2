@@ -52,13 +52,8 @@ export default function TimelineProcessEnhanced() {
     gradient: "from-blue-500 to-cyan-500",
     image: getTimelineImage(1),
     stepIcon: getStepIcon(1),
-    detailedInfo: "The first steps in your Polish citizenship journey include your initial contact with us, taking our comprehensive citizenship test, filling out the family tree form, undergoing eligibility examination, and having an eligibility call with our experts. This foundational phase establishes your case and determines your qualification path.",
-    keyPoints: [
-      "Make first contact via website, email, or WhatsApp",
-      "Complete Polish citizenship eligibility test online",
-      "Fill out detailed family tree with ancestor information",
-      "Receive eligibility examination and consultation call"
-    ]
+    detailedInfo: t('timelineProcess.stage1Details'),
+    keyPoints: t('timelineProcess.stage1Points', { returnObjects: true }) as string[]
   }, {
     number: "2",
     title: t('timelineProcess.stage2'),
