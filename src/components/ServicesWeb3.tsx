@@ -4,6 +4,7 @@ import { MainCTA } from "./ui/main-cta";
 import { useTranslation } from 'react-i18next';
 import { SectionLayout } from "./layout/SectionLayout";
 import { getStaggerDelay } from "@/config/animations";
+import { useDeviceTier } from "@/hooks/useDeviceTier";
 
 const FlippableServiceCard = memo(({
   icon: Icon,
@@ -19,7 +20,9 @@ const FlippableServiceCard = memo(({
   index: number;
 }) => {
   const { t } = useTranslation();
+  const deviceTier = useDeviceTier();
   const [isFlipped, setIsFlipped] = useState(false);
+  const use3DFlip = deviceTier !== 'mobile';
   
   const handleFlip = useCallback(() => {
     setIsFlipped(prev => !prev);
@@ -30,20 +33,23 @@ const FlippableServiceCard = memo(({
       className="h-[280px] cursor-pointer animate-fade-in"
       style={{ 
         animationDelay: `${getStaggerDelay(index)}ms`,
-        perspective: '1000px'
+        perspective: use3DFlip ? '1000px' : 'none'
       }}
       onClick={handleFlip}
     >
       <div 
         className="relative w-full h-full transition-transform duration-700"
         style={{
-          transformStyle: 'preserve-3d',
-          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+          transformStyle: use3DFlip ? 'preserve-3d' : 'flat',
+          transform: use3DFlip && isFlipped ? 'rotateY(180deg)' : 'none'
         }}
       >
         <div 
           className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-          style={{ backfaceVisibility: 'hidden' }}
+          style={{ 
+            backfaceVisibility: use3DFlip ? 'hidden' : 'visible',
+            opacity: !use3DFlip && isFlipped ? 0 : 1
+          }}
         >
           <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
           
@@ -65,10 +71,12 @@ const FlippableServiceCard = memo(({
         </div>
 
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center"
+          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center transition-opacity duration-300"
           style={{ 
-            backfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)'
+            backfaceVisibility: use3DFlip ? 'hidden' : 'visible',
+            transform: use3DFlip ? 'rotateY(180deg)' : 'none',
+            opacity: !use3DFlip && !isFlipped ? 0 : 1,
+            pointerEvents: !use3DFlip && !isFlipped ? 'none' : 'auto'
           }}
         >
           <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-20`} />
