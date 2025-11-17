@@ -4,6 +4,7 @@
 1. **Timeline Component (TimelineProcessEnhanced.tsx)** - All 15 stages use `t()` for detailedInfo and keyPoints
 2. **Onboarding Component (ClientOnboardingSection.tsx)** - All 5 steps use `t()` for detailed info and key points  
 3. **English Translations** - Complete with all DetailedInfo + KeyPoints in config.ts
+4. **Onboarding Translations Complete** - All 8 languages (EN, ES, PT, DE, FR, HE, RU, UK) ✅
 
 ## ⚠️ PENDING - Homepage Card Back Translations
 
@@ -19,32 +20,13 @@
 
 **Total: 196 timeline keys needed**
 
-### Onboarding Card Backs (onboarding section)
-**Missing DetailedInfo + KeyPoints for steps 1-5 in:**
-- ✅ Spanish (ES) - COMPLETE (10 keys added)
-- ❌ Portuguese (PT) - 10 keys needed
-- ❌ German (DE) - 10 keys needed
-- ❌ French (FR) - 10 keys needed
-- ❌ Hebrew (HE) - 10 keys needed
-- ❌ Russian (RU) - 10 keys needed
-- ❌ Ukrainian (UK) - 10 keys needed
-
-**Total: 60 onboarding keys remaining**
-
 ## 📊 SUMMARY
-- **Total Missing Keys: 266** (homepage only)
-- **Languages Affected: 7**
+- **Onboarding Translations: COMPLETE** ✅ (80/80 keys across 8 languages)
+- **Timeline Translations Remaining: 196 keys** (7 languages × 28 keys)
 - **Components Updated: 2/2** (Timeline ✅, Onboarding ✅)
 
-## 🎯 RECOMMENDATION
-Given the scope, suggest either:
-1. **Professional translation service** for accuracy across 7 languages
-2. **Incremental implementation** - one language at a time
-3. **AI-assisted batch translation** with human review for quality
-
-## 🔧 STATUS
-Components properly use translation functions - English works perfectly. 
-Other languages show English fallback for missing keys until translations added.
+## 🎯 NEXT STEPS
+Add timeline DetailedInfo + KeyPoints for stages 2-15 in all 7 remaining languages (Spanish, Portuguese, German, French, Hebrew, Russian, Ukrainian)
 
 ## 📊 SUMMARY
 - **Total Missing Keys: 362**
