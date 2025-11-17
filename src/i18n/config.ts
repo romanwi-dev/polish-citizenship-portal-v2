@@ -987,6 +987,13 @@ const resources = {
         step1Title: 'Primer Contacto',
         step1Desc: 'Contáctanos a través de nuestro sitio web, correo electrónico, WhatsApp o por recomendación para comenzar tu viaje.',
         step1Cta: 'Formulario de Contacto',
+        step1DetailedInfo: "Su viaje de ciudadanía comienza con su primer contacto. Contáctenos a través de nuestro formulario de contacto del sitio web, correo electrónico, WhatsApp o mediante una recomendación personal. Esta conexión inicial inicia la conversación sobre su ascendencia polaca y elegibilidad para la ciudadanía. Proporcionaremos información preliminar y lo guiaremos hacia el siguiente paso en el proceso.",
+        step1KeyPoints: [
+          "Contáctenos a través del sitio web, correo electrónico, WhatsApp o recomendación",
+          "Comparta sus preguntas iniciales sobre la ciudadanía polaca",
+          "Reciba orientación preliminar sobre el proceso",
+          "Conozca los próximos pasos en su viaje"
+        ],
         step2Number: '02',
         step2Title: 'Verificación de Elegibilidad',
         step2Desc: 'Realiza nuestra prueba de ciudadanía polaca y completa el árbol genealógico para que podamos determinar tu elegibilidad. Si eres elegible, pasamos a la siguiente etapa.',
@@ -1390,6 +1397,13 @@ const resources = {
         step1Title: 'Primeiro Contato',
         step1Desc: 'Entre em contato através do nosso site, e-mail, WhatsApp ou por recomendação para iniciar sua jornada.',
         step1Cta: 'Formulário de Contato',
+        step1DetailedInfo: "Sua jornada de cidadania começa com seu primeiro contato. Entre em contato conosco através do formulário de contato do nosso site, e-mail, WhatsApp ou através de uma recomendação pessoal. Esta conexão inicial inicia a conversa sobre sua ancestralidade polonesa e elegibilidade para cidadania. Forneceremos informações preliminares e orientaremos você em direção ao próximo passo no processo.",
+        step1KeyPoints: [
+          "Entre em contato conosco via site, e-mail, WhatsApp ou recomendação",
+          "Compartilhe suas perguntas iniciais sobre cidadania polonesa",
+          "Receba orientação preliminar sobre o processo",
+          "Aprenda sobre os próximos passos em sua jornada"
+        ],
         step2Number: '02',
         step2Title: 'Verificação de Elegibilidade',
         step2Desc: 'Faça nosso teste de cidadania polonesa e preencha a árvore genealógica para que possamos determinar sua elegibilidade. Se elegível, passamos para a próxima etapa.',
