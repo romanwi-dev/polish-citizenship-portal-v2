@@ -1962,6 +1962,13 @@ const resources = {
         step1Title: 'Erster Kontakt',
         step1Desc: 'Kontaktieren Sie uns über unsere Website, E-Mail, WhatsApp oder durch Empfehlung, um Ihre Reise zu beginnen.',
         step1Cta: 'Kontaktformular',
+        step1DetailedInfo: "Ihre Staatsbürgerschaftsreise beginnt mit Ihrem ersten Kontakt. Kontaktieren Sie uns über unser Website-Kontaktformular, E-Mail, WhatsApp oder durch eine persönliche Empfehlung. Diese anfängliche Verbindung startet das Gespräch über Ihre polnische Abstammung und Staatsbürgerschaftsberechtigung. Wir werden vorläufige Informationen bereitstellen und Sie zum nächsten Schritt im Prozess führen.",
+        step1KeyPoints: [
+          "Kontaktieren Sie uns über Website, E-Mail, WhatsApp oder Empfehlung",
+          "Teilen Sie Ihre anfänglichen Fragen zur polnischen Staatsbürgerschaft",
+          "Erhalten Sie vorläufige Anleitung zum Prozess",
+          "Erfahren Sie über die nächsten Schritte in Ihrer Reise"
+        ],
         step2Number: '02',
         step2Title: 'Berechtigungsprüfung',
         step2Desc: 'Machen Sie unseren polnischen Staatsbürgerschaftstest und füllen Sie den Stammbaum aus, damit wir Ihre Berechtigung bestimmen können. Bei Berechtigung geht es zur nächsten Stufe.',
@@ -2563,6 +2570,13 @@ const resources = {
         step1Title: 'Premier Contact',
         step1Desc: 'Contactez-nous via notre site web, e-mail, WhatsApp ou par recommandation pour commencer votre parcours.',
         step1Cta: 'Formulaire de Contact',
+        step1DetailedInfo: "Votre parcours vers la citoyenneté commence avec votre premier contact. Contactez-nous via notre formulaire de contact sur le site web, par e-mail, WhatsApp ou par une recommandation personnelle. Cette connexion initiale lance la conversation sur votre ascendance polonaise et votre éligibilité à la citoyenneté. Nous fournirons des informations préliminaires et vous guiderons vers l'étape suivante du processus.",
+        step1KeyPoints: [
+          "Contactez-nous via le site web, e-mail, WhatsApp ou recommandation",
+          "Partagez vos questions initiales sur la citoyenneté polonaise",
+          "Recevez des conseils préliminaires sur le processus",
+          "Découvrez les prochaines étapes de votre parcours"
+        ],
         step2Number: '02',
         step2Title: 'Vérification d\'Éligibilité',
         step2Desc: 'Passez notre test de citoyenneté polonaise et remplissez l\'arbre généalogique afin que nous puissions déterminer votre éligibilité. Si éligible, nous passons à l\'étape suivante.',
@@ -3076,6 +3090,13 @@ const resources = {
         step1Title: 'קשר ראשוני',
         step1Desc: 'צור קשר דרך האתר שלנו, אימייל, WhatsApp או דרך המלצה כדי להתחיל את המסע שלך.',
         step1Cta: 'טופס יצירת קשר',
+        step1DetailedInfo: "מסע האזרחות שלך מתחיל עם הקשר הראשון שלך. צור איתנו קשר דרך טופס יצירת הקשר באתר, אימייל, WhatsApp או דרך המלצה אישית. חיבור ראשוני זה מתחיל את השיחה על מוצאך הפולני וזכאותך לאזרחות. נספק מידע ראשוני ונדריך אותך לקראת השלב הבא בתהליך.",
+        step1KeyPoints: [
+          "צור איתנו קשר דרך האתר, אימייל, WhatsApp או המלצה",
+          "שתף את השאלות הראשוניות שלך על אזרחות פולנית",
+          "קבל הדרכה ראשונית על התהליך",
+          "למד על השלבים הבאים במסע שלך"
+        ],
         step2Number: '02',
         step2Title: 'בדיקת זכאות',
         step2Desc: 'בצע את מבחן האזרחות הפולנית שלנו ומלא את עץ המשפחה כדי שנוכל לקבוע את הזכאות שלך. אם זכאי, עוברים לשלב הבא.',
@@ -3635,6 +3656,13 @@ const resources = {
         step1Title: 'Первый Контакт',
         step1Desc: 'Свяжитесь с нами через наш сайт, электронную почту, WhatsApp или по рекомендации, чтобы начать свой путь.',
         step1Cta: 'Контактная Форма',
+        step1DetailedInfo: "Ваше путешествие к гражданству начинается с вашего первого контакта. Свяжитесь с нами через контактную форму на нашем сайте, по электронной почте, WhatsApp или через личную рекомендацию. Это первоначальное соединение начинает разговор о вашем польском происхождении и праве на гражданство. Мы предоставим предварительную информацию и направим вас к следующему шагу в процессе.",
+        step1KeyPoints: [
+          "Свяжитесь с нами через сайт, электронную почту, WhatsApp или рекомендацию",
+          "Поделитесь своими первоначальными вопросами о польском гражданстве",
+          "Получите предварительное руководство о процессе",
+          "Узнайте о следующих шагах в вашем путешествии"
+        ],
         step2Number: '02',
         step2Title: 'Проверка Права',
         step2Desc: 'Пройдите наш тест на польское гражданство и заполните генеалогическое древо, чтобы мы могли определить ваше право. Если право есть, переходим к следующему этапу.',
@@ -4243,6 +4271,13 @@ const resources = {
         step1Title: 'Перший Контакт',
         step1Desc: 'Зв\'яжіться з нами через наш сайт, електронну пошту, WhatsApp або за рекомендацією, щоб розпочати вашу подорож.',
         step1Cta: 'Контактна Форма',
+        step1DetailedInfo: "Ваша подорож до громадянства починається з вашого першого контакту. Зв'яжіться з нами через контактну форму на нашому сайті, електронною поштою, WhatsApp або через особисту рекомендацію. Це початкове з'єднання розпочинає розмову про ваше польське походження та право на громадянство. Ми надамо попередню інформацію та спрямуємо вас до наступного кроку в процесі.",
+        step1KeyPoints: [
+          "Зв'яжіться з нами через сайт, електронну пошту, WhatsApp або рекомендацію",
+          "Поділіться своїми початковими питаннями про польське громадянство",
+          "Отримайте попереднє керівництво щодо процесу",
+          "Дізнайтеся про наступні кроки у вашій подорожі"
+        ],
         step2Number: '02',
         step2Title: 'Перевірка Права',
         step2Desc: 'Пройдіть наш тест на польське громадянство та заповніть генеалогічне дерево, щоб ми могли визначити ваше право. Якщо право є, переходимо до наступного етапу.',
