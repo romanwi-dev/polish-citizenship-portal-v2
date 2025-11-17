@@ -98,7 +98,11 @@ const ContactFormWeb3 = () => {
   };
 
   return (
-    <section id="contact" className="pt-32 pb-0 relative overflow-hidden overflow-x-hidden">
+    <section 
+      id="contact" 
+      className="pt-32 pb-0 relative overflow-hidden overflow-x-hidden"
+      aria-labelledby="contact-heading"
+    >
       
       {/* Celebration Background - Stars, Sparkles & Fireworks */}
       <div className="absolute inset-0 z-0">
@@ -116,7 +120,10 @@ const ContactFormWeb3 = () => {
         
         {/* Title */}
         <div className="text-center mb-32">
-          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
+          <h2 
+            id="contact-heading" 
+            className="text-4xl md:text-5xl font-heading font-black tracking-tight"
+          >
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               {t('contact.title')}
             </span>
@@ -153,6 +160,8 @@ const ContactFormWeb3 = () => {
                   <form 
                     onSubmit={handleSubmit} 
                     className="space-y-8"
+                    aria-label="Contact form"
+                    noValidate
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -166,7 +175,9 @@ const ContactFormWeb3 = () => {
                           placeholder={t('contact.namePlaceholder')}
                           required
                           autoComplete="name"
-                          className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                          aria-required="true"
+                          aria-invalid={formData.name.length > 0 && formData.name.trim().length === 0}
+                          className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                         />
                       </div>
                       <div className="space-y-2">
