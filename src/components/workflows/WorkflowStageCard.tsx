@@ -125,7 +125,7 @@ export function WorkflowStageCard({
           {/* Content - Centered */}
           <div className="flex-1 flex flex-col justify-center space-y-4">
             <h3 className={cn(
-              "text-2xl md:text-3xl font-heading font-black tracking-tight bg-clip-text text-transparent text-center",
+              "text-2xl md:text-3xl font-heading font-black tracking-tight bg-clip-text text-transparent text-center line-clamp-2 min-h-[3.5rem]",
               isCompleted 
                 ? "bg-gradient-to-r from-green-500 to-green-600" 
                 : "bg-gradient-to-r from-primary to-secondary"
