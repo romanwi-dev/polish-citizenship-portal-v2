@@ -1070,18 +1070,46 @@ const resources = {
         stage2Desc: 'Evaluación inicial, información completa del proceso con precios, confirmación del cliente y lista de documentos',
         stage2Duration: 'Semana 1-2',
         stage2Action: 'Configuración Inicial y Pago',
+        stage2Details: "Después de determinar su elegibilidad, enviamos por correo electrónico una evaluación inicial y proporcionamos información completa del proceso con precios detallados. Una vez que usted confirma que desea proceder, le enviamos la lista completa de todos los documentos necesarios para su caso específico. Esta es la fase de transparencia donde comprende exactamente qué esperar en términos de costos, cronogramas y requisitos.",
+        stage2Points: [
+          "Recibir evaluación de elegibilidad inicial por correo electrónico",
+          "Recibir información completa del proceso con desglose de precios detallado",
+          "Confirmar su decisión de proceder con el proceso",
+          "Recibir lista personalizada de todos los documentos necesarios"
+        ],
         stage3: 'ANTICIPO Y CUENTA',
         stage3Desc: 'Procesamiento de pago anticipado y apertura de cuenta en el portal del cliente',
         stage3Duration: 'Semana 2',
         stage3Action: 'Configuración Inicial y Pago',
+        stage3Details: "Usted procesa el pago anticipado y creamos su cuenta en nuestro portal de clientes. Esta cuenta segura será su centro central para rastrear el progreso del caso, cargar documentos, ver actualizaciones de estado y comunicarse con nuestro equipo. El pago anticipado inicia oficialmente su caso y desbloquea el acceso completo al portal donde puede monitorear cada paso de su viaje de ciudadanía.",
+        stage3Points: [
+          "Procesar el pago anticipado para iniciar oficialmente su caso",
+          "Recibir acceso seguro a su portal de cliente personal",
+          "Configurar su panel de seguimiento de caso y sistema de gestión de documentos",
+          "Comenzar a cargar documentos iniciales y comunicarse con el equipo"
+        ],
         stage4: 'DETALLES Y PODERES',
         stage4Desc: 'El cliente proporciona detalles básicos, preparación de POA y documentos firmados vía FedEx',
         stage4Duration: 'Semana 2-3',
         stage4Action: 'Detalles y Solicitud',
+        stage4Details: "Usted proporciona detalles básicos (copia de pasaporte, dirección, copia de certificado de nacimiento, número de teléfono, historia familiar esencial). Preparamos los documentos de Poder Notarial (POA) y se los enviamos por correo electrónico para su firma. Una vez firmados, usted nos envía los POA por FedEx a nuestra oficina en Varsovia. Estos POA nos autorizan legalmente a representarlo ante las autoridades polacas durante todo el proceso de ciudadanía.",
+        stage4Points: [
+          "Proporcionar detalles básicos: pasaporte, dirección, certificado de nacimiento, teléfono",
+          "Recibir documentos de Poder Notarial (POA) preparados por nuestro equipo",
+          "Firmar los documentos de POA y devolverlos",
+          "Enviar POA firmados por FedEx a nuestra oficina en Varsovia"
+        ],
         stage5: 'DATOS Y SOLICITUD',
         stage5Desc: 'Completar formulario maestro, generación de documentación con IA y presentación oficial de solicitud de ciudadanía',
         stage5Duration: 'Semana 3-4',
         stage5Action: 'Detalles y Solicitud',
+        stage5Details: "Usted completa el formulario maestro integral en su cuenta que incluye todos los datos necesarios para procesar su caso en su totalidad. Nuestro agente de IA genera todo el papeleo basado en sus datos. Creamos el borrador de solicitud de ciudadanía y lo presentamos oficialmente a las autoridades polacas en su nombre. Usted recibe una copia de la presentación oficial de la solicitud de ciudadanía polaca por correo electrónico y en su cuenta.",
+        stage5Points: [
+          "Completar formulario maestro integral con todos los datos del caso",
+          "El agente de IA genera toda la documentación requerida automáticamente",
+          "Presentación oficial de solicitud de ciudadanía a autoridades polacas",
+          "Recibir confirmación de presentación y copia en su portal"
+        ],
         stage6: 'DOCUMENTOS LOCALES',
         stage6Desc: 'Aclaración de documentos, recopilación de documentos locales y colaboración con socios para la recopilación',
         stage6Duration: 'Semana 4-8',
