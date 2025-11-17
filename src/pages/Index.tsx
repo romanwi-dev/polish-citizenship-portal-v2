@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { GlobalBackground } from "@/components/GlobalBackground";
+import { SkipToContent } from "@/components/ui/skip-to-content";
 import { SEOHead } from "@/components/SEOHead";
 import { StructuredData } from "@/components/StructuredData";
 
@@ -30,6 +31,9 @@ const SectionLoader = () => (
 const Index = () => {
   return (
     <>
+      {/* Skip to content link for accessibility */}
+      <SkipToContent />
+      
       {/* SEO Meta Tags */}
       <SEOHead page="home" />
       <StructuredData />
@@ -42,6 +46,9 @@ const Index = () => {
         
         <div className="relative z-10">
           <Navigation />
+          
+          {/* Main content wrapper with semantic HTML and ARIA */}
+          <main id="main-content" role="main" aria-label="Main content">
           <HeroWavingFlags />
           <AboutSection />
         
@@ -82,6 +89,7 @@ const Index = () => {
         <Suspense fallback={<SectionLoader />}>
           <ScrollToTop />
         </Suspense>
+          </main>
         </div>
       </div>
     </>
