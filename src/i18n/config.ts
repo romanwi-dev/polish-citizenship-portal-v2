@@ -1237,20 +1237,6 @@ const resources = {
   },
   pt: {
     translation: {
-        home: {
-          title: 'Ciudadanía Polaca por Descendencia | Servicios Legales Expertos Desde 2003',
-          description: 'Orientación legal experta para obtener la ciudadanía polaca y pasaportes de la UE a través de ascendencia polaca. Tasa de éxito del 100%, cronograma realista, precios transparentes.',
-          ogTitle: 'Portal de Ciudadanía Polaca | Servicios Legales Impulsados por IA',
-          ogDescription: 'Servicios revolucionarios de ciudadanía polaca impulsados por IA y tecnología Web3. Orientación experta para descendientes polacos y judío-polacos en todo el mundo.',
-          twitterTitle: 'Ciudadanía Polaca por Descendencia - Servicios Legales Expertos',
-          twitterDescription: 'Obtenga la ciudadanía polaca a través de la ascendencia. Tasa de éxito del 100%, precios transparentes, cronograma realista.',
-          keywords: 'ciudadanía polaca, pasaporte UE, ciudadanía por descendencia, ascendencia polaca, servicios legales, ciudadanía polaca por descendencia, pasaporte polaco'
-        }
-      }
-    }
-  },
-  pt: {
-    translation: {
       // Navigation
       next: 'Próximo',
       previous: 'Anterior',
