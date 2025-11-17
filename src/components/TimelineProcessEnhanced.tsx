@@ -65,13 +65,8 @@ export default function TimelineProcessEnhanced() {
     gradient: "from-cyan-500 to-blue-500",
     image: getTimelineImage(2),
     stepIcon: getStepIcon(2),
-    detailedInfo: "We provide you with an initial assessment of your case, send full process information with transparent pricing, receive your confirmation to proceed, and email you the complete list of all needed documents. This stage ensures you understand the costs, timeline, and requirements before moving forward.",
-    keyPoints: [
-      "Receive initial assessment of your citizenship case",
-      "Get full process information with detailed pricing breakdown",
-      "Confirm your decision to proceed with the application",
-      "Receive comprehensive list of required documents"
-    ]
+    detailedInfo: t('timelineProcess.stage2Details'),
+    keyPoints: t('timelineProcess.stage2Points', { returnObjects: true }) as string[]
   }, {
     number: "3",
     title: t('timelineProcess.stage3'),
@@ -83,13 +78,8 @@ export default function TimelineProcessEnhanced() {
     gradient: "from-blue-500 to-indigo-500",
     image: getTimelineImage(3),
     stepIcon: getStepIcon(3),
-    detailedInfo: "Once you decide to proceed, you make the advance payment which secures your case processing slot. Your client portal account is then opened, giving you 24/7 access to track your case, upload documents, view progress, and communicate with your legal team throughout the entire citizenship journey.",
-    keyPoints: [
-      "Make advance payment to secure your case slot",
-      "Client portal account is opened for you",
-      "Gain 24/7 access to track application progress",
-      "Communicate directly with your legal team"
-    ]
+    detailedInfo: t('timelineProcess.stage3Details'),
+    keyPoints: t('timelineProcess.stage3Points', { returnObjects: true }) as string[]
   }, {
     number: "4",
     title: t('timelineProcess.stage4'),
@@ -101,13 +91,8 @@ export default function TimelineProcessEnhanced() {
     gradient: "from-indigo-500 to-purple-500",
     image: getTimelineImage(4),
     stepIcon: getStepIcon(4),
-    detailedInfo: "You provide your basic details including passport copy, current address, birth certificate copy, phone number, and essential family history. We then prepare the official Powers of Attorney documents. Once signed, you send these POA documents by FedEx to our Warsaw office so we can legally represent you with Polish authorities.",
-    keyPoints: [
-      "Provide passport copy, address, and birth certificate",
-      "Share phone number and essential family history details",
-      "We prepare official Power of Attorney documents",
-      "Sign and send POAs by FedEx to Warsaw office"
-    ]
+    detailedInfo: t('timelineProcess.stage4Details'),
+    keyPoints: t('timelineProcess.stage4Points', { returnObjects: true }) as string[]
   }, {
     number: "5",
     title: t('timelineProcess.stage5'),
@@ -119,13 +104,8 @@ export default function TimelineProcessEnhanced() {
     gradient: "from-purple-500 to-pink-500",
     image: getTimelineImage(5),
     stepIcon: getStepIcon(5),
-    detailedInfo: "You fill out the comprehensive MASTER FORM on your portal account which includes all data needed to process your complete citizenship case. Our AI Agent then generates all necessary paperwork automatically. Finally, we draft and submit your official Polish citizenship application to the Masovian Voivoda office in Warsaw.",
-    keyPoints: [
-      "Complete detailed MASTER FORM with all required data",
-      "AI Agent automatically generates all necessary paperwork",
-      "Draft Polish citizenship application is created",
-      "Official application submitted to Polish authorities"
-    ]
+    detailedInfo: t('timelineProcess.stage5Details'),
+    keyPoints: t('timelineProcess.stage5Points', { returnObjects: true }) as string[]
   }, {
     number: "6",
     title: t('timelineProcess.stage6'),
@@ -137,175 +117,125 @@ export default function TimelineProcessEnhanced() {
     gradient: "from-pink-500 to-rose-500",
     image: getTimelineImage(6),
     stepIcon: getStepIcon(6),
-    detailedInfo: "We work with you to clarify exactly which local documents are needed (birth certificates, marriage certificates, naturalization records). You gather these documents from your country, with advice from our local agents. We can connect you to our partner network to help with document collection in various countries worldwide.",
-    keyPoints: [
-      "Document list clarification for your specific case",
-      "Gather local birth and marriage certificates",
-      "Obtain naturalization and military service records if applicable",
-      "Partner assistance available for document collection"
-    ]
+    detailedInfo: t('timelineProcess.stage6Details'),
+    keyPoints: t('timelineProcess.stage6Points', { returnObjects: true }) as string[]
   }, {
     number: "7",
     title: t('timelineProcess.stage7'),
     description: t('timelineProcess.stage7Desc'),
     duration: t('timelineProcess.stage7Duration'),
     keyAction: t('timelineProcess.stage7Action'),
-    priority: t('timelineProcess.majorMilestone'),
+    priority: t('timelineProcess.documentGathering'),
     icon: Archive,
     gradient: "from-rose-500 to-red-500",
     image: getTimelineImage(7),
     stepIcon: getStepIcon(7),
-    detailedInfo: "We conduct comprehensive searches in Polish state archives, international archives where Polish records may be held, and explore family possessions for any old Polish documents. We connect you to our partner network to process each search efficiently. These archival documents provide crucial historical proof of your Polish ancestry.",
-    keyPoints: [
-      "Polish state archives are searched for birth/marriage records",
-      "International archives searched for displaced Polish records",
-      "Family possessions examined for old Polish documents",
-      "Partner network processes all archive searches"
-    ]
+    detailedInfo: t('timelineProcess.stage7Details'),
+    keyPoints: t('timelineProcess.stage7Points', { returnObjects: true }) as string[]
   }, {
     number: "8",
     title: t('timelineProcess.stage8'),
     description: t('timelineProcess.stage8Desc'),
     duration: t('timelineProcess.stage8Duration'),
     keyAction: t('timelineProcess.stage8Action'),
-    priority: t('timelineProcess.majorMilestone'),
+    priority: t('timelineProcess.documentGathering'),
     icon: Languages,
     gradient: "from-red-500 to-orange-500",
     image: getTimelineImage(8),
     stepIcon: getStepIcon(8),
-    detailedInfo: "All collected documents undergo professional translation using our AI translation service on the portal, then certification by a Polish Certified Sworn Translator. Our dedicated translations agent supervises the entire process. Finally, an independent agent double-checks all translations for errors to ensure perfect accuracy before submission.",
-    keyPoints: [
-      "AI-powered translation service processes documents",
-      "Polish Certified Sworn Translator certifies all translations",
-      "Dedicated translations agent supervises the workflow",
-      "Independent quality check ensures translation accuracy"
-    ]
+    detailedInfo: t('timelineProcess.stage8Details'),
+    keyPoints: t('timelineProcess.stage8Points', { returnObjects: true }) as string[]
   }, {
     number: "9",
     title: t('timelineProcess.stage9'),
     description: t('timelineProcess.stage9Desc'),
     duration: t('timelineProcess.stage9Duration'),
     keyAction: t('timelineProcess.stage9Action'),
-    priority: t('timelineProcess.foundationBuilding'),
+    priority: t('timelineProcess.documentGathering'),
     icon: Upload,
     gradient: "from-orange-500 to-amber-500",
     image: getTimelineImage(9),
     stepIcon: getStepIcon(9),
-    detailedInfo: "We submit all your local documents (birth and marriage certificates, naturalization acts, military records) along with Polish archival documents and detailed family information to the Polish authorities. This comprehensive document package is filed BEFORE receiving the initial response from the government whenever possible to expedite your case.",
-    keyPoints: [
-      "Local birth and marriage certificates submitted",
-      "Naturalization and military service records filed",
-      "Polish archival documents included in submission",
-      "Complete family information package delivered to authorities"
-    ]
+    detailedInfo: t('timelineProcess.stage9Details'),
+    keyPoints: t('timelineProcess.stage9Points', { returnObjects: true }) as string[]
   }, {
     number: "10",
     title: t('timelineProcess.stage10'),
     description: t('timelineProcess.stage10Desc'),
     duration: t('timelineProcess.stage10Duration'),
     keyAction: t('timelineProcess.stage10Action'),
-    priority: t('timelineProcess.majorMilestone'),
+    priority: t('timelineProcess.governmentProcessing'),
     icon: Stamp,
     gradient: "from-amber-500 to-yellow-500",
     image: getTimelineImage(10),
     stepIcon: getStepIcon(10),
-    detailedInfo: "We prepare applications for Polish birth and marriage certificates (civil acts) for you and your ancestors from the relevant Polish Civil Registry offices. After charging the payment for this service, our dedicated Civil Acts Agent submits the applications and manages the entire process until we receive the official Polish birth and marriage certificates.",
-    keyPoints: [
-      "Applications prepared for Polish birth/marriage certificates",
-      "Payment charged for civil acts processing service",
-      "Applications submitted to relevant Polish registry offices",
-      "Dedicated agent manages process until certificates received"
-    ]
+    detailedInfo: t('timelineProcess.stage10Details'),
+    keyPoints: t('timelineProcess.stage10Points', { returnObjects: true }) as string[]
   }, {
     number: "11",
     title: t('timelineProcess.stage11'),
     description: t('timelineProcess.stage11Desc'),
     duration: t('timelineProcess.stage11Duration'),
     keyAction: t('timelineProcess.stage11Action'),
-    priority: t('timelineProcess.majorMilestone'),
+    priority: t('timelineProcess.governmentProcessing'),
     icon: Clock,
     gradient: "from-yellow-500 to-lime-500",
     image: getTimelineImage(11),
     stepIcon: getStepIcon(11),
-    detailedInfo: "The initial response letter arrives from the Masovian Voivoda's office regarding your Polish citizenship case. We evaluate the government's demands and requirements, send you a copy with explanations, extend the processing term if needed, and await any additional evidence requested by the authorities before the final decision.",
-    keyPoints: [
-      "Initial response letter received from Polish government",
-      "Government demands are evaluated and explained to you",
-      "Processing term extension requested when necessary",
-      "Additional evidence gathered and submitted as required"
-    ]
+    detailedInfo: t('timelineProcess.stage11Details'),
+    keyPoints: t('timelineProcess.stage11Points', { returnObjects: true }) as string[]
   }, {
     number: "12",
     title: t('timelineProcess.stage12'),
     description: t('timelineProcess.stage12Desc'),
     duration: t('timelineProcess.stage12Duration'),
     keyAction: t('timelineProcess.stage12Action'),
-    priority: t('timelineProcess.foundationBuilding'),
+    priority: t('timelineProcess.governmentProcessing'),
     icon: Zap,
     gradient: "from-lime-500 to-green-500",
     image: getTimelineImage(12),
     stepIcon: getStepIcon(12),
-    detailedInfo: "We offer our special pushing schemes (PUSH, NUDGE, SIT-DOWN) to help accelerate your citizenship case processing. We explain each scheme in detail, collect payment if you choose one, and implement the strategy with Polish authorities. After receiving the 2nd response, we can introduce these schemes again if needed to further expedite the decision.",
-    keyPoints: [
-      "PUSH, NUDGE, and SIT-DOWN acceleration schemes explained",
-      "Payment collected for chosen acceleration strategy",
-      "Pushing schemes implemented with Polish authorities",
-      "Schemes can be reintroduced after 2nd government response"
-    ]
+    detailedInfo: t('timelineProcess.stage12Details'),
+    keyPoints: t('timelineProcess.stage12Points', { returnObjects: true }) as string[]
   }, {
     number: "13",
     title: t('timelineProcess.stage13'),
     description: t('timelineProcess.stage13Desc'),
     duration: t('timelineProcess.stage13Duration'),
     keyAction: t('timelineProcess.stage13Action'),
-    priority: t('timelineProcess.majorMilestone'),
+    priority: t('timelineProcess.finalSteps'),
     icon: Award,
     gradient: "from-green-500 to-emerald-500",
     image: getTimelineImage(13),
     stepIcon: getStepIcon(13),
-    detailedInfo: "The Polish citizenship confirmation decision is officially received from the government, confirming your Polish citizenship status. We email you a copy of this historic decision and add it to your portal account. If the decision is negative, we have just 2 weeks maximum to prepare and file an appeal to the Ministry of Interior.",
-    keyPoints: [
-      "Polish citizenship confirmation decision received",
-      "Copy of decision emailed to you immediately",
-      "Decision document added to your portal account",
-      "Appeal prepared within 2 weeks if decision is negative"
-    ]
+    detailedInfo: t('timelineProcess.stage13Details'),
+    keyPoints: t('timelineProcess.stage13Points', { returnObjects: true }) as string[]
   }, {
     number: "14",
     title: t('timelineProcess.stage14'),
     description: t('timelineProcess.stage14Desc'),
     duration: t('timelineProcess.stage14Duration'),
     keyAction: t('timelineProcess.stage14Action'),
-    priority: t('timelineProcess.foundationBuilding'),
-    icon: Shield,
+    priority: t('timelineProcess.finalSteps'),
+    icon: Book,
     gradient: "from-emerald-500 to-teal-500",
     image: getTimelineImage(14),
     stepIcon: getStepIcon(14),
-    detailedInfo: "We prepare all documents needed for your Polish passport application, charge the final payment for passport services, send all documents by FedEx, and schedule your visit at the Polish Consulate. You then apply for your Polish passport at the consulate, completing your journey to full Polish citizenship with travel document.",
-    keyPoints: [
-      "All Polish passport documents prepared professionally",
-      "Final payment charged for passport application service",
-      "Complete document package sent by FedEx",
-      "Consulate appointment scheduled for passport application"
-    ]
+    detailedInfo: t('timelineProcess.stage14Details'),
+    keyPoints: t('timelineProcess.stage14Points', { returnObjects: true }) as string[]
   }, {
     number: "15",
     title: t('timelineProcess.stage15'),
     description: t('timelineProcess.stage15Desc'),
     duration: t('timelineProcess.stage15Duration'),
     keyAction: t('timelineProcess.stage15Action'),
-    priority: t('timelineProcess.foundationBuilding'),
+    priority: t('timelineProcess.finalSteps'),
     icon: Users,
     gradient: "from-teal-500 to-cyan-500",
     image: getTimelineImage(15),
     stepIcon: getStepIcon(15),
-    detailedInfo: "After successfully obtaining your Polish citizenship, extended family legal services become available. We can help your family members (spouse, children, parents, siblings) pursue their own Polish citizenship claims, leveraging your successful case as a foundation for their applications.",
-    keyPoints: [
-      "Extended family services available after your citizenship",
-      "Spouse and children can apply based on your citizenship",
-      "Family members benefit from your established case",
-      "Ongoing legal support for your extended family"
-    ]
+    detailedInfo: t('timelineProcess.stage15Details'),
+    keyPoints: t('timelineProcess.stage15Points', { returnObjects: true }) as string[]
   }];
 
   // Auto-flip animation for first card
