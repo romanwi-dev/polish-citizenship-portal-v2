@@ -557,14 +557,35 @@ const resources = {
         stage13Desc: 'Polish citizenship confirmation decision received, emailed to client and added to portal',
         stage13Duration: 'Month 18-36',
         stage13Action: 'Final Steps',
+        stage13Details: 'The Polish citizenship confirmation decision is received from authorities. We email you a copy of the decision and add it to your portal account. If the decision is negative, we prepare and file an appeal to the Ministry of Interior (2 weeks maximum to file).',
+        stage13Points: [
+          'Receive official citizenship decision from Polish authorities',
+          'Email certified copy of decision to client',
+          'Upload decision to client portal account',
+          'If negative: Prepare and file appeal within 2 weeks'
+        ],
         stage14: 'POLISH PASSPORT',
         stage14Desc: 'Documents preparation, final payment, FedEx shipping, consulate appointment scheduling',
         stage14Duration: 'Month 20-40',
         stage14Action: 'Final Steps',
+        stage14Details: 'We prepare all documents for you to apply for your Polish passport. We charge the final payment. We send all documents via FedEx. We schedule the visit at the Polish Consulate. You apply for the passport. POLISH PASSPORT OBTAINED - full EU citizenship complete.',
+        stage14Points: [
+          'Prepare complete Polish passport application package',
+          'Process final payment and ship documents via FedEx',
+          'Schedule appointment at nearest Polish Consulate',
+          'Client receives Polish passport and full EU citizenship'
+        ],
         stage15: 'EXTENDED SERVICES',
         stage15Desc: 'Extended family legal services available after successful citizenship confirmation',
         stage15Duration: 'Ongoing',
         stage15Action: 'Final Steps',
+        stage15Details: 'After successfully obtaining your Polish citizenship, we offer extended family legal services. Once you are a Polish citizen, your children, grandchildren, and future descendants automatically qualify for Polish citizenship. We can assist them with their citizenship cases, Polish passports, and all necessary documentation.',
+        stage15Points: [
+          'Citizenship services available for all family members',
+          'Children and descendants automatically qualify after your citizenship',
+          'Polish passport applications for all family members',
+          'Ongoing support and legal services for future generations'
+        ],
         detailedInfoTitle: 'Detailed Information',
         detailedInfoDesc: 'Full timeline content, detailed requirements, and process specifics are available to registered users in their portal account.',
         detailedInfoSignup: 'Sign up to access comprehensive step-by-step guidance',
