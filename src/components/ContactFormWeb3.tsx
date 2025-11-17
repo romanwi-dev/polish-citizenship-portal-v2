@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import { Mail, Zap, Clock, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MainCTA } from "@/components/ui/main-cta";
@@ -33,7 +33,7 @@ const contactSchema = z.object({
   polishDocuments: z.string().min(1, "Please select an option"),
 });
 
-const ContactFormWeb3 = () => {
+const ContactFormWeb3 = memo(() => {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -49,7 +49,7 @@ const ContactFormWeb3 = () => {
     polishDocuments: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
     try {
@@ -67,9 +67,9 @@ const ContactFormWeb3 = () => {
         });
       }
     }
-  };
+  }, [formData, toast]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, selectionStart, selectionEnd } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
@@ -79,13 +79,13 @@ const ContactFormWeb3 = () => {
         e.target.setSelectionRange(selectionStart, selectionEnd);
       }
     });
-  };
+  }, []);
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleSelectChange = useCallback((name: string, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }, []);
 
-  const toggleCardFlip = (index: number) => {
+  const toggleCardFlip = useCallback((index: number) => {
     setFlippedCards(prev => {
       const newSet = new Set(prev);
       if (newSet.has(index)) {
@@ -95,7 +95,7 @@ const ContactFormWeb3 = () => {
       }
       return newSet;
     });
-  };
+  }, []);
 
   return (
     <section 
@@ -408,6 +408,8 @@ const ContactFormWeb3 = () => {
       </div>
     </section>
   );
-};
+});
+
+ContactFormWeb3.displayName = 'ContactFormWeb3';
 
 export default ContactFormWeb3;
