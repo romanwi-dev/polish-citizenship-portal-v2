@@ -296,12 +296,65 @@ export default function TimelineProcessEnhanced() {
           {timelineSteps.map((step, index) => {
             const isLeft = index % 2 === 0;
             
+            const Icon = step.icon;
+            const cardContent = (
+              <>
+                {/* Timeline Dot */}
+                <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
+                  <div className={`w-14 h-14 rounded-full bg-gradient-to-r ${step.gradient} shadow-lg flex items-center justify-center border-4 border-background`}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+
+                {/* Card */}
+                <div className={`w-full md:w-[42%] ${isLeft ? 'md:mr-auto md:pr-12' : 'md:ml-auto md:pl-12'}`}>
+                  <div 
+                    className="glass-card rounded-2xl p-6 shadow-xl border border-border/50 hover:border-primary/50 transition-all duration-300 cursor-pointer h-[380px] flex flex-col"
+                    onClick={() => toggleFlip(step.number)}
+                  >
+                    <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br ${step.gradient} opacity-10 blur-3xl rounded-full`} />
+                    
+                    <div className="relative z-10 flex-1 flex flex-col">
+                      {/* Header */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className={`p-3 rounded-xl bg-gradient-to-br ${step.gradient} shadow-lg`}>
+                          <Icon className="w-6 h-6 text-white" />
+                        </div>
+                        <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
+                          {step.duration}
+                        </span>
+                      </div>
+
+                      {/* Title & Priority */}
+                      <h3 className="text-xl font-heading font-bold mb-2 text-foreground">
+                        {step.title}
+                      </h3>
+                      <p className="text-xs text-primary font-medium mb-3 uppercase tracking-wider">
+                        {step.priority}
+                      </p>
+
+                      {/* Description */}
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
+                        {step.description}
+                      </p>
+
+                      {/* Key Action */}
+                      <div className="mt-auto pt-4 border-t border-border/50">
+                        <p className="text-xs text-muted-foreground mb-1">Key Action:</p>
+                        <p className="text-sm font-medium text-foreground">{step.keyAction}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+
             return prefersReducedMotion ? (
               <div 
                 key={step.number}
                 className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
               >
-...
+                {cardContent}
               </div>
             ) : (
               <motion.div 
@@ -312,7 +365,7 @@ export default function TimelineProcessEnhanced() {
                 viewport={{ once: true, margin: "-200px" }}
                 className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
               >
-...
+                {cardContent}
               </motion.div>
             );
           })}
