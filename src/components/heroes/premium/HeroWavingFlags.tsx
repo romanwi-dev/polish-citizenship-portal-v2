@@ -46,24 +46,7 @@ export const HeroWavingFlags = () => {
                   {t('hero.badge')}
                 </span>
               </div>
-              <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
-                <span className="inline-block" style={{ 
-                  backgroundImage: 'var(--gradient-title)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  color: 'transparent'
-                }} dangerouslySetInnerHTML={{ __html: t('hero.title') }}>
-                </span>
-              </h1>
-              <div className="space-y-3" key={t('hero.subtitle1')}>
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
-                  {t('hero.subtitle1')}
-                </p>
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
-                  {t('hero.subtitle2')}
-                </p>
-              </div>
+              {/* Removed journey title and subtitle section */}
             </div>
           </div>
 
