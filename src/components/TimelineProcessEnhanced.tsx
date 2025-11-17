@@ -8,7 +8,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTranslation } from 'react-i18next';
 import { LazyImage } from "./ui/lazy-image";
-import { useDeviceTier } from "@/hooks/useDeviceTier";
 
 // Lazy-loaded timeline images - dynamically imported when needed
 const getTimelineImage = (step: number): string => {
@@ -35,11 +34,7 @@ export default function TimelineProcessEnhanced() {
   const [firstCardAnimated, setFirstCardAnimated] = useState(false);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
-  const deviceTier = useDeviceTier();
   const [, forceUpdate] = useState({});
-  
-  // Disable motion on mobile for performance
-  const disableMotion = deviceTier === 'mobile' || prefersReducedMotion;
 
   // Force re-render when language changes
   useEffect(() => {
@@ -301,7 +296,7 @@ export default function TimelineProcessEnhanced() {
           {timelineSteps.map((step, index) => {
             const isLeft = index % 2 === 0;
             
-            return disableMotion ? (
+            return prefersReducedMotion ? (
               <div 
                 key={step.number}
                 className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
