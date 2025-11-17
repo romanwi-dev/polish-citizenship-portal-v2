@@ -1410,6 +1410,13 @@ const resources = {
         stage11Desc: 'Recepción de carta del gobierno, evaluación de demandas, extensión de plazo y espera de evidencia adicional',
         stage11Duration: 'Mes 10-18',
         stage11Action: 'Procesamiento Gubernamental',
+        stage11Details: 'Recibimos la RESPUESTA INICIAL de la oficina del Voivoda de Mazovia en el caso de ciudadanía polaca. Evaluamos las demandas planteadas por el gobierno. Enviamos una copia de la carta con explicaciones al cliente. Extendemos el plazo del procedimiento de ciudadanía. Esperamos evidencia adicional (documentos e información) del cliente.',
+        stage11Points: [
+          'Recibir carta de respuesta inicial de las autoridades polacas',
+          'Evaluar demandas gubernamentales y requisitos adicionales',
+          'Enviar carta traducida con explicaciones al cliente',
+          'Extender plazos oficiales y recopilar evidencia adicional'
+        ],
         stage11Details: "Recibimos la RESPUESTA INICIAL de la oficina del Voivoda de Mazovia en el caso de ciudadanía polaca. Evaluamos las demandas planteadas por el gobierno. Enviamos una copia de la carta con explicaciones al cliente. Extendemos el plazo del procedimiento de ciudadanía. Esperamos evidencia adicional (documentos e información) del cliente.",
         stage11Points: [
           "Recibir carta de respuesta inicial de las autoridades polacas",
@@ -1421,6 +1428,13 @@ const resources = {
         stage12Desc: 'Explicación de esquemas PUSH, NUDGE, SIT-DOWN, pagos e implementación',
         stage12Duration: 'Mes 12-24',
         stage12Action: 'Procesamiento Gubernamental',
+        stage12Details: 'Ofrecemos nuestros esquemas de empuje al cliente: PUSH, NUDGE, SIT-DOWN. Explicamos los esquemas en detalle. Procesamos pagos para los esquemas. Introducimos los esquemas en la práctica. Recibimos la segunda respuesta del gobierno. Introducimos los esquemas nuevamente según sea necesario.',
+        stage12Points: [
+          'Presentar opciones de esquemas de empuje (PUSH, NUDGE, SIT-DOWN)',
+          'Explicar detalles del esquema, beneficios y estructura de costos',
+          'Implementar estrategias de empuje seleccionadas con autoridades',
+          'Monitorear respuesta gubernamental y ajustar estrategia'
+        ],
         stage12Details: "Ofrecemos nuestros esquemas de empuje al cliente: PUSH, NUDGE, SIT-DOWN. Explicamos los esquemas en detalle. Procesamos pagos para los esquemas. Introducimos los esquemas en la práctica. Recibimos la segunda respuesta del gobierno. Introducimos los esquemas nuevamente según sea necesario.",
         stage12Points: [
           "Presentar opciones de esquemas de empuje (PUSH, NUDGE, SIT-DOWN)",
@@ -1432,6 +1446,13 @@ const resources = {
         stage13Desc: 'Decisión de confirmación de ciudadanía polaca recibida, enviada por correo al cliente y agregada al portal',
         stage13Duration: 'Mes 18-36',
         stage13Action: 'Pasos Finales',
+        stage13Details: 'Se recibe la decisión de confirmación de ciudadanía polaca de las autoridades. Enviamos por correo electrónico una copia de la decisión y la agregamos a la cuenta del portal del cliente. Si la decisión es negativa, preparamos y presentamos una apelación al Ministerio del Interior (2 semanas máximo para presentar).',
+        stage13Points: [
+          'Recibir decisión oficial de ciudadanía de autoridades polacas',
+          'Enviar copia certificada de la decisión al cliente por correo electrónico',
+          'Cargar decisión a la cuenta del portal del cliente',
+          'Si es negativa: Preparar y presentar apelación dentro de 2 semanas'
+        ],
         stage13Details: "Se recibe la decisión de confirmación de ciudadanía polaca de las autoridades. Enviamos por correo electrónico una copia de la decisión y la agregamos a la cuenta del portal del cliente. Si la decisión es negativa, preparamos y presentamos una apelación al Ministerio del Interior (2 semanas máximo para presentar).",
         stage13Points: [
           "Recibir decisión oficial de ciudadanía de autoridades polacas",
@@ -1443,6 +1464,13 @@ const resources = {
         stage14Desc: 'Preparación de documentos, pago final, envío por FedEx, programación de cita en consulado',
         stage14Duration: 'Mes 20-40',
         stage14Action: 'Pasos Finales',
+        stage14Details: 'Preparamos todos los documentos para que el cliente solicite su pasaporte polaco. Cobramos el pago final. Enviamos todos los documentos por FedEx. Programamos la cita en el Consulado Polaco. El cliente solicita el pasaporte. PASAPORTE POLACO OBTENIDO - ciudadanía de la UE completa.',
+        stage14Points: [
+          'Preparar paquete completo de solicitud de pasaporte polaco',
+          'Procesar pago final y enviar documentos por FedEx',
+          'Programar cita en Consulado Polaco para solicitud',
+          'Cliente recibe pasaporte polaco y adquiere ciudadanía completa de la UE'
+        ],
         stage14Details: "Preparamos todos los documentos para que el cliente solicite su pasaporte polaco. Cobramos el pago final. Enviamos todos los documentos por FedEx. Programamos la cita en el Consulado Polaco. El cliente solicita el pasaporte. PASAPORTE POLACO OBTENIDO - ciudadanía de la UE completa.",
         stage14Points: [
           "Preparar paquete completo de solicitud de pasaporte polaco",
