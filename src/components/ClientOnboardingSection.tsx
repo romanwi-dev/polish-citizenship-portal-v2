@@ -209,7 +209,7 @@ export default function ClientOnboardingSection() {
                           document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                         }}
                       >
-                        Open Account
+                        {t('onboarding.openAccountCta')}
                       </Button>
                     </div>
                   </div>
