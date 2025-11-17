@@ -1,206 +1,147 @@
 import { FileSearch, Scale, Database, Globe, FileCheck, FileText, Send, Clock, CheckCircle, Award, CreditCard, Users } from "lucide-react";
+import { useTranslation } from 'react-i18next';
+import { MainCTA } from '@/components/ui/main-cta';
+import { memo, useCallback } from 'react';
 
-const steps = [
-  {
-    icon: FileSearch,
-    number: "01",
-    title: "Initial Consultation",
-    description: "Comprehensive assessment of your family heritage and Polish ancestry eligibility",
-    duration: "Day 1",
-    phase: "Assessment & Research",
-    gradient: "from-primary to-accent",
-  },
-  {
-    icon: Scale,
-    number: "02",
-    title: "Legal Case Analysis",
-    description: "Expert legal review of your lineage under Polish citizenship law with success probability",
-    duration: "Week 1",
-    phase: "Assessment & Research",
-    gradient: "from-secondary to-primary",
-  },
-  {
-    icon: Database,
-    number: "03",
-    title: "Polish Archives Research",
-    description: "Systematic search through Civil Registry offices and municipal archives in Poland",
-    duration: "Weeks 1-4",
-    phase: "Assessment & Research",
-    gradient: "from-accent to-secondary",
-  },
-  {
-    icon: Globe,
-    number: "04",
-    title: "International Archives Search",
-    description: "Research across Ukrainian, Lithuanian and international archives for historical documents",
-    duration: "Weeks 2-6",
-    phase: "Documentation & Preparation",
-    gradient: "from-primary to-secondary",
-  },
-  {
-    icon: FileCheck,
-    number: "05",
-    title: "Document Authentication",
-    description: "Professional apostille certification and certified Polish translation services",
-    duration: "Weeks 4-8",
-    phase: "Documentation & Preparation",
-    gradient: "from-secondary to-accent",
-  },
-  {
-    icon: FileText,
-    number: "06",
-    title: "Application Preparation",
-    description: "Meticulous preparation and comprehensive legal review of your citizenship application",
-    duration: "Weeks 6-10",
-    phase: "Documentation & Preparation",
-    gradient: "from-accent to-primary",
-  },
-  {
-    icon: Send,
-    number: "07",
-    title: "Government Submission",
-    description: "Official submission to the Masovian Voivoda's Office in Warsaw with tracking setup",
-    duration: "Week 10",
-    phase: "Government Processing",
-    gradient: "from-primary to-accent",
-  },
-  {
-    icon: Clock,
-    number: "08",
-    title: "Government Review Process",
-    description: "Polish authorities review your case while we monitor progress and handle requests",
-    duration: "Months 3-18",
-    phase: "Government Processing",
-    gradient: "from-secondary to-primary",
-  },
-  {
-    icon: CheckCircle,
-    number: "09",
-    title: "Citizenship Confirmation",
-    description: "Receive official citizenship confirmation recognizing you as a Polish and EU citizen",
-    duration: "Month 18",
-    phase: "Citizenship Confirmation",
-    gradient: "from-accent to-secondary",
-  },
-  {
-    icon: Award,
-    number: "10",
-    title: "Polish Civil Documents",
-    description: "Obtain official Polish birth certificate and civil acts for passport application",
-    duration: "Weeks 1-2",
-    phase: "Document & Passport Phase",
-    gradient: "from-primary to-secondary",
-  },
-  {
-    icon: CreditCard,
-    number: "11",
-    title: "EU Passport Application",
-    description: "Complete Polish passport application with consulate appointment and biometric processing",
-    duration: "Weeks 2-6",
-    phase: "Document & Passport Phase",
-    gradient: "from-secondary to-accent",
-  },
-  {
-    icon: Users,
-    number: "12",
-    title: "Family Extension Services",
-    description: "Assistance extending citizenship to spouse and children with ongoing EU rights support",
-    duration: "Ongoing",
-    phase: "Document & Passport Phase",
-    gradient: "from-accent to-primary",
-  },
+const iconMap = {
+  FileSearch,
+  Scale,
+  Database,
+  Globe,
+  FileCheck,
+  FileText,
+  Send,
+  Clock,
+  CheckCircle,
+  Award,
+  CreditCard,
+  Users
+};
+
+const gradients = [
+  "from-primary to-accent",
+  "from-secondary to-primary",
+  "from-accent to-secondary",
+  "from-primary to-secondary",
+  "from-secondary to-accent",
+  "from-accent to-primary",
+  "from-primary to-accent",
+  "from-secondary to-primary",
+  "from-accent to-secondary",
+  "from-primary to-secondary",
+  "from-secondary to-accent",
+  "from-accent to-primary"
 ];
 
-const ProcessWeb3 = () => {
+const icons = [
+  'FileSearch', 'Scale', 'Database', 'Globe', 'FileCheck', 'FileText',
+  'Send', 'Clock', 'CheckCircle', 'Award', 'CreditCard', 'Users'
+];
+
+const ProcessWeb3 = memo(() => {
+  const { t } = useTranslation();
+  
+  const handleCTAClick = useCallback(() => {
+    window.location.hash = 'contact';
+  }, []);
+
+  const steps = Array.from({ length: 12 }, (_, i) => {
+    const stepNum = i + 1;
+    return {
+      icon: iconMap[icons[i] as keyof typeof iconMap],
+      number: t(`process.step${stepNum}Number`),
+      title: t(`process.step${stepNum}Title`),
+      description: t(`process.step${stepNum}Desc`),
+      duration: t(`process.step${stepNum}Duration`),
+      phase: t(`process.step${stepNum}Phase`),
+      gradient: gradients[i]
+    };
+  });
+  
   return (
     <section className="py-32 relative overflow-hidden">
-      
       <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-primary/30">
-            <Scale className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Complete Legal Process</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-heading font-black mb-6 tracking-tight">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Your Journey to Polish Citizenship
-            </span>
+        {/* Section Header */}
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-heading tracking-tight">
+            {t('process.title')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Comprehensive 12-step process. Many steps are processed <span className="text-primary font-semibold">SIMULTANEOUSLY</span> to save time.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal">
+            {t('process.subtitle')}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
+        {/* Process Steps Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {steps.map((step, index) => {
             const Icon = step.icon;
+            
             return (
-              <div 
-                key={index} 
-                className="relative group"
+              <div
+                key={index}
+                className="group relative p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="glass-card p-6 rounded-lg hover-glow relative overflow-hidden h-full">
-                  {/* Background Gradient */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                  
-                  <div className="relative z-10">
-                    {/* Icon & Number */}
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
-                        <Icon className="h-6 w-6 text-white" />
-                      </div>
-                      <div className={`text-4xl font-bold bg-gradient-to-br ${step.gradient} bg-clip-text text-transparent opacity-40`}>
-                        {step.number}
-                      </div>
+                {/* Gradient Background on Hover */}
+                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${step.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+                
+                <div className="relative z-10">
+                  {/* Icon & Number */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className={`p-4 rounded-xl bg-gradient-to-br ${step.gradient} shadow-lg`}>
+                      <Icon className="w-8 h-8 text-primary-foreground" />
                     </div>
-
-                    {/* Content */}
-                    <h3 className="text-xl font-bold mb-2 text-foreground uppercase tracking-wide">
-                      {step.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                      {step.description}
-                    </p>
-
-                    {/* Meta Info */}
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Duration</span>
-                        <span className="font-semibold">{step.duration}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground">Phase</span>
-                        <span className="font-semibold text-primary">{step.phase}</span>
-                      </div>
-                    </div>
+                    <span className="text-5xl font-bold text-primary/10 font-heading">
+                      {step.number}
+                    </span>
                   </div>
 
-                  {/* Corner Glow */}
-                  <div className={`absolute -top-10 -right-10 w-24 h-24 bg-gradient-to-br ${step.gradient} opacity-20 blur-3xl rounded-full group-hover:opacity-30 transition-opacity`} />
+                  {/* Content */}
+                  <h3 className="text-xl font-bold mb-3 font-heading tracking-tight text-foreground">
+                    {step.title}
+                  </h3>
+                  
+                  <p className="text-muted-foreground mb-6 leading-relaxed font-body">
+                    {step.description}
+                  </p>
+
+                  {/* Meta Information */}
+                  <div className="flex flex-wrap gap-3">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
+                      <Clock className="w-4 h-4 text-primary" />
+                      <span className="text-xs font-medium text-primary">{step.duration}</span>
+                    </div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20">
+                      <span className="text-xs font-medium text-accent">{step.phase}</span>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Hover Effect Border */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-primary/0 to-accent/0 group-hover:from-primary/20 group-hover:via-accent/20 group-hover:to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </div>
             );
           })}
         </div>
 
         {/* CTA Section */}
-        <div className="mt-20 text-center">
-          <div className="glass-card p-12 rounded-3xl max-w-3xl mx-auto relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10" />
-            <div className="relative z-10">
-              <h3 className="text-3xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  True Realistic Processing Time
-                </span>
-              </h3>
-              <div className="text-6xl font-bold text-foreground mb-2">1.5 - 4 years</div>
-              <p className="text-muted-foreground text-lg">Professional guidance through complex legal requirements</p>
-            </div>
+        <div className="mt-20 text-center animate-fade-in">
+          <div className="inline-block px-8 py-4 rounded-2xl bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 backdrop-blur-sm border border-border/50 mb-8">
+            <p className="text-lg font-semibold text-foreground">
+              {t('process.totalTimeline')}
+            </p>
+          </div>
+          <div>
+            <MainCTA onClick={handleCTAClick} ariaLabel="Start your citizenship journey">
+              {t('process.ctaText')}
+            </MainCTA>
           </div>
         </div>
       </div>
     </section>
   );
-};
+});
+
+ProcessWeb3.displayName = 'ProcessWeb3';
 
 export default ProcessWeb3;

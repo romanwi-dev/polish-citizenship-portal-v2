@@ -12,6 +12,7 @@ import AIAnalysisSection from "@/components/AIAnalysisSection";
 
 // Lazy load below-the-fold components for better code splitting
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
+const ProcessWeb3 = lazy(() => import("@/components/ProcessWeb3"));
 const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
 const TimelineProcessEnhanced = lazy(() => import("@/components/TimelineProcessEnhanced"));
 const PricingSection = lazy(() => import("@/components/PricingSection"));
@@ -56,6 +57,10 @@ const Index = () => {
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoader />}>
+          <ProcessWeb3 />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
