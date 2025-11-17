@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { GlobalBackground } from "@/components/GlobalBackground";
+import { UnifiedBackground } from "@/components/UnifiedBackground";
 import { SEOHead } from "@/components/SEOHead";
 import { StructuredData } from "@/components/StructuredData";
 
@@ -9,10 +9,6 @@ import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 
-// SkylineDivider removed - no images
-
-// Skyline images removed - using pure design system now
-
 // Lazy load below-the-fold components for better code splitting
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
 const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
@@ -21,10 +17,6 @@ const PricingSection = lazy(() => import("@/components/PricingSection"));
 const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const FAQSection = lazy(() => import("@/components/FAQSection"));
 const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
-// Preload LandmarkUnity only when user scrolls near it
-const LandmarkUnity = lazy(() => 
-  import("@/components/heroes/LandmarkUnity").then(m => ({ default: m.LandmarkUnity }))
-);
 const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
 const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
 
@@ -45,8 +37,8 @@ const Index = () => {
       {/* No image preloading needed - using design system only */}
       
       <div className="min-h-screen overflow-x-hidden relative">
-        {/* Global Background - Adapts to theme */}
-        <GlobalBackground />
+        {/* Unified Background - Single 3D Canvas for optimal performance */}
+        <UnifiedBackground />
         
         <div className="relative z-10">
           <Navigation />

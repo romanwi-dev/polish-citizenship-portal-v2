@@ -1,6 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { CheckCircle2, Circle } from "lucide-react";
 import { DocumentItem } from "../RequiredDocumentsSection";
+import { getStaggerDelay } from "@/config/animations";
 
 interface TimelineDocumentsProps {
   title: string;
@@ -65,7 +66,7 @@ export function TimelineDocuments({
               <div
                 key={doc.id}
                 className="relative animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+                style={{ animationDelay: `${getStaggerDelay(index)}ms` }}
               >
                 {/* Timeline dot */}
                 <div className="absolute -left-7 top-1/2 -translate-y-1/2">

@@ -1,77 +1,12 @@
-import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef, useState } from 'react';
-import * as THREE from 'three';
 import { useTranslation } from 'react-i18next';
 import { MainCTA } from '@/components/ui/main-cta';
 import { Button } from '@/components/ui/button';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Award, Users, Trophy, Sparkles } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
 import { SocialShare } from '@/components/social/SocialShare';
-
-// Smooth Flowing Particles Background Animation
-function SmoothFlowingParticles() {
-  const groupRef = useRef<THREE.Group>(null);
-  const prefersReducedMotion = useReducedMotion();
-
-  useFrame((state) => {
-    if (prefersReducedMotion || !groupRef.current) return;
-    
-    const time = state.clock.elapsedTime;
-    
-    groupRef.current.children.forEach((child, i) => {
-      const mesh = child as THREE.Mesh;
-      mesh.position.x += Math.sin(time * 0.1 + i) * 0.002;
-      mesh.position.y += Math.cos(time * 0.15 + i) * 0.002;
-      mesh.rotation.z = time * 0.05 + i;
-      
-      // Gentle opacity pulse
-      const material = mesh.material as THREE.MeshStandardMaterial;
-      material.opacity = 0.3 + Math.sin(time * 0.5 + i) * 0.2;
-    });
-  });
-
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 5, 5]} intensity={0.3} />
-      
-      <group ref={groupRef}>
-        {/* Flowing particles in organic pattern */}
-        {[...Array(40)].map((_, i) => {
-          const angle = (i / 40) * Math.PI * 2;
-          const radius = 2 + (i % 3) * 2;
-          const height = Math.sin(i * 0.5) * 3;
-          
-          return (
-            <mesh
-              key={i}
-              position={[
-                Math.cos(angle) * radius,
-                Math.sin(angle) * radius + height,
-                -5 + (i % 5)
-              ]}
-            >
-              <sphereGeometry args={[0.1, 16, 16]} />
-              <meshStandardMaterial 
-                color={i % 2 === 0 ? "#3b82f6" : "#8b5cf6"}
-                emissive={i % 2 === 0 ? "#3b82f6" : "#8b5cf6"}
-                emissiveIntensity={0.4}
-                transparent
-                opacity={0.4}
-                metalness={0.8}
-                roughness={0.2}
-              />
-            </mesh>
-          );
-        })}
-      </group>
-    </>
-  );
-}
-
 export const HeroWavingFlags = () => {
   const { t, i18n } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -98,12 +33,7 @@ export const HeroWavingFlags = () => {
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-48 lg:pb-24">
-      <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-          <SmoothFlowingParticles />
-        </Canvas>
-      </div>
-
+      {/* Removed duplicate 3D Canvas - now using unified background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
 
       <div className="container relative z-10 px-4 mx-auto">

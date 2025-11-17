@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { MainCTA } from '@/components/ui/main-cta';
 import { useTranslation } from 'react-i18next';
 import { SectionLayout } from './layout/SectionLayout';
+import { getStaggerDelay } from '@/config/animations';
 
 export default function TestimonialsSection() {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ export default function TestimonialsSection() {
             <Card 
               key={index} 
               className="group hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:scale-105 hover:-translate-y-1 animate-fade-in w-full max-w-[480px] md:max-w-[380px] mx-auto"
-              style={{ animationDelay: `${index * 100}ms` }}
+              style={{ animationDelay: `${getStaggerDelay(index)}ms` }}
             >
               <CardContent className="p-6">
                 {/* Quote Icon */}
