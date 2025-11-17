@@ -44,11 +44,14 @@ const FlippableServiceCard = memo(({
           transform: use3DFlip && isFlipped ? 'rotateY(180deg)' : 'none'
         }}
       >
+        {/* Front Side */}
         <div 
           className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-1"
           style={{ 
             backfaceVisibility: use3DFlip ? 'hidden' : 'visible',
-            opacity: !use3DFlip && isFlipped ? 0 : 1
+            opacity: !use3DFlip && isFlipped ? 0 : 1,
+            transition: !use3DFlip ? 'opacity 0.3s ease-in-out' : undefined,
+            pointerEvents: !use3DFlip && isFlipped ? 'none' : 'auto'
           }}
         >
           <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
@@ -70,12 +73,14 @@ const FlippableServiceCard = memo(({
           <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${color} opacity-20 blur-2xl rounded-full`} />
         </div>
 
+        {/* Back Side */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center transition-opacity duration-300"
+          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center"
           style={{ 
             backfaceVisibility: use3DFlip ? 'hidden' : 'visible',
             transform: use3DFlip ? 'rotateY(180deg)' : 'none',
             opacity: !use3DFlip && !isFlipped ? 0 : 1,
+            transition: !use3DFlip ? 'opacity 0.3s ease-in-out' : undefined,
             pointerEvents: !use3DFlip && !isFlipped ? 'none' : 'auto'
           }}
         >
