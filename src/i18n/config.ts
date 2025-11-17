@@ -1066,6 +1066,8 @@ const resources = {
         stage1Desc: 'Primer contacto, prueba de ciudadanía, árbol genealógico, examen de elegibilidad y llamada de elegibilidad',
         stage1Duration: 'Semana 1',
         stage1Action: 'Configuración Inicial y Pago',
+        stage1Details: 'Los primeros pasos en su viaje de ciudadanía polaca incluyen su contacto inicial con nosotros, realizar nuestra prueba integral de ciudadanía, completar el formulario de árbol genealógico, someterse al examen de elegibilidad y tener una llamada de elegibilidad con nuestros expertos. Esta fase fundamental establece su caso y determina su camino de calificación.',
+        stage1Points: ['Hacer primer contacto a través del sitio web, correo electrónico o WhatsApp', 'Completar la prueba de elegibilidad de ciudadanía polaca en línea', 'Completar el árbol genealógico detallado con información de ancestros', 'Recibir examen de elegibilidad y llamada de consulta'],
         stage2: 'TÉRMINOS Y PRECIOS',
         stage2Desc: 'Evaluación inicial, información completa del proceso con precios, confirmación del cliente y lista de documentos',
         stage2Duration: 'Semana 1-2',
