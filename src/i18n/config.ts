@@ -2080,104 +2080,6 @@ const resources = {
           stage15Desc: 'Serviços jurídicos para família estendida disponíveis após confirmação bem-sucedida de cidadania',
           stage15Duration: 'Contínuo',
           stage15Action: 'Etapas Finais',
-          stage2Details: 'Após concluir o exame de elegibilidade, enviamos uma avaliação inicial detalhada por e-mail explicando se você se qualifica para a cidadania polonesa. Se elegível, enviamos informações abrangentes sobre o processo completo, incluindo preços transparentes para todas as etapas. Uma vez que você confirme sua decisão de prosseguir, fornecemos uma lista completa de todos os documentos que você precisará reunir. Esta etapa garante clareza completa sobre custos, prazos e requisitos antes de você se comprometer.',
-          stage2Points: [
-            'Receber avaliação inicial detalhada por e-mail',
-            'Revisar informações completas do processo com detalhamento de preços',
-            'Confirmar sua decisão de prosseguir com o pedido de cidadania',
-            'Receber lista completa de todos os documentos necessários'
-          ],
-          stage3Details: 'Uma vez que você decida seguir em frente, processamos seu pagamento adiantado para iniciar o caso oficialmente. Simultaneamente, criamos sua conta personalizada em nosso portal do cliente, onde você acompanhará o progresso, carregará documentos, se comunicará com nossa equipe e acessará todos os materiais do caso. Este portal se torna seu centro central para toda a jornada de cidadania.',
-          stage3Points: [
-            'Processar pagamento adiantado para abrir oficialmente seu caso',
-            'Criar conta personalizada no portal do cliente para gerenciamento de caso',
-            'Acessar painel seguro para acompanhar todo o progresso e marcos',
-            'Plataforma centralizada para documentos, comunicação e atualizações'
-          ],
-          stage4Details: 'Você fornece detalhes essenciais, incluindo cópia do passaporte, endereço atual, cópia da certidão de nascimento, número de telefone e informações importantes sobre a história familiar. Nossa equipe jurídica prepara documentos oficiais de Procuração que nos autorizam a representá-lo na Polônia. Você assina esses documentos de procuração e os envia via FedEx para nosso escritório em Varsóvia. Uma vez recebidos, podemos agir legalmente em seu nome durante todo o processo de cidadania.',
-          stage4Points: [
-            'Enviar detalhes básicos: passaporte, endereço, certidão de nascimento, telefone, história familiar',
-            'Receber documentos de Procuração preparados profissionalmente',
-            'Assinar documentos de procuração e enviar via FedEx para o escritório de Varsóvia',
-            'Autorização legal estabelecida para representação completa na Polônia'
-          ],
-          stage5Details: 'Você preenche nosso Formulário Mestre abrangente em sua conta do portal com todos os dados necessários para processar seu caso completamente. Nosso Agente de IA então gera toda a documentação necessária, incluindo o rascunho oficial do pedido de cidadania polonesa. Após sua revisão e nossa verificação de qualidade, submetemos o pedido de cidadania às autoridades polonesas e enviamos uma cópia para seus registros, também adicionando-a à sua conta do portal.',
-          stage5Points: [
-            'Preencher Formulário Mestre abrangente com todos os dados do caso necessários',
-            'Agente de IA gera toda a documentação incluindo pedido de cidadania',
-            'Revisar e aprovar documentos gerados antes da submissão',
-            'Pedido oficial submetido, cópia enviada e adicionada ao portal'
-          ],
-          stage6Details: 'Esclarecemos quais documentos específicos são necessários de suas jurisdições locais (certidões de nascimento, certidões de casamento, registros de naturalização, documentos militares, etc.). Você reúne esses documentos do seu país de residência ou nascimento. Quando necessário, conectamos você com nossos parceiros locais confiáveis que podem ajudar a coletar documentos em seu nome. Todos os documentos são então examinados para selecionar quais precisam de tradução e arquivamento.',
-          stage6Points: [
-            'Esclarecimento de documentos locais específicos necessários para seu caso',
-            'Reunir documentos: certidões de nascimento/casamento, naturalização, registros militares',
-            'Assistência de parceiros disponível para documentos difíceis de obter',
-            'Exame especializado e seleção de documentos para tradução/arquivamento'
-          ],
-          stage7Details: 'Realizamos buscas minuciosas em arquivos poloneses por documentos históricos de seus ancestrais. Isso inclui buscas em arquivos internacionais em vários países onde registros poloneses podem existir. Também ajudamos a buscar em posses familiares por quaisquer documentos poloneses antigos. Nossos parceiros confiáveis processam cada solicitação de busca. Documentos de arquivo recuperados são examinados e os mais relevantes são selecionados para possível tradução e arquivamento em seu caso.',
-          stage7Points: [
-            'Busca abrangente em arquivos poloneses por documentos de ancestrais',
-            'Buscas em arquivos internacionais em países relevantes',
-            'Buscas em posses familiares por documentos poloneses antigos',
-            'Recuperação de documentos assistida por parceiros e seleção especializada para arquivamento'
-          ],
-          stage8Details: 'Todos os documentos em idiomas estrangeiros passam por nosso serviço de tradução com IA para tradução inicial. Essas traduções com IA são então revisadas e certificadas por Tradutores Juramentados Poloneses Certificados que adicionam seus carimbos e assinaturas oficiais. Nosso Agente de Traduções dedicado supervisiona todo o processo. Um agente de controle de qualidade independente verifica novamente todas as traduções para erros antes de serem arquivadas com as autoridades.',
-          stage8Points: [
-            'Tradução inicial com IA de todos os documentos estrangeiros',
-            'Certificação por Tradutores Juramentados Poloneses Certificados com carimbos oficiais',
-            'Agente de Traduções dedicado supervisiona todo o fluxo de trabalho',
-            'Verificação dupla independente para erros antes do arquivamento com autoridades'
-          ],
-          stage9Details: 'Uma vez que as traduções estejam completas, submetemos todos os documentos locais (certidões de nascimento, certidões de casamento, atos de naturalização, registros militares) e documentos de arquivo poloneses às autoridades. Também submetemos informações detalhadas sobre a família que apoiam sua reivindicação de cidadania. Nosso objetivo é arquivar tudo possível antes de receber a resposta inicial das autoridades, fortalecendo seu caso desde o início.',
-          stage9Points: [
-            'Submeter todos os registros vitais locais traduzidos às autoridades polonesas',
-            'Arquivar documentos de arquivo poloneses e informações de história familiar',
-            'Submissão estratégica antes da resposta inicial do governo quando possível',
-            'Documentação abrangente do caso para fortalecer o pedido de cidadania'
-          ],
-          stage10Details: 'Preparamos pedidos de certidões de nascimento e casamento polonesas (atos civis) dos cartórios de registro civil poloneses relevantes. O pagamento por esses atos civis é cobrado separadamente. Nosso Agente de Atos Civis dedicado supervisiona todo este processo. Submetemos pedidos aos cartórios de registro poloneses apropriados e recebemos as certidões polonesas de nascimento e casamento, que são documentos críticos para sua confirmação de cidadania.',
-          stage10Points: [
-            'Preparação profissional de pedidos de atos civis poloneses',
-            'Pagamento separado cobrado por certidões de nascimento/casamento polonesas',
-            'Agente de Atos Civis dedicado gerencia todo o processo de submissão',
-            'Receber certidões oficiais polonesas de nascimento e casamento dos cartórios'
-          ],
-          stage11Details: 'Após aproximadamente 10-18 meses, recebemos a carta de resposta inicial do escritório do Voivoda da Masóvia sobre seu caso de cidadania polonesa. Avaliamos as demandas e requisitos apresentados pelo governo. Uma cópia desta carta com explicações detalhadas é enviada a você. Solicitamos uma extensão do prazo do procedimento para permitir tempo suficiente para reunir evidências adicionais. Então aguardamos e ajudamos você a fornecer quaisquer documentos ou informações adicionais solicitados pelas autoridades.',
-          stage11Points: [
-            'Receber resposta inicial do governo após 10-18 meses de processamento',
-            'Avaliação especializada das demandas e requisitos do governo',
-            'Cópia da carta oficial enviada com explicações abrangentes',
-            'Extensão de prazo solicitada e coleta de evidências adicionais coordenada'
-          ],
-          stage12Details: 'Oferecemos esquemas de aceleração especializados: PUSH (acompanhamentos escritos), NUDGE (ligações telefônicas para autoridades) e SIT-DOWN (reuniões presenciais com oficiais). Explicamos cada esquema em detalhes para que você entenda os benefícios e investimento. Uma vez que você seleciona e paga por um esquema, implementamos estrategicamente. Após nossa intervenção, tipicamente recebemos uma segunda resposta do governo. Se necessário, podemos implementar os esquemas novamente para manter o momentum.',
-          stage12Points: [
-            'Esquema PUSH: Acompanhamentos escritos estratégicos com autoridades',
-            'Esquema NUDGE: Ligações telefônicas diretas para oficiais responsáveis',
-            'Esquema SIT-DOWN: Reuniões presenciais em escritórios do governo',
-            'Implementação flexível e reimplementação conforme necessário para resultados'
-          ],
-          stage13Details: 'A decisão de confirmação de cidadania polonesa é recebida das autoridades. Enviamos uma cópia da decisão por e-mail e a adicionamos à sua conta do portal. Se a decisão for negativa, preparamos e arquivamos um recurso ao Ministério do Interior (máximo de 2 semanas para arquivar).',
-          stage13Points: [
-            'Receber decisão oficial de cidadania das autoridades polonesas',
-            'Enviar cópia certificada da decisão por e-mail ao cliente',
-            'Fazer upload da decisão para a conta do portal do cliente',
-            'Se negativa: Preparar e arquivar recurso dentro de 2 semanas'
-          ],
-          stage14Details: 'Preparamos todos os documentos para você solicitar seu passaporte polonês. Cobramos o pagamento final. Enviamos todos os documentos via FedEx. Agendamos a visita ao Consulado Polonês. Você solicita o passaporte. PASSAPORTE POLONÊS OBTIDO - cidadania completa da UE.',
-          stage14Points: [
-            'Preparar pacote completo de pedido de passaporte polonês',
-            'Processar pagamento final e enviar documentos via FedEx',
-            'Agendar consulta no Consulado Polonês mais próximo',
-            'Cliente recebe passaporte polonês e cidadania completa da UE'
-          ],
-          stage15Details: 'Após obter com sucesso sua cidadania polonesa, oferecemos serviços jurídicos para família estendida. Uma vez que você é um cidadão polonês, seus filhos, netos e futuros descendentes automaticamente se qualificam para a cidadania polonesa. Podemos ajudá-los com seus casos de cidadania, passaportes poloneses e toda a documentação necessária.',
-          stage15Points: [
-            'Serviços de cidadania disponíveis para todos os membros da família',
-            'Filhos e descendentes automaticamente se qualificam após sua cidadania',
-            'Pedidos de passaporte polonês para todos os membros da família',
-            'Apoio contínuo e serviços jurídicos para gerações futuras'
-          ],
           detailedInfoTitle: 'Informações Detalhadas',
           detailedInfoDesc: 'Conteúdo completo do cronograma, requisitos detalhados e especificações do processo estão disponíveis para usuários registrados em suas contas do portal.',
           detailedInfoSignup: 'Cadastre-se para acessar orientação passo a passo abrangente',
@@ -2684,24 +2586,6 @@ const resources = {
         stage2Desc: 'Erstbewertung, vollständige Prozessinformationen mit Preisen, Kundenbestätigung und Dokumentenliste',
         stage2Duration: 'Woche 1-2',
         stage2Action: 'Ersteinrichtung & Zahlung',
-        stage2Details: 'Nach Abschluss der Berechtigungsprüfung senden wir Ihnen eine detaillierte Erstbewertung per E-Mail, die erklärt, ob Sie für die polnische Staatsbürgerschaft qualifiziert sind. Wenn berechtigt, senden wir umfassende Informationen über den gesamten Prozess einschließlich transparenter Preise für alle Phasen. Sobald Sie Ihre Entscheidung zum Fortfahren bestätigen, stellen wir eine vollständige Liste aller Dokumente bereit, die Sie sammeln müssen. Diese Phase gewährleistet vollständige Klarheit über Kosten, Zeitplan und Anforderungen, bevor Sie sich verpflichten.',
-        stage2Points: [
-          'Detaillierte Erstbewertung per E-Mail erhalten',
-          'Vollständige Prozessinformationen mit kompletter Preisaufschlüsselung prüfen',
-          'Entscheidung zum Fortfahren mit Staatsbürgerschaftsantrag bestätigen',
-          'Umfassende Liste aller erforderlichen Dokumente erhalten'
-        ],
-        stage3: 'VORAUSZAHLUNG & KONTO',
-        stage3Desc: 'Vorauszahlungsabwicklung und Eröffnung des Kundenportal-Kontos',
-        stage3Duration: 'Woche 2',
-        stage3Action: 'Ersteinrichtung & Zahlung',
-        stage3Details: 'Sobald Sie sich zum Fortfahren entscheiden, verarbeiten wir Ihre Vorauszahlung, um den Fall offiziell zu initiieren. Gleichzeitig erstellen wir Ihr personalisiertes Konto auf unserem Kundenportal, wo Sie den Fortschritt verfolgen, Dokumente hochladen, mit unserem Team kommunizieren und auf alle Fallmaterialien zugreifen können. Dieses Portal wird Ihr zentraler Knotenpunkt für die gesamte Staatsbürgerschaftsreise.',
-        stage3Points: [
-          'Vorauszahlung verarbeiten, um Ihren Fall offiziell zu eröffnen',
-          'Personalisiertes Kundenportal-Konto für Fallmanagement erstellen',
-          'Zugriff auf sicheres Dashboard zur Verfolgung aller Fortschritte und Meilensteine',
-          'Zentralisierte Plattform für Dokumente, Kommunikation und Updates'
-        ],
         stage4: 'DETAILS & VOLLMACHTEN',
         stage4Desc: 'Kunde stellt grundlegende Details bereit, Vollmachtsvorbereitung und unterschriebene Dokumente per FedEx',
         stage4Duration: 'Woche 2-3',
@@ -3412,104 +3296,6 @@ const resources = {
         stage15Desc: 'Services juridiques familiaux étendus disponibles après confirmation réussie de la citoyenneté',
         stage15Duration: 'En cours',
         stage15Action: 'Étapes Finales',
-        stage2Details: "Après avoir terminé l'examen d'éligibilité, nous vous envoyons par e-mail une évaluation initiale détaillée expliquant si vous êtes qualifié pour la citoyenneté polonaise. Si vous êtes éligible, nous envoyons des informations complètes sur le processus complet, y compris une tarification transparente pour toutes les étapes. Une fois que vous confirmez votre décision de procéder, nous fournissons une liste complète de tous les documents que vous devrez rassembler. Cette étape garantit une clarté complète sur les coûts, les délais et les exigences avant votre engagement.",
-        stage2Points: [
-          'Recevoir une évaluation initiale détaillée par e-mail',
-          'Examiner les informations complètes du processus avec ventilation des prix',
-          'Confirmer votre décision de procéder à la demande de citoyenneté',
-          'Recevoir une liste complète de tous les documents requis'
-        ],
-        stage3Details: "Une fois que vous décidez d'aller de l'avant, nous traitons votre paiement d'avance pour initier officiellement le dossier. Simultanément, nous créons votre compte personnalisé sur notre portail client où vous suivrez les progrès, téléchargerez des documents, communiquerez avec notre équipe et accéderez à tous les documents du dossier. Ce portail devient votre centre central pour tout le parcours de citoyenneté.",
-        stage3Points: [
-          "Traiter le paiement d'avance pour ouvrir officiellement votre dossier",
-          'Créer un compte portail client personnalisé pour la gestion du dossier',
-          'Accéder au tableau de bord sécurisé pour suivre tous les progrès et jalons',
-          'Plateforme centralisée pour documents, communication et mises à jour'
-        ],
-        stage4Details: "Vous fournissez des détails essentiels, notamment une copie de passeport, adresse actuelle, copie de l'acte de naissance, numéro de téléphone et informations clés sur l'histoire familiale. Notre équipe juridique prépare des documents officiels de Procuration qui nous autorisent à vous représenter en Pologne. Vous signez ces documents de procuration et les envoyez par FedEx à notre bureau de Varsovie. Une fois reçus, nous pouvons agir légalement en votre nom tout au long du processus de citoyenneté.",
-        stage4Points: [
-          "Soumettre les détails de base: passeport, adresse, acte de naissance, téléphone, histoire familiale",
-          'Recevoir des documents de Procuration préparés professionnellement',
-          'Signer les documents de procuration et envoyer par FedEx au bureau de Varsovie',
-          'Autorisation légale établie pour représentation complète en Pologne'
-        ],
-        stage5Details: "Vous remplissez notre Formulaire Maître complet sur votre compte portail avec toutes les données nécessaires pour traiter votre dossier en totalité. Notre Agent IA génère ensuite toute la paperasse nécessaire, y compris le projet officiel de demande de citoyenneté polonaise. Après votre examen et notre vérification de qualité, nous soumettons la demande de citoyenneté aux autorités polonaises et vous envoyons une copie pour vos dossiers, en l'ajoutant également à votre compte portail.",
-        stage5Points: [
-          'Remplir le Formulaire Maître complet avec toutes les données de dossier nécessaires',
-          "L'Agent IA génère toute la paperasse y compris la demande de citoyenneté",
-          'Examiner et approuver les documents générés avant la soumission',
-          'Demande officielle soumise, copie envoyée et ajoutée au portail'
-        ],
-        stage6Details: "Nous clarifions quels documents spécifiques sont nécessaires de vos juridictions locales (actes de naissance, actes de mariage, dossiers de naturalisation, documents militaires, etc.). Vous rassemblez ces documents de votre pays de résidence ou de naissance. Lorsque nécessaire, nous vous connectons avec nos partenaires locaux de confiance qui peuvent aider à collecter des documents en votre nom. Tous les documents sont ensuite examinés pour sélectionner lesquels nécessitent une traduction et un dépôt.",
-        stage6Points: [
-          'Clarification des documents locaux spécifiques nécessaires pour votre dossier',
-          'Rassembler les documents: actes de naissance/mariage, naturalisation, dossiers militaires',
-          'Assistance de partenaires disponible pour documents difficiles à obtenir',
-          'Examen expert et sélection de documents pour traduction/dépôt'
-        ],
-        stage7Details: "Nous effectuons des recherches approfondies dans les archives polonaises pour les documents historiques de vos ancêtres. Cela comprend des recherches dans les archives internationales dans plusieurs pays où des dossiers polonais peuvent exister. Nous aidons également à chercher dans les possessions familiales pour d'anciens documents polonais. Nos partenaires de confiance traitent chaque demande de recherche. Les documents d'archives récupérés sont examinés et les plus pertinents sont sélectionnés pour une éventuelle traduction et un dépôt dans votre dossier.",
-        stage7Points: [
-          "Recherche complète dans les archives polonaises pour les documents d'ancêtres",
-          'Recherches dans les archives internationales dans les pays pertinents',
-          "Recherches dans les possessions familiales pour d'anciens documents polonais",
-          "Récupération de documents assistée par partenaires et sélection experte pour dépôt"
-        ],
-        stage8Details: "Tous les documents en langue étrangère passent par notre service de traduction IA pour la traduction initiale. Ces traductions IA sont ensuite examinées et certifiées par des Traducteurs Assermentés Polonais Certifiés qui ajoutent leurs cachets et signatures officiels. Notre Agent de Traduction dédié supervise l'ensemble du processus. Un agent de contrôle qualité indépendant vérifie toutes les traductions pour les erreurs avant qu'elles ne soient déposées auprès des autorités.",
-        stage8Points: [
-          'Traduction initiale alimentée par IA de tous les documents étrangers',
-          'Certification par Traducteurs Assermentés Polonais Certifiés avec cachets officiels',
-          "Agent de Traduction dédié supervise l'ensemble du flux de travail",
-          'Vérification indépendante pour erreurs avant dépôt auprès des autorités'
-        ],
-        stage9Details: "Une fois les traductions terminées, nous soumettons tous les documents locaux (actes de naissance, actes de mariage, actes de naturalisation, dossiers militaires) et documents d'archives polonaises aux autorités. Nous soumettons également des informations familiales détaillées qui soutiennent votre demande de citoyenneté. Notre objectif est de déposer tout ce qui est possible avant de recevoir la réponse initiale des autorités, renforçant votre dossier dès le début.",
-        stage9Points: [
-          'Soumettre tous les dossiers vitaux locaux traduits aux autorités polonaises',
-          "Déposer les documents d'archives polonaises et informations d'histoire familiale",
-          'Soumission stratégique avant la réponse initiale du gouvernement lorsque possible',
-          'Documentation complète du dossier pour renforcer la demande de citoyenneté'
-        ],
-        stage10Details: "Nous préparons les demandes d'actes de naissance et de mariage polonais (actes civils) des bureaux d'état civil polonais pertinents. Le paiement pour ces actes civils est facturé séparément. Notre Agent d'Actes Civils dédié supervise l'ensemble de ce processus. Nous soumettons les demandes aux bureaux d'état civil polonais appropriés et recevons les actes de naissance et de mariage polonais, qui sont des documents critiques pour votre confirmation de citoyenneté.",
-        stage10Points: [
-          "Préparation professionnelle des demandes d'actes civils polonais",
-          'Paiement séparé facturé pour les actes de naissance/mariage polonais',
-          "Agent d'Actes Civils dédié gère l'ensemble du processus de soumission",
-          "Recevoir les actes de naissance et de mariage polonais officiels des bureaux d'état civil"
-        ],
-        stage11Details: "Après environ 10-18 mois, nous recevons la lettre de réponse initiale du bureau du Voïvode de Mazovie concernant votre dossier de citoyenneté polonaise. Nous évaluons les demandes et exigences présentées par le gouvernement. Une copie de cette lettre avec des explications détaillées vous est envoyée. Nous demandons une prolongation du délai de procédure pour permettre suffisamment de temps pour rassembler des preuves supplémentaires. Ensuite, nous attendons et vous aidons à fournir tous documents ou informations supplémentaires demandés par les autorités.",
-        stage11Points: [
-          'Recevoir la réponse initiale du gouvernement après 10-18 mois de traitement',
-          'Évaluation experte des demandes et exigences du gouvernement',
-          'Copie de la lettre officielle envoyée avec explications complètes',
-          "Prolongation de délai demandée et collecte de preuves supplémentaires coordonnée"
-        ],
-        stage12Details: "Nous offrons des schémas d'accélération spécialisés: PUSH (suivis écrits), NUDGE (appels téléphoniques aux autorités) et SIT-DOWN (réunions en personne avec des officiels). Nous expliquons chaque schéma en détail pour que vous compreniez les avantages et l'investissement. Une fois que vous sélectionnez et payez pour un schéma, nous le mettons en œuvre stratégiquement. Après notre intervention, nous recevons généralement une deuxième réponse du gouvernement. Si nécessaire, nous pouvons mettre en œuvre les schémas à nouveau pour maintenir l'élan.",
-        stage12Points: [
-          'Schéma PUSH: Suivis écrits stratégiques avec les autorités',
-          'Schéma NUDGE: Appels téléphoniques directs aux officiels responsables',
-          'Schéma SIT-DOWN: Réunions en personne dans les bureaux gouvernementaux',
-          'Mise en œuvre flexible et remise en œuvre selon les besoins pour des résultats'
-        ],
-        stage13Details: "La décision de confirmation de citoyenneté polonaise est reçue des autorités. Nous vous envoyons une copie de la décision par e-mail et l'ajoutons à votre compte portail. Si la décision est négative, nous préparons et déposons un appel au Ministère de l'Intérieur (maximum 2 semaines pour déposer).",
-        stage13Points: [
-          'Recevoir la décision officielle de citoyenneté des autorités polonaises',
-          'Envoyer une copie certifiée de la décision par e-mail au client',
-          'Télécharger la décision sur le compte portail du client',
-          'Si négative: Préparer et déposer un appel dans les 2 semaines'
-        ],
-        stage14Details: 'Nous préparons tous les documents pour que vous puissiez demander votre passeport polonais. Nous facturons le paiement final. Nous envoyons tous les documents par FedEx. Nous planifions la visite au Consulat Polonais. Vous demandez le passeport. PASSEPORT POLONAIS OBTENU - citoyenneté UE complète.',
-        stage14Points: [
-          'Préparer le dossier complet de demande de passeport polonais',
-          'Traiter le paiement final et expédier les documents par FedEx',
-          'Planifier un rendez-vous au Consulat Polonais le plus proche',
-          'Le client reçoit le passeport polonais et la citoyenneté UE complète'
-        ],
-        stage15Details: "Après avoir obtenu avec succès votre citoyenneté polonaise, nous offrons des services juridiques pour la famille élargie. Une fois que vous êtes un citoyen polonais, vos enfants, petits-enfants et futurs descendants se qualifient automatiquement pour la citoyenneté polonaise. Nous pouvons les aider avec leurs dossiers de citoyenneté, passeports polonais et toute la documentation nécessaire.",
-        stage15Points: [
-          'Services de citoyenneté disponibles pour tous les membres de la famille',
-          'Enfants et descendants se qualifient automatiquement après votre citoyenneté',
-          'Demandes de passeport polonais pour tous les membres de la famille',
-          'Soutien continu et services juridiques pour les générations futures'
-        ],
         detailedInfoTitle: 'Informations Détaillées',
         detailedInfoDesc: 'Le contenu complet du calendrier, les exigences détaillées et les spécificités du processus sont disponibles pour les utilisateurs enregistrés dans leur compte portail.',
         detailedInfoSignup: 'Inscrivez-vous pour accéder au guide complet étape par étape',
@@ -4197,7 +3983,7 @@ const resources = {
         stage15Desc: 'שירותים משפטיים משפחתיים מורחבים זמינים לאחר אישור אזרחות מוצלח',
         stage15Duration: 'מתמשך',
         stage15Action: 'שלבים אחרונים',
-        stage2Details: 'לאחר סיום בדיקת הזכאות, אנו שולחים לך בדוא"ל הערכה ראשונית מפורטת המסבירה אם אתה זכאי לאזרחות פולנית. אם זכאי, אנו שולחים מידע מקיף על התהליך המלא כולל תמחור שקוף לכל השלבים. לאחר שתאשר את החלטתך להמשיך, אנו מספקים רשימה מלאה של כל המסמכים שתצטרך לאסוף. שלב זה מבטיח בהירות מלאה לגבי עלויות, לוחות זמנים ודרישות לפני שתתחייב.',
+        
         stage1Points: ['ייעוץ ראשוני', 'בדיקת זכאות', 'הערכת מקרה'],
         stage2Details: 'לאחר אישור הזכאות, אנו שולחים מידע מפורט על התהליך ועל המחירים. אתה מקבל תיאור מלא של השלבים והעלויות.',
         stage2Points: ['הערכה מפורטת', 'מידע על התהליך', 'פרטי תמחור'],
@@ -4967,36 +4753,6 @@ const resources = {
         stage10Details: 'Мы готовим заявления на польские свидетельства о рождении и браке. Оплата за эти гражданские акты взимается отдельно.',
         stage10Points: ['Профессиональная подготовка заявлений', 'Отдельная оплата за польские свидетельства', 'Агент гражданских актов управляет процессом', 'Получить официальные польские свидетельства'],
         stage11Details: 'Примерно через 10-18 месяцев мы получаем первоначальный ответ от офиса Мазовецкого воеводы. Мы оцениваем требования правительства и запрашиваем продление срока.',
-        stage11Points: ['Получить первоначальный ответ правительства', 'Экспертная оценка требований', 'Копия письма отправлена с объяснениями', 'Продление срока запрошено'],
-        stage12Details: 'Мы предлагаем специализированные схемы ускорения: PUSH, NUDGE и SIT-DOWN. После выбора схемы мы реализуем ее стратегически.',
-        stage12Points: ['Схема PUSH: стратегические письменные запросы', 'Схема NUDGE: прямые звонки официальным лицам', 'Схема SIT-DOWN: личные встречи', 'Гибкая реализация'],
-        stage13Details: 'Решение о подтверждении польского гражданства получено от властей. Мы отправляем вам копию решения.',
-        stage13Points: ['Получить официальное решение о гражданстве', 'Отправить копию решения клиенту', 'Загрузить решение в портал', 'Если отрицательное: подготовить апелляцию'],
-        stage14Details: 'Мы готовим все документы для подачи заявления на польский паспорт. Взимаем окончательный платеж. Отправляем документы через FedEx.',
-        stage14Points: ['Подготовить полный пакет для паспорта', 'Обработать окончательный платеж', 'Назначить встречу в консульстве', 'Клиент получает польский паспорт'],
-        stage15Details: 'После успешного получения польского гражданства мы предлагаем расширенные семейные юридические услуги. Ваши дети и потомки автоматически имеют право на польское гражданство.',
-        stage15Points: ['Услуги гражданства для всех членов семьи', 'Дети автоматически имеют право', 'Заявления на паспорт для семьи', 'Постоянная поддержка'],
-        stage3Details: 'Когда вы подтверждаете продолжение, мы требуем авансовый платеж и открываем учетную запись на нашем портале для управления вашим делом.',
-        stage3Points: ['Авансовый платеж', 'Создание аккаунта', 'Доступ к порталу'],
-        stage4Details: 'Вы предоставляете основные данные, включая копии паспорта, свидетельства о рождении, адрес и важную семейную историю.',
-        stage4Points: ['Загрузка паспорта', 'Документы о рождении', 'Семейная история'],
-        stage5Details: 'Мы готовим доверенности, отправляем их для электронной подписи, и вы отправляете подписанные документы в наш офис в Варшаве.',
-        stage5Points: ['Подготовка доверенности', 'Электронная подпись', 'Отправка Fedex'],
-        stage6Details: 'Вы заполняете комплексную мастер-форму в своей учетной записи, включающую все данные, необходимые для полной обработки дела.',
-        stage6Points: ['Полная форма данных', 'Детали семьи', 'Историческая информация'],
-        stage7Details: 'Наш агент создает документы, включая проект заявления на гражданство, и подает его официально. Вы получаете копию подачи.',
-        stage7Points: ['Создание документов', 'Подача заявления', 'Официальное подтверждение'],
-        stage8Details: 'Мы уточняем, какие местные документы необходимы, и помогаем вам собрать их, иногда с помощью местных партнеров.',
-        stage8Points: ['Список документов', 'Местные партнеры', 'Руководство по сбору'],
-        stage9Details: 'Мы ищем в польских и международных архивах исторические документы, которые могут поддержать ваше дело.',
-        stage9Points: ['Поиск в архивах', 'Исторические документы', 'Проверка'],
-        stage10Details: 'Все документы переводятся сертифицированными переводчиками и проверяются на точность перед подачей.',
-        stage10Points: ['Сертифицированный перевод', 'Проверка качества', 'Валидация'],
-        stage11Details: 'Мы подаем все документы и подробную информацию в правительство до получения первоначального ответа, если возможно.',
-        stage11Points: ['Подача документов', 'Семейная информация', 'Обновление статуса'],
-        stage12Details: 'Мы готовим заявки на польские гражданские акты, собираем платеж и подаем в соответствующее ведомство для получения свидетельств о рождении и браке.',
-        stage12Points: ['Гражданские заявки', 'Обработка платежа', 'Получение сертификатов'],
-        stage13Details: 'Когда правительство отвечает, мы оцениваем требования, отправляем вам объяснение и можем предложить схемы ускорения процесса.',
         stage13Points: ['Анализ ответа', 'Стратегия', 'Варианты ускорения'],
         stage14Details: 'После получения положительного решения о гражданстве мы готовим все документы для подачи заявления на польский паспорт в консульстве.',
         stage14Points: ['Документы для паспорта', 'Расписание консульства', 'Финальный пакет'],
@@ -5719,28 +5475,6 @@ const resources = {
         stage14Points: ['Підготувати повний пакет для паспорта', 'Обробити остаточний платіж', 'Призначити зустріч у консульстві', 'Клієнт отримує польський паспорт'],
         stage15Details: 'Після успішного отримання польського громадянства ми пропонуємо розширені сімейні юридичні послуги. Ваші діти та нащадки автоматично мають право на польське громадянство.',
         stage15Points: ['Послуги громадянства для всіх членів родини', 'Діти автоматично мають право', 'Заяви на паспорт для родини', 'Постійна підтримка'],
-        stage3Details: 'Коли ви підтверджуєте продовження, ми вимагаємо авансовий платіж та відкриваємо обліковий запис на нашому порталі для управління вашою справою.',
-        stage3Points: ['Авансовий платіж', 'Створення акаунта', 'Доступ до порталу'],
-        stage4Details: 'Ви надаєте основні дані, включаючи копії паспорта, свідоцтва про народження, адресу та важливу сімейну історію.',
-        stage4Points: ['Завантаження паспорта', 'Документи про народження', 'Сімейна історія'],
-        stage5Details: 'Ми готуємо довіреності, надсилаємо їх для електронного підпису, і ви відправляєте підписані документи до нашого офісу у Варшаві.',
-        stage5Points: ['Підготовка довіреності', 'Електронний підпис', 'Відправка Fedex'],
-        stage6Details: 'Ви заповнюєте комплексну майстер-форму у своєму обліковому записі, що включає всі дані, необхідні для повної обробки справи.',
-        stage6Points: ['Повна форма даних', 'Деталі сім\'ї', 'Історична інформація'],
-        stage7Details: 'Наш агент створює документи, включаючи проект заяви на громадянство, і подає його офіційно. Ви отримуєте копію подання.',
-        stage7Points: ['Створення документів', 'Подання заяви', 'Офіційне підтвердження'],
-        stage8Details: 'Ми уточнюємо, які місцеві документи необхідні, та допомагаємо вам зібрати їх, іноді за допомогою місцевих партнерів.',
-        stage8Points: ['Список документів', 'Місцеві партнери', 'Керівництво зі збору'],
-        stage9Details: 'Ми шукаємо в польських та міжнародних архівах історичні документи, які можуть підтримати вашу справу.',
-        stage9Points: ['Пошук в архівах', 'Історичні документи', 'Перевірка'],
-        stage10Details: 'Всі документи перекладаються сертифікованими перекладачами та перевіряються на точність перед поданням.',
-        stage10Points: ['Сертифікований переклад', 'Перевірка якості', 'Валідація'],
-        stage11Details: 'Ми подаємо всі документи та детальну інформацію до уряду до отримання первинної відповіді, якщо можливо.',
-        stage11Points: ['Подання документів', 'Сімейна інформація', 'Оновлення статусу'],
-        stage12Details: 'Ми готуємо заявки на польські цивільні акти, збираємо платіж та подаємо до відповідного відомства для отримання свідоцтв про народження та шлюб.',
-        stage12Points: ['Цивільні заявки', 'Обробка платежу', 'Отримання сертифікатів'],
-        stage13Details: 'Коли уряд відповідає, ми оцінюємо вимоги, надсилаємо вам пояснення та можемо запропонувати схеми прискорення процесу.',
-        stage13Points: ['Аналіз відповіді', 'Стратегія', 'Варіанти прискорення'],
         stage14Details: 'Після отримання позитивного рішення про громадянство ми готуємо всі документи для подання заяви на польський паспорт у консульстві.',
         stage14Points: ['Документи для паспорта', 'Розклад консульства', 'Фінальний пакет'],
         stage15Details: 'Сім\'ї можуть розширити юридичні послуги на подружжя, дітей та батьків після первинного успіху в отриманні громадянства.',
