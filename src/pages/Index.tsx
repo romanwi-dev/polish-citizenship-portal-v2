@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { UnifiedBackground } from "@/components/UnifiedBackground";
+import { GlobalBackground } from "@/components/GlobalBackground";
 import { SEOHead } from "@/components/SEOHead";
 import { StructuredData } from "@/components/StructuredData";
 
@@ -38,7 +38,7 @@ const Index = () => {
       
       <div className="min-h-screen overflow-x-hidden relative">
         {/* Unified Background - Single 3D Canvas for optimal performance */}
-        <UnifiedBackground />
+        <GlobalBackground />
         
         <div className="relative z-10">
           <Navigation />
