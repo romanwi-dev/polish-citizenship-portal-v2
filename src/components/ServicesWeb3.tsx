@@ -3,6 +3,7 @@ import { useState } from "react";
 import { MainCTA } from "./ui/main-cta";
 import { useTranslation } from 'react-i18next';
 import { SectionLayout } from "./layout/SectionLayout";
+import { getStaggerDelay } from "@/config/animations";
 
 const FlippableServiceCard = ({ 
   icon: Icon,
@@ -24,7 +25,7 @@ const FlippableServiceCard = ({
     <div 
       className="h-[280px] cursor-pointer animate-fade-in"
       style={{ 
-        animationDelay: `${index * 100}ms`,
+        animationDelay: `${getStaggerDelay(index)}ms`,
         perspective: '1000px'
       }}
       onClick={() => setIsFlipped(!isFlipped)}

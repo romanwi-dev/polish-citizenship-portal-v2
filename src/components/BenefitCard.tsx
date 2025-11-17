@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { useInView } from "react-intersection-observer";
+import { getStaggerDelay } from "@/config/animations";
 
 interface BenefitCardProps {
   icon: LucideIcon;
@@ -36,7 +37,7 @@ export const BenefitCard = ({
       }`}
       style={{ 
         perspective: '1000px',
-        transitionDelay: `${index * 100}ms`
+        transitionDelay: `${getStaggerDelay(index)}ms`
       }}
       onClick={onToggleFlip}
     >
