@@ -193,23 +193,7 @@ export default function ClientOnboardingSection() {
                       </p>
                     </div>
                     
-                    <div className="mt-auto mb-6 flex justify-center">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-48"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (step.link.startsWith('#')) {
-                            document.querySelector(step.link)?.scrollIntoView({ behavior: 'smooth' });
-                          } else if (step.link.startsWith('http')) {
-                            window.open(step.link, '_blank');
-                          }
-                        }}
-                      >
-                        {step.cta} →
-                      </Button>
-                    </div>
+                    <div className="mt-8"></div>
                     <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center">Tap card for details</p>
                   </div>
 
