@@ -393,7 +393,7 @@ export default function TimelineProcessEnhanced() {
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                           }}
                         >
-                          Open Account
+                          {t('timelineProcess.openAccountCta')}
                         </Button>
                       </div>
                     </div>
