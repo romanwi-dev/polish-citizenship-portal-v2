@@ -425,6 +425,13 @@ const resources = {
         stage1Desc: 'First contact, citizenship test, family tree, eligibility examination, and eligibility call',
         stage1Duration: 'Week 1',
         stage1Action: 'Initial Setup & Payment',
+        stage1Details: 'The first steps in your Polish citizenship journey include your initial contact with us, taking our comprehensive citizenship test, completing the family tree form, undergoing eligibility examination, and having an eligibility call with our experts. This foundational phase establishes your case and determines your qualification pathway.',
+        stage1Points: [
+          'Make first contact via website, email, or WhatsApp',
+          'Complete online Polish citizenship eligibility test',
+          'Fill out detailed family tree with ancestor information',
+          'Receive eligibility examination and consultation call'
+        ],
         stage2: 'TERMS & PRICING',
         stage2Desc: 'Initial assessment, full process info with pricing, client confirmation, and document list',
         stage2Duration: 'Week 1-2',
