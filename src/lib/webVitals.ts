@@ -16,9 +16,17 @@ interface Metric {
 
 const sendToAnalytics = async (metric: Metric) => {
   try {
-    // Only send in production to avoid polluting dev data
-    if (import.meta.env.DEV) return;
+    // Log to console in DEV mode for visibility
+    if (import.meta.env.DEV) {
+      console.log(`📊 Web Vital: ${metric.name}`, {
+        value: Math.round(metric.value),
+        rating: metric.rating,
+        delta: metric.delta
+      });
+      return;
+    }
 
+    // Send to Supabase in production
     await supabase.from('performance_logs').insert({
       metric_type: metric.name.toLowerCase(),
       value: Math.round(metric.value),
@@ -27,8 +35,10 @@ const sendToAnalytics = async (metric: Metric) => {
       connection_type: (navigator as any).connection?.effectiveType || 'unknown'
     });
   } catch (error) {
-    // Silently fail - don't break the app due to analytics
-    console.error('Failed to log web vitals:', error);
+    // Log errors in development, silent in production
+    if (import.meta.env.DEV) {
+      console.error('Failed to log web vitals:', error);
+    }
   }
 };
 

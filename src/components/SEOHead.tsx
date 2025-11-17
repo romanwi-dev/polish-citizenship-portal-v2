@@ -47,13 +47,8 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
       <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
       <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
       
-      {/* Preload critical assets */}
-      <link
-        rel="preload"
-        as="image"
-        href={`${baseUrl}/og/${currentLang}-og-image.jpg`}
-        type="image/jpeg"
-      />
+      {/* Only preload OG image if it exists - avoid 404s */}
+      {/* OG images should be generated for all 8 languages */}
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
