@@ -2618,10 +2618,20 @@ const resources = {
         stage14Points: ['Recevoir la liste de contrôle complète pour la demande de passeport', 'Effectuer le paiement final pour l\'achèvement du service', 'Documents envoyés par FedEx avec instructions détaillées', 'Rendez-vous au consulat et demande de passeport'],
         
         stage15Details: 'Après avoir obtenu avec succès la citoyenneté polonaise, nous proposons des services juridiques familiaux étendus. Cela inclut l\'aide à la citoyenneté pour les membres de la famille, les demandes de passeport familial, l\'assistance PESEL et autres questions juridiques relatives à votre nouvelle citoyenneté polonaise.',
-        stage15Points: ['Services d\'assistance à la citoyenneté familiale étendue disponibles', 'Aide pour les demandes de passeport des membres de la famille', 'Assistance pour l\'enregistrement PESEL et l\'immatriculation', 'Support juridique continu pour les questions de citoyenneté']
-      },
-      
-      step6Number: '06',
+        stage15Points: ['Services d\'assistance à la citoyenneté familiale étendue disponibles', 'Aide pour les demandes de passeport des membres de la famille', 'Assistance pour l\'enregistrement PESEL et l\'immatriculation', 'Support juridique continu pour les questions de citoyenneté'],
+        
+        detailedInfoTitle: 'Informations Détaillées',
+        detailedInfoDesc: 'Le contenu complet du calendrier, les exigences détaillées et les spécificités du processus sont disponibles pour les utilisateurs enregistrés dans leur compte portail.',
+        detailedInfoSignup: 'Inscrivez-vous pour accéder au guide complet étape par étape',
+        detailedInfoCta: 'Vers le Portail',
+        detailedInfoNote: 'Note: Ces délais sont des estimations basées sur plus de 200 cas réussis. Votre cas réel peut varier en fonction de la complexité et des délais de traitement gouvernementaux.',
+        learnMoreCta: 'En Savoir Plus',
+        estimatedDuration: 'Durée Estimée',
+        keyAction: 'Action Clé',
+        readMore: 'Lire Plus',
+        readLess: 'Lire Moins',
+        
+        step6Number: '06',
         step6Title: 'Traitement des Documents par IA',
         step6Desc: 'Tous les documents sont traités par notre Système de Documents IA pour générer les Procurations et la demande de citoyenneté polonaise.',
         step6Cta: 'Tableau de Bord',
@@ -4581,7 +4591,8 @@ const resources = {
         }
       }
     }
-  }
+  },
+  // Add future languages here
 };
 
 i18n
@@ -4611,3 +4622,4 @@ i18n.on('languageChanged', (lng) => {
 });
 
 export default i18n;
+
