@@ -1394,18 +1394,46 @@ const resources = {
         step2Title: 'Verificação de Elegibilidade',
         step2Desc: 'Faça nosso teste de cidadania polonesa e preencha a árvore genealógica para que possamos determinar sua elegibilidade. Se elegível, passamos para a próxima etapa.',
         step2Cta: 'Fazer Teste de Cidadania Polonesa',
+        step2DetailedInfo: "Primeiro, complete nosso teste online de cidadania polonesa, uma avaliação rápida de 5 minutos sobre sua história familiar. Em seguida, crie sua árvore genealógica familiar completa com todos os detalhes que você conhece. Essas informações nos ajudam a determinar sua elegibilidade para cidadania polonesa. Se você se qualificar, procedemos com uma avaliação jurídica completa do seu caso.",
+        step2KeyPoints: [
+          "Complete o teste rápido online de cidadania polonesa (5 minutos)",
+          "Crie uma árvore genealógica familiar detalhada com informações conhecidas",
+          "Receba avaliação imediata de elegibilidade preliminar",
+          "Se elegível, procedemos com avaliação jurídica completa"
+        ],
         step3Number: '03',
         step3Title: 'Exame de Documentos',
         step3Desc: 'Examinamos cuidadosamente seus documentos, especialmente documentos poloneses de ancestrais e documentos de naturalização/serviço militar.',
         step3Cta: 'Painel',
+        step3DetailedInfo: "Revisamos cuidadosamente todos os seus documentos, concentrando-nos em documentos cruciais de ancestrais poloneses, como certidões de nascimento, registros de casamento ou registros do velho mundo. Também examinamos qualquer documentação de naturalização ou serviço militar que possa afetar a transmissão de cidadania. Este exame minucioso nos ajuda a entender a força do seu caso e quais documentos adicionais podemos precisar obter.",
+        step3KeyPoints: [
+          "Revisão detalhada de certidões de nascimento e casamento polonesas",
+          "Exame de registros de naturalização e serviço militar",
+          "Avaliação de todas as evidências documentais disponíveis",
+          "Identificação de lacunas de documentos e estratégia de obtenção"
+        ],
         step4Number: '04',
         step4Title: 'Avaliação do Caso',
         step4Desc: 'Analisamos seu caso e fornecemos avaliação abrangente das chances, cronograma e custos envolvidos.',
         step4Cta: 'Agendar Consulta',
+        step4DetailedInfo: "Após examinar seus documentos, agendamos uma chamada abrangente de elegibilidade para discutir nossas descobertas. Esta chamada revisa seu caso em detalhes, descreve o caminho a seguir, discute cronograma e custos e confirma se você se qualifica para cidadania polonesa. É sua oportunidade de fazer perguntas e entender cada aspecto do processo antes de prosseguir.",
+        step4KeyPoints: [
+          "Revisão abrangente do seu caso e documentação",
+          "Discussão sobre descobertas de elegibilidade e qualificação",
+          "Explicação detalhada de cronograma, custos e próximos passos",
+          "Oportunidade de fazer perguntas e esclarecer quaisquer preocupações"
+        ],
         step5Number: '05',
         step5Title: 'Enviar Documentos',
         step5Desc: 'Envie por FedEx para nosso escritório em Varsóvia todos os documentos necessários para processamento.',
         step5Cta: 'Painel',
+        step5DetailedInfo: "Depois de decidir prosseguir, você enviará por FedEx todos os documentos necessários ao nosso escritório em Varsóvia para o início oficial do caso. Isso inclui formulários de procuração assinados, originais ou cópias certificadas de registros vitais e documentação de suporte. Ao recebê-los, abrimos seu arquivo de caso oficial, registramos você em nosso sistema e iniciamos o processo formal de solicitação de cidadania em seu nome.",
+        step5KeyPoints: [
+          "Envie por FedEx todos os documentos necessários ao nosso escritório em Varsóvia",
+          "Inclua procuração assinada e registros vitais certificados",
+          "Arquivo de caso oficial aberto e registrado no sistema",
+          "Processo formal de solicitação de cidadania começa"
+        ],
         step6Number: '06',
         step6Title: 'Processamento de Documentos com IA',
         step6Desc: 'Todos os documentos são processados pelo nosso Sistema de Documentos IA para gerar Procurações e a aplicação de cidadania polonesa.',
@@ -1924,18 +1952,46 @@ const resources = {
         step2Title: 'Berechtigungsprüfung',
         step2Desc: 'Machen Sie unseren polnischen Staatsbürgerschaftstest und füllen Sie den Stammbaum aus, damit wir Ihre Berechtigung bestimmen können. Bei Berechtigung geht es zur nächsten Stufe.',
         step2Cta: 'Polnischen Staatsbürgerschaftstest Machen',
+        step2DetailedInfo: "Absolvieren Sie zunächst unseren Online-Test zur polnischen Staatsbürgerschaft, eine schnelle 5-Minuten-Bewertung Ihrer Familiengeschichte. Erstellen Sie dann Ihren vollständigen Familienstammbaum mit allen Details, die Sie kennen. Diese Informationen helfen uns, Ihre Berechtigung für die polnische Staatsbürgerschaft zu bestimmen. Wenn Sie qualifiziert sind, fahren wir mit einer vollständigen rechtlichen Bewertung Ihres Falls fort.",
+        step2KeyPoints: [
+          "Absolvieren Sie den schnellen Online-Test zur polnischen Staatsbürgerschaft (5 Minuten)",
+          "Erstellen Sie einen detaillierten Familienstammbaum mit bekannten Informationen",
+          "Erhalten Sie sofortige vorläufige Berechtigungsbewertung",
+          "Bei Berechtigung fahren wir mit vollständiger rechtlicher Bewertung fort"
+        ],
         step3Number: '03',
         step3Title: 'Dokumentenprüfung',
         step3Desc: 'Wir prüfen sorgfältig Ihre Dokumente, insbesondere polnische Dokumente von Vorfahren und Einbürgerungs-/Militärdienstdokumente.',
         step3Cta: 'Dashboard',
+        step3DetailedInfo: "Wir überprüfen sorgfältig alle Ihre Dokumente und konzentrieren uns dabei auf entscheidende Dokumente polnischer Vorfahren wie Geburtsurkunden, Heiratsurkunden oder Aufzeichnungen aus der Alten Welt. Wir prüfen auch jegliche Einbürgerungs- oder Militärdienstdokumentation, die die Staatsbürgerschaftsübertragung beeinflussen könnte. Diese gründliche Prüfung hilft uns, die Stärke Ihres Falls zu verstehen und welche zusätzlichen Dokumente wir möglicherweise beschaffen müssen.",
+        step3KeyPoints: [
+          "Detaillierte Überprüfung polnischer Geburts- und Heiratsurkunden",
+          "Prüfung von Einbürgerungs- und Militärdienstunterlagen",
+          "Bewertung aller verfügbaren Dokumentbeweise",
+          "Identifizierung von Dokumentlücken und Beschaffungsstrategie"
+        ],
         step4Number: '04',
         step4Title: 'Fallbewertung',
         step4Desc: 'Wir analysieren Ihren Fall und bieten eine umfassende Bewertung der Chancen, des Zeitplans und der damit verbundenen Kosten.',
         step4Cta: 'Beratung Planen',
+        step4DetailedInfo: "Nach Prüfung Ihrer Dokumente planen wir ein umfassendes Berechtigungsgespräch, um unsere Erkenntnisse zu besprechen. Dieses Gespräch überprüft Ihren Fall im Detail, skizziert den weiteren Weg, bespricht Zeitplan und Kosten und bestätigt, ob Sie für die polnische Staatsbürgerschaft qualifiziert sind. Es ist Ihre Gelegenheit, Fragen zu stellen und jeden Aspekt des Prozesses zu verstehen, bevor Sie fortfahren.",
+        step4KeyPoints: [
+          "Umfassende Überprüfung Ihres Falls und Ihrer Dokumentation",
+          "Besprechung der Berechtigungsergebnisse und Qualifikation",
+          "Detaillierte Erklärung von Zeitplan, Kosten und nächsten Schritten",
+          "Gelegenheit, Fragen zu stellen und Bedenken zu klären"
+        ],
         step5Number: '05',
         step5Title: 'Dokumente Senden',
         step5Desc: 'Senden Sie alle erforderlichen Dokumente per FedEx an unser Warschauer Büro zur Verarbeitung.',
         step5Cta: 'Dashboard',
+        step5DetailedInfo: "Sobald Sie sich für die Fortsetzung entscheiden, senden Sie alle erforderlichen Dokumente per FedEx an unser Warschauer Büro zur offiziellen Falleröffnung. Dies umfasst unterschriebene Vollmachtsformulare, Originale oder beglaubigte Kopien von Personenstandsurkunden und Begleitdokumentation. Nach Erhalt eröffnen wir Ihre offizielle Fallakte, registrieren Sie in unserem System und beginnen den formellen Staatsbürgerschaftsantragsprozess in Ihrem Namen.",
+        step5KeyPoints: [
+          "Senden Sie alle erforderlichen Dokumente per FedEx an unser Warschauer Büro",
+          "Fügen Sie unterzeichnete Vollmacht und beglaubigte Personenstandsurkunden bei",
+          "Offizielle Fallakte wird eröffnet und im System registriert",
+          "Formeller Staatsbürgerschaftsantragsprozess beginnt"
+        ],
         step6Number: '06',
         step6Title: 'KI-Dokumentenverarbeitung',
         step6Desc: 'Alle Dokumente werden von unserem KI-Dokumentensystem verarbeitet, um Vollmachten und den polnischen Staatsbürgerschaftsantrag zu generieren.',
@@ -2497,18 +2553,46 @@ const resources = {
         step2Title: 'Vérification d\'Éligibilité',
         step2Desc: 'Passez notre test de citoyenneté polonaise et remplissez l\'arbre généalogique afin que nous puissions déterminer votre éligibilité. Si éligible, nous passons à l\'étape suivante.',
         step2Cta: 'Passer le Test de Citoyenneté Polonaise',
+        step2DetailedInfo: "Tout d'abord, complétez notre test en ligne sur la citoyenneté polonaise, une évaluation rapide de 5 minutes de votre histoire familiale. Ensuite, créez votre arbre généalogique familial complet avec tous les détails que vous connaissez. Ces informations nous aident à déterminer votre éligibilité à la citoyenneté polonaise. Si vous êtes qualifié, nous procédons à une évaluation juridique complète de votre dossier.",
+        step2KeyPoints: [
+          "Complétez le test rapide en ligne sur la citoyenneté polonaise (5 minutes)",
+          "Créez un arbre généalogique familial détaillé avec les informations connues",
+          "Recevez une évaluation immédiate d'éligibilité préliminaire",
+          "Si éligible, nous procédons à une évaluation juridique complète"
+        ],
         step3Number: '03',
         step3Title: 'Examen des Documents',
         step3Desc: 'Nous examinons attentivement vos documents, en particulier les documents polonais des ancêtres et les documents de naturalisation/service militaire.',
         step3Cta: 'Tableau de Bord',
+        step3DetailedInfo: "Nous examinons attentivement tous vos documents, en nous concentrant sur les documents cruciaux des ancêtres polonais tels que les certificats de naissance, les actes de mariage ou les documents du Vieux Monde. Nous examinons également toute documentation de naturalisation ou de service militaire qui pourrait affecter la transmission de la citoyenneté. Cet examen approfondi nous aide à comprendre la solidité de votre dossier et quels documents supplémentaires nous pourrions avoir besoin d'obtenir.",
+        step3KeyPoints: [
+          "Examen détaillé des certificats de naissance et de mariage polonais",
+          "Examen des documents de naturalisation et de service militaire",
+          "Évaluation de toutes les preuves documentaires disponibles",
+          "Identification des lacunes documentaires et stratégie d'obtention"
+        ],
         step4Number: '04',
         step4Title: 'Évaluation du Dossier',
         step4Desc: 'Nous analysons votre dossier et fournissons une évaluation complète des chances, du calendrier et des coûts impliqués.',
         step4Cta: 'Planifier une Consultation',
+        step4DetailedInfo: "Après examen de vos documents, nous planifions un appel complet d'éligibilité pour discuter de nos conclusions. Cet appel examine votre dossier en détail, décrit la voie à suivre, discute du calendrier et des coûts, et confirme si vous êtes qualifié pour la citoyenneté polonaise. C'est votre opportunité de poser des questions et de comprendre chaque aspect du processus avant d'avancer.",
+        step4KeyPoints: [
+          "Examen complet de votre dossier et documentation",
+          "Discussion des conclusions d'éligibilité et qualification",
+          "Explication détaillée du calendrier, des coûts et des prochaines étapes",
+          "Opportunité de poser des questions et de clarifier toute préoccupation"
+        ],
         step5Number: '05',
         step5Title: 'Envoyer les Documents',
         step5Desc: 'Envoyez par FedEx à notre bureau de Varsovie tous les documents requis pour le traitement.',
         step5Cta: 'Tableau de Bord',
+        step5DetailedInfo: "Une fois que vous décidez de poursuivre, vous enverrez par FedEx tous les documents requis à notre bureau de Varsovie pour l'ouverture officielle du dossier. Cela comprend les formulaires de procuration signés, les originaux ou copies certifiées des documents d'état civil et la documentation justificative. Dès réception, nous ouvrons votre dossier officiel, vous enregistrons dans notre système et commençons le processus formel de demande de citoyenneté en votre nom.",
+        step5KeyPoints: [
+          "Envoyez par FedEx tous les documents requis à notre bureau de Varsovie",
+          "Incluez la procuration signée et les documents d'état civil certifiés",
+          "Dossier officiel ouvert et enregistré dans le système",
+          "Le processus formel de demande de citoyenneté commence"
+        ],
       
       timelineProcess: {
         badge: 'Notre Processus',
@@ -2982,18 +3066,46 @@ const resources = {
         step2Title: 'בדיקת זכאות',
         step2Desc: 'בצע את מבחן האזרחות הפולנית שלנו ומלא את עץ המשפחה כדי שנוכל לקבוע את הזכאות שלך. אם זכאי, עוברים לשלב הבא.',
         step2Cta: 'בצע מבחן אזרחות פולנית',
+        step2DetailedInfo: "ראשית, השלם את מבחן האזרחות הפולנית המקוון שלנו, הערכה מהירה של 5 דקות על ההיסטוריה המשפחתית שלך. לאחר מכן, צור את עץ המשפחה המשפחתי המלא שלך עם כל הפרטים שאתה יודע. מידע זה עוזר לנו לקבוע את הזכאות שלך לאזרחות פולנית. אם אתה מוסמך, אנו ממשיכים להערכה משפטית מלאה של התיק שלך.",
+        step2KeyPoints: [
+          "השלם את מבחן האזרחות הפולנית המקוון המהיר (5 דקות)",
+          "צור עץ משפחה משפחתי מפורט עם מידע ידוע",
+          "קבל הערכת זכאות ראשונית מיידית",
+          "אם זכאי, ממשיכים להערכה משפטית מלאה"
+        ],
         step3Number: '03',
         step3Title: 'בדיקת מסמכים',
         step3Desc: 'אנו בוחנים בקפידה את המסמכים שלך, במיוחד מסמכים פולניים של אבות קדומים ומסמכי התאזרחות/שירות צבאי.',
         step3Cta: 'לוח בקרה',
+        step3DetailedInfo: "אנו בוחנים בקפידה את כל המסמכים שלך, תוך התמקדות במסמכים מכריעים של אבות קדומים פולניים כמו תעודות לידה, רישומי נישואין או רישומי העולם הישן. אנו גם בוחנים כל תיעוד התאזרחות או שירות צבאי שעשוי להשפיע על העברת אזרחות. בדיקה יסודית זו עוזרת לנו להבין את חוזק התיק שלך ואילו מסמכים נוספים ייתכן שנצטרך להשיג.",
+        step3KeyPoints: [
+          "בדיקה מפורטת של תעודות לידה ונישואין פולניות",
+          "בחינת רישומי התאזרחות ושירות צבאי",
+          "הערכת כל הראיות התיעודיות הזמינות",
+          "זיהוי פערי מסמכים ואסטרטגיית השגה"
+        ],
         step4Number: '04',
         step4Title: 'הערכת תיק',
         step4Desc: 'אנו מנתחים את התיק שלך ומספקים הערכה מקיפה של הסיכויים, ציר הזמן והעלויות המעורבות.',
         step4Cta: 'קביעת יעוץ',
+        step4DetailedInfo: "לאחר בדיקת המסמכים שלך, אנו מתזמנים שיחת זכאות מקיפה כדי לדון בממצאים שלנו. שיחה זו סוקרת את התיק שלך בפירוט, משרטטת את הדרך קדימה, דנה בציר הזמן ובעלויות, ומאשרת אם אתה מוסמך לאזרחות פולנית. זו ההזדמנות שלך לשאול שאלות ולהבין כל היבט בתהליך לפני שתמשיך.",
+        step4KeyPoints: [
+          "סקירה מקיפה של התיק והתיעוד שלך",
+          "דיון בממצאי זכאות והסמכה",
+          "הסבר מפורט של ציר הזמן, העלויות והצעדים הבאים",
+          "הזדמנות לשאול שאלות ולהבהיר כל חשש"
+        ],
         step5Number: '05',
         step5Title: 'שליחת מסמכים',
         step5Desc: 'שלח באמצעות FedEx למשרד שלנו בוורשה את כל המסמכים הנדרשים לעיבוד.',
         step5Cta: 'לוח בקרה',
+        step5DetailedInfo: "ברגע שתחליט להמשיך, תשלח FedEx את כל המסמכים הנדרשים למשרד שלנו בוורשה לפתיחה רשמית של התיק. זה כולל טפסי ייפוי כוח חתומים, מקורות או עותקים מאושרים של רישומים חיוניים ותיעוד תומך. עם הקבלה, אנו פותחים את תיק התיק הרשמי שלך, רושמים אותך במערכת שלנו ומתחילים את תהליך הבקשה הרשמי לאזרחות בשמך.",
+        step5KeyPoints: [
+          "שלח FedEx את כל המסמכים הנדרשים למשרד שלנו בוורשה",
+          "כלול ייפוי כוח חתום ורישומים חיוניים מאושרים",
+          "תיק תיק רשמי נפתח ונרשם במערכת",
+          "תהליך הבקשה הרשמי לאזרחות מתחיל"
+        ],
       
       timelineProcess: {
         badge: 'התהליך שלנו',
@@ -3513,18 +3625,46 @@ const resources = {
         step2Title: 'Проверка Права',
         step2Desc: 'Пройдите наш тест на польское гражданство и заполните генеалогическое древо, чтобы мы могли определить ваше право. Если право есть, переходим к следующему этапу.',
         step2Cta: 'Пройти Тест на Польское Гражданство',
+        step2DetailedInfo: "Сначала пройдите наш онлайн-тест на польское гражданство, быструю 5-минутную оценку вашей семейной истории. Затем создайте полное генеалогическое древо вашей семьи со всеми известными вам деталями. Эта информация помогает нам определить ваше право на польское гражданство. Если вы квалифицированы, мы переходим к полной юридической оценке вашего дела.",
+        step2KeyPoints: [
+          "Пройдите быстрый онлайн-тест на польское гражданство (5 минут)",
+          "Создайте детальное семейное древо с известной информацией",
+          "Получите немедленную предварительную оценку права",
+          "При наличии права переходим к полной юридической оценке"
+        ],
         step3Number: '03',
         step3Title: 'Проверка Документов',
         step3Desc: 'Мы тщательно проверяем ваши документы, особенно польские документы предков и документы о натурализации/военной службе.',
         step3Cta: 'Панель',
+        step3DetailedInfo: "Мы тщательно проверяем все ваши документы, уделяя особое внимание важнейшим документам польских предков, таким как свидетельства о рождении, записи о браке или документы Старого Света. Мы также изучаем любую документацию о натурализации или военной службе, которая может повлиять на передачу гражданства. Эта тщательная проверка помогает нам понять силу вашего дела и какие дополнительные документы нам может потребоваться получить.",
+        step3KeyPoints: [
+          "Детальная проверка польских свидетельств о рождении и браке",
+          "Изучение документов о натурализации и военной службе",
+          "Оценка всех доступных документальных доказательств",
+          "Выявление пробелов в документах и стратегия получения"
+        ],
         step4Number: '04',
         step4Title: 'Оценка Дела',
         step4Desc: 'Мы анализируем ваше дело и предоставляем комплексную оценку шансов, сроков и связанных с этим расходов.',
         step4Cta: 'Запланировать Консультацию',
+        step4DetailedInfo: "После изучения ваших документов мы планируем комплексный звонок о праве для обсуждения наших выводов. Этот звонок подробно рассматривает ваше дело, намечает дальнейший путь, обсуждает сроки и расходы, и подтверждает, квалифицированы ли вы для польского гражданства. Это ваша возможность задать вопросы и понять каждый аспект процесса перед продолжением.",
+        step4KeyPoints: [
+          "Комплексная проверка вашего дела и документации",
+          "Обсуждение выводов о праве и квалификации",
+          "Детальное объяснение сроков, расходов и следующих шагов",
+          "Возможность задать вопросы и прояснить любые опасения"
+        ],
       step5Number: '05',
         step5Title: 'Отправка Документов',
         step5Desc: 'Отправьте через FedEx в наш варшавский офис все необходимые документы для обработки.',
         step5Cta: 'Панель',
+        step5DetailedInfo: "Как только вы решите продолжить, вы отправите FedEx все необходимые документы в наш офис в Варшаве для официального открытия дела. Это включает подписанные формы доверенности, оригиналы или заверенные копии записей актов гражданского состояния и подтверждающую документацию. При получении мы открываем вашу официальную папку дела, регистрируем вас в нашей системе и начинаем формальный процесс подачи заявления на гражданство от вашего имени.",
+        step5KeyPoints: [
+          "Отправьте FedEx все необходимые документы в наш офис в Варшаве",
+          "Включите подписанную доверенность и заверенные записи актов",
+          "Официальная папка дела открыта и зарегистрирована в системе",
+          "Формальный процесс подачи заявления на гражданство начинается"
+        ],
         step6Number: '06',
         step6Title: 'Условия и Цены',
         step6Desc: 'Рассмотрите нашу структуру ценообразования, подпишите соглашение и внесите авансовый платеж для активации вашего дела.',
@@ -4093,18 +4233,46 @@ const resources = {
         step2Title: 'Перевірка Права',
         step2Desc: 'Пройдіть наш тест на польське громадянство та заповніть генеалогічне дерево, щоб ми могли визначити ваше право. Якщо право є, переходимо до наступного етапу.',
         step2Cta: 'Пройти Тест на Польське Громадянство',
+        step2DetailedInfo: "Спочатку пройдіть наш онлайн-тест на польське громадянство, швидку 5-хвилинну оцінку вашої сімейної історії. Потім створіть повне генеалогічне дерево вашої родини з усіма відомими вам деталями. Ця інформація допомагає нам визначити ваше право на польське громадянство. Якщо ви кваліфіковані, ми переходимо до повної юридичної оцінки вашої справи.",
+        step2KeyPoints: [
+          "Пройдіть швидкий онлайн-тест на польське громадянство (5 хвилин)",
+          "Створіть детальне сімейне дерево з відомою інформацією",
+          "Отримайте негайну попередню оцінку права",
+          "За наявності права переходимо до повної юридичної оцінки"
+        ],
         step3Number: '03',
         step3Title: 'Перевірка Документів',
         step3Desc: 'Ми ретельно перевіряємо ваші документи, особливо польські документи предків та документи про натуралізацію/військову службу.',
         step3Cta: 'Панель',
+        step3DetailedInfo: "Ми ретельно перевіряємо всі ваші документи, приділяючи особливу увагу найважливішим документам польських предків, таким як свідоцтва про народження, записи про шлюб або документи Старого Світу. Ми також вивчаємо будь-яку документацію про натуралізацію або військову службу, яка може вплинути на передачу громадянства. Ця ретельна перевірка допомагає нам зрозуміти силу вашої справи та які додаткові документи нам може знадобитися отримати.",
+        step3KeyPoints: [
+          "Детальна перевірка польських свідоцтв про народження та шлюб",
+          "Вивчення документів про натуралізацію та військову службу",
+          "Оцінка всіх доступних документальних доказів",
+          "Виявлення прогалин у документах та стратегія отримання"
+        ],
         step4Number: '04',
         step4Title: 'Оцінка Справи',
         step4Desc: 'Ми аналізуємо вашу справу та надаємо комплексну оцінку шансів, термінів та пов\'язаних з цим витрат.',
         step4Cta: 'Запланувати Консультацію',
+        step4DetailedInfo: "Після вивчення ваших документів ми плануємо комплексний дзвінок щодо права для обговорення наших висновків. Цей дзвінок детально розглядає вашу справу, окреслює подальший шлях, обговорює терміни та витрати, і підтверджує, чи кваліфіковані ви для польського громадянства. Це ваша можливість поставити питання та зрозуміти кожен аспект процесу перед продовженням.",
+        step4KeyPoints: [
+          "Комплексна перевірка вашої справи та документації",
+          "Обговорення висновків щодо права та кваліфікації",
+          "Детальне пояснення термінів, витрат та наступних кроків",
+          "Можливість поставити питання та прояснити будь-які занепокоєння"
+        ],
         step5Number: '05',
         step5Title: 'Відправка Документів',
         step5Desc: 'Відправте через FedEx до нашого варшавського офісу всі необхідні документи для обробки.',
         step5Cta: 'Панель',
+        step5DetailedInfo: "Як тільки ви вирішите продовжити, ви відправите FedEx усі необхідні документи до нашого офісу у Варшаві для офіційного відкриття справи. Це включає підписані форми довіреності, оригінали або завірені копії записів актів цивільного стану та підтверджуючу документацію. При отриманні ми відкриваємо вашу офіційну папку справи, реєструємо вас у нашій системі та починаємо формальний процес подачі заяви на громадянство від вашого імені.",
+        step5KeyPoints: [
+          "Відправте FedEx усі необхідні документи до нашого офісу у Варшаві",
+          "Включіть підписану довіреність та завірені записи актів",
+          "Офіційна папка справи відкрита та зареєстрована в системі",
+          "Формальний процес подачі заяви на громадянство починається"
+        ],
         step6Number: '06',
         step6Title: 'Обробка Документів ШІ',
         step6Desc: 'Всі документи обробляються нашою Системою Документів ШІ для створення Довіреностей та заяви на польське громадянство.',
