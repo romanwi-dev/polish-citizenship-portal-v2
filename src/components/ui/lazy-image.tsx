@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
-import { useNetworkAware } from "@/hooks/useNetworkAware";
 
 interface LazyImageProps {
   src: string;
@@ -11,20 +10,15 @@ interface LazyImageProps {
 
 /**
  * Lazy-loaded image component with Intersection Observer
- * Network-aware preloading for better performance
+ * Only loads image when it enters viewport
  */
 export const LazyImage = ({ src, alt, className = "", placeholder }: LazyImageProps) => {
-  const connection = useNetworkAware();
   const [imageSrc, setImageSrc] = useState<string | undefined>(placeholder);
   const [isLoaded, setIsLoaded] = useState(false);
-  
-  // Adjust preload margin based on connection speed
-  const preloadMargin = connection === '4g' || connection === 'wifi' ? '200px' : '50px';
-  
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
-    rootMargin: preloadMargin
+    rootMargin: '200px' // Start loading 200px before image enters viewport
   });
 
   useEffect(() => {
