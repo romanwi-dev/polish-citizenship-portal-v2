@@ -1,11 +1,11 @@
 import { FileText, Users, CheckCircle, Globe, Cpu, Shield, Zap } from "lucide-react";
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { MainCTA } from "./ui/main-cta";
 import { useTranslation } from 'react-i18next';
 import { SectionLayout } from "./layout/SectionLayout";
 import { getStaggerDelay } from "@/config/animations";
 
-const FlippableServiceCard = ({ 
+const FlippableServiceCard = memo(({
   icon: Icon,
   title,
   description,
@@ -20,6 +20,10 @@ const FlippableServiceCard = ({
 }) => {
   const { t } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
+  
+  const handleFlip = useCallback(() => {
+    setIsFlipped(prev => !prev);
+  }, []);
 
   return (
     <div 
@@ -28,7 +32,7 @@ const FlippableServiceCard = ({
         animationDelay: `${getStaggerDelay(index)}ms`,
         perspective: '1000px'
       }}
-      onClick={() => setIsFlipped(!isFlipped)}
+      onClick={handleFlip}
     >
       <div 
         className="relative w-full h-full transition-transform duration-700"
@@ -78,7 +82,9 @@ const FlippableServiceCard = ({
       </div>
     </div>
   );
-};
+});
+
+FlippableServiceCard.displayName = 'FlippableServiceCard';
 
 const ServicesWeb3 = () => {
   const { t } = useTranslation();

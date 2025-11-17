@@ -4,8 +4,9 @@ import { MainCTA } from '@/components/ui/main-cta';
 import { useTranslation } from 'react-i18next';
 import { SectionLayout } from './layout/SectionLayout';
 import { getStaggerDelay } from '@/config/animations';
+import { memo, useCallback } from 'react';
 
-export default function TestimonialsSection() {
+export default memo(function TestimonialsSection() {
   const { t } = useTranslation();
   const testimonials = t('testimonials.reviews', { returnObjects: true }) as Array<{
     name: string;
@@ -15,6 +16,10 @@ export default function TestimonialsSection() {
     timeline: string;
     year: string;
   }>;
+  
+  const handleContactClick = useCallback(() => {
+    window.location.hash = 'contact';
+  }, []);
   
   return (
     <SectionLayout
@@ -38,7 +43,7 @@ export default function TestimonialsSection() {
           </div>
         </div>
       }
-      cta={<MainCTA onClick={() => window.location.hash = 'contact'} ariaLabel="Contact us">{t('testimonials.cta')}</MainCTA>}
+      cta={<MainCTA onClick={handleContactClick} ariaLabel="Contact us">{t('testimonials.cta')}</MainCTA>}
     >
       {/* Testimonials Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -103,4 +108,4 @@ export default function TestimonialsSection() {
         </div>
     </SectionLayout>
   );
-}
+});

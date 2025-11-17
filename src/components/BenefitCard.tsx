@@ -1,6 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import { getStaggerDelay } from "@/config/animations";
+import { memo } from "react";
 
 interface BenefitCardProps {
   icon: LucideIcon;
@@ -13,7 +14,7 @@ interface BenefitCardProps {
   onToggleFlip: () => void;
 }
 
-export const BenefitCard = ({
+export const BenefitCard = memo(({
   icon: Icon,
   label,
   value,
@@ -83,4 +84,6 @@ export const BenefitCard = ({
       </div>
     </div>
   );
-};
+});
+
+BenefitCard.displayName = 'BenefitCard';
