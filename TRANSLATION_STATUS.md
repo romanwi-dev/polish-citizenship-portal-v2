@@ -45,7 +45,15 @@
 **Total: 96 workflow keys needed**
 
 ### Component Updates Needed
-- ❌ AIDocumentWorkflow.tsx - Add useTranslation hook and replace hardcoded backDetails with t('workflow.stageXBackDetails')
+- ✅ AIDocumentWorkflow.tsx - NOW USES t('workflow.stageXBackDetails')
+
+## 📊 SUMMARY - CURRENT STATUS
+- **Workflow Translations Added: 3/8** (English ✅, Polish ✅, Spanish ✅)
+- **Workflow Translations Pending: 5** (Portuguese, German, French, Hebrew, Russian, Ukrainian)
+- **Components Updated: 3/3** (Timeline ✅, Onboarding ✅, Workflow ✅)
+
+## ⏭️ NEXT STEPS
+Add workflow section to remaining 5 languages: pt, de, fr, he, ru, uk (each needs 16 keys)
 
 ## 📊 SUMMARY
 - **Total Missing Keys: 362**

@@ -625,6 +625,26 @@ const resources = {
           twitterDescription: 'Get Polish citizenship through ancestry. 100% success rate, transparent pricing, realistic timeline.',
           keywords: 'Polish citizenship, EU passport, citizenship by descent, Polish ancestry, legal services, Polish citizenship by descent, Polish passport'
         }
+      },
+      
+      // Workflow Card Back Details
+      workflow: {
+        stage1BackDetails: "Clients upload high-quality scans or photos of documents. System accepts PDF, JPG, PNG formats. Files are securely stored and indexed for AI processing.",
+        stage2BackDetails: "Automated validation checks file formats, sizes, and quality. Documents are indexed and prepared for AI classification pipeline.",
+        stage3BackDetails: "Advanced AI analyzes document images to identify type and match to relevant family members with confidence scoring.",
+        stage4BackDetails: "Attorney reviews AI-suggested document types and person assignments. Can override low-confidence classifications. Ensures data integrity before form population.",
+        stage5BackDetails: "Automated OCR processing extracts structured data from documents in parallel for efficient form population.",
+        stage6BackDetails: "AI and human review OCR results for accuracy. Critical fields like names, dates, and document numbers are verified for errors.",
+        stage7BackDetails: "AI detects document language and flags non-Polish documents for certified translation. Creates translation tasks automatically.",
+        stage8BackDetails: "Certified sworn translators convert foreign-language documents to Polish. Both AI-assisted and human professional translation workflows supported.",
+        stage9BackDetails: "Attorney verifies translation accuracy, legal terminology, and ensures all documents meet Polish authority requirements.",
+        stage10BackDetails: "Smart system populates citizenship forms and documents using OCR data with intelligent field mapping and manual entry protection.",
+        stage11BackDetails: "AI cross-checks data consistency across documents. Flags discrepancies in names, dates, and relationships for human review.",
+        stage12BackDetails: "Human review of all form fields populated by AI. Attorney checks data consistency, flags missing information, and approves forms for PDF generation.",
+        stage13BackDetails: "Independent AI systems analyze form data to check for missing fields, data consistency, legal compliance, and generate quality scores with detailed feedback.",
+        stage14BackDetails: "Attorney analyzes dual AI verification reports. Reviews flagged issues, confidence scores, and recommendations. Final human judgment before PDF generation authorization.",
+        stage15BackDetails: "Comprehensive review ensuring all documents are present, translated, verified, and forms are complete. Last checkpoint before official PDF creation.",
+        stage16BackDetails: "Automated PDF generation creates official citizenship application documents with all verified data. Includes digital signatures and timestamps."
       }
     },
   },
@@ -663,6 +683,26 @@ const resources = {
         country: 'Kraj',
         countrySelect: 'Wybierz',
         requestInfo: 'Poproś o Więcej Informacji'
+      },
+      
+      // Workflow Card Back Details
+      workflow: {
+        stage1BackDetails: "Klienci przesyłają skany lub zdjęcia dokumentów w wysokiej jakości. System akceptuje formaty PDF, JPG, PNG. Pliki są bezpiecznie przechowywane i indeksowane do przetwarzania AI.",
+        stage2BackDetails: "Automatyczna walidacja sprawdza formaty plików, rozmiary i jakość. Dokumenty są indeksowane i przygotowywane do klasyfikacji AI.",
+        stage3BackDetails: "Zaawansowana AI analizuje obrazy dokumentów, aby zidentyfikować typ i dopasować do odpowiednich członków rodziny z oceną pewności.",
+        stage4BackDetails: "Prawnik sprawdza sugerowane przez AI typy dokumentów i przypisania osób. Może zastąpić klasyfikacje o niskiej pewności. Zapewnia integralność danych przed wypełnieniem formularzy.",
+        stage5BackDetails: "Automatyczne przetwarzanie OCR wydobywa ustrukturyzowane dane z dokumentów równolegle dla efektywnego wypełniania formularzy.",
+        stage6BackDetails: "AI i człowiek sprawdzają wyniki OCR pod kątem dokładności. Krytyczne pola jak imiona, daty i numery dokumentów są weryfikowane pod kątem błędów.",
+        stage7BackDetails: "AI wykrywa język dokumentu i oznacza dokumenty niepol skilled jako wymagające tłumaczenia. Tworzy automatycznie zadania tłumaczenia.",
+        stage8BackDetails: "Certyfikowani tłumacze przysięgli przekładają dokumenty obcojęzyczne na polski. Obsługiwane są zarówno AI, jak i profesjonalne ludzkie przepływy tłumaczenia.",
+        stage9BackDetails: "Prawnik weryfikuje dokładność tłumaczenia, terminologię prawną i zapewnia, że wszystkie dokumenty spełniają wymagania polskich władz.",
+        stage10BackDetails: "Inteligentny system wypełnia formularze obywatelstwa i dokumenty używając danych OCR z inteligentnym mapowaniem pól i ochroną przed ręcznym wprowadzaniem.",
+        stage11BackDetails: "AI sprawdza spójność danych między dokumentami. Oznacza niezgodności w imionach, datach i relacjach do ludzkiej weryfikacji.",
+        stage12BackDetails: "Ludzka weryfikacja wszystkich pól formularzy wypełnionych przez AI. Prawnik sprawdza spójność danych, oznacza brakujące informacje i zatwierdza formularze do generowania PDF.",
+        stage13BackDetails: "Niezależne systemy AI analizują dane formularzy, sprawdzając brakujące pola, spójność danych, zgodność prawną i generują oceny jakości ze szczegółowymi opiniami.",
+        stage14BackDetails: "Prawnik analizuje raporty podwójnej weryfikacji AI. Sprawdza oznaczone problemy, oceny pewności i rekomendacje. Ostateczna ludzka ocena przed autoryzacją generowania PDF.",
+        stage15BackDetails: "Kompleksowa weryfikacja zapewniająca, że wszystkie dokumenty są obecne, przetłumaczone, zweryfikowane i formularze są kompletne. Ostatni punkt kontrolny przed oficjalnym utworzeniem PDF.",
+        stage16BackDetails: "Automatyczne generowanie PDF tworzy oficjalne dokumenty wniosku o obywatelstwo ze wszystkimi zweryfikowanymi danymi. Zawiera podpisy cyfrowe i znaczniki czasu."
       }
     }
   },
@@ -1174,8 +1214,29 @@ const resources = {
         }
       },
       
-      // SEO Meta Tags
-      seo: {
+      // Workflow Card Back Details
+      workflow: {
+        stage1BackDetails: "Los clientes cargan escaneos o fotos de alta calidad de documentos. El sistema acepta formatos PDF, JPG, PNG. Los archivos se almacenan de forma segura e indexan para procesamiento de IA.",
+        stage2BackDetails: "La validación automatizada verifica formatos de archivo, tamaños y calidad. Los documentos se indexan y preparan para la clasificación de IA.",
+        stage3BackDetails: "La IA avanzada analiza imágenes de documentos para identificar el tipo y hacer coincidir con miembros relevantes de la familia con puntuación de confianza.",
+        stage4BackDetails: "El abogado revisa los tipos de documentos y asignaciones de personas sugeridas por IA. Puede anular clasificaciones de baja confianza. Garantiza la integridad de los datos antes del llenado de formularios.",
+        stage5BackDetails: "El procesamiento OCR automatizado extrae datos estructurados de documentos en paralelo para un llenado eficiente de formularios.",
+        stage6BackDetails: "IA y humano revisan los resultados de OCR para verificar la precisión. Los campos críticos como nombres, fechas y números de documentos se verifican en busca de errores.",
+        stage7BackDetails: "La IA detecta el idioma del documento y marca documentos no polacos para traducción certificada. Crea tareas de traducción automáticamente.",
+        stage8BackDetails: "Los traductores jurados certificados convierten documentos en idiomas extranjeros al polaco. Se admiten flujos de trabajo de traducción profesional tanto asistidos por IA como humanos.",
+        stage9BackDetails: "El abogado verifica la precisión de la traducción, la terminología legal y garantiza que todos los documentos cumplan con los requisitos de las autoridades polacas.",
+        stage10BackDetails: "El sistema inteligente completa formularios de ciudadanía y documentos utilizando datos OCR con mapeo inteligente de campos y protección de entrada manual.",
+        stage11BackDetails: "La IA verifica la coherencia de los datos entre documentos. Marca discrepancias en nombres, fechas y relaciones para revisión humana.",
+        stage12BackDetails: "Revisión humana de todos los campos de formulario completados por IA. El abogado verifica la coherencia de datos, marca información faltante y aprueba formularios para generación de PDF.",
+        stage13BackDetails: "Los sistemas de IA independientes analizan los datos del formulario para verificar campos faltantes, coherencia de datos, cumplimiento legal y generan puntajes de calidad con comentarios detallados.",
+        stage14BackDetails: "El abogado analiza informes de verificación dual de IA. Revisa problemas marcados, puntajes de confianza y recomendaciones. Juicio humano final antes de la autorización de generación de PDF.",
+        stage15BackDetails: "Revisión integral que garantiza que todos los documentos estén presentes, traducidos, verificados y los formularios estén completos. Último punto de control antes de la creación oficial de PDF.",
+        stage16BackDetails: "La generación automática de PDF crea documentos oficiales de solicitud de ciudadanía con todos los datos verificados. Incluye firmas digitales y marcas de tiempo."
+      }
+    },
+  },
+  pt: {
+    translation: {
         home: {
           title: 'Ciudadanía Polaca por Descendencia | Servicios Legales Expertos Desde 2003',
           description: 'Orientación legal experta para obtener la ciudadanía polaca y pasaportes de la UE a través de ascendencia polaca. Tasa de éxito del 100%, cronograma realista, precios transparentes.',
