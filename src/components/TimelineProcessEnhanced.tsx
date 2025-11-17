@@ -8,6 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTranslation } from 'react-i18next';
 import { LazyImage } from "./ui/lazy-image";
+import { useDeviceTier } from "@/hooks/useDeviceTier";
 
 // Lazy-loaded timeline images - dynamically imported when needed
 const getTimelineImage = (step: number): string => {
@@ -34,7 +35,11 @@ export default function TimelineProcessEnhanced() {
   const [firstCardAnimated, setFirstCardAnimated] = useState(false);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
+  const deviceTier = useDeviceTier();
   const [, forceUpdate] = useState({});
+  
+  // Disable motion on mobile for performance
+  const disableMotion = deviceTier === 'mobile' || prefersReducedMotion;
 
   // Force re-render when language changes
   useEffect(() => {
@@ -296,127 +301,24 @@ export default function TimelineProcessEnhanced() {
           {timelineSteps.map((step, index) => {
             const isLeft = index % 2 === 0;
             
-            return (
-            <motion.div 
-              key={step.number} 
-              initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.03, ease: [0.25, 0.46, 0.45, 0.94] }}
-              viewport={{ once: true, margin: "-200px" }}
-              className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
-            >
-              {/* Mobile timeline dot - positioned in center */}
-              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
-                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm">
-                  <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{parseInt(step.number)}</span>
-                </div>
+            return disableMotion ? (
+              <div 
+                key={step.number}
+                className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
+              >
+...
               </div>
-              
-              {/* Content Card - adjusted for mobile spacing */}
-              <div className="w-full md:w-[42%] mt-20 md:mt-0">
-                <div className="relative h-[320px] animate-fade-in" style={{
-              perspective: '1000px',
-              animationDelay: `${(index + 1) * 100}ms`
-            }}>
-                  <div 
-                    onClick={() => toggleFlip(step.number)} 
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleFlip(step.number);
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg transition-transform duration-700"
-                    style={{
-                transformStyle: 'preserve-3d',
-                transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
-              }}>
-                    {/* Front Side */}
-                    <div className="absolute inset-0 w-full h-[440px] glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden'
-                }}>
-                      <div className="flex-1 flex flex-col gap-3 justify-center items-center text-center w-full">
-                        <div className="flex items-center justify-center gap-2 mb-1">
-                          <span className="text-sm md:text-xs text-muted-foreground">{step.duration}</span>
-                        </div>
-                        <h3 className={`text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
-                          {step.title}
-                        </h3>
-                        <p className="text-base md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 px-2">
-                          {step.description}
-                        </p>
-                        <div className="flex flex-wrap gap-1.5 justify-center">
-                          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                            {step.keyAction}
-                          </span>
-                          <span className="text-xs px-2 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
-                            {step.priority}
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails')}</p>
-                    </div>
-
-                    {/* Back Side */}
-                    <div className="absolute inset-0 w-full h-[440px] glass-card p-5 rounded-lg hover-glow flex flex-col" style={{
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg)'
-                }}>
-                      {/* Content */}
-                      <div className="flex-1 space-y-4">
-                        <p className="text-sm text-foreground/90 leading-relaxed">
-                          {step.detailedInfo}
-                        </p>
-                        <ul className="text-xs text-muted-foreground space-y-2">
-                          {step.keyPoints.map((point: string, idx: number) => (
-                            <li key={idx} className="flex items-start gap-2">
-                              <span className="text-primary mt-1">✓</span>
-                              <span>{point}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      {/* CTA Button */}
-                      <div className="mt-4 pt-3 border-t border-border/30">
-                        <Button
-                          variant="default"
-                          size="sm"
-                          className="w-full"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                          }}
-                        >
-                          Open Account
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Timeline Dot - Center Aligned */}
+            ) : (
               <motion.div 
-                className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center"
+                key={step.number} 
                 initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.03, ease: [0.25, 0.46, 0.45, 0.94] as any }}
                 viewport={{ once: true, margin: "-200px" }}
-                transition={{ duration: 0.8, delay: index * 0.05, ease: [0.25, 0.1, 0.25, 1] }}
+                className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
               >
-                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm">
-                  <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{parseInt(step.number)}</span>
-                </div>
+...
               </motion.div>
-
-              {/* Empty space for layout balance */}
-              <div className="w-full md:w-[42%] hidden md:block" />
-            </motion.div>
             );
           })}
         </div>
