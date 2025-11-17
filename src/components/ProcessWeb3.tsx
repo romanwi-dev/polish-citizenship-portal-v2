@@ -61,15 +61,7 @@ const ProcessWeb3 = memo(() => {
   return (
     <section className="py-32 relative overflow-hidden">
       <div className="container px-4 mx-auto relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-heading tracking-tight">
-            {t('process.title')}
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal">
-            {t('process.subtitle')}
-          </p>
-        </div>
+        {/* Section Header - Removed "Your Journey to Polish Citizenship" title and subtitle */}
 
         {/* Process Steps Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
