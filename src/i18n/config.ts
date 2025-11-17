@@ -1828,8 +1828,6 @@ const resources = {
           
           stage15Details: 'Oferecemos serviços jurídicos familiares estendidos para ajudar outros membros de sua família a obter cidadania polonesa. Com sua cidadania estabelecida, agora podemos ajudar seu cônjuge, filhos e outros familiares elegíveis a obter cidadania polonesa também, aproveitando seu caso bem-sucedido.',
           stage15Points: ['Avaliação de elegibilidade de membros da família', 'Processo simplificado baseado em sua cidadania estabelecida', 'Assistência para cônjuge e filhos', 'Suporte estendido para familiares adicionais elegíveis'],
-          
-          stage4Details: 'Você fornece informações pessoais básicas, cópia do passaporte, cópia da certidão de nascimento, telefone e histórico familiar essencial. Preparamos documentos de Procuração para candidatos adultos, enviamos por email para sua assinatura, e você envia as procurações assinadas para nosso escritório em Varsóvia via FedEx para arquivamento oficial.',
           stage4Points: ['Envie informações básicas do cliente e documentos de identidade', 'Receba documentos de Procuração preparados profissionalmente', 'Assine documentos de Procuração com notarização adequada se necessário', 'Envie documentos assinados para escritório em Varsóvia via FedEx'],
           
           stage5Details: 'Você completa o Formulário Mestre abrangente com todos os dados necessários. Nosso Agente de IA gera toda a documentação da aplicação incluindo aplicação de cidadania, documentação de árvore genealógica e formulários de suporte. Submetemos a aplicação oficial de cidadania às autoridades polonesas em seu nome.',
