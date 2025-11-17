@@ -65,13 +65,8 @@ export default function TimelineProcessEnhanced() {
     gradient: "from-cyan-500 to-blue-500",
     image: getTimelineImage(2),
     stepIcon: getStepIcon(2),
-    detailedInfo: "We provide you with an initial assessment of your case, send full process information with transparent pricing, receive your confirmation to proceed, and email you the complete list of all needed documents. This stage ensures you understand the costs, timeline, and requirements before moving forward.",
-    keyPoints: [
-      "Receive initial assessment of your citizenship case",
-      "Get full process information with detailed pricing breakdown",
-      "Confirm your decision to proceed with the application",
-      "Receive comprehensive list of required documents"
-    ]
+    detailedInfo: t('timelineProcess.stage2Details'),
+    keyPoints: t('timelineProcess.stage2Points', { returnObjects: true }) as string[]
   }, {
     number: "3",
     title: t('timelineProcess.stage3'),
@@ -83,13 +78,8 @@ export default function TimelineProcessEnhanced() {
     gradient: "from-blue-500 to-indigo-500",
     image: getTimelineImage(3),
     stepIcon: getStepIcon(3),
-    detailedInfo: "Once you decide to proceed, you make the advance payment which secures your case processing slot. Your client portal account is then opened, giving you 24/7 access to track your case, upload documents, view progress, and communicate with your legal team throughout the entire citizenship journey.",
-    keyPoints: [
-      "Make advance payment to secure your case slot",
-      "Client portal account is opened for you",
-      "Gain 24/7 access to track application progress",
-      "Communicate directly with your legal team"
-    ]
+    detailedInfo: t('timelineProcess.stage3Details'),
+    keyPoints: t('timelineProcess.stage3Points', { returnObjects: true }) as string[]
   }, {
     number: "4",
     title: t('timelineProcess.stage4'),
