@@ -346,22 +346,57 @@ const resources = {
         step1Title: 'First Contact',
         step1Desc: 'Reach out through our website, email, WhatsApp, or by recommendation to start your journey.',
         step1Cta: 'Contact Form',
+        step1DetailedInfo: "Your citizenship journey begins with your first contact. Reach out to us through our website contact form, email, WhatsApp, or through a personal recommendation. This initial connection starts the conversation about your Polish ancestry and citizenship eligibility. We'll provide preliminary information and guide you toward the next step in the process.",
+        step1KeyPoints: [
+          "Contact us via website, email, WhatsApp, or recommendation",
+          "Share your initial questions about Polish citizenship",
+          "Receive preliminary guidance about the process",
+          "Learn about the next steps in your journey"
+        ],
         step2Number: '02',
         step2Title: 'Eligibility Check',
         step2Desc: 'Take our Polish citizenship test and fill the family tree so we can determine your eligibility. If eligible, we move to the next stage.',
         step2Cta: 'Take Polish Citizenship Test',
+        step2DetailedInfo: "Take our comprehensive Polish citizenship test and fill out the family tree form to help us determine your eligibility. Our system analyzes your family history, ancestry line, and documentation to assess whether you qualify for Polish citizenship. If eligible based on this initial assessment, we'll move forward to the detailed document examination stage.",
+        step2KeyPoints: [
+          "Complete our Polish citizenship eligibility test online",
+          "Fill out detailed family tree with ancestor information",
+          "Receive initial eligibility assessment based on your responses",
+          "If eligible, proceed to next stage of document examination"
+        ],
         step3Number: '03',
         step3Title: 'Document Examination',
         step3Desc: 'We carefully examine your documents, especially Polish documents of ancestors and naturalization/military service documents.',
         step3Cta: 'Dashboard',
+        step3DetailedInfo: "We carefully examine all your documents, with special attention to Polish documents of your ancestors and any naturalization or military service records. This thorough examination verifies document authenticity, identifies any missing pieces, and ensures we have everything needed for a strong citizenship application. We analyze historical records to build your complete ancestry case.",
+        step3KeyPoints: [
+          "Detailed examination of Polish ancestor documents",
+          "Special focus on naturalization and military service records",
+          "Verification of document authenticity and completeness",
+          "Identification of any additional documentation needed"
+        ],
         step4Number: '04',
         step4Title: 'Case Assessment',
         step4Desc: 'We analyze your case and provide comprehensive assessment of chances, timeline, and costs involved.',
         step4Cta: 'Schedule Consultation',
+        step4DetailedInfo: "After examining your documents, we schedule a comprehensive eligibility call to discuss our findings. This call reviews your case in detail, outlines the path forward, discusses timeline and costs, and confirms whether you qualify for Polish citizenship. It's your opportunity to ask questions and understand every aspect of the process before moving forward.",
+        step4KeyPoints: [
+          "Comprehensive review of your case and documentation",
+          "Discussion of eligibility findings and qualification",
+          "Detailed explanation of timeline, costs, and next steps",
+          "Opportunity to ask questions and clarify any concerns"
+        ],
         step5Number: '05',
         step5Title: 'Send Documents',
         step5Desc: 'Send by FedEx to our Warsaw office all required documents for processing.',
         step5Cta: 'Dashboard',
+        step5DetailedInfo: "Once you decide to proceed, you'll FedEx all required documents to our Warsaw office for official case initiation. This includes signed power of attorney forms, original or certified copies of vital records, and supporting documentation. Upon receipt, we open your official case file, register you in our system, and begin the formal citizenship application process on your behalf.",
+        step5KeyPoints: [
+          "FedEx all required documents to our Warsaw office",
+          "Include signed POA and certified vital records",
+          "Official case file opened and registered in system",
+          "Formal citizenship application process begins"
+        ],
         step6Number: '06',
         step6Title: 'AI Document Processing',
         step6Desc: 'All documents are processed by our AI Documents System to generate Powers of Attorney and the Polish citizenship application.',
