@@ -5875,7 +5875,7 @@ const resources = {
       }
     }
   }
-}; // End of resources object
+};
 
 i18n
   .use(initReactI18next)
