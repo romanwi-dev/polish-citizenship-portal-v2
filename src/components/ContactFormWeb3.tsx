@@ -18,6 +18,7 @@ import EUCelebrationSection from "./EUCelebrationSection";
 import thankYou1 from "@/assets/thank-you/thank-you-1.jpg";
 import { useTranslation } from "react-i18next";
 import { BenefitCard } from "./BenefitCard";
+import { cn } from "@/lib/utils";
 
 const COUNTRIES = [
   "USA", "UK", "Canada", "Australia", "South Africa", "Brazil", 
@@ -206,7 +207,10 @@ const ContactFormWeb3 = memo(() => {
                           value={formData.country}
                           onValueChange={(value) => handleSelectChange("country", value)}
                         >
-                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectTrigger className={cn(
+                            "!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent",
+                            isRTL && "[&>svg]:order-first [&>svg]:mr-2"
+                          )}>
                             <SelectValue placeholder={t('contact.countryPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100] max-h-[300px] overflow-auto">
@@ -229,7 +233,10 @@ const ContactFormWeb3 = memo(() => {
                           value={formData.polishAncestor}
                           onValueChange={(value) => handleSelectChange("polishAncestor", value)}
                         >
-                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectTrigger className={cn(
+                            "!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent",
+                            isRTL && "[&>svg]:order-first [&>svg]:mr-2"
+                          )}>
                             <SelectValue placeholder={t('contact.ancestorPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -252,7 +259,10 @@ const ContactFormWeb3 = memo(() => {
                           value={formData.yearOfEmigration}
                           onValueChange={(value) => handleSelectChange("yearOfEmigration", value)}
                         >
-                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectTrigger className={cn(
+                            "!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent",
+                            isRTL && "[&>svg]:order-first [&>svg]:mr-2"
+                          )}>
                             <SelectValue placeholder={t('contact.yearPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -273,7 +283,10 @@ const ContactFormWeb3 = memo(() => {
                           value={formData.polishDocuments}
                           onValueChange={(value) => handleSelectChange("polishDocuments", value)}
                         >
-                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectTrigger className={cn(
+                            "!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent",
+                            isRTL && "[&>svg]:order-first [&>svg]:mr-2"
+                          )}>
                             <SelectValue placeholder={t('contact.selectOption')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
