@@ -3,7 +3,7 @@ import warsawSkyline from "@/assets/warsaw-skyline.png";
 export const WarsawSkyline = () => {
   return (
     <div className="relative z-10 w-full flex justify-center">
-      <div className="w-full md:w-[80%]">
+      <div className="w-full md:w-[60%]">
         <img 
           src={warsawSkyline} 
           alt="Warsaw skyline silhouette" 
