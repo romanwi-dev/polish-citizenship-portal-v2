@@ -307,8 +307,8 @@ export default function TimelineProcessEnhanced() {
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
-                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary/30 shadow-lg shadow-primary/50 flex items-center justify-center backdrop-blur-sm">
-                  <span className="text-2xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{parseInt(step.number)}</span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 dark:from-primary dark:to-secondary border-2 border-primary/40 dark:border-primary shadow-[0_0_30px_rgba(59,130,246,0.3)] dark:shadow-[0_0_30px_rgba(59,130,246,0.5)] flex items-center justify-center">
+                  <span className="text-white font-heading font-bold text-3xl">{parseInt(step.number)}</span>
                 </div>
               </div>
               
@@ -415,8 +415,8 @@ export default function TimelineProcessEnhanced() {
                 viewport={{ once: true, margin: "-200px" }}
                 transition={{ duration: 0.8, delay: index * 0.05, ease: [0.25, 0.1, 0.25, 1] }}
               >
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-lg shadow-primary/50 flex items-center justify-center backdrop-blur-sm">
-                  <span className="text-2xl font-heading font-bold dark:text-white light:text-white">{parseInt(step.number)}</span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 dark:from-primary dark:to-secondary border-2 border-primary/40 dark:border-primary shadow-[0_0_30px_rgba(59,130,246,0.3)] dark:shadow-[0_0_30px_rgba(59,130,246,0.5)] flex items-center justify-center">
+                  <span className="text-white font-heading font-bold text-3xl">{parseInt(step.number)}</span>
                 </div>
               </motion.div>
 
