@@ -5817,10 +5817,9 @@ const resources = {
       }
     }
   }
-};
+}
 
 i18n
-  .use(initReactI18next)
   .use(initReactI18next)
   .init({
     resources,
@@ -5847,4 +5846,3 @@ i18n.on('languageChanged', (lng) => {
 });
 
 export default i18n;
-export {};
