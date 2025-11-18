@@ -4,12 +4,6 @@ import warsawSkylineBlue from "@/assets/warsaw-skyline-blue.png";
 import warsawSkylineRed from "@/assets/warsaw-skyline-red.png";
 import londonSkylineBlue from "@/assets/london-skyline-blue.png";
 import londonSkylineRed from "@/assets/london-skyline-red.png";
-import pragueSkylineWhite from "@/assets/prague-skyline-white.png";
-import pragueSkylineBlue from "@/assets/prague-skyline-blue.png";
-import pragueSkylineRed from "@/assets/prague-skyline-red.png";
-import budapestSkylineWhite from "@/assets/budapest-skyline-white.png";
-import budapestSkylineBlue from "@/assets/budapest-skyline-blue.png";
-import budapestSkylineRed from "@/assets/budapest-skyline-red.png";
 import berlinSkylineWhite from "@/assets/berlin-skyline-white.png";
 import berlinSkylineBlue from "@/assets/berlin-skyline-blue.png";
 import berlinSkylineRed from "@/assets/berlin-skyline-red.png";
@@ -32,7 +26,7 @@ import athensSkylineRed from "@/assets/athens-skyline-red.png";
 interface SkylineDividerProps {
   imageSrc?: string;
   alt?: string;
-  cityName?: 'warsaw' | 'london' | 'prague' | 'budapest' | 'berlin' | 'paris' | 'vienna' | 'rome' | 'brussels' | 'athens';
+  cityName?: 'warsaw' | 'london' | 'berlin' | 'paris' | 'vienna' | 'rome' | 'brussels' | 'athens';
 }
 
 const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }: SkylineDividerProps) => {
@@ -76,8 +70,6 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
       const darkSkylineMap = {
         warsaw: warsawSkylineWhite,
         london: warsawSkylineWhite,
-        prague: pragueSkylineWhite,
-        budapest: budapestSkylineWhite,
         berlin: berlinSkylineWhite,
         paris: parisSkylineWhite,
         vienna: viennaSkylineWhite,
@@ -92,8 +84,6 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
     const lightSkylineMap = {
       warsaw: themeColor === 'blue' ? warsawSkylineBlue : warsawSkylineRed,
       london: themeColor === 'blue' ? londonSkylineBlue : londonSkylineRed,
-      prague: themeColor === 'blue' ? pragueSkylineBlue : pragueSkylineRed,
-      budapest: themeColor === 'blue' ? budapestSkylineBlue : budapestSkylineRed,
       berlin: themeColor === 'blue' ? berlinSkylineBlue : berlinSkylineRed,
       paris: themeColor === 'blue' ? parisSkylineBlue : parisSkylineRed,
       vienna: themeColor === 'blue' ? viennaSkylineBlue : viennaSkylineRed,
