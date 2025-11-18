@@ -46,7 +46,7 @@ export function SocialShare({
           className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
           aria-label="Share on Facebook"
         >
-          <Facebook className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          <Facebook className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
         </button>
 
         <button
@@ -54,7 +54,7 @@ export function SocialShare({
           className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
           aria-label="Share on Twitter"
         >
-          <Twitter className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          <Twitter className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
         </button>
 
         <button
@@ -62,7 +62,7 @@ export function SocialShare({
           className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
           aria-label="Share on LinkedIn"
         >
-          <Linkedin className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          <Linkedin className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
         </button>
 
         <button
@@ -70,7 +70,7 @@ export function SocialShare({
           className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
           aria-label="Share on Pinterest"
         >
-          <SiPinterest className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          <SiPinterest className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
         </button>
 
         <button
@@ -78,7 +78,7 @@ export function SocialShare({
           className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
           aria-label="Share on WhatsApp"
         >
-          <MessageCircle className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          <MessageCircle className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
         </button>
 
         <button
@@ -86,7 +86,7 @@ export function SocialShare({
           className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
           aria-label="Share on Telegram"
         >
-          <Send className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          <Send className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
         </button>
 
         <button
@@ -94,7 +94,7 @@ export function SocialShare({
           className="group p-3 rounded-full bg-muted/50 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
           aria-label="Copy link"
         >
-          <Link2 className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          <Link2 className="h-5 w-5 text-primary group-hover:text-white transition-colors" />
         </button>
       </div>
     );
