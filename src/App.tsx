@@ -203,6 +203,16 @@ const App = () => {
                 <WarsawDemo />
               </Suspense>
             } />
+            <Route path="/paris-demo" element={
+              <Suspense fallback={<AdminLoader />}>
+                <ParisDemo />
+              </Suspense>
+            } />
+            <Route path="/rome-demo" element={
+              <Suspense fallback={<AdminLoader />}>
+                <RomeDemo />
+              </Suspense>
+            } />
             <Route path="/eu-celebration-demo" element={
               <Suspense fallback={<AdminLoader />}>
                 <EUCelebrationDemo />
