@@ -2027,8 +2027,8 @@ const resources = {
         // Timeline Section - Portuguese
         timelineProcess: {
           badge: 'Nosso Processo',
-          title: 'Cronograma Completo de Cidadania Polonesa por Descendência',
-          subtitle: 'A jornada honesta e realista de 15 etapas desde o primeiro contato até o passaporte da UE - como cada etapa realmente funciona com preços transparentes e prazos verdadeiros',
+          title: 'Linha do Tempo Completa de Cidadania Polonesa por Descendência',
+          subtitle: 'A jornada honesta e realista de 15 etapas do primeiro contato ao passaporte da UE - como cada etapa realmente funciona com preços transparentes e cronogramas verdadeiros',
           mainCta: 'Fazer Teste de Cidadania Polonesa',
           tapToSeeDetails: 'Toque para ver detalhes',
           clickToSeeDetails: 'Clique para ver detalhes',
@@ -3254,7 +3254,7 @@ const resources = {
       
       timelineProcess: {
         badge: 'Notre Processus',
-        title: 'Calendrier Complet de Citoyenneté Polonaise par Descendance',
+        title: 'Chronologie Complète de la Citoyenneté Polonaise par Ascendance',
         subtitle: 'Le parcours honnête et réaliste en 15 étapes du premier contact au passeport européen - comment chaque étape fonctionne réellement avec des prix transparents et des délais véridiques',
         mainCta: 'Passer le Test de Citoyenneté Polonaise',
         tapToSeeDetails: 'Appuyez pour voir les détails',
@@ -3942,8 +3942,8 @@ const resources = {
       
       timelineProcess: {
         badge: 'התהליך שלנו',
-        title: 'ציר זמן מלא לאזרחות פולנית לפי מוצא',
-        subtitle: 'המסע הכנה והמציאותי בן 15 השלבים מהקשר הראשון ועד לדרכון האירופי - איך כל שלב עובד באמת עם תמחור שקוף ולוחות זמנים אמיתיים',
+        title: 'ציר זמן מלא של אזרחות פולנית לפי מוצא',
+        subtitle: 'המסע הכנה והמציאותי בן 15 השלבים מהמגע הראשון ועד לדרכון האיחוד האירופי - כיצד כל שלב עובד באמת עם תמחור שקוף ולוחות זמנים אמיתיים',
         mainCta: 'לעבור מבחן אזרחות פולנית',
         tapToSeeDetails: 'הקש לראות פרטים',
         clickToSeeDetails: 'לחץ לראות פרטים',
