@@ -166,7 +166,7 @@ const FAQSection = () => {
   const isRTL = i18n.language === 'he';
 
   return (
-    <section id="faq" className="py-12 md:py-20 relative overflow-hidden overflow-x-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
+    <section key={i18n.language} id="faq" className="py-12 md:py-20 relative overflow-hidden overflow-x-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -237,9 +237,10 @@ const FAQSection = () => {
                         key={index}
                         value={`item-${index}`}
                         className="glass-card border border-primary/10 rounded-lg px-6 hover:border-primary/30 transition-all"
+                        dir={isRTL ? 'rtl' : 'ltr'}
                       >
-                        <AccordionTrigger className={`${isRTL ? 'text-right flex-row-reverse' : 'text-left'} hover:no-underline py-6 [&>svg]:${isRTL ? 'order-first mr-0 ml-2' : 'ml-auto'}`}>
-                          <span className={`text-lg font-semibold ${isRTL ? 'pl-4 text-right' : 'pr-4'}`}>{faq.question}</span>
+                        <AccordionTrigger className={`hover:no-underline py-6 ${isRTL ? 'flex-row-reverse [&>svg]:mr-0 [&>svg]:ml-2' : ''}`}>
+                          <span className={`text-lg font-semibold flex-1 ${isRTL ? 'text-right pr-4' : 'text-left pr-4'}`}>{faq.question}</span>
                         </AccordionTrigger>
                         <AccordionContent className={`text-muted-foreground pb-6 leading-relaxed text-lg font-faq-light font-light ${isRTL ? 'text-right' : 'text-left'}`}>
                           {faq.answer}
