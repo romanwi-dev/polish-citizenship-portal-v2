@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { ukrainianTranslation } from './uk-translation';
-import { russianTranslation } from './complete-translations';
+import { russianTranslation } from './ru-translation';
 import { hebrewTranslation } from './he-translation';
 
 // Translation resources
@@ -800,7 +800,7 @@ const i18nResources = {
           keywords: 'Polish citizenship, EU passport, citizenship by descent, Polish ancestry, legal services, Polish citizenship by descent, Polish passport'
         }
       }
-    },
+    }
   },
   pl: {
     translation: {
@@ -3751,11 +3751,12 @@ const i18nResources = {
   },
   he: hebrewTranslation,
   ru: russianTranslation,
-  uk: ukrainianTranslation,
+  uk: ukrainianTranslation
 };
 
-i18n.use(initReactI18next);
-i18n.init({
+i18n
+  .use(initReactI18next)
+  .init({
     resources: i18nResources,
     lng: 'en', // default language
     fallbackLng: 'en',

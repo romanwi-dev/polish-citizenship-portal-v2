@@ -1,1 +1,5 @@
-export { hebrewComplete as hebrewTranslation } from './complete-translations';
+import { hebrewComplete } from './complete-translations';
+
+export const hebrewTranslation = {
+  translation: hebrewComplete
+};
