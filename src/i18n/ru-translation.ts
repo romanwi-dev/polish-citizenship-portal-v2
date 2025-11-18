@@ -1,1 +1,5 @@
-export { russianTranslation } from './complete-translations';
+import { russianTranslation as russianComplete } from './complete-translations';
+
+export const russianTranslation = {
+  translation: russianComplete
+};
