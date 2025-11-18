@@ -307,8 +307,8 @@ export default function TimelineProcessEnhanced() {
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-background/20 shadow-lg shadow-primary/50 flex items-center justify-center backdrop-blur-sm">
-                  <span className="text-2xl font-heading font-bold text-white">{parseInt(step.number)}</span>
+                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-primary/30 shadow-lg shadow-primary/50 flex items-center justify-center backdrop-blur-sm">
+                  <span className="text-2xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{parseInt(step.number)}</span>
                 </div>
               </div>
               
