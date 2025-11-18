@@ -49,8 +49,8 @@ const FlippableServiceCard = memo(({
           
           <div className="relative z-10">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/40 to-primary/60 flex items-center justify-center shadow-md flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                <Icon className="h-7 w-7 text-white/90" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-primary/40 dark:to-secondary/40 flex items-center justify-center shadow-lg flex-shrink-0 group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm border border-primary/20">
+                <Icon className="h-8 w-8 text-primary dark:text-white/90" strokeWidth={1.5} />
               </div>
               <h3 className="text-xl font-bold">
                 {title}

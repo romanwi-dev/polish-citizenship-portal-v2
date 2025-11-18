@@ -42,8 +42,8 @@ const FlippableAboutCard = ({
           style={{ backfaceVisibility: 'hidden' }}
         >
           <div className="flex flex-col items-center">
-            <div className="w-14 h-14 mb-4 rounded-xl bg-gradient-to-br from-primary/40 to-primary/60 flex items-center justify-center shadow-md">
-              <Icon className="w-7 h-7 text-white/90" />
+            <div className="w-20 h-20 mb-6 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 dark:from-primary/40 dark:to-secondary/40 flex items-center justify-center shadow-lg backdrop-blur-sm border border-primary/20">
+              <Icon className="w-10 h-10 text-primary dark:text-white/90" strokeWidth={1.5} />
             </div>
             <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 font-heading text-center leading-tight break-words hyphens-auto px-2">{title}</h3>
           </div>
