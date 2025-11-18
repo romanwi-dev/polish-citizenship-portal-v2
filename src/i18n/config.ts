@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 
 
 // Translation resources
-const resources = {
+const i18nResources = {
   en: {
     translation: {
       // Navigation
@@ -5822,7 +5822,7 @@ const resources = {
 i18n
   .use(initReactI18next)
   .init({
-    resources,
+    resources: i18nResources,
     lng: 'en', // default language
     fallbackLng: 'en',
     interpolation: {
