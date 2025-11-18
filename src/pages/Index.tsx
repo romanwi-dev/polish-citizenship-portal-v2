@@ -8,6 +8,7 @@ import { StructuredData } from "@/components/StructuredData";
 import Navigation from "@/components/Navigation";
 import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import { WarsawSkyline } from "@/components/WarsawSkyline";
+import { PragueSkyline } from "@/components/PragueSkyline";
 import { BudapestSkyline } from "@/components/BudapestSkyline";
 import { BerlinSkyline } from "@/components/BerlinSkyline";
 
@@ -58,6 +59,9 @@ const Index = () => {
             <WarsawSkyline />
           </div>
           <AboutSection />
+          <div className="my-16 md:my-24">
+            <PragueSkyline />
+          </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />

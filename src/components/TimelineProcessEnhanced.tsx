@@ -29,7 +29,6 @@ const getStepSlug = (step: number): string => {
 };
 
 export default function TimelineProcessEnhanced() {
-  console.log('🔄 TimelineProcessEnhanced RENDERING');
   const { t, i18n } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [firstCardAnimated, setFirstCardAnimated] = useState(false);
@@ -39,14 +38,8 @@ export default function TimelineProcessEnhanced() {
 
   // Force re-render when language changes
   useEffect(() => {
-    console.log('='.repeat(60));
-    console.log('🌍 TIMELINE LANGUAGE CHANGED TO:', i18n.language);
-    console.log('📝 Stage 1 title from t():', t('timelineProcess.stage1'));
-    console.log('📦 Current language resources available:', Object.keys(i18n.store.data));
-    console.log('🔍 PT resources exist?:', !!i18n.store.data.pt);
-    console.log('🔍 FR resources exist?:', !!i18n.store.data.fr);
-    console.log('🔍 HE resources exist?:', !!i18n.store.data.he);
-    console.log('='.repeat(60));
+    console.log('🌍 Timeline language changed to:', i18n.language);
+    console.log('📝 Stage 1 title:', t('timelineProcess.stage1'));
     forceUpdate({});
   }, [i18n.language, t]);
 
