@@ -5818,8 +5818,8 @@ const resources = {
         }
       }
     }
-  }
-};
+  } // end uk
+}; // end resources
 
 i18n
   .use(initReactI18next)
