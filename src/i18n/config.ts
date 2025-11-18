@@ -5861,7 +5861,7 @@ const resources = {
         review6Year: '2024'
       },
       
-      // SEO Meta Tags
+      // SEO Meta Tags - Ukrainian
       seo: {
         home: {
           title: 'Польське Громадянство за Походженням | Експертні Юридичні Послуги з 2003 року',
