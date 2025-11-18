@@ -85,7 +85,7 @@ const Index = () => {
           <ClientOnboardingSection />
         </Suspense>
         
-        <div className="my-16 md:my-24">
+        <div className="my-16 md:my-24 -mx-4 md:mx-0">
           <ParisSkyline />
         </div>
         
