@@ -38,8 +38,10 @@ export default function TimelineProcessEnhanced() {
 
   // Force re-render when language changes
   useEffect(() => {
+    console.log('🌍 Timeline language changed to:', i18n.language);
+    console.log('📝 Stage 1 title:', t('timelineProcess.stage1'));
     forceUpdate({});
-  }, [i18n.language]);
+  }, [i18n.language, t]);
 
   const timelineSteps = [{
     number: "1",
@@ -299,9 +301,13 @@ export default function TimelineProcessEnhanced() {
             return (
             <motion.div 
               key={step.number} 
-              initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
+              initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.03, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ 
+                duration: 0.8, 
+                delay: index * 0.05, 
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
               viewport={{ once: true, margin: "-200px" }}
               className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
             >

@@ -6,13 +6,14 @@ interface LazyImageProps {
   alt: string;
   className?: string;
   placeholder?: string;
+  applyTimelineFilter?: boolean;
 }
 
 /**
  * Lazy-loaded image component with Intersection Observer
  * Only loads image when it enters viewport
  */
-export const LazyImage = ({ src, alt, className = "", placeholder }: LazyImageProps) => {
+export const LazyImage = ({ src, alt, className = "", placeholder, applyTimelineFilter = false }: LazyImageProps) => {
   const [imageSrc, setImageSrc] = useState<string | undefined>(placeholder);
   const [isLoaded, setIsLoaded] = useState(false);
   const { ref, inView } = useInView({
@@ -31,13 +32,15 @@ export const LazyImage = ({ src, alt, className = "", placeholder }: LazyImagePr
       };
     }
   }, [inView, src, isLoaded]);
+  
+  const filterClass = applyTimelineFilter ? 'light:[filter:var(--timeline-image-filter)]' : '';
 
   return (
     <div ref={ref} className="relative overflow-hidden">
       <img
         src={imageSrc}
         alt={alt}
-        className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-50'} ${className}`}
+        className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-50'} ${filterClass} ${className}`}
         loading="lazy"
       />
       {!isLoaded && (

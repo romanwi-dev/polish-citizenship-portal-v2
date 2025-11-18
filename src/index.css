@@ -144,7 +144,8 @@ All colors MUST be HSL.
     --shadow-glow-secondary: 0 0 30px hsl(204 70% 53% / 0.12);
     --shadow-card: 0 2px 8px hsl(222 40% 20% / 0.06), 0 4px 16px hsl(222 40% 20% / 0.03);
     
-    --skyline-filter: brightness(1) invert(0);
+    /* Timeline images filter for light mode - darker like Warsaw */
+    --timeline-image-filter: brightness(0.7) contrast(1.1);
   }
 
   /* Red Theme - Dark Bordeaux Palette */
