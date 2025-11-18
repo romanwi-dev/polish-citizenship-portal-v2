@@ -224,17 +224,11 @@ export default function ClientOnboardingSection() {
                 </div>
 
                 {/* Timeline Dot - Center Aligned */}
-                <motion.div 
-                  className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center"
-                  initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
+                <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
                   <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
                     <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Empty space on other side */}
                 <div className="hidden md:block md:w-[42%]" />
