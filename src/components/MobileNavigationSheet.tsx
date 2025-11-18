@@ -37,10 +37,10 @@ export const MobileNavigationSheet = () => {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <button
-          className="md:hidden h-11 w-11 rounded-full dark:bg-background/50 bg-primary/10 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
+          className="md:hidden h-8 w-8 rounded-full dark:bg-background/50 bg-primary/10 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
           aria-label="Open navigation menu"
         >
-          <Menu className="h-5 w-5 text-primary dark:text-foreground" />
+          <Menu className="h-4 w-4 text-primary dark:text-foreground" />
         </button>
       </SheetTrigger>
 

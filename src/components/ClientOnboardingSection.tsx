@@ -121,8 +121,8 @@ export default function ClientOnboardingSection() {
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
-                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm">
-                  <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{parseInt(step.number)}</span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-background/20 shadow-lg shadow-primary/50 flex items-center justify-center backdrop-blur-sm">
+                  <span className="text-2xl font-heading font-bold text-white">{parseInt(step.number)}</span>
                 </div>
               </div>
               
@@ -130,7 +130,7 @@ export default function ClientOnboardingSection() {
                 {/* Card - adjusted for mobile spacing */}
                 <div className="w-full md:w-[42%] mt-20 md:mt-0">
                   <div 
-                    className="relative h-[440px]"
+                    className="relative h-[560px]"
                     style={{ 
                       perspective: '1000px'
                     }}
@@ -145,7 +145,7 @@ export default function ClientOnboardingSection() {
                 >
                   {/* Front Side */}
                   <div
-                    className="absolute inset-0 w-full h-[440px] glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center items-center"
+                    className="absolute inset-0 w-full h-[560px] glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center items-center"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -160,7 +160,7 @@ export default function ClientOnboardingSection() {
 
                     {/* Content */}
                     <div className="flex-1 space-y-4 text-center w-full">
-                      <h3 className="text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+                      <h3 className="text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 break-words leading-tight" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
                         {step.title}
                       </h3>
                       <p className="text-base md:text-sm text-muted-foreground leading-relaxed px-2">
@@ -169,12 +169,12 @@ export default function ClientOnboardingSection() {
                     </div>
                     
                     <div className="mt-8"></div>
-                    <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center">Tap card for details</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center">{t('onboarding.tapForDetails')}</p>
                   </div>
 
                   {/* Back Side */}
                   <div 
-                    className="absolute inset-0 w-full h-[440px] glass-card p-6 rounded-lg hover-glow flex flex-col"
+                    className="absolute inset-0 w-full h-[560px] glass-card p-6 rounded-lg hover-glow flex flex-col overflow-y-auto"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -183,7 +183,7 @@ export default function ClientOnboardingSection() {
                   >
                     {/* Content */}
                     <div className="flex-1 space-y-4">
-                      <p className="text-sm text-foreground/90 leading-relaxed">
+                      <p className="text-sm text-foreground/90 leading-relaxed break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
                         {step.detailedInfo}
                       </p>
                       <div className="space-y-2">
@@ -191,7 +191,7 @@ export default function ClientOnboardingSection() {
                           {step.keyPoints.map((point: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2">
                               <span className="text-primary mt-1">✓</span>
-                              <span>{point}</span>
+                              <span className="break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{point}</span>
                             </li>
                           ))}
                         </ul>
@@ -203,7 +203,13 @@ export default function ClientOnboardingSection() {
                       <Button
                         variant="default"
                         size="sm"
-                        className="w-full"
+                        className="w-full break-words leading-tight"
+                        style={{
+                          fontSize: 'clamp(0.7rem, 2.5vw, 0.875rem)',
+                          padding: 'clamp(0.4rem, 1.5vw, 0.65rem) clamp(0.6rem, 2.5vw, 1.25rem)',
+                          hyphens: 'none',
+                          wordBreak: 'break-word'
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -225,8 +231,8 @@ export default function ClientOnboardingSection() {
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm">
-                    <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{parseInt(step.number)}</span>
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-lg shadow-primary/50 flex items-center justify-center backdrop-blur-sm">
+                    <span className="text-2xl font-heading font-bold text-white">{parseInt(step.number)}</span>
                   </div>
                 </motion.div>
 
