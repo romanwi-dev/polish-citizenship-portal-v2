@@ -307,14 +307,14 @@ export default function TimelineProcessEnhanced() {
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
-                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm">
-                  <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{parseInt(step.number)}</span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-background/20 shadow-lg shadow-primary/50 flex items-center justify-center backdrop-blur-sm">
+                  <span className="text-2xl font-heading font-bold text-white">{parseInt(step.number)}</span>
                 </div>
               </div>
               
               {/* Content Card - adjusted for mobile spacing */}
               <div className="w-full md:w-[42%] mt-20 md:mt-0">
-                <div className="relative h-[560px] md:h-[520px] animate-fade-in" style={{
+                <div className="relative h-[560px] animate-fade-in" style={{
               perspective: '1000px',
               animationDelay: `${(index + 1) * 100}ms`
             }}>
@@ -335,7 +335,7 @@ export default function TimelineProcessEnhanced() {
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}>
                     {/* Front Side */}
-                    <div className="absolute inset-0 w-full h-[440px] glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
+                    <div className="absolute inset-0 w-full h-[560px] glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
@@ -343,18 +343,18 @@ export default function TimelineProcessEnhanced() {
                         <div className="flex items-center justify-center gap-2 mb-1">
                           <span className="text-sm md:text-xs text-muted-foreground">{step.duration}</span>
                         </div>
-                        <h3 className={`text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg break-words hyphens-auto leading-tight ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
+                        <h3 className={`text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg break-words leading-tight ${prefersReducedMotion ? '' : 'animate-fade-in'}`} style={{ hyphens: 'none', wordBreak: 'break-word' }}>
                           {step.title}
                         </h3>
                         <p className="text-base md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 px-2">
                           {step.description}
                         </p>
                         <div className="flex flex-wrap gap-1.5 justify-center">
-                          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 break-words hyphens-auto leading-tight">
-                            {step.keyAction}
+                          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 break-words leading-tight" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
+                            {t(`timelineProcess.stage${step.number}Category1`)}
                           </span>
-                          <span className="text-xs px-2 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20 break-words hyphens-auto leading-tight">
-                            {step.priority}
+                          <span className="text-xs px-2 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20 break-words leading-tight" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
+                            {t(`timelineProcess.stage${step.number}Category2`)}
                           </span>
                         </div>
                       </div>
@@ -362,21 +362,21 @@ export default function TimelineProcessEnhanced() {
                     </div>
 
                     {/* Back Side */}
-                    <div className="absolute inset-0 w-full h-[560px] md:h-[520px] glass-card p-4 md:p-5 rounded-lg hover-glow flex flex-col overflow-y-auto" style={{
+                    <div className="absolute inset-0 w-full h-[560px] glass-card p-4 md:p-5 rounded-lg hover-glow flex flex-col overflow-y-auto" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'
                 }}>
                       {/* Content */}
                       <div className="flex-1 space-y-3 md:space-y-4">
-                        <p className="text-xs md:text-sm text-foreground/90 leading-relaxed break-words hyphens-auto">
+                        <p className="text-xs md:text-sm text-foreground/90 leading-relaxed break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
                           {step.detailedInfo}
                         </p>
                         <ul className="text-[11px] md:text-xs text-muted-foreground space-y-2">
                           {step.keyPoints.map((point: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2">
                               <span className="text-primary mt-1 flex-shrink-0">✓</span>
-                              <span className="break-words hyphens-auto">{point}</span>
+                              <span className="break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{point}</span>
                             </li>
                           ))}
                         </ul>
@@ -387,13 +387,19 @@ export default function TimelineProcessEnhanced() {
                         <Button
                           variant="default"
                           size="sm"
-                          className="w-full text-xs md:text-sm py-2 break-words hyphens-auto leading-tight"
+                          className="w-full text-xs md:text-sm py-2 break-words leading-tight"
+                          style={{
+                            fontSize: 'clamp(0.7rem, 2.5vw, 0.875rem)',
+                            padding: 'clamp(0.4rem, 1.5vw, 0.65rem) clamp(0.6rem, 2.5vw, 1.25rem)',
+                            hyphens: 'none',
+                            wordBreak: 'break-word'
+                          }}
                           onClick={(e) => {
                             e.stopPropagation();
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                           }}
                         >
-                          <span className="block w-full break-words hyphens-auto">{t('timelineProcess.openAccountCta')}</span>
+                          <span className="block w-full break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{t('timelineProcess.openAccountCta')}</span>
                         </Button>
                       </div>
                     </div>

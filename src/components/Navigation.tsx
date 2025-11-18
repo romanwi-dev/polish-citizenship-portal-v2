@@ -55,8 +55,8 @@ const Navigation = () => {
             <LanguageSelector />
             
             {/* User Icon */}
-            <button onClick={() => navigate('/admin/cases')} className="min-h-11 min-w-11 h-11 w-11 rounded-full dark:bg-background/50 light:bg-primary/10 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Management">
-              <User className="h-5 w-5 text-primary dark:text-foreground" />
+            <button onClick={() => navigate('/admin/cases')} className="min-h-8 min-w-8 md:min-h-11 md:min-w-11 h-8 w-8 md:h-11 md:w-11 rounded-full dark:bg-background/50 light:bg-primary/10 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all" aria-label="Management">
+              <User className="h-4 w-4 md:h-5 md:w-5 text-primary dark:text-foreground" />
             </button>
             
             {/* Mobile Navigation - Full Screen Sheet */}
