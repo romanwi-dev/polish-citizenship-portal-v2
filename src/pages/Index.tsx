@@ -56,10 +56,10 @@ const Index = () => {
           <div className="my-16 md:my-24">
             <WarsawSkyline />
           </div>
+          <AboutSection />
           <div className="my-16 md:my-24">
             <PragueSkyline />
           </div>
-          <AboutSection />
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
