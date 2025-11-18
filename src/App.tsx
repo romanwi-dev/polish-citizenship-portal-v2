@@ -106,6 +106,8 @@ const BloodlineDashboardPage = lazy(() => import("./pages/admin/BloodlineDashboa
 const POAOCRPage = lazy(() => import("./pages/admin/POAOCRPage"));
 const SkylineBackgroundRemoval = lazy(() => import("./pages/admin/SkylineBackgroundRemoval"));
 const WarsawDemo = lazy(() => import("./pages/WarsawDemo"));
+const ParisDemo = lazy(() => import("./pages/ParisDemo"));
+const RomeDemo = lazy(() => import("./pages/RomeDemo"));
 const EUCelebrationDemo = lazy(() => import("./pages/EUCelebrationDemo"));
 const DemosHub = lazy(() => import("./pages/DemosHub"));
 const MultiStepDemo = lazy(() => import("./pages/MultiStepDemo"));
