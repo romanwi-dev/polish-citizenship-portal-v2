@@ -8,6 +8,7 @@ import { StructuredData } from "@/components/StructuredData";
 import Navigation from "@/components/Navigation";
 import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import { WarsawSkyline } from "@/components/WarsawSkyline";
+import { PragueSkyline } from "@/components/PragueSkyline";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 
@@ -51,16 +52,25 @@ const Index = () => {
           {/* Main content wrapper with semantic HTML and ARIA */}
           <main id="main-content" role="main" aria-label="Main content">
           <HeroWavingFlags />
-          <div className="-mt-8 md:-mt-32 -mb-8 md:-mb-32">
+          <div className="my-16 md:my-24">
             <WarsawSkyline />
           </div>
           <AboutSection />
+          <div className="my-16 md:my-24">
+            <PragueSkyline />
+          </div>
         
         <AIAnalysisSection />
+        <div className="my-16 md:my-24">
+          <PragueSkyline />
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
         </Suspense>
+        <div className="my-16 md:my-24">
+          <PragueSkyline />
+        </div>
         
         
         <Suspense fallback={<SectionLoader />}>
