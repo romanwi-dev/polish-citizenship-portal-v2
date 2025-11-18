@@ -7,6 +7,7 @@ import { StructuredData } from "@/components/StructuredData";
 // Eagerly load critical above-the-fold components for LCP
 import Navigation from "@/components/Navigation";
 import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
+import { WarsawSkyline } from "@/components/WarsawSkyline";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 
@@ -50,6 +51,7 @@ const Index = () => {
           {/* Main content wrapper with semantic HTML and ARIA */}
           <main id="main-content" role="main" aria-label="Main content">
           <HeroWavingFlags />
+          <WarsawSkyline />
           <AboutSection />
         
         <AIAnalysisSection />
