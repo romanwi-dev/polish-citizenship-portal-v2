@@ -3952,7 +3952,6 @@ const resources = {
         tapForDetails: 'הקש לפרטים',
         openAccountCta: 'פתח חשבון'
       },
-      
       timelineProcess: {
         badge: 'התהליך שלנו',
         title: 'ציר זמן מלא לאזרחות פולנית לפי מוצא',
