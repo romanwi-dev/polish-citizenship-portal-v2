@@ -829,6 +829,9 @@ const resources = {
         }
       },
       contact: {
+        badge: 'Skontaktuj się z Nami',
+        title: 'Sprawdź Swoje Uprawnienia i Szanse',
+        subtitle: 'Odpowiedź w ciągu 24 godzin',
         name: 'Imię',
         email: 'E-mail',
         country: 'Kraj',
@@ -5054,6 +5057,7 @@ const resources = {
         emailPlaceholder: '',
         countryLabel: 'Страна',
         countryPlaceholder: 'Выбрать',
+        requestInfo: 'Запросить Дополнительную Информацию',
         ancestorLabel: 'Польский Предок',
         ancestorPlaceholder: 'Выбрать',
         ancestorMother: 'Мать',
