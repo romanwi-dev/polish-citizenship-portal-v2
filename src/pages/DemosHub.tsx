@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText, Target, Image, Layout } from "lucide-react";
 import { ImageCarousel } from "@/components/ui/image-carousel";
+import { GlobalBackground } from "@/components/GlobalBackground";
+import { WarsawSkyline } from "@/components/WarsawSkyline";
+import { RomeSkyline } from "@/components/RomeSkyline";
+import { ParisSkyline } from "@/components/ParisSkyline";
 import secretary16 from "@/assets/secretaries/secretary-16.png";
 import secretary17 from "@/assets/secretaries/secretary-17.png";
 import secretary18 from "@/assets/secretaries/secretary-18.png";
@@ -158,7 +162,7 @@ const DemosHub = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Background matching the main site */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-b from-background via-primary/5 to-background" />
+      <GlobalBackground />
       
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-primary/10">
@@ -242,6 +246,21 @@ const DemosHub = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Warsaw Skyline */}
+          <div className="my-16 md:my-24">
+            <WarsawSkyline />
+          </div>
+
+          {/* Paris Skyline */}
+          <div className="my-16 md:my-24">
+            <ParisSkyline />
+          </div>
+
+          {/* Rome Skyline */}
+          <div className="my-16 md:my-24">
+            <RomeSkyline />
           </div>
 
           {/* Welcome Message with Polish Secretary - Flip Card */}
