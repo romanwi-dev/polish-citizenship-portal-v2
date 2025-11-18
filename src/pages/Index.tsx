@@ -56,12 +56,12 @@ const Index = () => {
           {/* Main content wrapper with semantic HTML and ARIA */}
           <main id="main-content" role="main" aria-label="Main content">
           <HeroWavingFlags />
-          <div className="my-16 md:my-24">
+          <div className="my-16 md:my-24 -mx-4 md:mx-0">
             <WarsawSkyline />
           </div>
           <AboutSection />
         
-        <div className="my-16 md:my-24">
+        <div className="my-16 md:my-24 -mx-4 md:mx-0">
           <PragueSkyline />
         </div>
         
@@ -69,7 +69,7 @@ const Index = () => {
           <ServicesWeb3 />
         </Suspense>
         
-        <div className="my-16 md:my-24">
+        <div className="my-16 md:my-24 -mx-4 md:mx-0">
           <BudapestSkyline />
         </div>
         
@@ -77,7 +77,7 @@ const Index = () => {
           <TimelineProcessEnhanced />
         </Suspense>
         
-        <div className="my-16 md:my-24">
+        <div className="my-16 md:my-24 -mx-4 md:mx-0">
           <BerlinSkyline />
         </div>
         
