@@ -3251,6 +3251,7 @@ const resources = {
           "Dossier officiel ouvert et enregistré dans le système",
           "Le processus formel de demande de citoyenneté commence"
         ],
+      },
       
       timelineProcess: {
         badge: 'Notre Processus',
@@ -3939,6 +3940,7 @@ const resources = {
           "תיק תיק רשמי נפתח ונרשם במערכת",
           "תהליך הבקשה הרשמי לאזרחות מתחיל"
         ],
+      },
       
       timelineProcess: {
         badge: 'התהליך שלנו',
@@ -4185,7 +4187,7 @@ const resources = {
       },
 
       // Process Section - Hebrew
-      process: {
+      timelineProcess: {
         title: 'המסע שלך לאזרחות פולנית',
         subtitle: 'תהליך מקיף בן 12 שלבים שנמשך בדרך כלל 18-24 חודשים מהייעוץ הראשוני ועד לקבלת דרכון האיחוד האירופי שלך',
         step1Number: '01',
