@@ -76,13 +76,13 @@ const Index = () => {
           <BerlinSkyline />
         </div>
         
-        <div className="my-16 md:my-24">
-          <ParisSkyline />
-        </div>
-        
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
+        
+        <div className="my-16 md:my-24">
+          <ParisSkyline />
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
