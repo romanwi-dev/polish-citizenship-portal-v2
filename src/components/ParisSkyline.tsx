@@ -2,8 +2,8 @@ import parisSkyline from "@/assets/paris-skyline.png";
 
 export const ParisSkyline = () => {
   return (
-    <div className="relative z-10 w-full flex justify-center">
-      <div className="w-full md:w-[60%]">
+    <div className="relative z-10 w-full flex justify-center px-0">
+      <div className="w-full md:w-[75%]">
         <img 
           src={parisSkyline} 
           alt="Paris skyline silhouette" 
