@@ -351,10 +351,10 @@ export default function TimelineProcessEnhanced() {
                         </p>
                         <div className="flex flex-wrap gap-1.5 justify-center">
                           <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 break-words leading-tight" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
-                            {t(`timelineProcess.stage${step.number}Category1`)}
+                            {step.keyAction}
                           </span>
                           <span className="text-xs px-2 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20 break-words leading-tight" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
-                            {t(`timelineProcess.stage${step.number}Category2`)}
+                            {step.priority}
                           </span>
                         </div>
                       </div>
