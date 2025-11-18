@@ -7,7 +7,7 @@ export const RomeSkyline = () => {
         <img 
           src={romeSkyline} 
           alt="Rome skyline silhouette" 
-          className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
+          className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert mix-blend-lighten dark:mix-blend-darken"
           style={{
             filter: 'var(--skyline-filter)',
           }}
