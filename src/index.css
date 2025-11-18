@@ -85,6 +85,8 @@ All colors MUST be HSL.
     --shadow-success-hover: 0 0 30px hsl(var(--success) / 0.5);
     --shadow-destructive: 0 0 20px hsl(var(--destructive) / 0.3);
     --shadow-destructive-hover: 0 0 30px hsl(var(--destructive) / 0.5);
+    
+    --skyline-filter: brightness(0) invert(1);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -140,6 +142,8 @@ All colors MUST be HSL.
     --shadow-glow: 0 0 35px hsl(221 83% 53% / 0.12);
     --shadow-glow-secondary: 0 0 30px hsl(204 70% 53% / 0.12);
     --shadow-card: 0 2px 8px hsl(222 40% 20% / 0.06), 0 4px 16px hsl(222 40% 20% / 0.03);
+    
+    --skyline-filter: brightness(1) invert(0);
   }
 
   /* Red Theme - Dark Bordeaux Palette */
