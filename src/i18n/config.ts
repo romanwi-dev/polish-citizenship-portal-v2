@@ -3,8 +3,7 @@ import { initReactI18next } from 'react-i18next';
 
 
 // Translation resources
-const i18nResources =
-{
+const i18nResources = {
   en: {
     translation: {
       // Navigation
@@ -5818,7 +5817,8 @@ const i18nResources =
       }
     }
   }
-};
+}
+;
 
 i18n
   .use(initReactI18next)
