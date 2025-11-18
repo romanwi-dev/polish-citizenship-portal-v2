@@ -163,8 +163,10 @@ const FAQSection = () => {
     )
   })).filter(category => category.questions.length > 0);
 
+  const isRTL = i18n.language === 'he';
+
   return (
-    <section id="faq" className="py-12 md:py-20 relative overflow-hidden overflow-x-hidden" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
+    <section id="faq" className="py-12 md:py-20 relative overflow-hidden overflow-x-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -188,13 +190,13 @@ const FAQSection = () => {
           {/* Search Bar */}
           <div className="mb-8 w-full">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50 pointer-events-none z-20" />
+              <Search className={`absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50 pointer-events-none z-20`} />
               <Input
                 type="text"
                 placeholder={t('faq.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40 w-full"
+                className={`${isRTL ? 'pr-12' : 'pl-12'} h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40 w-full`}
                 style={{ backgroundColor: 'rgba(10, 20, 45, 0.6)' }}
               />
             </div>
@@ -202,18 +204,18 @@ const FAQSection = () => {
 
           {/* FAQ Tabs */}
           <Tabs defaultValue="eligibility" className="w-full">
-            <div className="mb-8 w-full overflow-x-auto scrollbar-hide">
-              <TabsList className="flex lg:grid w-max lg:w-full grid-cols-5 gap-2 h-auto p-2">
+            <div className={`mb-8 w-full overflow-x-auto scrollbar-hide ${isRTL ? 'flex flex-row-reverse' : ''}`}>
+              <TabsList className={`flex lg:grid w-max lg:w-full grid-cols-5 gap-2 h-auto p-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 {faqCategories.map((category) => {
                   const Icon = category.icon;
                   return (
                     <TabsTrigger
                       key={category.id}
                       value={category.id}
-                      className="flex flex-col items-center gap-2 py-3 px-4 min-w-[140px] lg:min-w-0 data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs font-medium whitespace-nowrap"
+                      className="flex flex-col items-center gap-2 py-3 px-4 min-w-[140px] lg:min-w-0 data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs font-medium whitespace-normal break-words hyphens-auto leading-tight"
                     >
                       <Icon className="w-5 h-5" />
-                      <span className="text-center leading-tight">{category.title}</span>
+                      <span className="text-center leading-tight max-w-full">{category.title}</span>
                     </TabsTrigger>
                   );
                 })}
@@ -236,10 +238,10 @@ const FAQSection = () => {
                         value={`item-${index}`}
                         className="glass-card border border-primary/10 rounded-lg px-6 hover:border-primary/30 transition-all"
                       >
-                        <AccordionTrigger className="text-left hover:no-underline py-6">
-                          <span className="text-lg font-semibold pr-4 opacity-50">{faq.question}</span>
+                        <AccordionTrigger className={`${isRTL ? 'text-right flex-row-reverse' : 'text-left'} hover:no-underline py-6 [&>svg]:${isRTL ? 'order-first mr-0 ml-2' : 'ml-auto'}`}>
+                          <span className={`text-lg font-semibold ${isRTL ? 'pl-4' : 'pr-4'} opacity-50`}>{faq.question}</span>
                         </AccordionTrigger>
-                        <AccordionContent className="text-muted-foreground pb-6 leading-relaxed text-lg font-faq-light font-light">
+                        <AccordionContent className={`text-muted-foreground pb-6 leading-relaxed text-lg font-faq-light font-light ${isRTL ? 'text-right' : 'text-left'}`}>
                           {faq.answer}
                         </AccordionContent>
                       </AccordionItem>
