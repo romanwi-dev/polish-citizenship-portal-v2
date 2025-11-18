@@ -122,7 +122,7 @@ export default function ClientOnboardingSection() {
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 dark:from-primary/50 dark:to-secondary/50 border-2 border-primary/40 dark:border-transparent shadow-[0_0_30px_rgba(59,130,246,0.3)] dark:shadow-[0_0_30px_rgba(59,130,246,0.5)] flex items-center justify-center">
-                  <span className="text-white font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                  <span className="text-white dark:text-gray-400 dark:opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
                 </div>
               </div>
               
@@ -232,7 +232,7 @@ export default function ClientOnboardingSection() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
                   <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 dark:from-primary dark:to-secondary border-2 border-primary/40 dark:border-primary shadow-[0_0_30px_rgba(59,130,246,0.3)] dark:shadow-[0_0_30px_rgba(59,130,246,0.5)] flex items-center justify-center">
-                    <span className="text-white font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                    <span className="text-white dark:text-gray-400 dark:opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
                   </div>
                 </motion.div>
 
