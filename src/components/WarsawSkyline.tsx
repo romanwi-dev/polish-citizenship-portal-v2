@@ -3,11 +3,9 @@ import warsawSkyline from "@/assets/warsaw-skyline.png";
 export const WarsawSkyline = () => {
   return (
     <div 
-      className="relative z-10"
+      className="relative z-10 -mx-[9999px] px-[9999px]"
       style={{
-        width: '100vw',
-        marginLeft: 'calc(-50vw + 50%)',
-        marginRight: 'calc(-50vw + 50%)',
+        boxSizing: 'content-box',
       }}
     >
       <img 
@@ -16,8 +14,6 @@ export const WarsawSkyline = () => {
         className="w-full h-auto opacity-30 dark:opacity-40 transition-all duration-300 block"
         style={{
           filter: 'var(--skyline-filter)',
-          width: '100%',
-          maxWidth: 'none',
         }}
       />
     </div>
