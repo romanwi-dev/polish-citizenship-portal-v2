@@ -11,7 +11,7 @@ import { WarsawSkyline } from "@/components/WarsawSkyline";
 import { BudapestSkyline } from "@/components/BudapestSkyline";
 import { BerlinSkyline } from "@/components/BerlinSkyline";
 import { ParisSkyline } from "@/components/ParisSkyline";
-
+import { AthensSkyline } from "@/components/AthensSkyline";
 
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
@@ -60,6 +60,10 @@ const Index = () => {
             <WarsawSkyline />
           </div>
           <AboutSection />
+        
+        <div className="my-16 md:my-24 -mx-4 md:mx-0">
+          <AthensSkyline />
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
