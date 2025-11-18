@@ -19,6 +19,7 @@ import NotFound from "./pages/NotFound";
 const ContactFormsDemo = lazy(() => import("./pages/ContactFormsDemo"));
 const TranslationDemo = lazy(() => import("./pages/TranslationDemo"));
 const HeroGallery = lazy(() => import("./pages/HeroGallery"));
+const ImageProcessor = lazy(() => import("./pages/ImageProcessor"));
 
 // Client portal pages
 const ClientLogin = lazy(() => import("./pages/ClientLogin"));
@@ -173,6 +174,11 @@ const App = () => {
             <Route path="/hero-gallery" element={
               <Suspense fallback={<AdminLoader />}>
                 <HeroGallery />
+              </Suspense>
+            } />
+            <Route path="/image-processor" element={
+              <Suspense fallback={<AdminLoader />}>
+                <ImageProcessor />
               </Suspense>
             } />
             <Route path="/demos/main-cta-reference" element={
