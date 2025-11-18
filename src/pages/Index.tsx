@@ -8,10 +8,9 @@ import { StructuredData } from "@/components/StructuredData";
 import Navigation from "@/components/Navigation";
 import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import { WarsawSkyline } from "@/components/WarsawSkyline";
+import { PragueSkyline } from "@/components/PragueSkyline";
 import { BudapestSkyline } from "@/components/BudapestSkyline";
 import { BerlinSkyline } from "@/components/BerlinSkyline";
-import { ParisSkyline } from "@/components/ParisSkyline";
-import { AthensSkyline } from "@/components/AthensSkyline";
 
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
@@ -56,20 +55,19 @@ const Index = () => {
           {/* Main content wrapper with semantic HTML and ARIA */}
           <main id="main-content" role="main" aria-label="Main content">
           <HeroWavingFlags />
-          <div className="my-16 md:my-24 -mx-4 md:mx-0">
+          <div className="my-16 md:my-24">
             <WarsawSkyline />
           </div>
           <AboutSection />
-        
-        <div className="my-16 md:my-24 -mx-4 md:mx-0">
-          <AthensSkyline />
-        </div>
+          <div className="my-16 md:my-24">
+            <PragueSkyline />
+          </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
         </Suspense>
         
-        <div className="my-16 md:my-24 -mx-4 md:mx-0">
+        <div className="my-16 md:my-24">
           <BudapestSkyline />
         </div>
         
@@ -77,17 +75,13 @@ const Index = () => {
           <TimelineProcessEnhanced />
         </Suspense>
         
-        <div className="my-16 md:my-24 -mx-4 md:mx-0">
+        <div className="my-16 md:my-24">
           <BerlinSkyline />
         </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
-        
-        <div className="my-16 md:my-24 -mx-4 md:mx-0">
-          <ParisSkyline />
-        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />

@@ -301,20 +301,20 @@ export default function TimelineProcessEnhanced() {
               key={step.number} 
               initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.02, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration: 0.5, delay: index * 0.03, ease: [0.25, 0.46, 0.45, 0.94] }}
               viewport={{ once: true, margin: "-200px" }}
-              className={`relative mb-20 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
+              className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 dark:from-muted/40 dark:to-muted/40 border-2 border-primary/40 dark:border-muted/30 shadow-[0_0_30px_rgba(59,130,246,0.3)] dark:shadow-[0_0_20px_rgba(0,0,0,0.2)] flex items-center justify-center">
-                  <span className="text-white dark:text-muted-foreground/60 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 dark:from-primary/50 dark:to-secondary/50 border-2 border-primary/40 dark:border-transparent shadow-[0_0_30px_rgba(59,130,246,0.3)] dark:shadow-[0_0_30px_rgba(59,130,246,0.5)] flex items-center justify-center">
+                  <span className="text-white font-heading font-bold text-3xl">{parseInt(step.number)}</span>
                 </div>
               </div>
               
               {/* Content Card - adjusted for mobile spacing */}
               <div className="w-full md:w-[42%] mt-20 md:mt-0">
-                <div className="relative h-auto md:h-[560px] animate-fade-in" style={{
+                <div className="relative h-[560px] animate-fade-in" style={{
               perspective: '1000px',
               animationDelay: `${(index + 1) * 100}ms`
             }}>
@@ -329,13 +329,13 @@ export default function TimelineProcessEnhanced() {
                     role="button"
                     tabIndex={0}
                     aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg transition-transform duration-500"
+                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg transition-transform duration-700"
                     style={{
                 transformStyle: 'preserve-3d',
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}>
                     {/* Front Side */}
-                    <div className="absolute inset-0 w-full h-auto md:h-[560px] glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
+                    <div className="absolute inset-0 w-full h-[560px] glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
@@ -362,7 +362,7 @@ export default function TimelineProcessEnhanced() {
                     </div>
 
                     {/* Back Side */}
-                    <div className="absolute inset-0 w-full h-auto md:h-[560px] glass-card p-4 md:p-5 rounded-lg hover-glow flex flex-col overflow-y-auto" style={{
+                    <div className="absolute inset-0 w-full h-[560px] glass-card p-4 md:p-5 rounded-lg hover-glow flex flex-col overflow-y-auto" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'
@@ -413,10 +413,10 @@ export default function TimelineProcessEnhanced() {
                 initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-200px" }}
-                transition={{ duration: 0.4, delay: index * 0.02, ease: [0.25, 0.1, 0.25, 1] }}
+                transition={{ duration: 0.8, delay: index * 0.05, ease: [0.25, 0.1, 0.25, 1] }}
               >
-                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 dark:from-muted/40 dark:to-muted/40 border-2 border-primary/40 dark:border-muted/30 shadow-[0_0_30px_rgba(59,130,246,0.3)] dark:shadow-[0_0_20px_rgba(0,0,0,0.2)] flex items-center justify-center">
-                  <span className="text-white dark:text-muted-foreground/60 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 dark:from-primary dark:to-secondary border-2 border-primary/40 dark:border-primary shadow-[0_0_30px_rgba(59,130,246,0.3)] dark:shadow-[0_0_30px_rgba(59,130,246,0.5)] flex items-center justify-center">
+                  <span className="text-white font-heading font-bold text-3xl">{parseInt(step.number)}</span>
                 </div>
               </motion.div>
 

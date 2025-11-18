@@ -2,7 +2,7 @@ import budapestSkyline from "@/assets/budapest-skyline.png";
 
 export const BudapestSkyline = () => {
   return (
-    <div className="relative z-10 w-full flex md:justify-center">
+    <div className="relative z-10 w-full flex justify-center">
       <div className="w-full md:w-[60%]">
         <img 
           src={budapestSkyline} 

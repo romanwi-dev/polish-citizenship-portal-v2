@@ -1,12 +1,12 @@
-import athensSkyline from "@/assets/athens-skyline.png";
+import pragueSkyline from "@/assets/prague-skyline.png";
 
-export const AthensSkyline = () => {
+export const PragueSkyline = () => {
   return (
-    <div className="relative z-10 w-full flex md:justify-center">
+    <div className="relative z-10 w-full flex justify-center">
       <div className="w-full md:w-[60%]">
         <img 
-          src={athensSkyline} 
-          alt="Athens skyline silhouette" 
+          src={pragueSkyline} 
+          alt="Prague skyline silhouette" 
           className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
           style={{
             filter: 'var(--skyline-filter)',
