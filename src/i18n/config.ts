@@ -5821,6 +5821,8 @@ const resources = {
 
 i18n
   .use(initReactI18next)
+i18n
+  .use(initReactI18next)
   .init({
     resources,
     lng: 'en', // default language
