@@ -101,7 +101,7 @@ const ContactFormWeb3 = memo(() => {
   return (
     <section 
       id="contact" 
-      className="pt-32 pb-0 relative overflow-hidden overflow-x-hidden"
+      className="pt-12 md:pt-20 pb-0 relative overflow-hidden overflow-x-hidden"
       aria-labelledby="contact-heading"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
