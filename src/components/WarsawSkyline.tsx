@@ -5,13 +5,13 @@ export const WarsawSkyline = () => {
     <div className="w-full py-12 md:py-16 relative z-10 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="relative w-full max-w-6xl mx-auto">
-          {/* Skyline image - inverted in dark mode, normal in light mode */}
+          {/* Skyline image - white in dark mode, black in light mode */}
           <img 
             src={warsawSkyline} 
             alt="Warsaw skyline silhouette" 
-            className="w-full h-auto opacity-20 dark:opacity-30 dark:invert transition-all duration-300"
+            className="w-full h-auto opacity-30 dark:opacity-40 transition-all duration-300"
             style={{
-              filter: 'brightness(1.2) contrast(1.1)',
+              filter: 'var(--skyline-filter)',
             }}
           />
         </div>
