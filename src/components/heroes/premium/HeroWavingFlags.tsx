@@ -47,13 +47,7 @@ export const HeroWavingFlags = () => {
                 </span>
               </div>
               <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
-                <span className="inline-block" style={{ 
-                  backgroundImage: 'var(--gradient-title)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  color: 'transparent'
-                }} dangerouslySetInnerHTML={{ __html: t('hero.title') }}>
+                <span className="inline-block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent" dangerouslySetInnerHTML={{ __html: t('hero.title') }}>
                 </span>
               </h1>
               <div className="space-y-3" key={t('hero.subtitle1')}>
