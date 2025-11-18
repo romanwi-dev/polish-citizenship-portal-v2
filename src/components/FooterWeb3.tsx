@@ -86,23 +86,32 @@ const FooterWeb3 = () => {
           </div>
         </div>
         
-        <div className="glass-card p-6 rounded-lg space-y-6">
-          <div className="flex justify-center">
-            <SocialShare variant="minimal" />
-          </div>
-          
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} {t('footer.copyright')}
-            </p>
-            <div className="flex gap-6 text-sm">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+        <div className="glass-card p-6 rounded-lg">
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-6 lg:gap-8">
+            {/* Copyright - 2 lines on desktop */}
+            <div className="flex-shrink-0 text-center lg:text-left">
+              <p className="text-muted-foreground text-sm leading-tight">
+                © {new Date().getFullYear()} {t('footer.copyright').split(' - ')[0]}
+              </p>
+              <p className="text-muted-foreground text-sm leading-tight">
+                {t('footer.copyright').split(' - ')[1]}
+              </p>
+            </div>
+            
+            {/* Social Icons */}
+            <div className="flex-shrink-0">
+              <SocialShare variant="minimal" />
+            </div>
+            
+            {/* Links */}
+            <div className="flex gap-6 text-sm flex-shrink-0">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">
                 {t('footer.privacy')}
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">
                 {t('footer.terms')}
               </a>
-              <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors whitespace-nowrap">
                 {t('footer.contactUs')}
               </a>
             </div>
