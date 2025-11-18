@@ -7,9 +7,9 @@ export const PragueSkyline = () => {
         <img 
           src={pragueSkyline} 
           alt="Prague skyline silhouette" 
-          className="w-full h-auto transition-all duration-300 block"
+          className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
           style={{
-            filter: 'brightness(0) invert(0.7) contrast(3) brightness(1.5)',
+            filter: 'var(--skyline-filter)',
           }}
         />
       </div>
