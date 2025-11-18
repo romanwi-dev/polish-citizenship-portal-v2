@@ -5803,7 +5803,6 @@ const resources = {
         review6Timeline: '12 місяців',
         review6Year: '2024'
       },
-      
       seo: {
         home: {
           title: 'Польське Громадянство за Походженням | Експертні Юридичні Послуги з 2003 року',
@@ -5817,10 +5816,8 @@ const resources = {
       }
     }
   }
-};
+}; // End of resources
 
-i18n
-  .use(initReactI18next)
 i18n
   .use(initReactI18next)
   .init({
