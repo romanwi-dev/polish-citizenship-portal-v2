@@ -8,6 +8,7 @@ import { StructuredData } from "@/components/StructuredData";
 import Navigation from "@/components/Navigation";
 import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import { WarsawSkyline } from "@/components/WarsawSkyline";
+import { PragueSkyline } from "@/components/PragueSkyline";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 
@@ -55,6 +56,9 @@ const Index = () => {
             <WarsawSkyline />
           </div>
           <AboutSection />
+          <div className="-mt-8 md:-mt-32 -mb-8 md:-mb-32">
+            <PragueSkyline />
+          </div>
         
         <AIAnalysisSection />
         
