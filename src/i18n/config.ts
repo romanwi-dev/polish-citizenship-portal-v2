@@ -451,7 +451,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Processing',
         step8Desc: 'We handle all procedures simultaneously: sworn translations, archives search, Polish civil acts, and passport preparation. After about 12 months, we receive initial response from authorities.',
-        step8Cta: 'Schedule Consultation'
+        step8Cta: 'Schedule Consultation',
+        tapForDetails: 'Tap for details',
+        openAccountCta: 'Open Account'
       },
 
       // Process Section - 12 Steps
@@ -1228,7 +1230,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Procesamiento',
         step8Desc: 'Manejamos todos los procedimientos simultáneamente: traducciones juradas, búsqueda de archivos, actas civiles polacas y preparación de pasaporte. Después de aproximadamente 12 meses, recibimos la respuesta inicial de las autoridades.',
-        step8Cta: 'Programar Consulta'
+        step8Cta: 'Programar Consulta',
+        tapForDetails: 'Toca para detalles',
+        openAccountCta: 'Abrir Cuenta'
       },
 
       // Process Section - Spanish
@@ -1811,7 +1815,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Processamento',
         step8Desc: 'Lidamos com todos os procedimentos simultaneamente: traduções juramentadas, pesquisa de arquivos, atos civis poloneses e preparação de passaporte. Após cerca de 12 meses, recebemos resposta inicial das autoridades.',
-        step8Cta: 'Agendar Consulta'
+        step8Cta: 'Agendar Consulta',
+        tapForDetails: 'Toque para detalhes',
+        openAccountCta: 'Abrir Conta'
       },
 
       // Process Section - Portuguese
@@ -2444,7 +2450,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Verarbeitung',
         step8Desc: 'Wir handhaben alle Verfahren gleichzeitig: beglaubigte Übersetzungen, Archivrecherche, polnische Zivilakte und Passvorbereitung. Nach etwa 12 Monaten erhalten wir die erste Antwort der Behörden.',
-        step8Cta: 'Beratung Planen'
+        step8Cta: 'Beratung Planen',
+        tapForDetails: 'Tippen für Details',
+        openAccountCta: 'Konto Eröffnen'
       },
 
       // Process Section - German
@@ -3251,7 +3259,9 @@ const resources = {
           "Dossier officiel ouvert et enregistré dans le système",
           "Le processus formel de demande de citoyenneté commence"
         ],
-      
+        tapForDetails: 'Appuyez pour les détails',
+        openAccountCta: 'Ouvrir un Compte'
+      },
       timelineProcess: {
         badge: 'Notre Processus',
         title: 'Calendrier Complet de Citoyenneté Polonaise par Descendance',
@@ -3939,6 +3949,9 @@ const resources = {
           "תיק תיק רשמי נפתח ונרשם במערכת",
           "תהליך הבקשה הרשמי לאזרחות מתחיל"
         ],
+        tapForDetails: 'הקש לפרטים',
+        openAccountCta: 'פתח חשבון'
+      },
       
       timelineProcess: {
         badge: 'התהליך שלנו',
@@ -4778,7 +4791,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Окончательная Подача',
         step8Desc: 'Ваше заявление на гражданство окончательно завершено и официально подано в соответствующие польские органы.',
-        step8Cta: 'Запланировать Консультацию'
+        step8Cta: 'Запланировать Консультацию',
+        tapForDetails: 'Нажмите для деталей',
+        openAccountCta: 'Открыть Аккаунт'
       },
       
       // Timeline Section - Russian
@@ -5493,7 +5508,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Обробка',
         step8Desc: 'Ми обробляємо всі процедури одночасно: завірені переклади, пошук в архівах, польські цивільні акти та підготовка паспорта. Приблизно через 12 місяців ми отримуємо першу відповідь від влади.',
-        step8Cta: 'Запланувати Консультацію'
+        step8Cta: 'Запланувати Консультацію',
+        tapForDetails: 'Натисніть для деталей',
+        openAccountCta: 'Відкрити Обліковий Запис'
       },
       
       // Timeline Section - Ukrainian
