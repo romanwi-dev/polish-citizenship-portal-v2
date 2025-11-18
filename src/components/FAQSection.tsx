@@ -239,8 +239,8 @@ const FAQSection = () => {
                         className="glass-card border border-primary/10 rounded-lg px-6 hover:border-primary/30 transition-all"
                         dir={isRTL ? 'rtl' : 'ltr'}
                       >
-                        <AccordionTrigger className={`hover:no-underline py-6 ${isRTL ? '[&>svg]:order-first [&>svg]:mr-auto [&>svg]:ml-0' : ''}`}>
-                          <span className={`text-lg font-semibold flex-1 ${isRTL ? 'text-right' : 'text-left pr-4'}`}>{faq.question}</span>
+                        <AccordionTrigger className={`hover:no-underline py-6 ${isRTL ? 'flex-row-reverse justify-end [&>svg]:ml-0 [&>svg]:mr-auto' : ''}`}>
+                          <span className={`text-lg font-semibold flex-1 ${isRTL ? 'text-right pl-4' : 'text-left pr-4'}`}>{faq.question}</span>
                         </AccordionTrigger>
                         <AccordionContent className={`text-muted-foreground pb-6 leading-relaxed text-lg font-faq-light font-light ${isRTL ? 'text-right' : 'text-left'}`}>
                           {faq.answer}
