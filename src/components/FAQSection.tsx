@@ -239,7 +239,7 @@ const FAQSection = () => {
                         className="glass-card border border-primary/10 rounded-lg px-6 hover:border-primary/30 transition-all"
                       >
                         <AccordionTrigger className={`${isRTL ? 'text-right flex-row-reverse' : 'text-left'} hover:no-underline py-6 [&>svg]:${isRTL ? 'order-first mr-0 ml-2' : 'ml-auto'}`}>
-                          <span className={`text-lg font-semibold ${isRTL ? 'pl-4' : 'pr-4'} opacity-50`}>{isRTL ? `${faq.question}؟` : faq.question}</span>
+                          <span className={`text-lg font-semibold ${isRTL ? 'pl-4' : 'pr-4'} opacity-50`}>{faq.question}</span>
                         </AccordionTrigger>
                         <AccordionContent className={`text-muted-foreground pb-6 leading-relaxed text-lg font-faq-light font-light ${isRTL ? 'text-right' : 'text-left'}`}>
                           {faq.answer}
