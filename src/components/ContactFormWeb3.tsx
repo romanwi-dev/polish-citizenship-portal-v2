@@ -37,6 +37,7 @@ const ContactFormWeb3 = memo(() => {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
+  const isRTL = i18n.language === 'he';
   
   // Debug logging removed for production
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
@@ -102,6 +103,7 @@ const ContactFormWeb3 = memo(() => {
       id="contact" 
       className="pt-32 pb-0 relative overflow-hidden overflow-x-hidden"
       aria-labelledby="contact-heading"
+      dir={isRTL ? 'rtl' : 'ltr'}
     >
       
       {/* Celebration Background - Stars, Sparkles & Fireworks */}
@@ -207,12 +209,12 @@ const ContactFormWeb3 = memo(() => {
                           <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 dark:!shadow-none focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                             <SelectValue placeholder={t('contact.countryPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
-                          <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
+                          <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100] max-h-[300px] overflow-auto">
                             {COUNTRIES.map((country) => (
                               <SelectItem
                                 key={country}
                                 value={country}
-                                className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3"
+                                className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3 dark:bg-card dark:hover:bg-primary/10 bg-background hover:bg-primary/5"
                               >
                                 {country}
                               </SelectItem>

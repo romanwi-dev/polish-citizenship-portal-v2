@@ -314,7 +314,7 @@ export default function TimelineProcessEnhanced() {
               
               {/* Content Card - adjusted for mobile spacing */}
               <div className="w-full md:w-[42%] mt-20 md:mt-0">
-                <div className="relative h-[320px] animate-fade-in" style={{
+                <div className="relative h-[560px] md:h-[520px] animate-fade-in" style={{
               perspective: '1000px',
               animationDelay: `${(index + 1) * 100}ms`
             }}>
@@ -343,17 +343,17 @@ export default function TimelineProcessEnhanced() {
                         <div className="flex items-center justify-center gap-2 mb-1">
                           <span className="text-sm md:text-xs text-muted-foreground">{step.duration}</span>
                         </div>
-                        <h3 className={`text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
+                        <h3 className={`text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg break-words hyphens-auto leading-tight ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
                           {step.title}
                         </h3>
                         <p className="text-base md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 px-2">
                           {step.description}
                         </p>
                         <div className="flex flex-wrap gap-1.5 justify-center">
-                          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 break-words hyphens-auto leading-tight">
                             {step.keyAction}
                           </span>
-                          <span className="text-xs px-2 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+                          <span className="text-xs px-2 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20 break-words hyphens-auto leading-tight">
                             {step.priority}
                           </span>
                         </div>
@@ -362,38 +362,38 @@ export default function TimelineProcessEnhanced() {
                     </div>
 
                     {/* Back Side */}
-                    <div className="absolute inset-0 w-full h-[440px] glass-card p-5 rounded-lg hover-glow flex flex-col" style={{
+                    <div className="absolute inset-0 w-full h-[560px] md:h-[520px] glass-card p-4 md:p-5 rounded-lg hover-glow flex flex-col overflow-y-auto" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'
                 }}>
                       {/* Content */}
-                      <div className="flex-1 space-y-4">
-                        <p className="text-sm text-foreground/90 leading-relaxed">
+                      <div className="flex-1 space-y-3 md:space-y-4">
+                        <p className="text-xs md:text-sm text-foreground/90 leading-relaxed break-words hyphens-auto">
                           {step.detailedInfo}
                         </p>
-                        <ul className="text-xs text-muted-foreground space-y-2">
+                        <ul className="text-[11px] md:text-xs text-muted-foreground space-y-2">
                           {step.keyPoints.map((point: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2">
-                              <span className="text-primary mt-1">✓</span>
-                              <span>{point}</span>
+                              <span className="text-primary mt-1 flex-shrink-0">✓</span>
+                              <span className="break-words hyphens-auto">{point}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
                       
                       {/* CTA Button */}
-                      <div className="mt-4 pt-3 border-t border-border/30">
+                      <div className="mt-3 md:mt-4 pt-2 md:pt-3 border-t border-border/30">
                         <Button
                           variant="default"
                           size="sm"
-                          className="w-full"
+                          className="w-full text-xs md:text-sm py-2 break-words hyphens-auto leading-tight"
                           onClick={(e) => {
                             e.stopPropagation();
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                           }}
                         >
-                          {t('timelineProcess.openAccountCta')}
+                          <span className="block w-full break-words hyphens-auto">{t('timelineProcess.openAccountCta')}</span>
                         </Button>
                       </div>
                     </div>
