@@ -10,6 +10,7 @@ import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import { WarsawSkyline } from "@/components/WarsawSkyline";
 import { PragueSkyline } from "@/components/PragueSkyline";
 import { BudapestSkyline } from "@/components/BudapestSkyline";
+import { BerlinSkyline } from "@/components/BerlinSkyline";
 
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
@@ -73,6 +74,10 @@ const Index = () => {
         <Suspense fallback={<SectionLoader />}>
           <TimelineProcessEnhanced />
         </Suspense>
+        
+        <div className="my-16 md:my-24">
+          <BerlinSkyline />
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
