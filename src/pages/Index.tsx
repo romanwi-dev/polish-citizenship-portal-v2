@@ -51,7 +51,7 @@ const Index = () => {
           {/* Main content wrapper with semantic HTML and ARIA */}
           <main id="main-content" role="main" aria-label="Main content">
           <HeroWavingFlags />
-          <div className="-mt-8 md:-mt-20 -mb-8 md:-mb-20">
+          <div className="-mt-8 md:-mt-32 -mb-8 md:-mb-32">
             <WarsawSkyline />
           </div>
           <AboutSection />
