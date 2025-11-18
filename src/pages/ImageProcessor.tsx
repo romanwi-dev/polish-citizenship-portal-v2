@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { removeBackground, loadImage } from '@/utils/removeBackground';
 import pragueSkyline from '@/assets/prague-skyline.png';
+import { Button } from '@/components/ui/button';
 
 export default function ImageProcessor() {
   const [processing, setProcessing] = useState(false);
@@ -45,13 +46,12 @@ export default function ImageProcessor() {
         <h1 className="text-3xl font-bold mb-8">Image Background Remover</h1>
         
         <div className="space-y-4">
-          <button
+          <Button
             onClick={processImage}
             disabled={processing}
-            className="px-6 py-3 bg-primary text-white rounded-lg disabled:opacity-50"
           >
             {processing ? 'Processing...' : 'Remove Background from Prague Skyline'}
-          </button>
+          </Button>
           
           {error && (
             <div className="p-4 bg-red-500/10 border border-red-500 rounded-lg text-red-500">
