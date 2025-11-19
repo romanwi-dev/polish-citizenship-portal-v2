@@ -58,7 +58,9 @@ export default function TimelineProcessEnhanced() {
     image: getTimelineImage(index + 1),
     stepIcon: getStepIcon(index + 1),
     detailedInfo: step.detailedInfo,
-    keyPoints: step.keyPoints
+    keyPoints: step.keyPoints,
+    clickToSeeDetails: step.clickToSeeDetails,
+    openAccountLabel: step.openAccountLabel
   }));
 
   // Auto-flip animation for first card
@@ -185,7 +187,7 @@ export default function TimelineProcessEnhanced() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails')}</p>
+                      <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-5 text-center">{step.clickToSeeDetails}</p>
                     </div>
 
                     {/* Back Side */}
@@ -226,7 +228,7 @@ export default function TimelineProcessEnhanced() {
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                           }}
                         >
-                          <span className="block w-full break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{t('timelineProcess.openAccountCta')}</span>
+                          <span className="block w-full break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{step.openAccountLabel}</span>
                         </Button>
                       </div>
                     </div>
