@@ -451,9 +451,7 @@ const resources = {
         step8Number: '08',
         step8Title: 'Processing',
         step8Desc: 'We handle all procedures simultaneously: sworn translations, archives search, Polish civil acts, and passport preparation. After about 12 months, we receive initial response from authorities.',
-        step8Cta: 'Schedule Consultation',
-        tapForDetails: 'Tap for details',
-        openAccountCta: 'Open Account'
+        step8Cta: 'Schedule Consultation'
       },
 
       // Process Section - 12 Steps
@@ -1474,7 +1472,6 @@ const resources = {
         detailedInfoTitle: 'Información Detallada',
         detailedInfoDesc: 'El contenido completo del cronograma, requisitos detallados y especificaciones del proceso están disponibles para usuarios registrados en su cuenta del portal.',
         detailedInfoSignup: 'Regístrate para acceder a la guía paso a paso completa',
-        openAccountCta: 'Abrir Cuenta',
         flipBack: 'Haz clic para voltear'
       },
 
@@ -1814,9 +1811,7 @@ const resources = {
         step8Number: '08',
         step8Title: 'Processamento',
         step8Desc: 'Lidamos com todos os procedimentos simultaneamente: traduções juramentadas, pesquisa de arquivos, atos civis poloneses e preparação de passaporte. Após cerca de 12 meses, recebemos resposta inicial das autoridades.',
-        step8Cta: 'Agendar Consulta',
-        tapForDetails: 'Toque para detalhes',
-        openAccountCta: 'Abrir Conta'
+        step8Cta: 'Agendar Consulta'
       },
 
       // Process Section - Portuguese
@@ -2153,7 +2148,6 @@ const resources = {
           
           stage15Details: 'Oferecemos serviços jurídicos familiares estendidos para ajudar outros membros de sua família a obter cidadania polonesa. Com sua cidadania estabelecida, agora podemos ajudar seu cônjuge, filhos e outros familiares elegíveis a obter cidadania polonesa também, aproveitando seu caso bem-sucedido.',
           stage15Points: ['Avaliação de elegibilidade de membros da família', 'Processo simplificado baseado em sua cidadania estabelecida', 'Assistência para cônjuge e filhos', 'Suporte estendido para familiares adicionais elegíveis'],
-          openAccountCta: 'Abrir Conta',
         },
         
         timeline: {
@@ -3257,21 +3251,6 @@ const resources = {
           "Dossier officiel ouvert et enregistré dans le système",
           "Le processus formel de demande de citoyenneté commence"
         ],
-        step6Number: '06',
-        step6Title: 'Traitement de Documents par IA',
-        step6Desc: 'Tous les documents sont traités par notre Système de Documents IA pour générer les Procurations et la demande de citoyenneté polonaise.',
-        step6Cta: 'Tableau de Bord',
-        step7Number: '07',
-        step7Title: 'Dépôt de la Demande',
-        step7Desc: 'Envoyez les Procurations par FedEx à notre bureau de Varsovie. Nous déposons votre demande de citoyenneté auprès des autorités polonaises.',
-        step7Cta: 'Génération de Demande',
-        step8Number: '08',
-        step8Title: 'Traitement',
-        step8Desc: "Nous gérons toutes les procédures simultanément: traductions certifiées, recherche d'archives, actes civils polonais et préparation de passeport. Après environ 12 mois, nous recevons la réponse initiale des autorités.",
-        step8Cta: 'Planifier une Consultation',
-        tapForDetails: 'Appuyez pour les détails',
-        openAccountCta: 'Ouvrir un Compte'
-      },
       
       timelineProcess: {
         badge: 'Notre Processus',
@@ -3960,21 +3939,8 @@ const resources = {
           "תיק תיק רשמי נפתח ונרשם במערכת",
           "תהליך הבקשה הרשמי לאזרחות מתחיל"
         ],
-        step6Number: '06',
-        step6Title: 'עיבוד מסמכים באמצעות AI',
-        step6Desc: 'כל המסמכים מעובדים על ידי מערכת המסמכים AI שלנו כדי ליצור ייפויי כוח ובקשת אזרחות פולנית.',
-        step6Cta: 'לוח בקרה',
-        step7Number: '07',
-        step7Title: 'הגשת בקשה',
-        step7Desc: 'שלח ייפויי כוח באמצעות FedEx למשרד שלנו בוורשה. אנו מגישים את בקשת האזרחות שלך לרשויות הפולניות.',
-        step7Cta: 'יצירת בקשה',
-        step8Number: '08',
-        step8Title: 'עיבוד',
-        step8Desc: 'אנו מטפלים בכל ההליכים בו-זמנית: תרגומים משבעים, חיפוש בארכיונים, מעשים אזרחיים פולניים והכנת דרכון. לאחר כ-12 חודשים, אנו מקבלים תגובה ראשונית מהרשויות.',
-        step8Cta: 'קבע ייעוץ',
-        tapForDetails: 'הקש לפרטים',
-        openAccountCta: 'פתח חשבון'
-      },
+      
+      timelineProcess: {
         badge: 'התהליך שלנו',
         title: 'ציר זמן מלא של אזרחות פולנית לפי מוצא',
         subtitle: 'המסע הכנה והמציאותי בן 15 השלבים מהמגע הראשון ועד לדרכון האיחוד האירופי - כיצד כל שלב עובד באמת עם תמחור שקוף ולוחות זמנים אמיתיים',
@@ -4572,78 +4538,6 @@ const resources = {
           a4: 'כן, ברגע שאתה מאשר את האזרחות הפולנית שלך, הילדים הקטינים שלך יכולים להירשם כאזרחים פולניים. התהליך פשוט לילדים מתחת לגיל 16.',
           q5: 'מה לגבי אזרחות כפולה?',
           a5: 'פולין מאפשרת אזרחות כפולה. אישור אזרחות פולנית לא דורש ויתור על אזרחויות אחרות, ורוב המדינות (כולל ארה"ב, קנדה, בריטניה) גם מאפשרות אזרחות כפולה.'
-        }
-      },
-      
-      // Timeline Section - Hebrew
-      timelineProcess: {
-        badge: 'התהליך שלנו',
-        title: 'ציר זמן מלא לאזרחות פולנית לפי מוצא',
-        subtitle: 'המסע הכן והריאלי בן 15 השלבים מהקשר הראשון ועד לדרכון האיחוד האירופי - איך כל שלב עובד בפועל עם תמחור שקוף ולוחות זמנים אמיתיים',
-        mainCta: 'בצע מבחן אזרחות פולנית',
-        tapToSeeDetails: 'הקש לפרטים',
-        openAccountCta: 'פתח חשבון',
-        steps: {
-          1: {
-            title: 'קשר ראשוני',
-            description: 'תהליך הניתוח הראשוני שלנו שבו אנו בוחנים את העץ המשפחתי שלך, תיעוד היסטורי וקווי אזרחות אפשריים'
-          },
-          2: {
-            title: 'מבחן אזרחות',
-            description: 'ניתוח ממוקד בינה מלאכותית של שושלת המשפחה שלך, בדיקת דפוסי הגירה ושרשראות העברת אזרחות דרך קווים פטריליניים ומטריליניים'
-          },
-          3: {
-            title: 'שיחת זכאות',
-            description: 'ייעוץ מפורט אחד על אחד שבו אנו מסבירים את התוצאות, דנים בנתיב המשפטי שלך ומעריכים כמה מורכב המקרה'
-          },
-          4: {
-            title: 'תנאים ותמחור',
-            description: 'אישור של מבנה התשלום, לוחות זמנים ריאליים והחלטה לקוחות להמשיך עם הייצוג המשפטי שלנו'
-          },
-          5: {
-            title: 'מקדמה וחשבון',
-            description: 'תשלום מקדמה ראשונית ויצירת פורטל הלקוח המאובטח שלך למעקב אחר התקדמות המקרה'
-          },
-          6: {
-            title: 'פרטים וייפויי כוח',
-            description: 'איסוף מידע לקוח חיוני, הכנת ייפויי כוח פולניים (pełnomocnictwo) וכתובות משפטיות'
-          },
-          7: {
-            title: 'נתונים ובקשה',
-            description: 'טופס נתוני מאסטר מקיף (140+ שדות), הכנת בקשת אזרחות והגשתה למשרד הווייבוד המזוריאני'
-          },
-          8: {
-            title: 'מסמכים מקומיים',
-            description: 'השגת תעודות לידה, נישואין ומסמכי התאזרחות מרשויות מקומיות בארצות מוצא שלך'
-          },
-          9: {
-            title: 'מסמכים פולניים',
-            description: 'חיפושים בארכיונים פולניים למסמכים היסטוריים (תעודות לידה, רישומי מפקד אוכלוסין, תיעוד צבאי) מאזורי הכיבוש הפרוסי, האוסטרי והרוסי'
-          },
-          10: {
-            title: 'תרגומים',
-            description: 'תרגום מאושר של כל המסמכים לפולנית על ידי מתורגמנים מושבעים (tłumacz przysięgły), כולל בדיקת איכות'
-          },
-          11: {
-            title: 'הגשת מסמכים',
-            description: 'הגשת כל המסמכים המתורגמים, ראיות משפטיות ומידע משפחתי למשרד הווייבוד לפני התגובה הראשונית'
-          },
-          12: {
-            title: 'תעודות אזרח פולניות',
-            description: 'בקשה למשרדי הרישום האזרחי הפולניים (USC) לתעודות לידה ונישואין פולניות (עלות +זמן נוספים)'
-          },
-          13: {
-            title: 'תגובה ראשונית',
-            description: 'קבלת מכתב רשמי ראשון ממשרד הווייבוד, הערכת דרישות נוספות והרחבת מועדי ההליך'
-          },
-          14: {
-            title: 'תכניות דחיפה',
-            description: 'אסטרטגיות עוקבות אופציונליות (PUSH, NUDGE, SIT-DOWN) להאצת ההליך בתשלום נוסף'
-          },
-          15: {
-            title: 'החלטת אזרחות + דרכון',
-            description: 'קבלת אישור אזרחות רשמי מהמשרד הפולני לענייני פנים, הכנת מסמכי דרכון ותזמון פגישה קונסולרית'
-          }
         }
       },
       

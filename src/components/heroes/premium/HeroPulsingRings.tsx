@@ -52,7 +52,7 @@ export const HeroPulsingRings = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <h1 className="text-6xl md:text-8xl font-heading font-black">
-              <span className={`bg-clip-text text-transparent ${isRTL ? 'bg-gradient-to-r from-accent via-secondary to-primary' : 'bg-gradient-to-r from-primary via-secondary to-accent'}`}>
+              <span className={`bg-clip-text text-transparent ${isRTL ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-primary via-secondary to-accent`}>
                 {t('hero.title')}
               </span>
             </h1>
