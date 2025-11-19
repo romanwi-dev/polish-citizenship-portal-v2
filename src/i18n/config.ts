@@ -1472,6 +1472,7 @@ const resources = {
         detailedInfoTitle: 'Información Detallada',
         detailedInfoDesc: 'El contenido completo del cronograma, requisitos detallados y especificaciones del proceso están disponibles para usuarios registrados en su cuenta del portal.',
         detailedInfoSignup: 'Regístrate para acceder a la guía paso a paso completa',
+        openAccountCta: 'Abrir Cuenta',
         flipBack: 'Haz clic para voltear'
       },
 
@@ -2148,6 +2149,7 @@ const resources = {
           
           stage15Details: 'Oferecemos serviços jurídicos familiares estendidos para ajudar outros membros de sua família a obter cidadania polonesa. Com sua cidadania estabelecida, agora podemos ajudar seu cônjuge, filhos e outros familiares elegíveis a obter cidadania polonesa também, aproveitando seu caso bem-sucedido.',
           stage15Points: ['Avaliação de elegibilidade de membros da família', 'Processo simplificado baseado em sua cidadania estabelecida', 'Assistência para cônjuge e filhos', 'Suporte estendido para familiares adicionais elegíveis'],
+          openAccountCta: 'Abrir Conta',
         },
         
         timeline: {
