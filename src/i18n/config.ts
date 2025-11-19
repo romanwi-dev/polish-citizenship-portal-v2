@@ -797,7 +797,7 @@ const resources = {
           keywords: 'Polish citizenship, EU passport, citizenship by descent, Polish ancestry, legal services, Polish citizenship by descent, Polish passport'
         }
       }
-    }
+    },
   },
   pl: {
     translation: {
@@ -2022,11 +2022,10 @@ const resources = {
           a4: 'Sim, muitos casos bem-sucedidos envolvem bisavós ou gerações ainda anteriores. A chave é provar a cadeia ininterrupta de transmissão de cidadania.',
           q5: 'Preciso falar polonês?',
           a5: 'Não, você não precisa falar polonês para obter a cidadania por descendência. Esta é uma confirmação de direitos de cidadania existentes, não naturalização.'
-        }
-      },
+        },
         
-      // Timeline Section - Portuguese
-      timelineProcess: {
+        // Timeline Section - Portuguese
+        timelineProcess: {
           badge: 'Nosso Processo',
           title: 'Linha do Tempo Completa de Cidadania Polonesa por Descendência',
           subtitle: 'A jornada honesta e realista de 15 etapas do primeiro contato ao passaporte da UE - como cada etapa realmente funciona com preços transparentes e cronogramas verdadeiros',
@@ -3251,10 +3250,9 @@ const resources = {
           "Incluez la procuration signée et les documents d'état civil certifiés",
           "Dossier officiel ouvert et enregistré dans le système",
           "Le processus formel de demande de citoyenneté commence"
-        ]
-      }
-    },
-    timelineProcess: {
+        ],
+      
+      timelineProcess: {
         badge: 'Notre Processus',
         title: 'Chronologie Complète de la Citoyenneté Polonaise par Ascendance',
         subtitle: 'Le parcours honnête et réaliste en 15 étapes du premier contact au passeport européen - comment chaque étape fonctionne réellement avec des prix transparents et des délais véridiques',
@@ -3745,7 +3743,7 @@ const resources = {
           keywords: 'citoyenneté polonaise, passeport UE, citoyenneté par descendance, ascendance polonaise, services juridiques, citoyenneté polonaise par descendance, passeport polonais'
         }
       }
-    },
+    }
   },
   he: {
     translation: {
@@ -3940,11 +3938,9 @@ const resources = {
           "כלול ייפוי כוח חתום ורישומים חיוניים מאושרים",
           "תיק תיק רשמי נפתח ונרשם במערכת",
           "תהליך הבקשה הרשמי לאזרחות מתחיל"
-        ]
-      }
-    },
+        ],
       
-    timelineProcess: {
+      timelineProcess: {
         badge: 'התהליך שלנו',
         title: 'ציר זמן מלא של אזרחות פולנית לפי מוצא',
         subtitle: 'המסע הכנה והמציאותי בן 15 השלבים מהמגע הראשון ועד לדרכון האיחוד האירופי - כיצד כל שלב עובד באמת עם תמחור שקוף ולוחות זמנים אמיתיים',
