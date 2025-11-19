@@ -166,17 +166,37 @@ export default {
       plan3CTA: "Contacter les Ventes"
     },
     testimonials: {
-      title: "Ce Que Disent Nos Clients",
-      subtitle: "Histoires de Réussite du Monde Entier",
-      review1Name: "Sarah Johnson",
-      review1Role: "Nouvelle Citoyenne Polonaise",
-      review1Text: "L'équipe a rendu tout le processus fluide. J'ai obtenu ma citoyenneté polonaise en 18 mois. Hautement recommandé!",
-      review2Name: "Michael Chen",
-      review2Role: "Client des États-Unis",
-      review2Text: "Service professionnel et guidance experte tout au long du processus. Vaut chaque centime.",
-      review3Name: "Emma Williams",
-      review3Role: "Cliente du Royaume-Uni",
-      review3Text: "Excellente communication et support. Ils m'ont aidé à rassembler tous les documents nécessaires sans effort."
+      badge: 'Histoires de Réussite',
+      title: 'Ce Que Disent Nos Clients',
+      subtitle: 'Histoires de Réussite du Monde Entier',
+      rating: '4.9/5 sur 200+ avis',
+      cta: 'Lire Plus d\'Histoires',
+      reviews: [
+        {
+          name: 'Sarah Johnson',
+          location: 'New York, États-Unis',
+          heritage: 'Polono-Américaine',
+          text: 'L\'équipe a rendu tout le processus fluide. J\'ai obtenu ma citoyenneté polonaise en 18 mois. Hautement recommandé!',
+          timeline: '18 mois',
+          year: '2023'
+        },
+        {
+          name: 'Michael Chen',
+          location: 'San Francisco, États-Unis',
+          heritage: 'Polono-Chinois',
+          text: 'Service professionnel et guidance experte tout au long du processus. Vaut chaque centime.',
+          timeline: '22 mois',
+          year: '2023'
+        },
+        {
+          name: 'Emma Williams',
+          location: 'Londres, Royaume-Uni',
+          heritage: 'Polono-Britannique',
+          text: 'Excellente communication et support. Ils m\'ont aidé à rassembler tous les documents nécessaires sans effort.',
+          timeline: '16 mois',
+          year: '2024'
+        }
+      ]
     },
     contact: {
       title: "Contactez-Nous",

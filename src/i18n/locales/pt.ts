@@ -166,17 +166,37 @@ export default {
       plan3CTA: "Contatar Vendas"
     },
     testimonials: {
-      title: "O Que Nossos Clientes Dizem",
-      subtitle: "Histórias de Sucesso de Todo o Mundo",
-      review1Name: "Sarah Johnson",
-      review1Role: "Nova Cidadã Polonesa",
-      review1Text: "A equipe tornou todo o processo tranquilo. Obtive minha cidadania polonesa em 18 meses. Altamente recomendado!",
-      review2Name: "Michael Chen",
-      review2Role: "Cliente dos EUA",
-      review2Text: "Serviço profissional e orientação especializada durante todo o processo. Valeu cada centavo.",
-      review3Name: "Emma Williams",
-      review3Role: "Cliente do Reino Unido",
-      review3Text: "Excelente comunicação e suporte. Ajudaram-me a reunir todos os documentos necessários sem esforço."
+      badge: 'Histórias de Sucesso',
+      title: 'O Que Nossos Clientes Dizem',
+      subtitle: 'Histórias de Sucesso de Todo o Mundo',
+      rating: '4.9/5 de 200+ avaliações',
+      cta: 'Ler Mais Histórias',
+      reviews: [
+        {
+          name: 'Sarah Johnson',
+          location: 'Nova York, EUA',
+          heritage: 'Polaco-Americana',
+          text: 'A equipe tornou todo o processo tranquilo. Obtive minha cidadania polonesa em 18 meses. Altamente recomendado!',
+          timeline: '18 meses',
+          year: '2023'
+        },
+        {
+          name: 'Michael Chen',
+          location: 'São Francisco, EUA',
+          heritage: 'Polaco-Chinês',
+          text: 'Serviço profissional e orientação especializada durante todo o processo. Valeu cada centavo.',
+          timeline: '22 meses',
+          year: '2023'
+        },
+        {
+          name: 'Emma Williams',
+          location: 'Londres, Reino Unido',
+          heritage: 'Polaco-Britânica',
+          text: 'Excelente comunicação e suporte. Ajudaram-me a reunir todos os documentos necessários sem esforço.',
+          timeline: '16 meses',
+          year: '2024'
+        }
+      ]
     },
     contact: {
       title: "Entre em Contato",
