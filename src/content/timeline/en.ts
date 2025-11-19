@@ -14,7 +14,9 @@ export const timelineEn: TimelineStep[] = [
       'Complete online Polish citizenship eligibility test',
       'Fill out detailed family tree with ancestor information',
       'Receive eligibility examination and consultation call'
-    ]
+    ],
+    clickToSeeDetails: 'Click to see details',
+    openAccountLabel: 'Open Account'
   },
   {
     number: '2',
@@ -29,7 +31,9 @@ export const timelineEn: TimelineStep[] = [
       'Review full process information with complete pricing breakdown',
       'Confirm your decision to proceed with citizenship application',
       'Receive comprehensive list of all required documents'
-    ]
+    ],
+    clickToSeeDetails: 'Click to see details',
+    openAccountLabel: 'Open Account'
   },
   {
     number: '3',
@@ -44,7 +48,9 @@ export const timelineEn: TimelineStep[] = [
       'Create personalized client portal account for case management',
       'Access secure dashboard to track all progress and milestones',
       'Centralized platform for documents, communication, and updates'
-    ]
+    ],
+    clickToSeeDetails: 'Click to see details',
+    openAccountLabel: 'Open Account'
   },
   {
     number: '4',
@@ -59,7 +65,9 @@ export const timelineEn: TimelineStep[] = [
       'Receive professionally prepared Power of Attorney documents',
       'Sign POA documents and send via FedEx to Warsaw office',
       'Legal authorization established for full representation in Poland'
-    ]
+    ],
+    clickToSeeDetails: 'Click to see details',
+    openAccountLabel: 'Open Account'
   },
   {
     number: '5',

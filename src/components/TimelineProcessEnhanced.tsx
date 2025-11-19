@@ -187,7 +187,7 @@ export default function TimelineProcessEnhanced() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-5 text-center">{step.clickToSeeDetails}</p>
+                      <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-5 text-center">{step.clickToSeeDetails || (isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails'))}</p>
                     </div>
 
                     {/* Back Side */}
@@ -228,7 +228,7 @@ export default function TimelineProcessEnhanced() {
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                           }}
                         >
-                          <span className="block w-full break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{step.openAccountLabel}</span>
+                          <span className="block w-full break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{step.openAccountLabel || t('timelineProcess.openAccountCta')}</span>
                         </Button>
                       </div>
                     </div>
