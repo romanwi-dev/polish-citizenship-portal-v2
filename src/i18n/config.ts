@@ -451,7 +451,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Processing',
         step8Desc: 'We handle all procedures simultaneously: sworn translations, archives search, Polish civil acts, and passport preparation. After about 12 months, we receive initial response from authorities.',
-        step8Cta: 'Schedule Consultation'
+        step8Cta: 'Schedule Consultation',
+        tapForDetails: 'Tap to see details',
+        openAccountCta: 'Open Account'
       },
 
       // Process Section - 12 Steps
@@ -532,6 +534,9 @@ const resources = {
         clickToSeeDetails: 'Click to see details',
         majorMilestone: 'Major Milestone',
         foundationBuilding: 'Foundation Building',
+        initialSetupPayment: 'Initial Setup & Payment',
+        documentCollection: 'Document Collection',
+        advancedProcessing: 'Advanced Processing',
         stage1: 'FIRST STEPS',
         stage1Desc: 'First contact, citizenship test, family tree, eligibility examination, and eligibility call',
         stage1Duration: 'Week 1',
@@ -1228,7 +1233,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Procesamiento',
         step8Desc: 'Manejamos todos los procedimientos simultáneamente: traducciones juradas, búsqueda de archivos, actas civiles polacas y preparación de pasaporte. Después de aproximadamente 12 meses, recibimos la respuesta inicial de las autoridades.',
-        step8Cta: 'Programar Consulta'
+        step8Cta: 'Programar Consulta',
+        tapForDetails: 'Toca para ver detalles',
+        openAccountCta: 'Abrir Cuenta'
       },
 
       // Process Section - Spanish
@@ -1309,6 +1316,9 @@ const resources = {
         clickToSeeDetails: 'Haz clic para ver detalles',
         majorMilestone: 'Hito Principal',
         foundationBuilding: 'Construcción de Fundamentos',
+        initialSetupPayment: 'Configuración Inicial y Pago',
+        documentCollection: 'Recolección de Documentos',
+        advancedProcessing: 'Procesamiento Avanzado',
         stage1: 'PRIMEROS PASOS',
         stage1Desc: 'Primer contacto, prueba de ciudadanía, árbol genealógico, examen de elegibilidad y llamada de elegibilidad',
         stage1Duration: 'Semana 1',
@@ -1811,7 +1821,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Processamento',
         step8Desc: 'Lidamos com todos os procedimentos simultaneamente: traduções juramentadas, pesquisa de arquivos, atos civis poloneses e preparação de passaporte. Após cerca de 12 meses, recebemos resposta inicial das autoridades.',
-        step8Cta: 'Agendar Consulta'
+        step8Cta: 'Agendar Consulta',
+        tapForDetails: 'Toque para ver detalhes',
+        openAccountCta: 'Abrir Conta'
       },
 
       // Process Section - Portuguese
@@ -2034,6 +2046,9 @@ const resources = {
           clickToSeeDetails: 'Clique para ver detalhes',
           majorMilestone: 'Marco Principal',
           foundationBuilding: 'Construção de Base',
+          initialSetupPayment: 'Configuração Inicial e Pagamento',
+          documentCollection: 'Coleção de Documentos',
+          advancedProcessing: 'Processamento Avançado',
           stage1: 'PRIMEIROS PASSOS',
           stage1Desc: 'Primeiro contato, teste de cidadania, árvore genealógica, exame de elegibilidade e chamada de elegibilidade',
           stage1Duration: 'Semana 1',
@@ -2444,7 +2459,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Verarbeitung',
         step8Desc: 'Wir handhaben alle Verfahren gleichzeitig: beglaubigte Übersetzungen, Archivrecherche, polnische Zivilakte und Passvorbereitung. Nach etwa 12 Monaten erhalten wir die erste Antwort der Behörden.',
-        step8Cta: 'Beratung Planen'
+        step8Cta: 'Beratung Planen',
+        tapForDetails: 'Tippen für Details',
+        openAccountCta: 'Konto Eröffnen'
       },
 
       // Process Section - German
@@ -2585,6 +2602,9 @@ const resources = {
         clickToSeeDetails: 'Klicken für Details',
         majorMilestone: 'Wichtiger Meilenstein',
         foundationBuilding: 'Grundlagenbau',
+        initialSetupPayment: 'Ersteinrichtung & Zahlung',
+        documentCollection: 'Dokumentensammlung',
+        advancedProcessing: 'Erweiterte Verarbeitung',
         stage1: 'ERSTE SCHRITTE',
         stage1Desc: 'Erstkontakt, Staatsbürgerschaftstest, Stammbaum, Berechtigungsprüfung und Berechtigungsanruf',
         stage1Duration: 'Woche 1',
@@ -3251,6 +3271,9 @@ const resources = {
           "Dossier officiel ouvert et enregistré dans le système",
           "Le processus formel de demande de citoyenneté commence"
         ],
+        tapForDetails: 'Appuyez pour voir les détails',
+        openAccountCta: 'Ouvrir un Compte'
+      },
       
       timelineProcess: {
         badge: 'Notre Processus',
@@ -3261,6 +3284,9 @@ const resources = {
         clickToSeeDetails: 'Cliquez pour voir les détails',
         majorMilestone: 'Jalon Majeur',
         foundationBuilding: 'Construction de Fondation',
+        initialSetupPayment: 'Configuration Initiale & Paiement',
+        documentCollection: 'Collection de Documents',
+        advancedProcessing: 'Traitement Avancé',
         stage1: 'PREMIÈRES ÉTAPES',
         stage1Desc: 'Premier contact, test de citoyenneté, arbre généalogique, examen d\'éligibilité et appel d\'éligibilité',
         stage1Duration: 'Semaine 1',
@@ -3328,6 +3354,7 @@ const resources = {
         detailedInfoCta: 'Vers le Portail',
         detailedInfoNote: 'Note: Ces délais sont des estimations basées sur plus de 200 cas réussis. Votre cas réel peut varier en fonction de la complexité et des délais de traitement gouvernementaux.',
         learnMoreCta: 'En Savoir Plus',
+        tapForDetails: 'Appuyez pour voir les détails',
         estimatedDuration: 'Durée Estimée',
         keyAction: 'Action Clé',
         readMore: 'Lire Plus',
@@ -3939,6 +3966,9 @@ const resources = {
           "תיק תיק רשמי נפתח ונרשם במערכת",
           "תהליך הבקשה הרשמי לאזרחות מתחיל"
         ],
+        tapForDetails: 'הקש לראות פרטים',
+        openAccountCta: 'פתח חשבון'
+      },
       
       timelineProcess: {
         badge: 'התהליך שלנו',
@@ -3949,6 +3979,9 @@ const resources = {
         clickToSeeDetails: 'לחץ לראות פרטים',
         majorMilestone: 'אבן דרך מרכזית',
         foundationBuilding: 'בניית יסודות',
+        initialSetupPayment: 'הגדרה ראשונית ותשלום',
+        documentCollection: 'איסוף מסמכים',
+        advancedProcessing: 'עיבוד מתקדם',
         stage1: 'צעדים ראשונים',
         stage1Desc: 'קשר ראשון, מבחן אזרחות, עץ משפחה, בדיקת זכאות ושיחת זכאות',
         stage1Duration: 'שבוע 1',
@@ -4756,7 +4789,7 @@ const resources = {
           "Детальное объяснение сроков, расходов и следующих шагов",
           "Возможность задать вопросы и прояснить любые опасения"
         ],
-      step5Number: '05',
+        step5Number: '05',
         step5Title: 'Отправка Документов',
         step5Desc: 'Отправьте через FedEx в наш варшавский офис все необходимые документы для обработки.',
         step5Cta: 'Панель',
@@ -4778,7 +4811,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Окончательная Подача',
         step8Desc: 'Ваше заявление на гражданство окончательно завершено и официально подано в соответствующие польские органы.',
-        step8Cta: 'Запланировать Консультацию'
+        step8Cta: 'Запланировать Консультацию',
+        tapForDetails: 'Нажмите, чтобы увидеть детали',
+        openAccountCta: 'Открыть Аккаунт'
       },
       
       // Timeline Section - Russian
@@ -4791,6 +4826,9 @@ const resources = {
         clickToSeeDetails: 'Кликните, чтобы увидеть детали',
         majorMilestone: 'Важная Веха',
         foundationBuilding: 'Создание Основы',
+        initialSetupPayment: 'Первоначальная Настройка и Оплата',
+        documentCollection: 'Сбор Документов',
+        advancedProcessing: 'Расширенная Обработка',
         stage1: 'ПЕРВЫЕ ШАГИ',
         stage1Desc: 'Первый контакт, тест на гражданство, семейное дерево, проверка соответствия и звонок о соответствии',
         stage1Duration: 'Неделя 1',
@@ -5493,7 +5531,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Обробка',
         step8Desc: 'Ми обробляємо всі процедури одночасно: завірені переклади, пошук в архівах, польські цивільні акти та підготовка паспорта. Приблизно через 12 місяців ми отримуємо першу відповідь від влади.',
-        step8Cta: 'Запланувати Консультацію'
+        step8Cta: 'Запланувати Консультацію',
+        tapForDetails: 'Натисніть, щоб побачити деталі',
+        openAccountCta: 'Відкрити Обліковий Запис'
       },
       
       // Timeline Section - Ukrainian
@@ -5506,6 +5546,9 @@ const resources = {
         clickToSeeDetails: 'Клацніть, щоб побачити деталі',
         majorMilestone: 'Важлива Віха',
         foundationBuilding: 'Будування Основи',
+        initialSetupPayment: 'Початкове Налаштування та Оплата',
+        documentCollection: 'Збір Документів',
+        advancedProcessing: 'Розширена Обробка',
         stage1: 'ПЕРШІ КРОКИ',
         stage1Desc: 'Перший контакт, тест на громадянство, генеалогічне дерево, перевірка права та дзвінок про право',
         stage1Duration: 'Тиждень 1',
