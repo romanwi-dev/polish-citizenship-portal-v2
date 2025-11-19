@@ -451,7 +451,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Processing',
         step8Desc: 'We handle all procedures simultaneously: sworn translations, archives search, Polish civil acts, and passport preparation. After about 12 months, we receive initial response from authorities.',
-        step8Cta: 'Schedule Consultation'
+        step8Cta: 'Schedule Consultation',
+        tapForDetails: 'Tap for details',
+        openAccountCta: 'Open Account'
       },
 
       // Process Section - 12 Steps
@@ -1812,7 +1814,9 @@ const resources = {
         step8Number: '08',
         step8Title: 'Processamento',
         step8Desc: 'Lidamos com todos os procedimentos simultaneamente: traduções juramentadas, pesquisa de arquivos, atos civis poloneses e preparação de passaporte. Após cerca de 12 meses, recebemos resposta inicial das autoridades.',
-        step8Cta: 'Agendar Consulta'
+        step8Cta: 'Agendar Consulta',
+        tapForDetails: 'Toque para detalhes',
+        openAccountCta: 'Abrir Conta'
       },
 
       // Process Section - Portuguese
@@ -3253,6 +3257,21 @@ const resources = {
           "Dossier officiel ouvert et enregistré dans le système",
           "Le processus formel de demande de citoyenneté commence"
         ],
+        step6Number: '06',
+        step6Title: 'Traitement de Documents par IA',
+        step6Desc: 'Tous les documents sont traités par notre Système de Documents IA pour générer les Procurations et la demande de citoyenneté polonaise.',
+        step6Cta: 'Tableau de Bord',
+        step7Number: '07',
+        step7Title: 'Dépôt de la Demande',
+        step7Desc: 'Envoyez les Procurations par FedEx à notre bureau de Varsovie. Nous déposons votre demande de citoyenneté auprès des autorités polonaises.',
+        step7Cta: 'Génération de Demande',
+        step8Number: '08',
+        step8Title: 'Traitement',
+        step8Desc: "Nous gérons toutes les procédures simultanément: traductions certifiées, recherche d'archives, actes civils polonais et préparation de passeport. Après environ 12 mois, nous recevons la réponse initiale des autorités.",
+        step8Cta: 'Planifier une Consultation',
+        tapForDetails: 'Appuyez pour les détails',
+        openAccountCta: 'Ouvrir un Compte'
+      },
       
       timelineProcess: {
         badge: 'Notre Processus',
@@ -3941,8 +3960,21 @@ const resources = {
           "תיק תיק רשמי נפתח ונרשם במערכת",
           "תהליך הבקשה הרשמי לאזרחות מתחיל"
         ],
-      
-      timelineProcess: {
+        step6Number: '06',
+        step6Title: 'עיבוד מסמכים באמצעות AI',
+        step6Desc: 'כל המסמכים מעובדים על ידי מערכת המסמכים AI שלנו כדי ליצור ייפויי כוח ובקשת אזרחות פולנית.',
+        step6Cta: 'לוח בקרה',
+        step7Number: '07',
+        step7Title: 'הגשת בקשה',
+        step7Desc: 'שלח ייפויי כוח באמצעות FedEx למשרד שלנו בוורשה. אנו מגישים את בקשת האזרחות שלך לרשויות הפולניות.',
+        step7Cta: 'יצירת בקשה',
+        step8Number: '08',
+        step8Title: 'עיבוד',
+        step8Desc: 'אנו מטפלים בכל ההליכים בו-זמנית: תרגומים משבעים, חיפוש בארכיונים, מעשים אזרחיים פולניים והכנת דרכון. לאחר כ-12 חודשים, אנו מקבלים תגובה ראשונית מהרשויות.',
+        step8Cta: 'קבע ייעוץ',
+        tapForDetails: 'הקש לפרטים',
+        openAccountCta: 'פתח חשבון'
+      },
         badge: 'התהליך שלנו',
         title: 'ציר זמן מלא של אזרחות פולנית לפי מוצא',
         subtitle: 'המסע הכנה והמציאותי בן 15 השלבים מהמגע הראשון ועד לדרכון האיחוד האירופי - כיצד כל שלב עובד באמת עם תמחור שקוף ולוחות זמנים אמיתיים',
