@@ -38,64 +38,23 @@ export default defineConfig(({ mode }) => ({
           }
           return `assets/[name]-[hash][extname]`;
         },
-        manualChunks: (id) => {
+        manualChunks: {
           // Core React libraries
-          if (id.includes('react') && !id.includes('react-hook-form') && !id.includes('react-i18next')) {
-            return 'react-vendor';
-          }
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           // UI component library
-          if (id.includes('@radix-ui')) {
-            return 'radix-vendor';
-          }
+          'radix-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot', '@radix-ui/react-tabs', '@radix-ui/react-toast', '@radix-ui/react-accordion', '@radix-ui/react-select'],
           // Form and validation
-          if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('zod')) {
-            return 'form-vendor';
-          }
+          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
           // Three.js separate chunk (loaded on demand)
-          if (id.includes('three') || id.includes('@react-three')) {
-            return 'three-vendor';
-          }
+          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
           // Supabase and API
-          if (id.includes('@supabase') || id.includes('@tanstack/react-query')) {
-            return 'supabase-vendor';
-          }
+          'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
           // Utilities
-          if (id.includes('date-fns') || id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority')) {
-            return 'utils-vendor';
-          }
+          'utils-vendor': ['date-fns', 'clsx', 'tailwind-merge', 'class-variance-authority'],
           // Admin-only heavy dependencies (PDF, AI, Dropbox)
-          if (id.includes('pdf-lib') || id.includes('@huggingface') || id.includes('react-pdf')) {
-            return 'admin-heavy';
-          }
-          // i18n core (small)
-          if (id.includes('i18next') || id.includes('react-i18next')) {
-            return 'i18n-core';
-          }
-          // Lazy-loaded language files (separate chunks per language)
-          if (id.includes('src/i18n/locales/en.ts')) {
-            return 'i18n-en';
-          }
-          if (id.includes('src/i18n/locales/es.ts')) {
-            return 'i18n-es';
-          }
-          if (id.includes('src/i18n/locales/pt.ts')) {
-            return 'i18n-pt';
-          }
-          if (id.includes('src/i18n/locales/de.ts')) {
-            return 'i18n-de';
-          }
-          if (id.includes('src/i18n/locales/fr.ts')) {
-            return 'i18n-fr';
-          }
-          if (id.includes('src/i18n/locales/he.ts')) {
-            return 'i18n-he';
-          }
-          if (id.includes('src/i18n/locales/ru.ts')) {
-            return 'i18n-ru';
-          }
-          if (id.includes('src/i18n/locales/uk.ts')) {
-            return 'i18n-uk';
-          }
+          'admin-heavy': ['pdf-lib', '@huggingface/transformers', 'react-pdf'],
+          // Translation and i18n
+          'i18n-vendor': ['i18next', 'react-i18next'],
         }
       }
     }
