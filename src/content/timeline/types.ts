@@ -7,6 +7,6 @@ export interface TimelineStep {
   priority: string;
   detailedInfo: string;
   keyPoints: string[];
-  clickToSeeDetails: string;
-  openAccountLabel: string;
+  clickToSeeDetails?: string;
+  openAccountLabel?: string;
 }
