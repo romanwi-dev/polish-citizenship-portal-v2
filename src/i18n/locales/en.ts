@@ -432,19 +432,34 @@ export default {
       badge: 'Success Stories',
       title: 'Real Families, Real Results',
       subtitle: 'Hear from clients who reclaimed their European heritage',
-      review1Name: 'Sarah Johnson',
-      review1Location: 'New York, USA',
-      review1Rating: 5,
-      review1Text: 'After years of trying on my own, I found this firm and they handled everything professionally. From finding my great-grandfather\'s documents in Polish archives to my passport appointment—18 months total. Now my children have EU citizenship!',
-      review2Name: 'David Cohen',
-      review2Location: 'Tel Aviv, Israel',
-      review2Rating: 5,
-      review2Text: 'As a descendant of Polish Jews, I wasn\'t sure if I qualified. Their team researched my family history, located pre-war documents, and successfully confirmed my citizenship. The AI portal made tracking progress easy. Highly recommended!',
-      review3Name: 'Maria Rodriguez',
-      review3Location: 'Buenos Aires, Argentina',
-      review3Rating: 5,
-      review3Text: 'Professional, transparent, and successful. They explained every step, handled all the complex paperwork, and kept me informed throughout. My Polish passport arrived exactly when they predicted. Worth every penny!',
-      cta: 'Read More Success Stories'
+      rating: '4.9/5 from 200+ reviews',
+      cta: 'Read More Success Stories',
+      reviews: [
+        {
+          name: 'Sarah Johnson',
+          location: 'New York, USA',
+          heritage: 'Polish-American',
+          text: 'After years of trying on my own, I found this firm and they handled everything professionally. From finding my great-grandfather\'s documents in Polish archives to my passport appointment—18 months total. Now my children have EU citizenship!',
+          timeline: '18 months',
+          year: '2023'
+        },
+        {
+          name: 'David Cohen',
+          location: 'Tel Aviv, Israel',
+          heritage: 'Polish-Jewish',
+          text: 'As a descendant of Polish Jews, I wasn\'t sure if I qualified. Their team researched my family history, located pre-war documents, and successfully confirmed my citizenship. The AI portal made tracking progress easy. Highly recommended!',
+          timeline: '22 months',
+          year: '2023'
+        },
+        {
+          name: 'Maria Rodriguez',
+          location: 'Buenos Aires, Argentina',
+          heritage: 'Polish-Argentine',
+          text: 'Professional, transparent, and successful. They explained every step, handled all the complex paperwork, and kept me informed throughout. My Polish passport arrived exactly when they predicted. Worth every penny!',
+          timeline: '16 months',
+          year: '2024'
+        }
+      ]
     },
 
     // FAQ Section
