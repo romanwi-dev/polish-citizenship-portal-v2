@@ -797,7 +797,7 @@ const resources = {
           keywords: 'Polish citizenship, EU passport, citizenship by descent, Polish ancestry, legal services, Polish citizenship by descent, Polish passport'
         }
       }
-    },
+    }
   },
   pl: {
     translation: {
@@ -3745,7 +3745,7 @@ const resources = {
           keywords: 'citoyenneté polonaise, passeport UE, citoyenneté par descendance, ascendance polonaise, services juridiques, citoyenneté polonaise par descendance, passeport polonais'
         }
       }
-    }
+    },
   },
   he: {
     translation: {
