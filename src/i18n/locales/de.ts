@@ -166,17 +166,37 @@ export default {
       plan3CTA: "Vertrieb Kontaktieren"
     },
     testimonials: {
-      title: "Was Unsere Kunden Sagen",
-      subtitle: "Erfolgsgeschichten aus der Ganzen Welt",
-      review1Name: "Sarah Johnson",
-      review1Role: "Neue Polnische Bürgerin",
-      review1Text: "Das Team hat den gesamten Prozess reibungslos gestaltet. Ich habe meine polnische Staatsbürgerschaft in 18 Monaten erhalten. Sehr empfehlenswert!",
-      review2Name: "Michael Chen",
-      review2Role: "Kunde aus den USA",
-      review2Text: "Professioneller Service und fachkundige Beratung während des gesamten Prozesses. Jeden Cent wert.",
-      review3Name: "Emma Williams",
-      review3Role: "Kundin aus Großbritannien",
-      review3Text: "Ausgezeichnete Kommunikation und Unterstützung. Sie haben mir mühelos geholfen, alle erforderlichen Dokumente zu sammeln."
+      badge: 'Erfolgsgeschichten',
+      title: 'Was Unsere Kunden Sagen',
+      subtitle: 'Erfolgsgeschichten aus der Ganzen Welt',
+      rating: '4.9/5 von 200+ Bewertungen',
+      cta: 'Mehr Geschichten Lesen',
+      reviews: [
+        {
+          name: 'Sarah Johnson',
+          location: 'New York, USA',
+          heritage: 'Polnisch-Amerikanisch',
+          text: 'Das Team hat den gesamten Prozess reibungslos gestaltet. Ich habe meine polnische Staatsbürgerschaft in 18 Monaten erhalten. Sehr empfehlenswert!',
+          timeline: '18 Monate',
+          year: '2023'
+        },
+        {
+          name: 'Michael Chen',
+          location: 'San Francisco, USA',
+          heritage: 'Polnisch-Chinesisch',
+          text: 'Professioneller Service und fachkundige Beratung während des gesamten Prozesses. Jeden Cent wert.',
+          timeline: '22 Monate',
+          year: '2023'
+        },
+        {
+          name: 'Emma Williams',
+          location: 'London, Großbritannien',
+          heritage: 'Polnisch-Britisch',
+          text: 'Ausgezeichnete Kommunikation und Unterstützung. Sie haben mir mühelos geholfen, alle erforderlichen Dokumente zu sammeln.',
+          timeline: '16 Monate',
+          year: '2024'
+        }
+      ]
     },
     contact: {
       title: "Kontaktieren Sie Uns",

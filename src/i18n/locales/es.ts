@@ -166,17 +166,37 @@ export default {
       plan3CTA: "Contactar Ventas"
     },
     testimonials: {
-      title: "Lo Que Dicen Nuestros Clientes",
-      subtitle: "Historias de Éxito de Todo el Mundo",
-      review1Name: "Sarah Johnson",
-      review1Role: "Nueva Ciudadana Polaca",
-      review1Text: "El equipo hizo que todo el proceso fuera sencillo. Obtuve mi ciudadanía polaca en 18 meses. ¡Altamente recomendado!",
-      review2Name: "Michael Chen",
-      review2Role: "Cliente de EE.UU.",
-      review2Text: "Servicio profesional y orientación experta durante todo el proceso. Valió cada centavo.",
-      review3Name: "Emma Williams",
-      review3Role: "Cliente del Reino Unido",
-      review3Text: "Excelente comunicación y soporte. Me ayudaron a reunir todos los documentos necesarios sin esfuerzo."
+      badge: 'Historias de Éxito',
+      title: 'Lo Que Dicen Nuestros Clientes',
+      subtitle: 'Historias de Éxito de Todo el Mundo',
+      rating: '4.9/5 de 200+ reseñas',
+      cta: 'Leer Más Historias',
+      reviews: [
+        {
+          name: 'Sarah Johnson',
+          location: 'Nueva York, EE.UU.',
+          heritage: 'Polaco-Americana',
+          text: 'El equipo hizo que todo el proceso fuera sencillo. Obtuve mi ciudadanía polaca en 18 meses. ¡Altamente recomendado!',
+          timeline: '18 meses',
+          year: '2023'
+        },
+        {
+          name: 'Michael Chen',
+          location: 'San Francisco, EE.UU.',
+          heritage: 'Polaco-Chino',
+          text: 'Servicio profesional y orientación experta durante todo el proceso. Valió cada centavo.',
+          timeline: '22 meses',
+          year: '2023'
+        },
+        {
+          name: 'Emma Williams',
+          location: 'Londres, Reino Unido',
+          heritage: 'Polaco-Británica',
+          text: 'Excelente comunicación y soporte. Me ayudaron a reunir todos los documentos necesarios sin esfuerzo.',
+          timeline: '16 meses',
+          year: '2024'
+        }
+      ]
     },
     contact: {
       title: "Póngase en Contacto",
