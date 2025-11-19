@@ -3254,7 +3254,6 @@ const resources = {
         ]
       }
     },
-      
     timelineProcess: {
         badge: 'Notre Processus',
         title: 'Chronologie Complète de la Citoyenneté Polonaise par Ascendance',
@@ -3748,8 +3747,6 @@ const resources = {
       }
     }
   },
-  fr: {
-    translation: {
   he: {
     translation: {
       // Navigation
