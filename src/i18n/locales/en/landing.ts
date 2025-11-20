@@ -16,9 +16,9 @@ const landing = {
   hero: {
     badge: 'Web3 Legal Services',
     title: 'Polish Citizenship<br />by Descent',
-    subtitle1: 'Poland\'s premier legal service for Polish citizenship by descent. With over 20 years of expertise and 25,000+ successful cases, we provide comprehensive guidance through every step of your citizenship journey.',
-    subtitle2: 'Our proven track record and deep understanding of Polish ancestry law ensures your path to EU citizenship is handled with precision and care. From initial eligibility assessment to final passport acquisition, we deliver unmatched success rates and transparent pricing.',
-    description: 'Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing',
+    subtitle1: 'Poland\'s premier legal service for Polish citizenship by descent.',
+    subtitle2: 'Our proven track record ensures your path to EU citizenship is handled with precision.',
+    description: 'Expert legal guidance for people of Polish descent',
     cta: 'Take Polish Citizenship Test',
     stats: {
       experience: 'Years of Experience',
@@ -27,7 +27,7 @@ const landing = {
     }
   },
   footer: {
-    description: 'Expert guidance for Polish citizenship by descent. Over 20 years of experience helping people worldwide obtain Polish and EU citizenship.',
+    description: 'Expert guidance for Polish citizenship by descent.',
     quickLinks: 'Quick Links',
     services: 'Services',
     legal: 'Legal',
@@ -63,11 +63,6 @@ const landing = {
     acceptAll: 'Accept All',
     rejectAll: 'Reject All',
     customize: 'Customize'
-  },
-  timelineProcess: {
-    badge: 'The Process',
-    title: 'Your Citizenship Journey',
-    subtitle: 'A step-by-step guide to obtaining Polish citizenship'
   },
   cta: {
     badge: 'Get Started Today',
