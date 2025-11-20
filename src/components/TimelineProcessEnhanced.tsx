@@ -8,14 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTranslation } from 'react-i18next';
 import { LazyImage } from "./ui/lazy-image";
-import { timelineEn } from '@/content/timeline/en';
-import { timelineEs } from '@/content/timeline/es';
-import { timelinePt } from '@/content/timeline/pt';
-import { timelineDe } from '@/content/timeline/de';
-import { timelineFr } from '@/content/timeline/fr';
-import { timelineHe } from '@/content/timeline/he';
-import { timelineRu } from '@/content/timeline/ru';
-import { timelineUk } from '@/content/timeline/uk';
+import { TIMELINE_TRANSLATIONS, TimelineStep } from '@/i18n/timelineTranslations';
 
 // Lazy-loaded timeline images - dynamically imported when needed
 const getTimelineImage = (step: number): string => {
@@ -43,16 +36,14 @@ export default function TimelineProcessEnhanced() {
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
 
-  // Select timeline based on language
-  const lang = i18n.language;
-  let steps = timelineEn;
-  if (lang === 'es') steps = timelineEs;
-  else if (lang === 'pt') steps = timelinePt;
-  else if (lang === 'de') steps = timelineDe;
-  else if (lang === 'fr') steps = timelineFr;
-  else if (lang === 'he') steps = timelineHe;
-  else if (lang === 'ru') steps = timelineRu;
-  else if (lang === 'uk') steps = timelineUk;
+  // Select timeline based on language with proper fallback
+  const current = i18n.language || 'en';
+  const baseLang = current.split('-')[0]; // 'pt-BR' -> 'pt'
+  const supported = ['en', 'es', 'pt', 'de', 'fr', 'he', 'ru', 'uk'];
+  const lang = supported.includes(baseLang) ? baseLang : 'en';
+  
+  // Get steps from centralized translations with fallback to English
+  const steps = TIMELINE_TRANSLATIONS[lang] ?? TIMELINE_TRANSLATIONS.en;
 
   const timelineSteps = steps.map((step, index) => ({
     number: step.number,
