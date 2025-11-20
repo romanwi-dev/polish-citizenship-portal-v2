@@ -1,0 +1,5 @@
+# I18N SECURITY LOCK (DO NOT REMOVE)
+1. **READ-ONLY:** `src/i18n/locales/en.ts` is the Source of Truth. NEVER rewrite, summarize, or refactor it.
+2. **NO SPLITTING:** Do not split or refactor these files again without explicit script instruction.
+3. **CONFIG LOCKED:** `src/i18n/config.ts` must remain imports-only.
+4. **EDITING PROTOCOL:** To update text, ONLY edit the specific locale file (e.g., `en.ts`). Do not touch config.
