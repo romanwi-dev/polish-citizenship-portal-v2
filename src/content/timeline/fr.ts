@@ -14,7 +14,9 @@ export const timelineFr: TimelineStep[] = [
       'Compléter le test d\'éligibilité à la citoyenneté polonaise en ligne',
       'Remplir l\'arbre généalogique détaillé avec les informations des ancêtres',
       'Recevoir l\'examen d\'éligibilité et l\'appel de consultation'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '2',
@@ -29,7 +31,9 @@ export const timelineFr: TimelineStep[] = [
       'Informations complètes du processus avec prix, calendrier et conditions',
       'Confirmation du client pour poursuivre formellement',
       'Liste de documents détaillée adaptée à votre cas'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '3',
@@ -44,7 +48,9 @@ export const timelineFr: TimelineStep[] = [
       'Compte portail client activé immédiatement',
       'Accès 24/7 pour téléchargement de documents et suivi de progression',
       'Communication centralisée avec notre équipe juridique'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '4',
@@ -59,7 +65,9 @@ export const timelineFr: TimelineStep[] = [
       'Préparation professionnelle du document de procuration',
       'Signature électronique pour commodité',
       'Envoi FedEx des POA signés à Varsovie pour traitement officiel'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '5',
