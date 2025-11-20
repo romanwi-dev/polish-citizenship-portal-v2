@@ -9,7 +9,9 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Configuração Inicial e Pagamento',
     priority: 'Marco Principal',
     detailedInfo: 'Os primeiros passos em sua jornada de cidadania polonesa incluem seu contato inicial conosco, fazer nosso teste abrangente de cidadania, preencher o formulário de árvore genealógica, passar por exame de elegibilidade e ter uma ligação de elegibilidade com nossos especialistas. Esta fase fundamental estabelece seu caso e determina seu caminho de qualificação.',
-    keyPoints: ['Faça o primeiro contato por site, email ou WhatsApp', 'Complete o teste de elegibilidade de cidadania polonesa online', 'Preencha árvore genealógica detalhada com informações de ancestrais', 'Receba exame de elegibilidade e consulta telefônica']
+    keyPoints: ['Faça o primeiro contato por site, email ou WhatsApp', 'Complete o teste de elegibilidade de cidadania polonesa online', 'Preencha árvore genealógica detalhada com informações de ancestrais', 'Receba exame de elegibilidade e consulta telefônica'],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '2',
@@ -19,7 +21,9 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Configuração Inicial e Pagamento',
     priority: 'Construção de Base',
     detailedInfo: 'Fornecemos uma avaliação inicial do seu caso, enviamos informações completas do processo com preços transparentes, recebemos sua confirmação para prosseguir e enviamos por email a lista completa de todos os documentos necessários. Esta etapa garante que você entenda os custos, cronograma e requisitos antes de avançar.',
-    keyPoints: ['Receba avaliação inicial do seu caso de cidadania', 'Obtenha informações completas do processo com detalhamento de preços', 'Confirme sua decisão de prosseguir com a aplicação', 'Receba lista abrangente de documentos necessários']
+    keyPoints: ['Receba avaliação inicial do seu caso de cidadania', 'Obtenha informações completas do processo com detalhamento de preços', 'Confirme sua decisão de prosseguir com a aplicação', 'Receba lista abrangente de documentos necessários'],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '3',
@@ -29,7 +33,9 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Configuração Inicial e Pagamento',
     priority: 'Marco Principal',
     detailedInfo: 'Você faz o pagamento de entrada para iniciar seu caso oficialmente. Abrimos sua conta dedicada no portal onde você pode acompanhar o progresso, enviar documentos e comunicar-se com nossa equipe de forma segura durante todo o processo.',
-    keyPoints: ['Processe o pagamento de entrada para iniciação do caso', 'Crie conta segura no portal do cliente', 'Acesse painel do caso e sistema de upload de documentos', 'Estabeleça canal de comunicação seguro com equipe jurídica']
+    keyPoints: ['Processe o pagamento de entrada para iniciação do caso', 'Crie conta segura no portal do cliente', 'Acesse painel do caso e sistema de upload de documentos', 'Estabeleça canal de comunicação seguro com equipe jurídica'],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '4',
@@ -39,7 +45,9 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Detalhes e Aplicação',
     priority: 'Construção de Base',
     detailedInfo: 'Você fornece detalhes básicos incluindo cópia do passaporte, endereço, cópia da certidão de nascimento, número de telefone e histórico familiar essencial. Preparamos as Procurações (POAs), enviamos por email, e você as devolve assinadas para nosso escritório em Varsóvia por FedEx. Essas POAs nos autorizam legalmente a representá-lo na Polônia.',
-    keyPoints: ['Fornecer informações básicas do cliente e cópias de documentos', 'Receber Procurações preparadas por email', 'Assinar POAs e enviá-las por FedEx para o escritório de Varsóvia', 'Confirmar que a equipe jurídica está oficialmente autorizada']
+    keyPoints: ['Fornecer informações básicas do cliente e cópias de documentos', 'Receber Procurações preparadas por email', 'Assinar POAs e enviá-las por FedEx para o escritório de Varsóvia', 'Confirmar que a equipe jurídica está oficialmente autorizada'],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '5',
@@ -49,7 +57,9 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Detalhes e Aplicação',
     priority: 'Marco Principal',
     detailedInfo: 'Você preenche o FORMULÁRIO MESTRE em sua conta que inclui todos os dados necessários para processar o caso completamente. Nosso Agente de IA gera toda a documentação necessária, cria o rascunho da solicitação de cidadania e a submete. Então aguardamos a resposta inicial que tipicamente leva 10-18 meses. Enviamos por email uma cópia da submissão oficial da solicitação e a adicionamos à sua conta.',
-    keyPoints: ['Preencher formulário mestre abrangente no portal do cliente', 'Agente de IA gera documentação e rascunho da solicitação', 'Submeter solicitação oficial de cidadania polonesa', 'Receber confirmação de submissão e iniciar período de espera de 10-18 meses']
+    keyPoints: ['Preencher formulário mestre abrangente no portal do cliente', 'Agente de IA gera documentação e rascunho da solicitação', 'Submeter solicitação oficial de cidadania polonesa', 'Receber confirmação de submissão e iniciar período de espera de 10-18 meses'],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '6',
@@ -59,7 +69,9 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Documentação e Tradução',
     priority: 'Construção de Base',
     detailedInfo: 'Esclarecemos a lista de documentos locais que você precisa coletar, ajudamos você a reunir certidões de nascimento, casamento, atos de naturalização e registros militares. Conectamos você com nossos parceiros locais quando necessário para ajudar a coletar documentos. Recebemos os documentos, examinamos e selecionamos quais traduzir e arquivar em seu caso de cidadania em andamento.',
-    keyPoints: ['Receba lista de documentos locais necessários para seu caso específico', 'Coleta de certidões, atos de naturalização e registros militares', 'Conectamos você com parceiros locais para assistência quando necessário', 'Exame e seleção de documentos para tradução e arquivamento']
+    keyPoints: ['Receba lista de documentos locais necessários para seu caso específico', 'Coleta de certidões, atos de naturalização e registros militares', 'Conectamos você com parceiros locais para assistência quando necessário', 'Exame e seleção de documentos para tradução e arquivamento'],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '7',
@@ -69,7 +81,9 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Documentação e Tradução',
     priority: 'Construção de Base',
     detailedInfo: 'Realizamos pesquisas minuciosas nos arquivos poloneses por documentos históricos de seus ancestrais. Isso inclui pesquisas em arquivos internacionais em vários países onde registros poloneses possam existir. Também ajudamos a pesquisar pertences familiares por documentos poloneses antigos. Nossos parceiros confiáveis processam cada solicitação de busca.',
-    keyPoints: ['Pesquisa abrangente nos arquivos poloneses por documentos de ancestrais', 'Pesquisas em arquivos internacionais em países relevantes', 'Pesquisa em pertences familiares por documentos poloneses antigos', 'Recuperação assistida por parceiros e seleção especializada para arquivamento']
+    keyPoints: ['Pesquisa abrangente nos arquivos poloneses por documentos de ancestrais', 'Pesquisas em arquivos internacionais em países relevantes', 'Pesquisa em pertences familiares por documentos poloneses antigos', 'Recuperação assistida por parceiros e seleção especializada para arquivamento'],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '8',
