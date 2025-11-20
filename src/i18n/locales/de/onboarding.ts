@@ -1,4 +1,9 @@
 const onboarding = {
+  badge: 'Wie man anfängt',
+  title: 'Ihr Weg zur polnischen Staatsbürgerschaft',
+  description: 'Einfacher, transparenter Prozess von Experten geleitet',
+  cta: 'Staatsbürgerschaftstest machen',
+  
   step1Number: '01',
   step1Title: 'Erstberatung',
   step1Desc: 'Kostenlose Beratung zur Berechtigung für polnische Staatsbürgerschaft',

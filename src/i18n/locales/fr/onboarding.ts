@@ -1,4 +1,9 @@
 const onboarding = {
+  badge: 'Comment Commencer',
+  title: 'Votre Parcours vers la Citoyenneté Polonaise',
+  description: 'Processus simple et transparent guidé par des experts',
+  cta: 'Passer le Test de Citoyenneté',
+  
   step1Number: '01',
   step1Title: 'Consultation Initiale',
   step1Desc: 'Consultation gratuite pour discuter de votre éligibilité à la citoyenneté polonaise',

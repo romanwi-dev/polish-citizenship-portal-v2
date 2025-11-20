@@ -25,79 +25,79 @@ export default function ClientOnboardingSection() {
 
   const onboardingSteps = [
     {
-      number: t('onboarding.step1Number'),
-      title: t('onboarding.step1Title'),
-      description: t('onboarding.step1Desc'),
+      number: t('step1Number'),
+      title: t('step1Title'),
+      description: t('step1Desc'),
       icon: MessageSquare,
       gradient: "from-primary to-secondary",
-      cta: t('onboarding.step1Cta'),
+      cta: t('step1Cta'),
       link: "#contact",
       illustration: consultationImg,
-      detailedInfo: t('onboarding.step1DetailedInfo'),
-      keyPoints: t('onboarding.step1KeyPoints', { returnObjects: true }) as string[]
+      detailedInfo: t('step1DetailedInfo'),
+      keyPoints: t('step1KeyPoints', { returnObjects: true }) as string[]
     },
     {
-      number: t('onboarding.step2Number'),
-      title: t('onboarding.step2Title'),
-      description: t('onboarding.step2Desc'),
+      number: t('step2Number'),
+      title: t('step2Title'),
+      description: t('step2Desc'),
       icon: ClipboardCheck,
       gradient: "from-secondary to-accent",
-      cta: t('onboarding.step2Cta'),
+      cta: t('step2Cta'),
       link: "https://polishcitizenship.typeform.com/to/PS5ecU",
       illustration: reviewImg,
-      detailedInfo: t('onboarding.step2DetailedInfo'),
-      keyPoints: t('onboarding.step2KeyPoints', { returnObjects: true }) as string[]
+      detailedInfo: t('step2DetailedInfo'),
+      keyPoints: t('step2KeyPoints', { returnObjects: true }) as string[]
     },
     {
-      number: t('onboarding.step3Number'),
-      title: t('onboarding.step3Title'),
-      description: t('onboarding.step3Desc'),
+      number: t('step3Number'),
+      title: t('step3Title'),
+      description: t('step3Desc'),
       icon: FileSearch,
       gradient: "from-accent to-primary",
-      cta: t('onboarding.step3Cta'),
+      cta: t('step3Cta'),
       link: "#",
       illustration: agreementImg,
-      detailedInfo: t('onboarding.step3DetailedInfo'),
-      keyPoints: t('onboarding.step3KeyPoints', { returnObjects: true }) as string[]
+      detailedInfo: t('step3DetailedInfo'),
+      keyPoints: t('step3KeyPoints', { returnObjects: true }) as string[]
     },
     {
-      number: t('onboarding.step4Number'),
-      title: t('onboarding.step4Title'),
-      description: t('onboarding.step4Desc'),
+      number: t('step4Number'),
+      title: t('step4Title'),
+      description: t('step4Desc'),
       icon: Scale,
       gradient: "from-primary to-secondary",
-      cta: t('onboarding.step4Cta'),
+      cta: t('step4Cta'),
       link: "#contact",
       illustration: initiationImg,
-      detailedInfo: t('onboarding.step4DetailedInfo'),
-      keyPoints: t('onboarding.step4KeyPoints', { returnObjects: true }) as string[]
+      detailedInfo: t('step4DetailedInfo'),
+      keyPoints: t('step4KeyPoints', { returnObjects: true }) as string[]
     },
     {
-      number: t('onboarding.step5Number'),
-      title: t('onboarding.step5Title'),
-      description: t('onboarding.step5Desc'),
+      number: t('step5Number'),
+      title: t('step5Title'),
+      description: t('step5Desc'),
       icon: Send,
       gradient: "from-secondary to-accent",
-      cta: t('onboarding.step5Cta'),
+      cta: t('step5Cta'),
       link: "#",
       illustration: reviewImg,
-      detailedInfo: t('onboarding.step5DetailedInfo'),
-      keyPoints: t('onboarding.step5KeyPoints', { returnObjects: true }) as string[]
+      detailedInfo: t('step5DetailedInfo'),
+      keyPoints: t('step5KeyPoints', { returnObjects: true }) as string[]
     }
   ];
 
   return (
     <SectionLayout
       id="how-to-start"
-      badge={{ icon: UserCircle, text: t('onboarding.badge') }}
-      title={t('onboarding.title')}
-      subtitle={t('onboarding.description')}
+      badge={{ icon: UserCircle, text: t('badge') }}
+      title={t('title')}
+      subtitle={t('description')}
       cta={
         <MainCTA 
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test"
         >
-          {t('hero.cta')}
+          {t('cta')}
         </MainCTA>
       }
     >
