@@ -8,8 +8,10 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTranslation } from 'react-i18next';
 import { LazyImage } from "./ui/lazy-image";
-import i18n from '@/i18n/config';
-import { TIMELINE_TRANSLATIONS } from '@/i18n/timelineTranslations';
+import { timelineEn } from '@/content/timeline/en';
+import { timelinePt } from '@/content/timeline/pt';
+import { timelineFr } from '@/content/timeline/fr';
+import { timelineHe } from '@/content/timeline/he';
 
 // Lazy-loaded timeline images - dynamically imported when needed
 const getTimelineImage = (step: number): string => {
@@ -31,36 +33,34 @@ const getStepSlug = (step: number): string => {
 };
 
 export default function TimelineProcessEnhanced() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [firstCardAnimated, setFirstCardAnimated] = useState(false);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
 
-  // Get current language and normalize to base code
-  const currentLang = i18n.language;
-  const baseLang = currentLang.split('-')[0] as 'en' | 'es' | 'pt' | 'de' | 'fr' | 'he' | 'ru' | 'uk';
-  const supportedLanguages: ('en' | 'es' | 'pt' | 'de' | 'fr' | 'he' | 'ru' | 'uk')[] = ['en', 'es', 'pt', 'de', 'fr', 'he', 'ru', 'uk'];
-  const language = supportedLanguages.includes(baseLang) ? baseLang : 'en';
-  
-  // Get steps from translations
-  const steps = TIMELINE_TRANSLATIONS[language];
+  // Select timeline based on language
+  const lang = i18n.language;
+  let steps = timelineEn;
+  if (lang === 'pt') steps = timelinePt;
+  else if (lang === 'fr') steps = timelineFr;
+  else if (lang === 'he') steps = timelineHe;
 
   const timelineSteps = steps.map((step, index) => ({
-    number: step.id,
+    number: step.number,
     title: step.title,
-    description: step.subtitle,
-    duration: step.weekLabel,
-    keyAction: index < 5 ? t('timelineProcess.initialSetupPayment') : index < 9 ? t('timelineProcess.documentCollection') : t('timelineProcess.advancedProcessing'),
-    priority: index % 3 === 0 ? t('timelineProcess.majorMilestone') : t('timelineProcess.foundationBuilding'),
+    description: step.description,
+    duration: step.duration,
+    keyAction: step.keyAction,
+    priority: step.priority,
     icon: [FileText, CreditCard, CheckCircle, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users][index] || Shield,
     gradient: ["from-blue-500 to-cyan-500", "from-cyan-500 to-blue-500", "from-blue-500 to-indigo-500", "from-indigo-500 to-purple-500", "from-purple-500 to-pink-500", "from-pink-500 to-rose-500", "from-rose-500 to-orange-500", "from-orange-500 to-amber-500", "from-amber-500 to-yellow-500", "from-yellow-500 to-lime-500", "from-lime-500 to-green-500", "from-green-500 to-emerald-500", "from-emerald-500 to-teal-500", "from-teal-500 to-cyan-500", "from-cyan-500 to-sky-500"][index] || "from-blue-500 to-cyan-500",
     image: getTimelineImage(index + 1),
     stepIcon: getStepIcon(index + 1),
     detailedInfo: step.detailedInfo,
     keyPoints: step.keyPoints,
-    clickToSeeDetails: step.bottomInfo,
-    openAccountLabel: step.ctaLabel
+    clickToSeeDetails: step.clickToSeeDetails,
+    openAccountLabel: step.openAccountLabel
   }));
 
   // Auto-flip animation for first card
