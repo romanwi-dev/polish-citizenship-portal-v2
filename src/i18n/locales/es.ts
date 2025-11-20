@@ -18,11 +18,6 @@ const es = {
     testimonials: 'Testimonios',
     faq: 'Preguntas Frecuentes',
     contact: 'Contacto'
-  },
-  
-  onboarding: {
-    tapForDetails: 'Toca para ver detalles completos',
-    openAccountCta: 'Abrir Cuenta en Nuestro Portal'
   }
 };
 

@@ -18,11 +18,6 @@ const ru = {
     testimonials: 'Отзывы',
     faq: 'Вопросы и Ответы',
     contact: 'Контакты'
-  },
-  
-  onboarding: {
-    tapForDetails: 'Нажмите, чтобы увидеть полные детали',
-    openAccountCta: 'Открыть Учетную Запись на Нашем Портале'
   }
 };
 

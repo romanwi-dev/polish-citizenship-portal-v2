@@ -18,11 +18,6 @@ const de = {
     testimonials: 'Erfahrungsberichte',
     faq: 'FAQ',
     contact: 'Kontakt'
-  },
-  
-  onboarding: {
-    tapForDetails: 'Tippen Sie, um vollständige Details zu sehen',
-    openAccountCta: 'Konto auf Unserem Portal Eröffnen'
   }
 };
 

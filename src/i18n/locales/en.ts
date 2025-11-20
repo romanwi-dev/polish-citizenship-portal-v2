@@ -22,11 +22,6 @@ const en = {
     testimonials: 'Testimonials',
     faq: 'FAQ',
     contact: 'Contact'
-  },
-  
-  onboarding: {
-    tapForDetails: 'Tap to see full details',
-    openAccountCta: 'Open Account on Our Portal'
   }
 };
 

@@ -18,11 +18,6 @@ const uk = {
     testimonials: 'Відгуки',
     faq: 'Питання та Відповіді',
     contact: 'Контакти'
-  },
-  
-  onboarding: {
-    tapForDetails: 'Натисніть, щоб побачити повні деталі',
-    openAccountCta: 'Відкрити Обліковий Запис на Нашому Порталі'
   }
 };
 

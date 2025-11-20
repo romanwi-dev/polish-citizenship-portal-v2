@@ -18,11 +18,6 @@ const fr = {
     testimonials: 'Témoignages',
     faq: 'FAQ',
     contact: 'Contact'
-  },
-  
-  onboarding: {
-    tapForDetails: 'Touchez pour voir tous les détails',
-    openAccountCta: 'Ouvrir un Compte sur Notre Portail'
   }
 };
 
