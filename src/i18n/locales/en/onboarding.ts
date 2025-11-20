@@ -1,4 +1,9 @@
 const onboarding = {
+  badge: 'How to Start',
+  title: 'Your Journey to Polish Citizenship',
+  description: 'Simple, transparent process guided by experts',
+  cta: 'Take the Citizenship Test',
+  
   step1Number: '01',
   step1Title: 'Initial Consultation',
   step1Desc: 'Free consultation to discuss your Polish citizenship eligibility',

@@ -1,4 +1,9 @@
 const onboarding = {
+  badge: 'Como Começar',
+  title: 'Sua Jornada para a Cidadania Polonesa',
+  description: 'Processo simples e transparente guiado por especialistas',
+  cta: 'Fazer o Teste de Cidadania',
+  
   step1Number: '01',
   step1Title: 'Consulta Inicial',
   step1Desc: 'Consulta gratuita para discutir sua elegibilidade para cidadania polonesa',
