@@ -440,6 +440,8 @@ const resources = {
           "Official case file opened and registered in system",
           "Formal citizenship application process begins"
         ],
+        tapForDetails: 'Tap to see details',
+        openAccountCta: 'Open Account',
         step6Number: '06',
         step6Title: 'AI Document Processing',
         step6Desc: 'All documents are processed by our AI Documents System to generate Powers of Attorney and the Polish citizenship application.',
@@ -1217,6 +1219,8 @@ const resources = {
           "Archivo de caso oficial abierto y registrado en el sistema",
           "Comienza el proceso formal de solicitud de ciudadanía"
         ],
+        tapForDetails: 'Toca para ver detalles',
+        openAccountCta: 'Abrir Cuenta',
         step6Number: '06',
         step6Title: 'Procesamiento de Documentos con IA',
         step6Desc: 'Todos los documentos son procesados por nuestro Sistema de Documentos IA para generar Poderes Notariales y la solicitud de ciudadanía polaca.',
@@ -1800,6 +1804,8 @@ const resources = {
           "Arquivo de caso oficial aberto e registrado no sistema",
           "Processo formal de solicitação de cidadania começa"
         ],
+        tapForDetails: 'Toque para ver detalhes',
+        openAccountCta: 'Abrir Conta',
         step6Number: '06',
         step6Title: 'Processamento de Documentos com IA',
         step6Desc: 'Todos os documentos são processados pelo nosso Sistema de Documentos IA para gerar Procurações e a aplicação de cidadania polonesa.',
@@ -2433,6 +2439,8 @@ const resources = {
           "Offizielle Fallakte wird eröffnet und im System registriert",
           "Formeller Staatsbürgerschaftsantragsprozess beginnt"
         ],
+        tapForDetails: 'Tippen für Details',
+        openAccountCta: 'Konto Eröffnen',
         step6Number: '06',
         step6Title: 'KI-Dokumentenverarbeitung',
         step6Desc: 'Alle Dokumente werden von unserem KI-Dokumentensystem verarbeitet, um Vollmachten und den polnischen Staatsbürgerschaftsantrag zu generieren.',
@@ -3251,7 +3259,9 @@ const resources = {
           "Dossier officiel ouvert et enregistré dans le système",
           "Le processus formel de demande de citoyenneté commence"
         ],
-      
+        tapForDetails: 'Touchez pour voir les détails',
+        openAccountCta: 'Ouvrir un Compte'
+      },
       timelineProcess: {
         badge: 'Notre Processus',
         title: 'Chronologie Complète de la Citoyenneté Polonaise par Ascendance',
@@ -3939,7 +3949,9 @@ const resources = {
           "תיק תיק רשמי נפתח ונרשם במערכת",
           "תהליך הבקשה הרשמי לאזרחות מתחיל"
         ],
-      
+        tapForDetails: 'הקש לראות פרטים',
+        openAccountCta: 'פתח חשבון'
+      },
       timelineProcess: {
         badge: 'התהליך שלנו',
         title: 'ציר זמן מלא של אזרחות פולנית לפי מוצא',
@@ -4767,6 +4779,8 @@ const resources = {
           "Официальная папка дела открыта и зарегистрирована в системе",
           "Формальный процесс подачи заявления на гражданство начинается"
         ],
+        tapForDetails: 'Нажмите для подробностей',
+        openAccountCta: 'Открыть Аккаунт',
         step6Number: '06',
         step6Title: 'Условия и Цены',
         step6Desc: 'Рассмотрите нашу структуру ценообразования, подпишите соглашение и внесите авансовый платеж для активации вашего дела.',
@@ -5482,6 +5496,8 @@ const resources = {
           "Офіційна папка справи відкрита та зареєстрована в системі",
           "Формальний процес подачі заяви на громадянство починається"
         ],
+        tapForDetails: 'Натисніть для деталей',
+        openAccountCta: 'Відкрити Обліковий Запис',
         step6Number: '06',
         step6Title: 'Обробка Документів ШІ',
         step6Desc: 'Всі документи обробляються нашою Системою Документів ШІ для створення Довіреностей та заяви на польське громадянство.',
