@@ -149,7 +149,7 @@ async function analyzeWorkflowStages(supabase: any): Promise<WorkflowStageMetric
       maxDurationDays: Math.round(maxDuration * 10) / 10,
       casesInStage: stageWorkflows.length,
       successRate: Math.round(successRate),
-      commonIssues,
+      commonIssues: commonIssues as string[],
       isBottleneck,
     });
   }
