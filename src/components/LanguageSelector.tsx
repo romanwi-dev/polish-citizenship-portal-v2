@@ -57,7 +57,7 @@ export function LanguageSelector() {
           </span>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20">
+      <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20 z-50">
         {LANGUAGES.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
