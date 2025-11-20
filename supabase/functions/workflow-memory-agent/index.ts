@@ -75,7 +75,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("❌ Workflows Memory Agent error:", error);
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
+      JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
@@ -135,8 +135,8 @@ async function analyzeWorkflowStages(supabase: any): Promise<WorkflowStageMetric
       .in("workflow_run_id", stageWorkflows.map((w: any) => w.id))
       .limit(5);
 
-    const commonIssues: string[] = errors 
-      ? Array.from(new Set(errors.map((e: any) => String(e.error_message || '').substring(0, 100))))
+    const commonIssues = errors 
+      ? [...new Set(errors.map((e: any) => e.error_message.substring(0, 100)))]
       : [];
 
     // Determine if this is a bottleneck

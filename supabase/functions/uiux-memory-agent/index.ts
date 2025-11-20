@@ -140,11 +140,11 @@ Deno.serve(async (req) => {
       agent_name: AGENT_NAME,
       activity_type: 'memory_update',
       status: 'failed',
-      details: { error: error instanceof Error ? error.message : 'Unknown error' },
+      details: { error: error.message },
     });
 
     return new Response(
-      JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }),
+      JSON.stringify({ success: false, error: error.message }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

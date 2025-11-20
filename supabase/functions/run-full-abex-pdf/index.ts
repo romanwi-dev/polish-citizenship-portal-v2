@@ -221,10 +221,8 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('❌ A→B→EX execution failed:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    const errorStack = error instanceof Error ? error.stack : undefined;
     return new Response(
-      JSON.stringify({ error: errorMessage, stack: errorStack }),
+      JSON.stringify({ error: error.message, stack: error.stack }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

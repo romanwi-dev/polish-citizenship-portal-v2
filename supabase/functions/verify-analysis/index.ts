@@ -128,7 +128,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Verification error:', error);
     return new Response(JSON.stringify({ 
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error.message,
       verification: { passed: false }
     }), {
       status: 500,
