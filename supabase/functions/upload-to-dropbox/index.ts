@@ -183,7 +183,7 @@ serve(async (req) => {
           return await response.json();
         } catch (error) {
           clearTimeout(timeoutId);
-          if (error.name === 'AbortError') {
+          if (error instanceof Error && error.name === 'AbortError') {
             console.error('[upload-to-dropbox] ⏱️ Dropbox upload timeout after 30s');
             throw new Error('Dropbox upload timeout after 30 seconds');
           }
