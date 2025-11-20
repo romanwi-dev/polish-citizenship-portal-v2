@@ -184,11 +184,12 @@ function analyzeCrashPatterns(crashStates: any[], functions: FunctionHealthMetri
 
   // Analyze each session's crash pattern
   for (const [sessionId, crashes] of Object.entries(crashesBySession)) {
-    if (crashes.length >= 3) {
-      const firstCrash = crashes[crashes.length - 1];
-      const lastCrash = crashes[0];
+    const crashArray = crashes as any[];
+    if (crashArray.length >= 3) {
+      const firstCrash = crashArray[crashArray.length - 1];
+      const lastCrash = crashArray[0];
       const timeSpan = new Date(lastCrash.created_at).getTime() - new Date(firstCrash.created_at).getTime();
-      const crashRate = crashes.length / (timeSpan / (60 * 1000)); // crashes per minute
+      const crashRate = crashArray.length / (timeSpan / (60 * 1000)); // crashes per minute
 
       let pattern = 'unknown';
       let rootCause = 'unknown';
@@ -203,14 +204,14 @@ function analyzeCrashPatterns(crashStates: any[], functions: FunctionHealthMetri
         severity = 'critical';
       }
       // Intermittent crashes
-      else if (crashes.length >= 5 && crashRate < 0.1) {
+      else if (crashArray.length >= 5 && crashRate < 0.1) {
         pattern = 'intermittent_crashes';
         rootCause = 'race_condition_or_external_dependency_failure';
         recommendedAction = 'add_retry_logic_and_error_boundaries';
         severity = 'high';
       }
       // Progressive degradation
-      else if (crashes.length >= 3) {
+      else if (crashArray.length >= 3) {
         pattern = 'progressive_degradation';
         rootCause = 'resource_exhaustion_or_memory_leak';
         recommendedAction = 'implement_resource_cleanup_and_monitoring';
@@ -219,7 +220,7 @@ function analyzeCrashPatterns(crashStates: any[], functions: FunctionHealthMetri
 
       patterns.push({
         function_name: `session_${sessionId}`,
-        crash_count_24h: crashes.length,
+        crash_count_24h: crashArray.length,
         crash_pattern: pattern,
         root_cause: rootCause,
         recommended_action: recommendedAction,
