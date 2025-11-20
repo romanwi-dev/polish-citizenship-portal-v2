@@ -9,9 +9,13 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useTranslation } from 'react-i18next';
 import { LazyImage } from "./ui/lazy-image";
 import { timelineEn } from '@/content/timeline/en';
+import { timelineEs } from '@/content/timeline/es';
 import { timelinePt } from '@/content/timeline/pt';
+import { timelineDe } from '@/content/timeline/de';
 import { timelineFr } from '@/content/timeline/fr';
 import { timelineHe } from '@/content/timeline/he';
+import { timelineRu } from '@/content/timeline/ru';
+import { timelineUk } from '@/content/timeline/uk';
 
 // Lazy-loaded timeline images - dynamically imported when needed
 const getTimelineImage = (step: number): string => {
@@ -42,9 +46,13 @@ export default function TimelineProcessEnhanced() {
   // Select timeline based on language
   const lang = i18n.language;
   let steps = timelineEn;
-  if (lang === 'pt') steps = timelinePt;
+  if (lang === 'es') steps = timelineEs;
+  else if (lang === 'pt') steps = timelinePt;
+  else if (lang === 'de') steps = timelineDe;
   else if (lang === 'fr') steps = timelineFr;
   else if (lang === 'he') steps = timelineHe;
+  else if (lang === 'ru') steps = timelineRu;
+  else if (lang === 'uk') steps = timelineUk;
 
   const timelineSteps = steps.map((step, index) => ({
     number: step.number,
