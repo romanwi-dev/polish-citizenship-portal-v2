@@ -105,20 +105,20 @@ export class AgentMessenger {
 
       // Apply filters
       if (options?.priority && options.priority.length > 0) {
-        filtered = filtered.filter(msg => options.priority!.includes(msg.priority));
+        filtered = filtered.filter((msg: AgentMessage) => options.priority!.includes(msg.priority));
       }
 
       if (options?.message_type && options.message_type.length > 0) {
-        filtered = filtered.filter(msg => options.message_type!.includes(msg.message_type));
+        filtered = filtered.filter((msg: AgentMessage) => options.message_type!.includes(msg.message_type));
       }
 
       if (options?.unprocessed_only) {
-        filtered = filtered.filter(msg => msg.status === 'pending');
+        filtered = filtered.filter((msg: AgentMessage) => msg.status === 'pending');
       }
 
       // Sort by priority (critical > high > medium > low)
-      const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-      filtered.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+      const priorityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+      filtered.sort((a: AgentMessage, b: AgentMessage) => priorityOrder[a.priority] - priorityOrder[b.priority]);
 
       return filtered;
     } catch (error) {
