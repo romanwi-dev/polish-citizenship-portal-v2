@@ -17,9 +17,6 @@ export default memo(function TestimonialsSection() {
     year: string;
   }>;
   
-  // Defensive check to prevent crashes if testimonials is not an array
-  const safeTestimonials = Array.isArray(testimonials) ? testimonials : [];
-  
   const handleContactClick = useCallback(() => {
     window.location.hash = 'contact';
   }, []);
@@ -50,7 +47,7 @@ export default memo(function TestimonialsSection() {
     >
       {/* Testimonials Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {safeTestimonials.map((testimonial, index) => (
+          {testimonials.map((testimonial, index) => (
             <Card 
               key={index} 
               className="group hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:scale-105 hover:-translate-y-1 animate-fade-in w-full max-w-[480px] md:max-w-[380px] mx-auto"

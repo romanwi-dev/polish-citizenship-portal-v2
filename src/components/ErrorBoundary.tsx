@@ -36,25 +36,8 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   public async componentDidMount() {
+    // Server-side recovery (replaces client-side HMAC)
     try {
-      // Check if we're in an error loop (multiple crashes in short time)
-      const crashCount = parseInt(sessionStorage.getItem('error_boundary_crash_count') || '0');
-      const lastCrash = parseInt(sessionStorage.getItem('error_boundary_last_crash') || '0');
-      const now = Date.now();
-      
-      // Reset if last crash was more than 5 minutes ago
-      if (now - lastCrash > 5 * 60 * 1000) {
-        sessionStorage.setItem('error_boundary_crash_count', '0');
-      }
-      
-      // Don't try to recover if we've crashed too many times
-      if (crashCount >= 3) {
-        console.warn('[ErrorBoundary] Too many crashes, clearing recovery state');
-        await this.handleReset();
-        sessionStorage.setItem('error_boundary_crash_count', '0');
-        return;
-      }
-      
       const { data, error } = await supabase.functions.invoke('crash-state', {
         body: {
           action: 'recover',
@@ -77,11 +60,6 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-
-    // Track crash count to prevent infinite loops
-    const crashCount = parseInt(sessionStorage.getItem('error_boundary_crash_count') || '0');
-    sessionStorage.setItem('error_boundary_crash_count', String(crashCount + 1));
-    sessionStorage.setItem('error_boundary_last_crash', String(Date.now()));
     
     // Save current state server-side (no client-side HMAC)
     this.captureAppState(error, errorInfo);
@@ -164,10 +142,6 @@ export class ErrorBoundary extends Component<Props, State> {
     } catch (error) {
       console.error('[ErrorBoundary] Error clearing crash state:', error);
     }
-    
-    // Clear crash tracking
-    sessionStorage.removeItem('error_boundary_crash_count');
-    sessionStorage.removeItem('error_boundary_last_crash');
     
     this.setState({
       hasError: false,
