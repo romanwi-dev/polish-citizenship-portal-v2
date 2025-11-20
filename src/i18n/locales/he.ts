@@ -18,6 +18,11 @@ const he = {
     testimonials: 'המלצות',
     faq: 'שאלות נפוצות',
     contact: 'צור קשר'
+  },
+  
+  onboarding: {
+    tapForDetails: 'הקש כדי לראות פרטים מלאים',
+    openAccountCta: 'פתח חשבון בפורטל שלנו'
   }
 };
 
