@@ -29,6 +29,10 @@ export function LanguageRedirect() {
     navigate(`/${detectedLang}`, { replace: true });
   }, [navigate]);
 
-  // Show nothing while redirecting (faster UX)
-  return null;
+  // Show loading state while redirecting
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-pulse text-lg text-muted-foreground">Loading...</div>
+    </div>
+  );
 }
