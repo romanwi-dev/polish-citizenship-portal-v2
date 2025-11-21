@@ -1,4 +1,5 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+// PERF-MICRO-V2: Optimized background with efficient observer
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
 import { StaticHeritageLightTheme } from "@/components/heroes/StaticHeritageLightTheme";
 
@@ -7,8 +8,15 @@ const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").t
 export const GlobalBackground = () => {
   const [show3D, setShow3D] = useState(false);
   const [isDark, setIsDark] = useState(true);
+  // PERF-MICRO-V2: Use ref to prevent observer recreation
+  const observerRef = useRef<MutationObserver | null>(null);
 
   useEffect(() => {
+    // PERF-MICRO-V2: Early return if not in browser environment
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
     // Check if dark or light mode - optimized with debounce
     let timeoutId: NodeJS.Timeout;
     const checkTheme = () => {
@@ -20,20 +28,26 @@ export const GlobalBackground = () => {
     
     checkTheme();
     
-    // Watch for theme changes
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { 
+    // PERF-MICRO-V2: Reuse observer if it exists
+    if (!observerRef.current) {
+      observerRef.current = new MutationObserver(checkTheme);
+    }
+    
+    observerRef.current.observe(document.documentElement, { 
       attributes: true, 
       attributeFilter: ['class'] 
     });
     
     return () => {
       clearTimeout(timeoutId);
-      observer.disconnect();
+      // PERF-MICRO-V2: Disconnect but keep observer ref for reuse
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
   }, []);
 
-  // Delay 3D background loading for dark themes only
+  // PERF-MICRO-V2: Delay 3D background loading for dark themes only
   useEffect(() => {
     if (isDark) {
       const timer = setTimeout(() => {
@@ -45,6 +59,7 @@ export const GlobalBackground = () => {
     }
   }, [isDark]);
 
+  // PERF-MICRO-V2: Early return for light mode - skip unnecessary renders
   // DARK themes: Show 3D heritage with loading
   // LIGHT themes: Show beautiful light background immediately
   if (!isDark) {
