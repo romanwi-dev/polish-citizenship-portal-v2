@@ -64,108 +64,48 @@ const Index = () => {
           </div>
           <AboutSection />
 
-        <div className="relative z-10 w-full flex justify-center my-24">
-          <div className="w-full md:w-[60%]">
-            <img 
-              src="/images/skyline-prague.png"
-              alt="Prague skyline silhouette" 
-              className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
-              style={{
-                filter: 'var(--skyline-filter)',
-              }}
-              loading="lazy"
-            />
-          </div>
+        <div className="my-16 md:my-24">
+          <WarsawSkyline />
         </div>
 
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
         </Suspense>
 
-        <div className="relative z-10 w-full flex justify-center my-24">
-          <div className="w-full md:w-[60%]">
-            <img 
-              src="/images/skyline-paris.png"
-              alt="Paris skyline silhouette" 
-              className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
-              style={{
-                filter: 'var(--skyline-filter)',
-              }}
-              loading="lazy"
-            />
-          </div>
+        <div className="my-16 md:my-24">
+          <WarsawSkyline />
         </div>
 
         <Suspense fallback={<SectionLoader />}>
           <TimelineProcessEnhanced />
         </Suspense>
 
-        <div className="relative z-10 w-full flex justify-center my-24">
-          <div className="w-full md:w-[60%]">
-            <img 
-              src="/images/skyline-madrid.png"
-              alt="Madrid skyline silhouette" 
-              className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
-              style={{
-                filter: 'var(--skyline-filter)',
-              }}
-              loading="lazy"
-            />
-          </div>
+        <div className="my-16 md:my-24">
+          <WarsawSkyline />
         </div>
 
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
 
-        <div className="relative z-10 w-full flex justify-center my-24">
-          <div className="w-full md:w-[60%]">
-            <img 
-              src="/images/skyline-rome.png"
-              alt="Rome skyline silhouette" 
-              className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
-              style={{
-                filter: 'var(--skyline-filter)',
-              }}
-              loading="lazy"
-            />
-          </div>
+        <div className="my-16 md:my-24">
+          <WarsawSkyline />
         </div>
 
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
         </Suspense>
 
-        <div className="relative z-10 w-full flex justify-center my-24">
-          <div className="w-full md:w-[60%]">
-            <img 
-              src="/images/skyline-athens.png"
-              alt="Athens skyline silhouette" 
-              className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
-              style={{
-                filter: 'var(--skyline-filter)',
-              }}
-              loading="lazy"
-            />
-          </div>
+        <div className="my-16 md:my-24">
+          <WarsawSkyline />
         </div>
 
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsSection />
         </Suspense>
 
-        <div className="relative z-10 w-full flex justify-center my-24">
-          <div className="w-full md:w-[60%]">
-            <img 
-              src="/images/skyline-brussels.png"
-              alt="Brussels skyline silhouette" 
-              className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
-              style={{
-                filter: 'var(--skyline-filter)',
-              }}
-              loading="lazy"
-            />
-          </div>
+        <div className="my-16 md:my-24">
+          <WarsawSkyline />
         </div>
 
         <Suspense fallback={<SectionLoader />}>
