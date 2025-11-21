@@ -147,16 +147,6 @@ const Index = () => {
         <Suspense fallback={<SectionLoader />}>
           <FAQSection />
         </Suspense>
-
-        <div className="w-full flex justify-center my-24 opacity-50">
-          <img 
-            src="/images/skyline-warsaw.png"
-            alt="Warsaw skyline"
-            className="w-full max-w-[2400px] pointer-events-none select-none"
-            draggable="false"
-            loading="lazy"
-          />
-        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />
