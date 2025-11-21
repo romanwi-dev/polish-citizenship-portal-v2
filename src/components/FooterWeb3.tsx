@@ -18,7 +18,15 @@ const FooterWeb3 = () => {
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-2">
             <div className="mb-6">
-              <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" width="400" height="70" loading="lazy" />
+              <img 
+                src={logo} 
+                alt="PolishCitizenship.pl Logo" 
+                className="h-8 w-auto" 
+                width="400" 
+                height="70" 
+                loading="lazy"
+                aria-label="Polish Citizenship Portal"
+              />
             </div>
             <p className="text-muted-foreground leading-relaxed mb-6">
               {tt('footer.description', 'Expert legal services for Polish citizenship applications. Over 20 years of experience helping families reclaim their European heritage.')}
@@ -39,7 +47,11 @@ const FooterWeb3 = () => {
             <h4 className="font-semibold mb-6 text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{tt('footer.servicesTitle', 'Services')}</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">
+                <a 
+                  href="#services" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  aria-label="Navigate to AI Analysis services section"
+                >
                   {tt('footer.aiAnalysis', 'AI Analysis')}
                 </a>
               </li>
@@ -65,7 +77,13 @@ const FooterWeb3 = () => {
             <h4 className="font-semibold mb-6 text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{tt('footer.resourcesTitle', 'Resources')}</h4>
             <ul className="space-y-3">
               <li>
-                <a href="https://polishcitizenship.typeform.com/to/PS5ecU" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                <a 
+                  href="https://polishcitizenship.typeform.com/to/PS5ecU" 
+                  className="text-muted-foreground hover:text-primary transition-colors" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Take Polish Citizenship eligibility test (opens in new window)"
+                >
                   {tt('footer.takeTest', 'Take Test')}
                 </a>
               </li>
