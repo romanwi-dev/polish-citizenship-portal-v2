@@ -82,7 +82,9 @@ export const timelineFr: TimelineStep[] = [
       'Agent IA génère le brouillon de demande de citoyenneté et les documents',
       'Équipe juridique examine et finalise tous les documents',
       'Soumission officielle au gouvernement avec copie envoyée au client'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '6',
@@ -97,7 +99,9 @@ export const timelineFr: TimelineStep[] = [
       'Rassembler les documents: actes de naissance/mariage, naturalisation, dossiers militaires',
       'Assistance des partenaires disponible pour les documents difficiles à obtenir',
       'Examen expert et sélection des documents pour traduction/dépôt'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '7',
@@ -112,7 +116,9 @@ export const timelineFr: TimelineStep[] = [
       'Recherches d\'archives internationales dans les pays pertinents',
       'Recherche dans les possessions familiales pour d\'anciens documents polonais',
       'Récupération assistée par partenaires et sélection experte pour le dépôt'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '8',
@@ -127,7 +133,9 @@ export const timelineFr: TimelineStep[] = [
       'Certification par Traducteurs Assermentés Polonais avec tampons officiels',
       'Agent de Traduction dédié supervise l\'ensemble du flux de travail',
       'Vérification double indépendante des erreurs avant le dépôt auprès des autorités'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '9',
@@ -142,7 +150,9 @@ export const timelineFr: TimelineStep[] = [
       'Déposer les documents d\'archives polonais récupérés des recherches historiques',
       'Fournir une documentation complète de l\'arbre généalogique et généalogique',
       'Terminer avant la réponse initiale pour un calendrier plus rapide si possible'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '10',
@@ -157,7 +167,9 @@ export const timelineFr: TimelineStep[] = [
       'Traitement du paiement pour les frais du bureau de l\'état civil polonais',
       'Soumission au bureau de l\'état civil approprié en fonction de l\'emplacement',
       'Recevoir les certificats officiels de naissance/mariage polonais pour le dossier de citoyenneté'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '11',
@@ -172,7 +184,9 @@ export const timelineFr: TimelineStep[] = [
       'Évaluation détaillée des demandes et requêtes du gouvernement',
       'Prolonger le délai de la procédure de citoyenneté si un temps supplémentaire est nécessaire',
       'Rassembler et soumettre des preuves supplémentaires comme demandé par les autorités'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '12',
@@ -187,7 +201,9 @@ export const timelineFr: TimelineStep[] = [
       'Prix transparent et impact attendu pour chaque schéma',
       'Traitement du paiement et mise en œuvre avec les autorités',
       'Plusieurs tours possibles pour maintenir l\'élan du dossier'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '13',
@@ -202,7 +218,9 @@ export const timelineFr: TimelineStep[] = [
       'Positive: Confirmation officielle envoyée par email et ajoutée au portail',
       'Négative: Appel préparé et déposé dans le délai de 2 semaines',
       'Processus d\'appel: 6-12 mois supplémentaires avec bon taux de réussite'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '14',
@@ -217,7 +235,9 @@ export const timelineFr: TimelineStep[] = [
       'Paiement final traité et documents envoyés par FedEx',
       'Visite au consulat programmée à l\'emplacement le plus proche de vous',
       'Soumettre la demande et recevoir le passeport polonais dans les 4-8 semaines'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   },
   {
     number: '15',
@@ -232,6 +252,8 @@ export const timelineFr: TimelineStep[] = [
       'Confirmation complète de la citoyenneté polonaise et de l\'UE',
       'Services juridiques familiaux étendus pour conjoint et enfants',
       'Assistance pour les membres de la famille éligibles à obtenir la citoyenneté'
-    ]
+    ],
+    clickToSeeDetails: 'Cliquez pour voir les détails',
+    openAccountLabel: 'Ouvrir un Compte'
   }
 ];
