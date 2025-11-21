@@ -92,6 +92,7 @@ const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
 const VerificationResults = lazy(() => import("./pages/VerificationResults"));
 const VerificationB = lazy(() => import("./pages/VerificationB"));
+const PhaseBVerification = lazy(() => import("./pages/PhaseBVerification"));
 const MobileFirstGuardian = lazy(() => import("./pages/MobileFirstGuardian"));
 const ProvenPatterns = lazy(() => import("./pages/ProvenPatterns"));
 const ABEXPDFMaster = lazy(() => import("./pages/ABEXPDFMaster"));
@@ -818,6 +819,14 @@ const App = () => {
             element={
               <Suspense fallback={<AdminLoader />}>
                 <VerificationB />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/phase-b" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <PhaseBVerification />
               </Suspense>
             } 
           />
