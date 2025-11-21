@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +25,7 @@ import { MessagingSection } from "@/components/client/MessagingSection";
 import { ConsulateKitGenerator } from "@/components/passport/ConsulateKitGenerator";
 
 export default function ClientDashboard() {
+  const { t } = useTranslation('portal');
   const { caseId } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -44,7 +46,7 @@ export default function ClientDashboard() {
         if (!mounted) return;
 
         if (error || !authSession) {
-          toast.error("Please log in to access your dashboard");
+          toast.error(t('dashboard.loginRequired')); // Please log in to access your dashboard
           navigate("/client/login");
           return;
         }
@@ -60,7 +62,7 @@ export default function ClientDashboard() {
         if (!mounted) return;
 
         if (accessError || !access) {
-          toast.error("You don't have access to this case");
+          toast.error(t('dashboard.accessDenied')); // You don't have access to this case
           navigate("/client/login");
           return;
         }
@@ -134,7 +136,7 @@ export default function ClientDashboard() {
       setPoa(poaData);
     } catch (error) {
       console.error("Error loading dashboard:", error);
-      toast.error("Failed to load dashboard data");
+      toast.error(t('dashboard.loadError')); // Failed to load dashboard data
     } finally {
       setLoading(false);
     }
@@ -142,14 +144,14 @@ export default function ClientDashboard() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    toast.success("Logged out successfully");
+    toast.success(t('dashboard.logoutSuccess')); // Logged out successfully
     navigate("/client/login");
   };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">Loading your portal...</div>
+        <div className="text-center">{t('dashboard.loading')}</div> {/* Loading your portal... */}
       </div>
     );
   }
@@ -160,11 +162,11 @@ export default function ClientDashboard() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold">{caseData?.client_name}</h1>
-            <p className="text-sm text-muted-foreground">Case: {caseData?.client_code}</p>
+            <p className="text-sm text-muted-foreground">{t('dashboard.caseLabel')} {caseData?.client_code}</p> {/* Case: */}
           </div>
           <Button variant="outline" onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />
-            Logout
+            {t('dashboard.logout')} {/* Logout */}
           </Button>
         </div>
       </header>
@@ -174,19 +176,19 @@ export default function ClientDashboard() {
         <div className="flex flex-wrap gap-2 justify-center mb-6">
           <Badge className="px-3 py-1 text-xs">
             <Lock className="h-3 w-3 mr-1" />
-            TLS 1.3 Encryption
+            {t('dashboard.tlsEncryption')} {/* TLS 1.3 Encryption */}
           </Badge>
           <Badge className="px-3 py-1 text-xs">
             <Clock className="h-3 w-3 mr-1" />
-            5min Max Processing
+            {t('dashboard.maxProcessing')} {/* 5min Max Processing */}
           </Badge>
           <Badge className="px-3 py-1 text-xs">
             <Trash2 className="h-3 w-3 mr-1" />
-            Auto Deletion
+            {t('dashboard.autoDeletion')} {/* Auto Deletion */}
           </Badge>
           <Badge className="px-3 py-1 text-xs">
             <FileCheck className="h-3 w-3 mr-1" />
-            SOC 2 Certified
+            {t('dashboard.soc2Certified')} {/* SOC 2 Certified */}
           </Badge>
           <Button 
             variant="ghost" 
@@ -195,27 +197,27 @@ export default function ClientDashboard() {
             className="ml-2"
           >
             <Shield className="h-3 w-3 mr-1" />
-            Learn More
+            {t('dashboard.learnMore')} {/* Learn More */}
           </Button>
         </div>
 
         <Tabs defaultValue="timeline" className="space-y-6">
           <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="timeline">Timeline</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="upload">Upload</TabsTrigger>
-            <TabsTrigger value="poa">POA</TabsTrigger>
-            <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="timeline">{t('dashboard.tabTimeline')}</TabsTrigger> {/* Timeline */}
+            <TabsTrigger value="documents">{t('dashboard.tabDocuments')}</TabsTrigger> {/* Documents */}
+            <TabsTrigger value="upload">{t('dashboard.tabUpload')}</TabsTrigger> {/* Upload */}
+            <TabsTrigger value="poa">{t('dashboard.tabPoa')}</TabsTrigger> {/* POA */}
+            <TabsTrigger value="messages">{t('dashboard.tabMessages')}</TabsTrigger> {/* Messages */}
             <TabsTrigger value="passport" className="flex items-center gap-2">
               <Plane className="h-4 w-4" />
-              Passport
+              {t('dashboard.tabPassport')} {/* Passport */}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="timeline">
             <Card>
               <CardHeader>
-                <CardTitle>Case Progress</CardTitle>
+                <CardTitle>{t('dashboard.caseProgress')}</CardTitle> {/* Case Progress */}
               </CardHeader>
               <CardContent>
                 <CaseStageVisualization 
@@ -226,21 +228,21 @@ export default function ClientDashboard() {
                   <Card>
                     <CardContent className="pt-6">
                       <div className="text-2xl font-bold">{caseData?.progress || 0}%</div>
-                      <p className="text-sm text-muted-foreground">Overall Progress</p>
+                      <p className="text-sm text-muted-foreground">{t('dashboard.overallProgress')}</p> {/* Overall Progress */}
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="pt-6">
                       <div className="text-2xl font-bold">{documents.length}</div>
-                      <p className="text-sm text-muted-foreground">Documents</p>
+                      <p className="text-sm text-muted-foreground">{t('dashboard.documents')}</p> {/* Documents */}
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="pt-6">
                       <Badge variant={caseData?.status === "active" ? "default" : "secondary"}>
-                        {caseData?.status || "Unknown"}
+                        {caseData?.status || t('dashboard.unknownStatus')} {/* Unknown */}
                       </Badge>
-                      <p className="text-sm text-muted-foreground mt-2">Current Status</p>
+                      <p className="text-sm text-muted-foreground mt-2">{t('dashboard.currentStatus')}</p> {/* Current Status */}
                     </CardContent>
                   </Card>
                 </div>
@@ -251,12 +253,12 @@ export default function ClientDashboard() {
           <TabsContent value="documents">
             <Card>
               <CardHeader>
-                <CardTitle>Your Documents</CardTitle>
+                <CardTitle>{t('dashboard.yourDocuments')}</CardTitle> {/* Your Documents */}
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {documents.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">No documents yet</p>
+                    <p className="text-muted-foreground text-center py-8">{t('dashboard.noDocuments')}</p>
                   ) : (
                     documents.map((doc) => (
                       <div
@@ -268,14 +270,14 @@ export default function ClientDashboard() {
                           <div>
                             <p className="font-medium">{doc.name}</p>
                             <p className="text-sm text-muted-foreground">
-                              {doc.type || "Document"} • {doc.category}
+                              {doc.type || t('dashboard.documentLabel')} {/* Document */} • {doc.category}
                             </p>
                           </div>
                         </div>
                         {doc.is_verified && (
                           <Badge variant="outline" className="bg-green-500/10">
                             <FileCheck className="mr-1 h-3 w-3" />
-                            Verified
+                            {t('dashboard.verified')}
                           </Badge>
                         )}
                       </div>
@@ -296,33 +298,33 @@ export default function ClientDashboard() {
           <TabsContent value="poa">
             <Card>
               <CardHeader>
-                <CardTitle>Power of Attorney</CardTitle>
+                <CardTitle>{t('dashboard.powerOfAttorney')}</CardTitle> {/* Power of Attorney */}
               </CardHeader>
               <CardContent>
                 {poa ? (
                   <div className="space-y-4">
                     <div className="flex items-center justify-between p-4 border rounded-lg bg-green-500/5">
                       <div>
-                        <p className="font-medium">POA Signed</p>
+                        <p className="font-medium">{t('dashboard.poaSigned')}</p> {/* POA Signed */}
                         <p className="text-sm text-muted-foreground">
-                          Signed on {new Date(poa.client_signature_date).toLocaleDateString()}
+                          {t('dashboard.signedOn')} {new Date(poa.client_signature_date).toLocaleDateString()} {/* Signed on */}
                         </p>
                       </div>
                       <Badge variant="outline" className="bg-green-500/10">
                         <FileCheck className="mr-1 h-3 w-3" />
-                        Active
+                        {t('dashboard.active')} {/* Active */}
                       </Badge>
                     </div>
                     {poa.pdf_url && (
                       <Button className="w-full" variant="outline">
                         <Download className="mr-2 h-4 w-4" />
-                        Download POA
+                        {t('dashboard.downloadPoa')} {/* Download POA */}
                       </Button>
                     )}
                   </div>
                 ) : (
                   <p className="text-muted-foreground text-center py-8">
-                    No signed POA available yet
+                    {t('dashboard.noPoaYet')} {/* No signed POA available yet */}
                   </p>
                 )}
               </CardContent>
