@@ -44,7 +44,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex-shrink-0" aria-label="Polish Citizenship Portal home">
+          <a href="/" className="flex-shrink-0" aria-label="Polish Citizenship Portal — Navigate to homepage">
             <img 
               src={logo} 
               alt="PolishCitizenship.pl Logo" 
@@ -53,7 +53,6 @@ const Navigation = () => {
               height="56" 
               loading="eager" 
               decoding="async"
-              aria-label="Polish Citizenship Portal"
             />
           </a>
 

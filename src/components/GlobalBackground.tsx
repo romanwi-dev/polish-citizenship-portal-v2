@@ -10,6 +10,8 @@ export const GlobalBackground = () => {
   const [isDark, setIsDark] = useState(true);
   // PERF-MICRO-V2: Use ref to prevent observer recreation
   const observerRef = useRef<MutationObserver | null>(null);
+  // PERF-V5: Use ref for timeout to prevent closure issues
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // PERF-MICRO-V2: Early return if not in browser environment
@@ -17,11 +19,10 @@ export const GlobalBackground = () => {
       return;
     }
 
-    // Check if dark or light mode - optimized with debounce
-    let timeoutId: NodeJS.Timeout;
+    // PERF-V5: Check if dark or light mode - optimized with stable timeout ref
     const checkTheme = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
         setIsDark(document.documentElement.classList.contains('dark'));
       }, 50); // Debounce rapid theme changes
     };
@@ -39,7 +40,7 @@ export const GlobalBackground = () => {
     });
     
     return () => {
-      clearTimeout(timeoutId);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
       // PERF-MICRO-V2: Disconnect but keep observer ref for reuse
       if (observerRef.current) {
         observerRef.current.disconnect();

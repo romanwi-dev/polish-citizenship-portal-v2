@@ -88,7 +88,13 @@ const FooterWeb3 = () => {
                 </a>
               </li>
               <li>
-                <a href="https://polishcitizenshippl-20-8pfm8wc5m6.replit.app/family-tree" className="text-muted-foreground hover:text-primary transition-colors" target="_blank" rel="noopener noreferrer">
+                <a 
+                  href="https://polishcitizenshippl-20-8pfm8wc5m6.replit.app/family-tree" 
+                  className="text-muted-foreground hover:text-primary transition-colors" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="Build your family tree (opens in new window)"
+                >
                   {tt('footer.familyTree', 'Family Tree')}
                 </a>
               </li>
