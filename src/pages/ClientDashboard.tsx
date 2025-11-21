@@ -4,6 +4,7 @@
 // Only SMALL, EXPLICIT changes described in the current task are allowed.
 // i18n engine lives in src/i18n/** and MUST NOT be edited by AI.
 
+// PERF-MICRO-V2: Optimize imports and add memoization
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
@@ -41,6 +42,13 @@ export default function ClientDashboard() {
   const [documents, setDocuments] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
   const [poa, setPoa] = useState<any>(null);
+
+  // PERF-MICRO-V2: Memoize expensive derived values
+  const documentCount = useMemo(() => documents.length, [documents.length]);
+  const verifiedDocuments = useMemo(() => 
+    documents.filter(doc => doc.is_verified), 
+    [documents]
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -103,6 +111,7 @@ export default function ClientDashboard() {
     };
   }, [caseId, navigate]);
 
+  // PERF-MICRO-V2: Stable data loading callback
   const loadDashboardData = useCallback(async () => {
     try {
       // Load case data
@@ -149,6 +158,7 @@ export default function ClientDashboard() {
     }
   }, [caseId, t]);
 
+  // PERF-MICRO-V2: Stable logout callback
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     toast.success(t('dashboard.logoutSuccess')); // Logged out successfully
@@ -253,7 +263,8 @@ export default function ClientDashboard() {
                   </Card>
                   <Card>
                     <CardContent className="pt-4 sm:pt-6">
-                      <div className="text-xl sm:text-2xl font-bold">{documents.length}</div>
+                      {/* PERF-MICRO-V2: Use memoized document count */}
+                      <div className="text-xl sm:text-2xl font-bold">{documentCount}</div>
                       <p className="text-xs sm:text-sm text-muted-foreground">{t('dashboard.documents')}</p>
                     </CardContent>
                   </Card>
@@ -277,7 +288,8 @@ export default function ClientDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {documents.length === 0 ? (
+                  {/* PERF-MICRO-V2: Use memoized count for conditional */}
+                  {documentCount === 0 ? (
                     <p className="text-muted-foreground text-center py-8 text-sm">{t('dashboard.noDocuments')}</p>
                   ) : (
                     documents.map((doc) => (

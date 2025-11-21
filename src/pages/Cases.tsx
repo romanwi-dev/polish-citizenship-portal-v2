@@ -99,6 +99,7 @@ const Cases = () => {
     return STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.other;
   };
 
+  // PERF-MICRO-V2: Stable callback with proper deps
   const handleUpdateStatus = useCallback(async (caseId: string, status: string) => {
     try {
       await updateStatusMutation.mutateAsync({ caseId, status });
@@ -131,13 +132,13 @@ const Cases = () => {
     setEditCase(clientCase);
   }, []);
 
-  // Calculate case age in days - memoized
+  // PERF-MICRO-V2: Calculate case age in days - stable reference, no deps needed
   const getCaseAge = useCallback((startDate: string | null) => {
     if (!startDate) return 0;
     return Math.floor((Date.now() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24));
   }, []);
 
-  // Filter cases based on all criteria
+  // PERF-MICRO-V2: Filter cases based on all criteria - memoized with all deps
   const filteredCases = useMemo(() => {
     return cases
       .filter(c => {
@@ -188,7 +189,7 @@ const Cases = () => {
         const scoreB = b.client_score || 0;
         return scoreB - scoreA;
       });
-  }, [cases, searchTerm, statusFilter, processingModeFilter, scoreFilter, ageFilter, progressFilter]);
+  }, [cases, searchTerm, statusFilter, processingModeFilter, scoreFilter, ageFilter, progressFilter, getCaseAge]); // PERF-MICRO-V2: Added getCaseAge dep
 
   // Count active filters
   const activeFiltersCount = useMemo(() => {
