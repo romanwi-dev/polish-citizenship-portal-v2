@@ -1,3 +1,5 @@
+// NOTE: Admin backend is EN/PL only by project policy.
+// Currently uses raw English strings. To be localized in future if needed.
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";

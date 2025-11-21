@@ -1,3 +1,5 @@
+// NOTE: Admin backend is EN/PL only by project policy.
+// Currently uses raw English strings. To be localized in future if needed.
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/AdminLayout";
