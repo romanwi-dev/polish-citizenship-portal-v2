@@ -7,8 +7,8 @@ export const ANIMATION_CONFIG = {
   // Stagger delay for card/item animations (ms) - faster for smoother flow
   STAGGER_DELAY: 60,
   
-  // Card flip duration (ms) - slower flip
-  FLIP_DURATION: 600,
+  // Card flip duration (ms) - matches onboarding cards
+  FLIP_DURATION: 700,
   
   // Fade-in duration (ms) - snappier
   FADE_DURATION: 200,

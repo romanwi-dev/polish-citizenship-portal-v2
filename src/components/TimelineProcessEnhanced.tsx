@@ -157,7 +157,7 @@ export default function TimelineProcessEnhanced() {
                     role="button"
                     tabIndex={0}
                     aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg transition-transform duration-600"
+                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg transition-transform duration-700"
                     style={{
                 transformStyle: 'preserve-3d',
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
