@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { SocialShare } from "@/components/social/SocialShare";
 
 const Navigation = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing');
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -82,7 +82,7 @@ const Navigation = () => {
                   {/* Header */}
                   <div className="flex items-center gap-2 p-4 border-b border-border/50">
                     <Sparkles className="h-5 w-5 text-primary" />
-                    <span className="font-semibold text-lg">{t('nav.navigation')}</span>
+                    <span className="font-semibold text-lg">{t('nav.navigation')}</span> {/* Navigation */}
                   </div>
                     
                     {/* Scrollable Content */}
@@ -124,10 +124,10 @@ const Navigation = () => {
                         <Button onClick={user ? handleSignOut : () => navigate('/login')} className="w-full h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all">
                           {user ? <>
                               <LogOut className="mr-2 h-4 w-4" />
-                              Sign Out
+                              {t('nav.signOut')} {/* Sign Out */}
                             </> : <>
                               <LogIn className="mr-2 h-4 w-4" />
-                              Register / Login
+                              {t('nav.register')} {/* Register / Login */}
                             </>}
                         </Button>
 

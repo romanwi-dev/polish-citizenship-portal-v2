@@ -1,6 +1,8 @@
 const landing = {
   nav: {
-    navigation: "Navigation"
+    navigation: "Navigation",
+    register: "Register / Login",
+    signOut: "Sign Out"
   },
   hero: {
     badge: "AI-Powered Citizenship Solutions",
