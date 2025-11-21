@@ -32,6 +32,7 @@ export const HeroWavingFlags = () => {
   ];
 
   return (
+    // CLS FIX: min-h-screen ensures stable height, no layout shift
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-48 lg:pb-24">
       {/* Removed duplicate 3D Canvas - now using unified background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
@@ -71,11 +72,17 @@ export const HeroWavingFlags = () => {
             <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
-                <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100">
+                {/* CLS FIX: Container with explicit aspect ratio to prevent image layout shift */}
+                <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100" style={{ aspectRatio: '4/3' }}>
                   <img 
                     src={professionalWoman} 
-                    alt="Professional consultation" 
-                    className="w-full h-auto object-cover"
+                    alt="Professional consultation"
+                    // CLS FIX: Added explicit dimensions to prevent layout shift
+                    width="400"
+                    height="300"
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                    decoding="async"
                   />
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-1.5">
@@ -166,7 +173,8 @@ export const HeroWavingFlags = () => {
             const FeatureIcon = feature.icon;
             return (
               <div 
-                key={index} 
+                key={index}
+                // CLS FIX: min-h ensures stable card height across breakpoints 
                 className="glass-card hover-glow p-4 md:p-6 lg:p-6 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] lg:min-h-[140px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
               >
                 <div className="w-full h-full flex flex-col items-center justify-center gap-3">
