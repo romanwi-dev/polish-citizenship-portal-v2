@@ -26,17 +26,16 @@ const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 
 // Validate GA ID in development
 if (import.meta.env.DEV && !GA_MEASUREMENT_ID) {
-  console.error('⚠️ VITE_GA_MEASUREMENT_ID not configured. Analytics will not work.');
-} else if (!GA_MEASUREMENT_ID) {
-  console.error('❌ Google Analytics ID missing. Add VITE_GA_MEASUREMENT_ID to environment variables.');
+  console.warn('⚠️ VITE_GA_MEASUREMENT_ID not configured. Analytics disabled in development.');
 }
 
 /**
  * Initialize Google Analytics 4
+ * Only loads if GA_MEASUREMENT_ID is properly configured
  */
 export const initGA = (language: string) => {
-  if (import.meta.env.DEV) {
-    console.log('GA4 disabled in development');
+  // Skip if no GA ID configured or in dev mode
+  if (!GA_MEASUREMENT_ID || import.meta.env.DEV) {
     return;
   }
 

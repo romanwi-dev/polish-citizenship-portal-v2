@@ -7,8 +7,7 @@ const landing = {
   hero: {
     badge: "AI-Powered Citizenship Solutions",
     title: "Unlock Your <br/>Polish Heritage",
-    subtitle1: "Expert guidance through every step of your Polish citizenship journey. From eligibility assessment to passport delivery, we handle the complexities while you focus on your future.",
-    subtitle2: "Join thousands of satisfied clients who've reclaimed their European heritage with our proven process.",
+    subtitle: "Expert guidance through every step of your Polish citizenship journey. From eligibility assessment to passport delivery, we handle the complexities while you focus on your future.",
     cta: "Take Polish Citizenship Test",
     stats: {
       experience: "Years Experience",
