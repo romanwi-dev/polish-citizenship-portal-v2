@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 
 export function StructuredData() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('landing');
   const baseUrl = window.location.origin;
   const currentLang = i18n.language;
   

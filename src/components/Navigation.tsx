@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { SocialShare } from "@/components/social/SocialShare";
 
 const Navigation = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing');
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');

@@ -74,7 +74,7 @@ const FlippableAboutCard = ({
 };
 
 const AboutSection = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing');
   
   return (
     <SectionLayout

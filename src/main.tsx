@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import "./i18n/config"; // Initialize i18n
+import "./i18n/v2/setup"; // Initialize i18n V2 Engine
 
 // Initialize default theme (dark-red)
 const defaultTheme = localStorage.getItem("theme") || "dark-red";

@@ -18,7 +18,7 @@ const FlippableServiceCard = memo(({
   color: string;
   index: number;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing');
   const [isFlipped, setIsFlipped] = useState(false);
   
   const handleFlip = useCallback(() => {

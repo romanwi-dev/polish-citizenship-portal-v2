@@ -21,7 +21,7 @@ const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").t
 export default function ClientIntakeWizard() {
   const { token } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation('portal');
   
   const [currentStep, setCurrentStep] = useState(1);
   const [caseId, setCaseId] = useState<string | null>(null);
