@@ -13,7 +13,9 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 import { SocialShare } from '@/components/social/SocialShare';
 
 export const MobileNavigationSheet = () => {
-  const { t } = useTranslation('landing');
+  const { t, i18n } = useTranslation('landing');
+  const tt = (key: string, fallback: string) => t(key, fallback);
+  const dir = i18n.language === 'he' ? 'rtl' : 'ltr';
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { user, signOut } = useAuth(false);
@@ -49,11 +51,11 @@ export const MobileNavigationSheet = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
         
-        <div className="relative flex flex-col h-full">
+        <div dir={dir} className="relative flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center gap-2 p-4 border-b border-border/50">
             <Sparkles className="h-5 w-5 text-primary" />
-            <span className="font-semibold text-lg">{t('nav.navigation')}</span> {/* Navigation */}
+            <span className="font-semibold text-lg">{tt('nav.navigation', 'Navigation')}</span>
           </div>
 
             {/* Scrollable Content */}
@@ -114,12 +116,12 @@ export const MobileNavigationSheet = () => {
                   {user ? (
                     <>
                       <LogOut className="mr-2 h-4 w-4" />
-                      {t('nav.signOut')} {/* Sign Out */}
+                      {tt('nav.signOut', 'Sign Out')}
                     </>
                   ) : (
                     <>
                       <LogIn className="mr-2 h-4 w-4" />
-                      {t('nav.register')} {/* Register / Login */}
+                      {tt('nav.register', 'Register / Login')}
                     </>
                   )}
                 </Button>
