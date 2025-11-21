@@ -49,6 +49,8 @@ import logo from "@/assets/logo.webp";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible } from "@/components/ui/collapsible";
 import { GlobalBackground } from "@/components/GlobalBackground";
+import { LanguageSelector, ADMIN_LANGUAGES } from "@/components/LanguageSelector";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 const navSections = [
   {
@@ -131,7 +133,7 @@ function AppSidebar() {
       </div>
 
       <div className="relative z-10 flex flex-col h-full">
-        {/* Header with close button only */}
+        {/* Header with language selector, theme switcher, and close button */}
         <div className={cn(
           "flex items-center justify-between border-b border-border/50 flex-shrink-0",
           open ? "p-4" : "p-2"
@@ -142,12 +144,21 @@ function AppSidebar() {
               <span className="font-semibold text-lg">Navigation</span>
             </div>
           )}
-          <button
-            onClick={() => setOpen(!open)}
-            className="px-2 py-2 opacity-40 hover:opacity-100 hover:bg-accent/50 rounded-md transition-all flex items-center justify-center"
-          >
-            <PanelLeft className="h-4 w-4" />
-          </button>
+          <div className="flex items-center gap-2 ml-auto">
+            {/* Theme Switcher */}
+            <ThemeSwitcher />
+            
+            {/* Language Selector - EN/PL only for admin */}
+            <LanguageSelector allowedLanguages={ADMIN_LANGUAGES} />
+            
+            {/* Toggle sidebar button */}
+            <button
+              onClick={() => setOpen(!open)}
+              className="px-2 py-2 opacity-40 hover:opacity-100 hover:bg-accent/50 rounded-md transition-all flex items-center justify-center"
+            >
+              <PanelLeft className="h-4 w-4" />
+            </button>
+          </div>
         </div>
         
         {/* Scrollable content */}

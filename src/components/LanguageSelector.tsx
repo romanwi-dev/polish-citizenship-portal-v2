@@ -8,8 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// Available languages - single source of truth
-const AVAILABLE_LANGUAGES = [
+// Language set constants
+export const PUBLIC_LANGUAGES = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
   { code: 'es', label: 'Español', flag: '🇪🇸' },
   { code: 'pt', label: 'Português', flag: '🇵🇹' },
@@ -20,13 +20,23 @@ const AVAILABLE_LANGUAGES = [
   { code: 'uk', label: 'Українська', flag: '🇺🇦' },
 ];
 
-export function LanguageSelector() {
+export const ADMIN_LANGUAGES = [
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'pl', label: 'Polski', flag: '🇵🇱' },
+];
+
+type LanguageSelectorProps = {
+  allowedLanguages?: typeof PUBLIC_LANGUAGES;
+};
+
+export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {}) {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const { lang } = useParams<{ lang: string }>();
   const [open, setOpen] = useState(false);
 
-  const currentLanguage = AVAILABLE_LANGUAGES.find(lang => lang.code === i18n.language) || AVAILABLE_LANGUAGES[0];
+  const languages = allowedLanguages ?? PUBLIC_LANGUAGES;
+  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
   // RTL toggle for Hebrew
   useEffect(() => {
@@ -66,7 +76,7 @@ export function LanguageSelector() {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20 z-50">
-        {AVAILABLE_LANGUAGES.map((lang) => (
+        {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
