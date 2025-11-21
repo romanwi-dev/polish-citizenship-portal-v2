@@ -68,7 +68,8 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
       <DropdownMenuTrigger asChild>
         <button
           className="h-8 w-8 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-          aria-label="Select language"
+          aria-label={`Current language: ${currentLanguage.label}. Click to change language`}
+          aria-expanded={open}
         >
           <span className="text-xs md:text-sm font-bold text-primary dark:text-foreground/70">
             {currentLanguage.code.toUpperCase()}
@@ -81,6 +82,8 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
             className={`cursor-pointer ${currentLanguage.code === lang.code ? 'bg-primary/10' : ''}`}
+            role="menuitemradio"
+            aria-checked={currentLanguage.code === lang.code}
           >
             <span className="mr-2">{lang.flag}</span>
             <span>{lang.label}</span>

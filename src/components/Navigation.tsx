@@ -44,8 +44,17 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex-shrink-0">
-            <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" width="305" height="56" loading="eager" decoding="async" />
+          <a href="/" className="flex-shrink-0" aria-label="Polish Citizenship Portal home">
+            <img 
+              src={logo} 
+              alt="PolishCitizenship.pl Logo" 
+              className="h-8 w-auto" 
+              width="305" 
+              height="56" 
+              loading="eager" 
+              decoding="async"
+              aria-label="Polish Citizenship Portal"
+            />
           </a>
 
           {/* User Icon & Desktop/Mobile Menu */}
@@ -122,8 +131,12 @@ const Navigation = () => {
                         {/* Search - Above the login button, same height */}
                         <NavigationSearch value={searchQuery} onChange={setSearchQuery} />
 
-                        {/* Login/Register Button - same height as search */}
-                        <Button onClick={user ? handleSignOut : () => navigate('/login')} className="w-full h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all">
+                         {/* Login/Register Button - same height as search */}
+                        <Button 
+                          onClick={user ? handleSignOut : () => navigate('/login')} 
+                          className="w-full h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all"
+                          aria-label={user ? 'Sign out from your account' : 'Register or login to your account'}
+                        >
                           {user ? <>
                               <LogOut className="mr-2 h-4 w-4" />
                               {tt('nav.signOut', 'Sign Out')}
