@@ -133,16 +133,18 @@ export function MessagingSection({ caseId, currentUserId }: MessagingSectionProp
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5" />
+        {/* DASHBOARD-UX-SAFE: Improved title sizing for mobile */}
+        <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+          <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5" />
           Messages
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <ScrollArea className="h-[400px] pr-4" ref={scrollRef}>
+        {/* DASHBOARD-UX-SAFE: Adjusted scroll area height for mobile */}
+        <ScrollArea className="h-[300px] sm:h-[400px] pr-4" ref={scrollRef}>
           <div className="space-y-4">
             {messages.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">
+              <p className="text-center text-muted-foreground py-8 text-sm">
                 No messages yet. Start a conversation!
               </p>
             ) : (
@@ -153,14 +155,15 @@ export function MessagingSection({ caseId, currentUserId }: MessagingSectionProp
                     key={msg.id}
                     className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
                   >
+                    {/* DASHBOARD-UX-SAFE: Improved message bubbles for mobile */}
                     <div
-                      className={`max-w-[70%] rounded-lg p-3 ${
+                      className={`max-w-[85%] sm:max-w-[70%] rounded-lg p-3 ${
                         isOwnMessage
                           ? "bg-primary text-primary-foreground"
                           : "bg-muted"
                       }`}
                     >
-                      <p className="text-sm whitespace-pre-wrap">{msg.message_text}</p>
+                      <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{msg.message_text}</p>
                       <p
                         className={`text-xs mt-1 ${
                           isOwnMessage ? "text-primary-foreground/70" : "text-muted-foreground"
@@ -179,7 +182,8 @@ export function MessagingSection({ caseId, currentUserId }: MessagingSectionProp
           </div>
         </ScrollArea>
 
-        <div className="flex gap-2">
+        {/* DASHBOARD-UX-SAFE: Improved message input layout for mobile */}
+        <div className="flex flex-col sm:flex-row gap-2">
           <Textarea
             placeholder="Type your message... (Shift+Enter for new line)"
             value={newMessage}
@@ -187,13 +191,13 @@ export function MessagingSection({ caseId, currentUserId }: MessagingSectionProp
             onKeyPress={handleKeyPress}
             disabled={sending}
             rows={3}
-            className="resize-none"
+            className="resize-none flex-1 text-sm"
           />
           <Button
             onClick={handleSend}
             disabled={sending || !newMessage.trim()}
             size="icon"
-            className="h-auto"
+            className="h-auto self-end sm:self-auto"
           >
             {sending ? (
               <Loader2 className="h-4 w-4 animate-spin" />

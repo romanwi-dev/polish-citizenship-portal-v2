@@ -165,96 +165,104 @@ export default function ClientDashboard() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        {/* UX tweak: improved responsive layout for mobile screens */}
+      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        {/* DASHBOARD-UX-SAFE: Improved responsive layout for mobile screens */}
         <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1 w-full sm:w-auto">
+            {/* DASHBOARD-UX-SAFE: Truncate long names on mobile */}
             <h1 className="text-xl sm:text-2xl font-bold truncate">{caseData?.client_name}</h1>
-            <p className="text-sm text-muted-foreground break-words">{t('dashboard.caseLabel')} {caseData?.client_code}</p> {/* Case: */}
+            <p className="text-sm text-muted-foreground truncate">{t('dashboard.caseLabel')} {caseData?.client_code}</p>
           </div>
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0 w-full sm:w-auto justify-end">
             <LanguageSelector />
-            <Button variant="outline" onClick={handleLogout} size="sm" className="sm:size-default">
+            <Button variant="outline" onClick={handleLogout} size="sm" className="flex-shrink-0">
               <LogOut className="mr-2 h-4 w-4" />
-              <span className="hidden sm:inline">{t('dashboard.logout')}</span> {/* Logout */}
-              <span className="sm:hidden">Log out</span>
+              <span className="hidden sm:inline">{t('dashboard.logout')}</span>
+              <span className="sm:hidden">{t('dashboard.logout')}</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 space-y-6">
-        {/* Security Badges */}
-        <div className="flex flex-wrap gap-2 justify-center mb-6">
-          <Badge className="px-3 py-1 text-xs">
+      <main className="container mx-auto px-4 py-6 sm:py-8 space-y-6">
+        {/* DASHBOARD-UX-SAFE: Security badges - improved mobile wrapping */}
+        <div className="flex flex-wrap gap-2 justify-center mb-4 sm:mb-6">
+          <Badge className="px-2 sm:px-3 py-1 text-xs">
             <Lock className="h-3 w-3 mr-1" />
-            {t('dashboard.tlsEncryption')} {/* TLS 1.3 Encryption */}
+            <span className="hidden sm:inline">{t('dashboard.tlsEncryption')}</span>
+            <span className="sm:hidden">TLS 1.3</span>
           </Badge>
-          <Badge className="px-3 py-1 text-xs">
+          <Badge className="px-2 sm:px-3 py-1 text-xs">
             <Clock className="h-3 w-3 mr-1" />
-            {t('dashboard.maxProcessing')} {/* 5min Max Processing */}
+            <span className="hidden sm:inline">{t('dashboard.maxProcessing')}</span>
+            <span className="sm:hidden">5min Max</span>
           </Badge>
-          <Badge className="px-3 py-1 text-xs">
+          <Badge className="px-2 sm:px-3 py-1 text-xs">
             <Trash2 className="h-3 w-3 mr-1" />
-            {t('dashboard.autoDeletion')} {/* Auto Deletion */}
+            <span className="hidden sm:inline">{t('dashboard.autoDeletion')}</span>
+            <span className="sm:hidden">Auto Del</span>
           </Badge>
-          <Badge className="px-3 py-1 text-xs">
+          <Badge className="px-2 sm:px-3 py-1 text-xs">
             <FileCheck className="h-3 w-3 mr-1" />
-            {t('dashboard.soc2Certified')} {/* SOC 2 Certified */}
+            <span className="hidden sm:inline">{t('dashboard.soc2Certified')}</span>
+            <span className="sm:hidden">SOC 2</span>
           </Badge>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={() => window.open('/client/security', '_blank')}
-            className="ml-2"
+            className="h-auto px-2 py-1 text-xs"
           >
             <Shield className="h-3 w-3 mr-1" />
-            {t('dashboard.learnMore')} {/* Learn More */}
+            {t('dashboard.learnMore')}
           </Button>
         </div>
 
-        <Tabs defaultValue="timeline" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="timeline">{t('dashboard.tabTimeline')}</TabsTrigger> {/* Timeline */}
-            <TabsTrigger value="documents">{t('dashboard.tabDocuments')}</TabsTrigger> {/* Documents */}
-            <TabsTrigger value="upload">{t('dashboard.tabUpload')}</TabsTrigger> {/* Upload */}
-            <TabsTrigger value="poa">{t('dashboard.tabPoa')}</TabsTrigger> {/* POA */}
-            <TabsTrigger value="messages">{t('dashboard.tabMessages')}</TabsTrigger> {/* Messages */}
-            <TabsTrigger value="passport" className="flex items-center gap-2">
-              <Plane className="h-4 w-4" />
-              {t('dashboard.tabPassport')} {/* Passport */}
+        <Tabs defaultValue="timeline" className="space-y-4 sm:space-y-6">
+          {/* DASHBOARD-UX-SAFE: Improved tab layout for mobile - scrollable horizontal tabs */}
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 h-auto gap-1">
+            <TabsTrigger value="timeline" className="text-xs sm:text-sm py-2">{t('dashboard.tabTimeline')}</TabsTrigger>
+            <TabsTrigger value="documents" className="text-xs sm:text-sm py-2">{t('dashboard.tabDocuments')}</TabsTrigger>
+            <TabsTrigger value="upload" className="text-xs sm:text-sm py-2">{t('dashboard.tabUpload')}</TabsTrigger>
+            <TabsTrigger value="poa" className="text-xs sm:text-sm py-2">POA</TabsTrigger>
+            <TabsTrigger value="messages" className="text-xs sm:text-sm py-2">{t('dashboard.tabMessages')}</TabsTrigger>
+            <TabsTrigger value="passport" className="text-xs sm:text-sm py-2 flex items-center justify-center gap-1">
+              <Plane className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">{t('dashboard.tabPassport')}</span>
+              <span className="sm:hidden">Pass</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="timeline">
             <Card>
               <CardHeader>
-                <CardTitle>{t('dashboard.caseProgress')}</CardTitle> {/* Case Progress */}
+                <CardTitle className="text-lg sm:text-xl">{t('dashboard.caseProgress')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <CaseStageVisualization 
                   completedStages={[]}
                   currentStage={caseData?.current_stage || "lead"}
                 />
-                <div className="mt-6 grid gap-4 md:grid-cols-3">
+                {/* DASHBOARD-UX-SAFE: Improved grid layout for mobile - single column on small screens */}
+                <div className="mt-4 sm:mt-6 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
                   <Card>
-                    <CardContent className="pt-6">
-                      <div className="text-2xl font-bold">{caseData?.progress || 0}%</div>
-                      <p className="text-sm text-muted-foreground">{t('dashboard.overallProgress')}</p> {/* Overall Progress */}
+                    <CardContent className="pt-4 sm:pt-6">
+                      <div className="text-xl sm:text-2xl font-bold">{caseData?.progress || 0}%</div>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{t('dashboard.overallProgress')}</p>
                     </CardContent>
                   </Card>
                   <Card>
-                    <CardContent className="pt-6">
-                      <div className="text-2xl font-bold">{documents.length}</div>
-                      <p className="text-sm text-muted-foreground">{t('dashboard.documents')}</p> {/* Documents */}
+                    <CardContent className="pt-4 sm:pt-6">
+                      <div className="text-xl sm:text-2xl font-bold">{documents.length}</div>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{t('dashboard.documents')}</p>
                     </CardContent>
                   </Card>
                   <Card>
-                    <CardContent className="pt-6">
-                      <Badge variant={caseData?.status === "active" ? "default" : "secondary"}>
-                        {caseData?.status || t('dashboard.unknownStatus')} {/* Unknown */}
+                    <CardContent className="pt-4 sm:pt-6">
+                      <Badge variant={caseData?.status === "active" ? "default" : "secondary"} className="text-xs">
+                        {caseData?.status || t('dashboard.unknownStatus')}
                       </Badge>
-                      <p className="text-sm text-muted-foreground mt-2">{t('dashboard.currentStatus')}</p> {/* Current Status */}
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-2">{t('dashboard.currentStatus')}</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -265,29 +273,30 @@ export default function ClientDashboard() {
           <TabsContent value="documents">
             <Card>
               <CardHeader>
-                <CardTitle>{t('dashboard.yourDocuments')}</CardTitle> {/* Your Documents */}
+                <CardTitle className="text-lg sm:text-xl">{t('dashboard.yourDocuments')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {documents.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">{t('dashboard.noDocuments')}</p>
+                    <p className="text-muted-foreground text-center py-8 text-sm">{t('dashboard.noDocuments')}</p>
                   ) : (
                     documents.map((doc) => (
                       <div
                         key={doc.id}
-                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent/50 transition-colors"
+                        className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 border rounded-lg hover:bg-accent/50 transition-colors gap-2"
                       >
-                        <div className="flex items-center gap-3">
-                          <FileText className="h-5 w-5 text-muted-foreground" />
-                          <div>
-                            <p className="font-medium">{doc.name}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {doc.type || t('dashboard.documentLabel')} {/* Document */} • {doc.category}
+                        {/* DASHBOARD-UX-SAFE: Improved document list - better mobile layout */}
+                        <div className="flex items-start gap-3 min-w-0 flex-1">
+                          <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                          <div className="min-w-0 flex-1">
+                            <p className="font-medium text-sm sm:text-base truncate">{doc.name}</p>
+                            <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                              {doc.type || t('dashboard.documentLabel')} • {doc.category}
                             </p>
                           </div>
                         </div>
                         {doc.is_verified && (
-                          <Badge variant="outline" className="bg-green-500/10">
+                          <Badge variant="outline" className="bg-green-500/10 flex-shrink-0 text-xs">
                             <FileCheck className="mr-1 h-3 w-3" />
                             {t('dashboard.verified')}
                           </Badge>
@@ -310,33 +319,34 @@ export default function ClientDashboard() {
           <TabsContent value="poa">
             <Card>
               <CardHeader>
-                <CardTitle>{t('dashboard.powerOfAttorney')}</CardTitle> {/* Power of Attorney */}
+                <CardTitle className="text-lg sm:text-xl">{t('dashboard.powerOfAttorney')}</CardTitle>
               </CardHeader>
               <CardContent>
                 {poa ? (
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 border rounded-lg bg-green-500/5">
-                      <div>
-                        <p className="font-medium">{t('dashboard.poaSigned')}</p> {/* POA Signed */}
-                        <p className="text-sm text-muted-foreground">
-                          {t('dashboard.signedOn')} {new Date(poa.client_signature_date).toLocaleDateString()} {/* Signed on */}
+                    {/* DASHBOARD-UX-SAFE: Improved POA layout for mobile */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-green-500/5 gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-sm sm:text-base">{t('dashboard.poaSigned')}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                          {t('dashboard.signedOn')} {new Date(poa.client_signature_date).toLocaleDateString()}
                         </p>
                       </div>
-                      <Badge variant="outline" className="bg-green-500/10">
+                      <Badge variant="outline" className="bg-green-500/10 flex-shrink-0 text-xs">
                         <FileCheck className="mr-1 h-3 w-3" />
-                        {t('dashboard.active')} {/* Active */}
+                        {t('dashboard.active')}
                       </Badge>
                     </div>
                     {poa.pdf_url && (
-                      <Button className="w-full" variant="outline">
+                      <Button className="w-full" variant="outline" size="sm">
                         <Download className="mr-2 h-4 w-4" />
-                        {t('dashboard.downloadPoa')} {/* Download POA */}
+                        {t('dashboard.downloadPoa')}
                       </Button>
                     )}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground text-center py-8">
-                    {t('dashboard.noPoaYet')} {/* No signed POA available yet */}
+                  <p className="text-muted-foreground text-center py-8 text-sm">
+                    {t('dashboard.noPoaYet')}
                   </p>
                 )}
               </CardContent>
