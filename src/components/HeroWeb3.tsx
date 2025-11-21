@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const HeroWeb3 = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('landing');
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const isRTL = i18n.language === 'he';
 

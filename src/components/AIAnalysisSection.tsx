@@ -17,7 +17,7 @@ const FlippableAICard = ({
   gradient: string; 
   index: number;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing');
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (

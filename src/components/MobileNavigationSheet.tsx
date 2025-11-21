@@ -13,7 +13,7 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 import { SocialShare } from '@/components/social/SocialShare';
 
 export const MobileNavigationSheet = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing');
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { user, signOut } = useAuth(false);

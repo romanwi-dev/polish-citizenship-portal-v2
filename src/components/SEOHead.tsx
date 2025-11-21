@@ -6,7 +6,7 @@ interface SEOHeadProps {
 }
 
 export function SEOHead({ page = 'home' }: SEOHeadProps) {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('landing');
   const currentLang = i18n.language;
   const baseUrl = window.location.origin;
   
