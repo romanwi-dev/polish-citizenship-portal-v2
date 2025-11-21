@@ -5,8 +5,6 @@ import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText, Target, Image, Lay
 import { ImageCarousel } from "@/components/ui/image-carousel";
 import { GlobalBackground } from "@/components/GlobalBackground";
 import { WarsawSkyline } from "@/components/WarsawSkyline";
-import RomeSkyline from "@/components/RomeSkyline";
-import ParisSkyline from "@/components/ParisSkyline";
 import secretary16 from "@/assets/secretaries/secretary-16.png";
 import secretary17 from "@/assets/secretaries/secretary-17.png";
 import secretary18 from "@/assets/secretaries/secretary-18.png";
@@ -253,15 +251,6 @@ const DemosHub = () => {
             <WarsawSkyline />
           </div>
 
-          {/* Paris Skyline */}
-          <div className="my-16 md:my-24">
-            <ParisSkyline />
-          </div>
-
-          {/* Rome Skyline */}
-          <div className="my-16 md:my-24">
-            <RomeSkyline />
-          </div>
 
           {/* Welcome Message with Polish Secretary - Flip Card */}
           <div className="mt-16">
