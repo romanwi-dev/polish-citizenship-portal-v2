@@ -9,9 +9,13 @@ export const GlobalBackground = () => {
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    // Check if dark or light mode
+    // Check if dark or light mode - optimized with debounce
+    let timeoutId: NodeJS.Timeout;
     const checkTheme = () => {
-      setIsDark(document.documentElement.classList.contains('dark'));
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsDark(document.documentElement.classList.contains('dark'));
+      }, 50); // Debounce rapid theme changes
     };
     
     checkTheme();
@@ -23,7 +27,10 @@ export const GlobalBackground = () => {
       attributeFilter: ['class'] 
     });
     
-    return () => observer.disconnect();
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
   }, []);
 
   // Delay 3D background loading for dark themes only

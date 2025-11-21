@@ -700,7 +700,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
             <div className="space-y-4">
               {/* Image Preview */}
               <div className="border rounded-lg overflow-hidden bg-muted">
-                <img src={imagePreview} alt="Document preview" className="w-full h-auto" />
+                <img src={imagePreview} alt="Document preview" className="w-full h-auto" loading="lazy" />
               </div>
               
               <div className="flex gap-2">
@@ -726,7 +726,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
               {/* Persistent Image/PDF Preview */}
               {imagePreview && (
                 <div className="border rounded-lg overflow-hidden bg-muted">
-                  <img src={imagePreview} alt="Document preview" className="w-full h-auto" />
+                  <img src={imagePreview} alt="Document preview" className="w-full h-auto" loading="lazy" />
                 </div>
               )}
               
@@ -774,7 +774,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                       <div>
                         <h4 className="text-sm font-semibold mb-2">Uploaded Document</h4>
                         {imagePreview && (
-                          <img src={imagePreview} alt="Uploaded passport" className="w-full rounded border" />
+                          <img src={imagePreview} alt="Uploaded passport" className="w-full rounded border" loading="lazy" />
                         )}
                         {passportFile && passportFile.type === 'application/pdf' && (
                           <div className="border rounded p-2 bg-muted text-sm">
@@ -901,7 +901,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                 {/* Persistent Image/PDF Preview */}
                 {imagePreview && (
                   <div className="border rounded-lg overflow-hidden bg-muted">
-                    <img src={imagePreview} alt="Birth certificate preview" className="w-full h-auto" />
+                    <img src={imagePreview} alt="Birth certificate preview" className="w-full h-auto" loading="lazy" />
                   </div>
                 )}
                 
@@ -949,7 +949,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                         <div>
                           <h4 className="text-sm font-semibold mb-2">Uploaded Document</h4>
                           {imagePreview && (
-                            <img src={imagePreview} alt="Uploaded birth certificate" className="w-full rounded border" />
+                            <img src={imagePreview} alt="Uploaded birth certificate" className="w-full rounded border" loading="lazy" />
                           )}
                           {birthCertFile && birthCertFile.type === 'application/pdf' && (
                             <div className="border rounded p-2 bg-muted text-sm">
