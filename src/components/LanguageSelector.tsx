@@ -7,26 +7,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+// LANG-RUNTIME-SAFE: Import centralized language constants
+import { PUBLIC_LANGUAGES, ADMIN_LANGUAGES, isRTLLanguage, type LanguageConfig } from "@/constants/languages";
 
-// Language set constants
-export const PUBLIC_LANGUAGES = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'es', label: 'Español', flag: '🇪🇸' },
-  { code: 'pt', label: 'Português', flag: '🇵🇹' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'he', label: 'עברית', flag: '🇮🇱' },
-  { code: 'ru', label: 'Русский', flag: '🇷🇺' },
-  { code: 'uk', label: 'Українська', flag: '🇺🇦' },
-];
-
-export const ADMIN_LANGUAGES = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'pl', label: 'Polski', flag: '🇵🇱' },
-];
+// LANG-RUNTIME-SAFE: Re-export for backwards compatibility
+export { PUBLIC_LANGUAGES, ADMIN_LANGUAGES };
 
 type LanguageSelectorProps = {
-  allowedLanguages?: typeof PUBLIC_LANGUAGES;
+  allowedLanguages?: LanguageConfig[];
 };
 
 export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {}) {
@@ -38,28 +26,33 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
   const languages = allowedLanguages ?? PUBLIC_LANGUAGES;
   const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
-  // RTL toggle for Hebrew
+  // LANG-RUNTIME-SAFE: RTL toggle for Hebrew - uses dir attribute for proper text direction
   useEffect(() => {
-    const isRTL = i18n.language === 'he';
-    document.documentElement.classList.toggle('rtl', isRTL);
+    const isRTL = isRTLLanguage(i18n.language);
     document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.documentElement.classList.toggle('rtl', isRTL);
   }, [i18n.language]);
 
   const handleLanguageChange = async (code: string) => {
+    // LANG-RUNTIME-SAFE: Prevent redundant switches
+    if (i18n.language === code) {
+      setOpen(false);
+      return;
+    }
+    
     console.log('🔄 Changing language to:', code);
     
-    // Change i18n language
-    await i18n.changeLanguage(code);
-    
-    // Store preference
+    // LANG-RUNTIME-SAFE: Store preference BEFORE navigation to prevent race conditions
     localStorage.setItem('preferredLanguage', code);
     
-    // Navigate to new language URL
-    const currentPath = window.location.pathname;
-    const pathWithoutLang = currentPath.replace(/^\/(en|es|pt|de|fr|he|ru|uk)(\/|$)/, '/');
-    navigate(`/${code}${pathWithoutLang === '/' ? '' : pathWithoutLang}`);
+    // LANG-RUNTIME-SAFE: Change i18n language
+    await i18n.changeLanguage(code);
     
-    console.log('✅ Language changed to:', i18n.language);
+    // LANG-RUNTIME-SAFE: Navigate to new language URL with replace to avoid back-button issues
+    const currentPath = window.location.pathname;
+    const pathWithoutLang = currentPath.replace(/^\/(en|es|pt|de|fr|he|ru|uk|pl)(\/|$)/, '/');
+    navigate(`/${code}${pathWithoutLang === '/' ? '' : pathWithoutLang}`, { replace: true });
+    
     setOpen(false);
   };
 
