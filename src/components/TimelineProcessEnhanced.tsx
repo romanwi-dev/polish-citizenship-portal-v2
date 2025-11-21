@@ -126,8 +126,8 @@ export default function TimelineProcessEnhanced() {
               initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ 
-                duration: 0.4, 
-                delay: index * 0.04, 
+                duration: 0.6, 
+                delay: index * 0.06, 
                 ease: [0.16, 1, 0.3, 1]
               }}
               viewport={{ once: true, margin: "-150px" }}
@@ -157,7 +157,7 @@ export default function TimelineProcessEnhanced() {
                     role="button"
                     tabIndex={0}
                     aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg transition-transform duration-450"
+                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg transition-transform duration-600"
                     style={{
                 transformStyle: 'preserve-3d',
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
@@ -241,7 +241,7 @@ export default function TimelineProcessEnhanced() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-150px" }}
-                transition={{ duration: 0.35, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
                   <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
