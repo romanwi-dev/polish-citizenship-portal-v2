@@ -137,9 +137,11 @@ const AdminLoader = () => (
 const App = () => {
   const { i18n } = useTranslation();
   
-  // Update HTML lang attribute when language changes
+  // Update HTML lang and dir attributes when language changes
   useEffect(() => {
     document.documentElement.lang = i18n.language;
+    // Set RTL for Hebrew
+    document.documentElement.dir = i18n.language === 'he' ? 'rtl' : 'ltr';
   }, [i18n.language]);
   
   return (

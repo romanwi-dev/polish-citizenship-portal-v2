@@ -23,6 +23,7 @@ import { CaseStageVisualization } from "@/components/CaseStageVisualization";
 import { FileUploadSection } from "@/components/client/FileUploadSection";
 import { MessagingSection } from "@/components/client/MessagingSection";
 import { ConsulateKitGenerator } from "@/components/passport/ConsulateKitGenerator";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 export default function ClientDashboard() {
   const { t } = useTranslation('portal');
@@ -164,10 +165,13 @@ export default function ClientDashboard() {
             <h1 className="text-2xl font-bold">{caseData?.client_name}</h1>
             <p className="text-sm text-muted-foreground">{t('dashboard.caseLabel')} {caseData?.client_code}</p> {/* Case: */}
           </div>
-          <Button variant="outline" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            {t('dashboard.logout')} {/* Logout */}
-          </Button>
+          <div className="flex items-center gap-3">
+            <LanguageSelector />
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              {t('dashboard.logout')} {/* Logout */}
+            </Button>
+          </div>
         </div>
       </header>
 
