@@ -275,7 +275,7 @@ export default function ClientIntakeWizard() {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative py-8">
+    <div className="min-h-screen overflow-x-hidden relative py-4 sm:py-8"> {/* ONBOARDING-UX-SAFE: Reduced vertical padding on mobile */}
       {/* Global Background */}
       <div className="fixed inset-0 z-0">
         <Suspense fallback={<StaticHeritagePlaceholder />}>
@@ -283,10 +283,10 @@ export default function ClientIntakeWizard() {
         </Suspense>
       </div>
       
-      <div className="container max-w-4xl mx-auto px-4 relative z-10">
+      <div className="container max-w-4xl mx-auto px-3 sm:px-4 relative z-10"> {/* ONBOARDING-UX-SAFE: Tighter horizontal padding on mobile */}
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold">
+        <div className="mb-4 sm:mb-6"> {/* ONBOARDING-UX-SAFE: Reduced margin on mobile */}
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold truncate"> {/* ONBOARDING-UX-SAFE: Smaller text + truncate to prevent overflow */}
             {t('steps.basicInfo')} - {t('step')} {currentStep}
           </h1>
         </div>
@@ -299,49 +299,51 @@ export default function ClientIntakeWizard() {
         />
 
         {/* Main Content */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>{stepLabels[currentStep - 1]}</CardTitle>
+        <Card className="mt-4 sm:mt-8"> {/* ONBOARDING-UX-SAFE: Reduced top margin on mobile */}
+          <CardHeader className="pb-4 sm:pb-6"> {/* ONBOARDING-UX-SAFE: Tighter padding on mobile */}
+            <CardTitle className="text-lg sm:text-xl line-clamp-2"> {/* ONBOARDING-UX-SAFE: Smaller text + line clamp to prevent overflow */}
+              {stepLabels[currentStep - 1]}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 sm:space-y-6 px-3 sm:px-6"> {/* ONBOARDING-UX-SAFE: Tighter spacing + padding on mobile */}
             {stepComponents[currentStep - 1]}
           </CardContent>
         </Card>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-6 gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center mt-4 sm:mt-6 gap-3 sm:gap-4"> {/* ONBOARDING-UX-SAFE: Stack buttons vertically on mobile for better touch targets */}
           <Button
             variant="outline"
             onClick={handlePrevious}
             disabled={currentStep === 1}
-            className="gap-2"
+            className="gap-2 min-h-[44px]" /* ONBOARDING-UX-SAFE: Minimum touch target size */
           >
             <ChevronLeft className="w-4 h-4" />
-            {t('previous')}
+            <span className="truncate">{t('previous')}</span> {/* ONBOARDING-UX-SAFE: Truncate text */}
           </Button>
 
           <Button
             variant="ghost"
             onClick={saveProgress}
             disabled={isSaving}
-            className="gap-2"
+            className="gap-2 min-h-[44px]" /* ONBOARDING-UX-SAFE: Minimum touch target size */
           >
             <Save className="w-4 h-4" />
-            {isSaving ? '...' : t('saveProgress')}
+            <span className="truncate">{isSaving ? '...' : t('saveProgress')}</span> {/* ONBOARDING-UX-SAFE: Truncate text */}
           </Button>
 
           {currentStep < totalSteps ? (
-            <Button onClick={handleNext} className="gap-2">
-              {t('next')}
+            <Button onClick={handleNext} className="gap-2 min-h-[44px]"> {/* ONBOARDING-UX-SAFE: Minimum touch target size */}
+              <span className="truncate">{t('next')}</span> {/* ONBOARDING-UX-SAFE: Truncate text */}
               <ChevronRight className="w-4 h-4" />
             </Button>
           ) : (
             <Button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="gap-2 bg-green-600 hover:bg-green-700"
+              className="gap-2 bg-green-600 hover:bg-green-700 min-h-[44px]" /* ONBOARDING-UX-SAFE: Minimum touch target size */
             >
-              {isSubmitting ? t('submitting') : t('submit')}
+              <span className="truncate">{isSubmitting ? t('submitting') : t('submit')}</span> {/* ONBOARDING-UX-SAFE: Truncate text */}
               <ChevronRight className="w-4 h-4" />
             </Button>
           )}

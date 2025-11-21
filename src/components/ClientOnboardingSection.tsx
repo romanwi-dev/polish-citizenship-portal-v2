@@ -117,27 +117,27 @@ export default function ClientOnboardingSection() {
             return (
             <div
               key={step.number}
-              className={`mb-32 md:mb-28 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''} relative`}
+              className={`mb-24 sm:mb-32 md:mb-28 last:mb-0 ${index === 0 ? 'mt-6 sm:mt-8 md:mt-16' : ''} relative`} /* ONBOARDING-UX-SAFE: Tighter spacing on mobile */
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
-                <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
-                  <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center"> {/* ONBOARDING-UX-SAFE: Slightly smaller on small mobile */}
+                  <span className="text-foreground opacity-50 font-heading font-bold text-2xl sm:text-3xl">{parseInt(step.number)}</span> {/* ONBOARDING-UX-SAFE: Responsive font size */}
                 </div>
               </div>
               
-              <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-center`}>
+              <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-3 sm:gap-4 md:gap-12 items-center`}> {/* ONBOARDING-UX-SAFE: Tighter gap on mobile */}
                 {/* Card - adjusted for mobile spacing */}
-                <div className="w-full md:w-[42%] mt-20 md:mt-0">
+                <div className="w-full md:w-[42%] mt-16 sm:mt-20 md:mt-0"> {/* ONBOARDING-UX-SAFE: Reduced top margin on small mobile */}
                   <div 
-                    className="relative h-[420px] md:h-[560px]"
+                    className="relative h-[380px] sm:h-[420px] md:h-[560px]" /* ONBOARDING-UX-SAFE: Shorter card on mobile to prevent scrolling */
                     style={{ 
                       perspective: '1000px'
                     }}
                   >
                 <div
                   onClick={() => toggleFlip(step.number)}
-                  className="absolute inset-0 cursor-pointer transition-transform duration-700"
+                  className="absolute inset-0 cursor-pointer transition-transform duration-700 ease-out" /* ONBOARDING-UX-SAFE: Smoother flip animation */
                   style={{
                     transformStyle: 'preserve-3d',
                     transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
@@ -145,36 +145,36 @@ export default function ClientOnboardingSection() {
                 >
                   {/* Front Side */}
                   <div
-                    className="absolute inset-0 w-full h-[420px] md:h-[560px] glass-card p-4 md:p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center items-center"
+                    className="absolute inset-0 w-full h-[380px] sm:h-[420px] md:h-[560px] glass-card p-3 sm:p-4 md:p-8 rounded-lg hover-glow group transition-transform duration-300 ease-out hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center items-center" /* ONBOARDING-UX-SAFE: Responsive height + padding + smoother animation */
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                     }}
                   >
                     {/* Icon */}
-                    <div className="mb-6 relative flex items-center justify-center w-full">
-                      <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
-                        <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="mb-4 sm:mb-6 relative flex items-center justify-center w-full"> {/* ONBOARDING-UX-SAFE: Tighter margin on mobile */}
+                      <div className="w-full h-24 sm:h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center"> {/* ONBOARDING-UX-SAFE: Shorter on mobile */}
+                        <step.icon className="w-12 h-12 sm:w-16 sm:h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-out" /> {/* ONBOARDING-UX-SAFE: Responsive icon size + smoother animation */}
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 space-y-4 text-center w-full">
-                      <h3 className="text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 break-words leading-tight" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
+                    <div className="flex-1 space-y-3 sm:space-y-4 text-center w-full"> {/* ONBOARDING-UX-SAFE: Tighter spacing on mobile */}
+                      <h3 className="text-2xl sm:text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300 ease-out break-words leading-tight line-clamp-3" style={{ hyphens: 'none', wordBreak: 'break-word' }}> {/* ONBOARDING-UX-SAFE: Responsive text + line clamp + smoother animation */}
                         {step.title}
                       </h3>
-                      <p className="text-base md:text-sm text-muted-foreground leading-relaxed px-2">
+                      <p className="text-sm sm:text-base md:text-sm text-muted-foreground leading-relaxed px-1 sm:px-2 line-clamp-4"> {/* ONBOARDING-UX-SAFE: Responsive text + padding + line clamp */}
                         {step.description}
                       </p>
                     </div>
                     
-                    <div className="mt-8"></div>
-                    <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center">{t('onboarding.tapForDetails')}</p>
+                    <div className="mt-4 sm:mt-8"></div> {/* ONBOARDING-UX-SAFE: Tighter spacing on mobile */}
+                    <p className="text-[10px] md:text-xs text-muted-foreground/60 text-center truncate">{t('onboarding.tapForDetails')}</p> {/* ONBOARDING-UX-SAFE: Truncate to prevent overflow */}
                   </div>
 
                   {/* Back Side */}
                   <div 
-                    className="absolute inset-0 w-full h-[420px] md:h-[560px] glass-card p-4 md:p-6 rounded-lg hover-glow flex flex-col overflow-y-auto"
+                    className="absolute inset-0 w-full h-[380px] sm:h-[420px] md:h-[560px] glass-card p-3 sm:p-4 md:p-6 rounded-lg hover-glow flex flex-col overflow-y-auto" /* ONBOARDING-UX-SAFE: Responsive height + padding */
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -182,15 +182,15 @@ export default function ClientOnboardingSection() {
                     }}
                   >
                     {/* Content */}
-                    <div className="flex-1 space-y-4">
-                      <p className="text-sm text-foreground/90 leading-relaxed break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>
+                    <div className="flex-1 space-y-3 sm:space-y-4"> {/* ONBOARDING-UX-SAFE: Tighter spacing on mobile */}
+                      <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}> {/* ONBOARDING-UX-SAFE: Smaller text on mobile */}
                         {step.detailedInfo}
                       </p>
-                      <div className="space-y-2">
-                        <ul className="text-xs text-muted-foreground space-y-2">
+                      <div className="space-y-1.5 sm:space-y-2"> {/* ONBOARDING-UX-SAFE: Tighter spacing on mobile */}
+                        <ul className="text-[11px] sm:text-xs text-muted-foreground space-y-1.5 sm:space-y-2"> {/* ONBOARDING-UX-SAFE: Smaller text + tighter spacing */}
                           {step.keyPoints.map((point: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2">
-                              <span className="text-primary mt-1">✓</span>
+                              <span className="text-primary mt-0.5 flex-shrink-0">✓</span> {/* ONBOARDING-UX-SAFE: Prevent checkmark from shrinking */}
                               <span className="break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{point}</span>
                             </li>
                           ))}
@@ -199,11 +199,11 @@ export default function ClientOnboardingSection() {
                     </div>
                     
                     {/* CTA Button */}
-                    <div className="mt-4 pt-3 border-t border-border/30">
+                    <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-border/30"> {/* ONBOARDING-UX-SAFE: Tighter spacing on mobile */}
                       <Button
                         variant="default"
                         size="sm"
-                        className="w-full break-words leading-tight"
+                        className="w-full break-words leading-tight min-h-[44px]" /* ONBOARDING-UX-SAFE: Minimum touch target */
                         style={{
                           fontSize: 'clamp(0.7rem, 2.5vw, 0.875rem)',
                           padding: 'clamp(0.4rem, 1.5vw, 0.65rem) clamp(0.6rem, 2.5vw, 1.25rem)',
@@ -225,7 +225,7 @@ export default function ClientOnboardingSection() {
 
                 {/* Timeline Dot - Center Aligned */}
                 <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
-                  <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center transition-transform duration-300 ease-out hover:scale-110"> {/* ONBOARDING-UX-SAFE: Add hover effect */}
                     <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
                   </div>
                 </div>
