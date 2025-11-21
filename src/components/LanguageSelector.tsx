@@ -13,6 +13,7 @@ import { PUBLIC_LANGUAGES, ADMIN_LANGUAGES, isRTLLanguage, type LanguageConfig }
 // LANG-RUNTIME-SAFE: Re-export for backwards compatibility
 export { PUBLIC_LANGUAGES, ADMIN_LANGUAGES };
 
+// ADMIN-LANG-SAFE: Allow restricting available languages (e.g., EN/PL only for admin)
 type LanguageSelectorProps = {
   allowedLanguages?: LanguageConfig[];
 };
@@ -23,6 +24,7 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
   const { lang } = useParams<{ lang: string }>();
   const [open, setOpen] = useState(false);
 
+  // ADMIN-LANG-SAFE: Use restricted language list if provided (e.g., EN/PL for admin)
   const languages = allowedLanguages ?? PUBLIC_LANGUAGES;
   const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
@@ -48,8 +50,15 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
     // LANG-RUNTIME-SAFE: Change i18n language
     await i18n.changeLanguage(code);
     
-    // LANG-RUNTIME-SAFE: Navigate to new language URL with replace to avoid back-button issues
+    // ADMIN-LANG-SAFE: Admin routes (/admin, /client) don't use lang prefix - skip navigation
     const currentPath = window.location.pathname;
+    if (currentPath.startsWith('/admin') || currentPath.startsWith('/client')) {
+      // Just change the language, no navigation needed for admin/client areas
+      setOpen(false);
+      return;
+    }
+    
+    // LANG-RUNTIME-SAFE: Navigate to new language URL with replace to avoid back-button issues
     const pathWithoutLang = currentPath.replace(/^\/(en|es|pt|de|fr|he|ru|uk|pl)(\/|$)/, '/');
     navigate(`/${code}${pathWithoutLang === '/' ? '' : pathWithoutLang}`, { replace: true });
     

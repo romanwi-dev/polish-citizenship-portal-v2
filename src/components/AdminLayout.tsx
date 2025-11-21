@@ -51,6 +51,8 @@ import { Collapsible } from "@/components/ui/collapsible";
 import { GlobalBackground } from "@/components/GlobalBackground";
 import { LanguageSelector, ADMIN_LANGUAGES } from "@/components/LanguageSelector";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+// ADMIN-LANG-SAFE: Import language guard to enforce EN/PL only
+import { useAdminLanguageGuard } from "@/hooks/useAdminLanguageGuard";
 
 const navSections = [
   {
@@ -230,6 +232,9 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+
+  // ADMIN-LANG-SAFE: Enforce EN/PL only in admin area
+  useAdminLanguageGuard();
 
   // Set sidebar to closed by default (icon-only view)
   React.useEffect(() => {
