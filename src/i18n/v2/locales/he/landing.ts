@@ -16,14 +16,38 @@ const landing = {
     }
   },
   timeline: {
-    title: "TODO: timeline title (he)",
-    subtitle: "TODO: timeline subtitle (he)"
+    badge: "התהליך",
+    title: "הדרך שלך לאזרחות פולנית",
+    subtitle: "מסע שקוף, צעד אחר צעד, מהערכת זכאות ועד לקבלת דרכון האיחוד האירופי.",
+    clickToSeeDetails: "לחץ לראות פרטים",
+    tapToSeeDetails: "הקש לראות פרטים",
+    openAccountCta: "פתח את החשבון שלך בפורטל שלנו"
   },
-  onboarding: {},
-  pricing: {},
-  testimonials: {},
-  faq: {},
-  contact: {},
+  onboarding: {
+    badge: "תחילת דרך",
+    title: "איך להתחיל את המסע שלך",
+    description: "שלבים פשוטים להתחלת בקשת האזרחות הפולנית שלך בביטחון."
+  },
+  pricing: {
+    badge: "תוכניות תמחור",
+    title: "תמחור שקוף וגמיש",
+    subtitle: "בחר את רמת השירות שמתאימה ללוח הזמנים והתקציב שלך.",
+    cta: "בקש הצעת מחיר מותאמת אישית"
+  },
+  testimonials: {
+    badge: "סיפורי הצלחה של לקוחות",
+    title: "מה הלקוחות שלנו אומרים",
+    subtitle: "סיפורים אמיתיים של אנשים שהשיגו בהצלחה אזרחות פולנית דרך השירותים שלנו."
+  },
+  faq: {
+    badge: "שאלות נפוצות",
+    title: "שאלות נפוצות",
+    searchPlaceholder: "חיפוש שאלות..."
+  },
+  contact: {
+    badge: "התחל היום",
+    title: "התחל את המסע שלך"
+  },
   footer: {
     description: "שירותים משפטיים מומחים לבקשות אזרחות פולנית. למעלה מ-20 שנות ניסיון בסיוע למשפחות להשיב את המורשת האירופית שלהם.",
     servicesTitle: "שירותים",

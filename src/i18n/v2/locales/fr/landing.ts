@@ -16,14 +16,38 @@ const landing = {
     }
   },
   timeline: {
-    title: "TODO: timeline title (fr)",
-    subtitle: "TODO: timeline subtitle (fr)"
+    badge: "Le Processus",
+    title: "Votre Parcours vers la Citoyenneté Polonaise",
+    subtitle: "Un parcours transparent, étape par étape, de l'évaluation d'éligibilité au passeport de l'UE.",
+    clickToSeeDetails: "Cliquez pour voir les détails",
+    tapToSeeDetails: "Appuyez pour voir les détails",
+    openAccountCta: "Ouvrez Votre Compte sur Notre Portail"
   },
-  onboarding: {},
-  pricing: {},
-  testimonials: {},
-  faq: {},
-  contact: {},
+  onboarding: {
+    badge: "Premiers Pas",
+    title: "Comment Commencer Votre Parcours",
+    description: "Étapes simples pour commencer votre demande de citoyenneté polonaise en toute confiance."
+  },
+  pricing: {
+    badge: "Plans Tarifaires",
+    title: "Tarification Transparente et Flexible",
+    subtitle: "Choisissez le niveau de service qui correspond à votre calendrier et à votre budget.",
+    cta: "Demander un Devis Personnalisé"
+  },
+  testimonials: {
+    badge: "Témoignages de Clients",
+    title: "Ce Que Disent Nos Clients",
+    subtitle: "Histoires réelles de personnes qui ont obtenu avec succès la citoyenneté polonaise grâce à nos services."
+  },
+  faq: {
+    badge: "FAQ",
+    title: "Questions Fréquemment Posées",
+    searchPlaceholder: "Rechercher des questions..."
+  },
+  contact: {
+    badge: "Commencez Aujourd'hui",
+    title: "Démarrez Votre Parcours"
+  },
   footer: {
     description: "Services juridiques spécialisés pour les demandes de citoyenneté polonaise. Plus de 20 ans d'expérience pour aider les familles à recouvrer leur héritage européen.",
     servicesTitle: "Services",
