@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +11,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Send } from "lucide-react";
 
 export default function RequestAccess() {
+  const { t } = useTranslation('portal');
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -23,7 +25,7 @@ export default function RequestAccess() {
     e.preventDefault();
     
     if (!formData.name || !formData.email) {
-      toast.error("Please fill in all required fields");
+      toast.error(t('requestAccess.fillRequired')); // Please fill in all required fields
       return;
     }
 
@@ -43,7 +45,7 @@ export default function RequestAccess() {
 
       if (error) throw error;
 
-      toast.success("Request submitted successfully! We'll review your application and contact you soon.");
+      toast.success(t('requestAccess.submitSuccess')); // Request submitted successfully! We'll review your application and contact you soon.
       
       // Reset form
       setFormData({
@@ -60,7 +62,7 @@ export default function RequestAccess() {
 
     } catch (error: any) {
       console.error("Error submitting request:", error);
-      toast.error("Failed to submit request. Please try again.");
+      toast.error(t('requestAccess.submitError')); // Failed to submit request. Please try again.
     } finally {
       setIsSubmitting(false);
     }
@@ -82,37 +84,37 @@ export default function RequestAccess() {
           className="mb-6"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Home
+          {t('requestAccess.backToHome')} {/* Back to Home */}
         </Button>
 
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle className="text-3xl">Request Portal Access</CardTitle>
+              <CardTitle className="text-3xl">{t('requestAccess.title')}</CardTitle> {/* Request Portal Access */}
               <CardDescription className="text-base">
-                Submit your information and we'll review your eligibility for Polish citizenship. 
-                After approval, you'll receive access to complete the full intake form.
+                {t('requestAccess.description')} 
+                {/* Submit your information and we'll review your eligibility for Polish citizenship. After approval, you'll receive access to complete the full intake form. */}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="name">
-                    Full Name <span className="text-destructive">*</span>
+                    {t('requestAccess.fullName')} <span className="text-destructive">*</span> {/* Full Name */}
                   </Label>
                   <Input
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Your full name"
+                    placeholder={t('requestAccess.fullNamePlaceholder')} // Your full name
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="email">
-                    Email Address <span className="text-destructive">*</span>
+                    {t('requestAccess.email')} <span className="text-destructive">*</span> {/* Email Address */}
                   </Label>
                   <Input
                     id="email"
@@ -120,14 +122,14 @@ export default function RequestAccess() {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="your.email@example.com"
+                    placeholder={t('requestAccess.emailPlaceholder')} // your.email@example.com
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="phone">
-                    Phone Number
+                    {t('requestAccess.phone')} {/* Phone Number */}
                   </Label>
                   <Input
                     id="phone"
@@ -135,31 +137,31 @@ export default function RequestAccess() {
                     type="tel"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+1 (555) 123-4567"
+                    placeholder={t('requestAccess.phonePlaceholder')} // +1 (555) 123-4567
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="message">
-                    Brief Background
+                    {t('requestAccess.background')} {/* Brief Background */}
                   </Label>
                   <Textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Tell us briefly about your Polish ancestry and why you're interested in citizenship..."
+                    placeholder={t('requestAccess.backgroundPlaceholder')} // Tell us briefly about your Polish ancestry and why you're interested in citizenship...
                     rows={6}
                   />
                 </div>
 
                 <div className="bg-muted/50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">What happens next?</h3>
+                  <h3 className="font-semibold mb-2">{t('requestAccess.whatHappensNext')}</h3> {/* What happens next? */}
                   <ol className="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
-                    <li>We'll review your submission within 2-3 business days</li>
-                    <li>If eligible, you'll receive an email with portal access</li>
-                    <li>Complete the full intake form with all required documents</li>
-                    <li>Our team will begin processing your citizenship application</li>
+                    <li>{t('requestAccess.step1')}</li> {/* We'll review your submission within 2-3 business days */}
+                    <li>{t('requestAccess.step2')}</li> {/* If eligible, you'll receive an email with portal access */}
+                    <li>{t('requestAccess.step3')}</li> {/* Complete the full intake form with all required documents */}
+                    <li>{t('requestAccess.step4')}</li> {/* Our team will begin processing your citizenship application */}
                   </ol>
                 </div>
 
@@ -170,11 +172,11 @@ export default function RequestAccess() {
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    <>Processing...</>
+                    <>{t('requestAccess.processing')}</>
                   ) : (
                     <>
                       <Send className="mr-2 h-4 w-4" />
-                      Submit Request
+                      {t('requestAccess.submitButton')}
                     </>
                   )}
                 </Button>
