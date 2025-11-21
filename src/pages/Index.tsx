@@ -25,10 +25,6 @@ const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
 const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
 const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
 
-// Import new homepage sections (not lazy - critical content)
-import HomeTimeline from "@/components/home/HomeTimeline";
-import OnboardingBenefits from "@/components/home/OnboardingBenefits";
-
 // Simple loading fallback
 const SectionLoader = () => (
   <div className="w-full h-32 flex items-center justify-center">
@@ -67,15 +63,13 @@ const Index = () => {
           <ServicesWeb3 />
         </Suspense>
         
-        {/* New English-only Timeline */}
-        <HomeTimeline />
-        
         <div className="my-16 md:my-24">
           <BudapestSkyline />
         </div>
         
-        {/* New English-only Onboarding Benefits */}
-        <OnboardingBenefits />
+        <Suspense fallback={<SectionLoader />}>
+          <TimelineProcessEnhanced />
+        </Suspense>
         
         <div className="my-16 md:my-24">
           <BerlinSkyline />
