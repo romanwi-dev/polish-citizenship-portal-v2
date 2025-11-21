@@ -1,31 +1,31 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
-const SUPPORTED_LANGUAGES = ['en', 'es', 'pt', 'de', 'fr', 'he', 'ru', 'uk'];
+// LANG-RUNTIME-SAFE: Import centralized language codes
+import { PUBLIC_LANGUAGE_CODES } from '@/constants/languages';
 
 export function LanguageRedirect() {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // Check if user has a stored language preference
+    // LANG-RUNTIME-SAFE: Check if user has a stored language preference
     const storedLang = localStorage.getItem('preferredLanguage');
     
-    if (storedLang && SUPPORTED_LANGUAGES.includes(storedLang)) {
-      // Use stored preference
+    if (storedLang && PUBLIC_LANGUAGE_CODES.includes(storedLang)) {
+      // LANG-RUNTIME-SAFE: Use stored preference with replace to avoid redirect loops
       navigate(`/${storedLang}`, { replace: true });
       return;
     }
 
-    // Detect browser language
+    // LANG-RUNTIME-SAFE: Detect browser language
     const browserLang = navigator.language.split('-')[0];
-    const detectedLang = SUPPORTED_LANGUAGES.includes(browserLang) ? browserLang : 'en';
+    const detectedLang = PUBLIC_LANGUAGE_CODES.includes(browserLang) ? browserLang : 'en';
     
-    // Store preference
+    // LANG-RUNTIME-SAFE: Store preference
     localStorage.setItem('preferredLanguage', detectedLang);
     
-    // Redirect to detected language
+    // LANG-RUNTIME-SAFE: Redirect to detected language with replace
     navigate(`/${detectedLang}`, { replace: true });
   }, [navigate]);
 
