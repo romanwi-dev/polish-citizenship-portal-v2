@@ -1,36 +1,25 @@
-import { lazy, Suspense } from "react";
 import { GlobalBackground } from "@/components/GlobalBackground";
 import { SkipToContent } from "@/components/ui/skip-to-content";
 import { SEOHead } from "@/components/SEOHead";
 import { StructuredData } from "@/components/StructuredData";
 
-// Eagerly load critical above-the-fold components for LCP
+// Direct imports for all components
 import Navigation from "@/components/Navigation";
 import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import { WarsawSkyline } from "@/components/WarsawSkyline";
 import { BudapestSkyline } from "@/components/BudapestSkyline";
 import { BerlinSkyline } from "@/components/BerlinSkyline";
-
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
-
-// Lazy load below-the-fold components for better code splitting
-const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
-const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
-const TimelineProcessEnhanced = lazy(() => import("@/components/TimelineProcessEnhanced"));
-const PricingSection = lazy(() => import("@/components/PricingSection"));
-const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
-const FAQSection = lazy(() => import("@/components/FAQSection"));
-const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
-const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
-const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
-
-// Simple loading fallback
-const SectionLoader = () => (
-  <div className="w-full h-32 flex items-center justify-center">
-    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-  </div>
-);
+import ServicesWeb3 from "@/components/ServicesWeb3";
+import ClientOnboardingSection from "@/components/ClientOnboardingSection";
+import TimelineProcessEnhanced from "@/components/TimelineProcessEnhanced";
+import PricingSection from "@/components/PricingSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import FAQSection from "@/components/FAQSection";
+import ContactFormWeb3 from "@/components/ContactFormWeb3";
+import FooterWeb3 from "@/components/FooterWeb3";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const Index = () => {
   return (
@@ -48,60 +37,56 @@ const Index = () => {
         {/* Unified Background - Single 3D Canvas for optimal performance */}
         <GlobalBackground />
         
+        {/* Main content container */}
         <div className="relative z-10">
+          {/* Navigation */}
           <Navigation />
           
-          {/* Main content wrapper with semantic HTML and ARIA */}
-          <main id="main-content" role="main" aria-label="Main content">
-          <HeroWavingFlags />
-          <div className="my-16 md:my-24">
-            <WarsawSkyline />
-          </div>
-          <AboutSection />
-        
-        <Suspense fallback={<SectionLoader />}>
-          <ServicesWeb3 />
-        </Suspense>
+          {/* Main content with semantic HTML for accessibility and SEO */}
+          <main 
+            id="main-content" 
+            role="main" 
+            aria-label="Main content"
+          >
+            {/* Hero Section - Critical above-the-fold content */}
+            <HeroWavingFlags />
+            
+            {/* About Section */}
+            <AboutSection />
+            
+            {/* AI Analysis Section */}
+            <AIAnalysisSection />
+            
+            {/* Services Section */}
+            <ServicesWeb3 />
+            
+            <div className="my-16 md:my-24">
+              <WarsawSkyline />
+            </div>
         
         <div className="my-16 md:my-24">
           <BudapestSkyline />
         </div>
         
-        <Suspense fallback={<SectionLoader />}>
-          <TimelineProcessEnhanced />
-        </Suspense>
+        <TimelineProcessEnhanced />
         
         <div className="my-16 md:my-24">
           <BerlinSkyline />
         </div>
         
-        <Suspense fallback={<SectionLoader />}>
-          <ClientOnboardingSection />
-        </Suspense>
+        <ClientOnboardingSection />
         
-        <Suspense fallback={<SectionLoader />}>
-          <PricingSection />
-        </Suspense>
+        <PricingSection />
         
-        <Suspense fallback={<SectionLoader />}>
-          <TestimonialsSection />
-        </Suspense>
+        <TestimonialsSection />
         
-        <Suspense fallback={<SectionLoader />}>
-          <FAQSection />
-        </Suspense>
+        <FAQSection />
         
-        <Suspense fallback={<SectionLoader />}>
-          <ContactFormWeb3 />
-        </Suspense>
+        <ContactFormWeb3 />
         
-        <Suspense fallback={<SectionLoader />}>
-          <FooterWeb3 />
-        </Suspense>
+        <FooterWeb3 />
         
-        <Suspense fallback={<SectionLoader />}>
-          <ScrollToTop />
-        </Suspense>
+        <ScrollToTop />
           </main>
         </div>
       </div>
