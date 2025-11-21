@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SocialShare } from "@/components/social/SocialShare";
 
 const FooterWeb3 = () => {
-  const { t, i18n } = useTranslation('landing');
+  const { t, i18n } = useTranslation();
   const tt = (key: string, fallback: string) => t(key, fallback);
   const dir = i18n.language === 'he' ? 'rtl' : 'ltr';
   
