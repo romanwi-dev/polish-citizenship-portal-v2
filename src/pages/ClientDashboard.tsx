@@ -166,16 +166,18 @@ export default function ClientDashboard() {
   return (
     <div className="min-h-screen">
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold">{caseData?.client_name}</h1>
-            <p className="text-sm text-muted-foreground">{t('dashboard.caseLabel')} {caseData?.client_code}</p> {/* Case: */}
+        {/* UX tweak: improved responsive layout for mobile screens */}
+        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl sm:text-2xl font-bold truncate">{caseData?.client_name}</h1>
+            <p className="text-sm text-muted-foreground break-words">{t('dashboard.caseLabel')} {caseData?.client_code}</p> {/* Case: */}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <LanguageSelector />
-            <Button variant="outline" onClick={handleLogout}>
+            <Button variant="outline" onClick={handleLogout} size="sm" className="sm:size-default">
               <LogOut className="mr-2 h-4 w-4" />
-              {t('dashboard.logout')} {/* Logout */}
+              <span className="hidden sm:inline">{t('dashboard.logout')}</span> {/* Logout */}
+              <span className="sm:hidden">Log out</span>
             </Button>
           </div>
         </div>
