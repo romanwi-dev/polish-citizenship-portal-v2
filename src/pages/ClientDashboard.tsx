@@ -254,21 +254,22 @@ export default function ClientDashboard() {
                   currentStage={caseData?.current_stage || "lead"}
                 />
                 {/* DASHBOARD-UX-SAFE: Improved grid layout for mobile - single column on small screens */}
+                {/* CLS FIX: min-h on cards prevents layout shift when data loads */}
                 <div className="mt-4 sm:mt-6 grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3">
-                  <Card>
+                  <Card className="min-h-[100px] sm:min-h-[120px]">
                     <CardContent className="pt-4 sm:pt-6">
                       <div className="text-xl sm:text-2xl font-bold">{caseData?.progress || 0}%</div>
                       <p className="text-xs sm:text-sm text-muted-foreground">{t('dashboard.overallProgress')}</p>
                     </CardContent>
                   </Card>
-                  <Card>
+                  <Card className="min-h-[100px] sm:min-h-[120px]">
                     <CardContent className="pt-4 sm:pt-6">
                       {/* PERF-MICRO-V2: Use memoized document count */}
                       <div className="text-xl sm:text-2xl font-bold">{documentCount}</div>
                       <p className="text-xs sm:text-sm text-muted-foreground">{t('dashboard.documents')}</p>
                     </CardContent>
                   </Card>
-                  <Card>
+                  <Card className="min-h-[100px] sm:min-h-[120px]">
                     <CardContent className="pt-4 sm:pt-6">
                       <Badge variant={caseData?.status === "active" ? "default" : "secondary"} className="text-xs">
                         {caseData?.status || t('dashboard.unknownStatus')}
@@ -287,7 +288,8 @@ export default function ClientDashboard() {
                 <CardTitle className="text-lg sm:text-xl">{t('dashboard.yourDocuments')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
+                {/* CLS FIX: min-h prevents shift when docs load/empty */}
+                <div className="space-y-3 min-h-[200px]">
                   {/* PERF-MICRO-V2: Use memoized count for conditional */}
                   {documentCount === 0 ? (
                     <p className="text-muted-foreground text-center py-8 text-sm">{t('dashboard.noDocuments')}</p>

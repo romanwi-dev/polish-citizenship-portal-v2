@@ -324,11 +324,16 @@ const ContactFormWeb3 = memo(() => {
               >
                 <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col md:flex-row items-center justify-center gap-8 relative overflow-hidden">
                   {/* Left Side - Image */}
-                  <div className="w-full md:w-1/2 h-1/2 md:h-full relative">
+                  {/* CLS FIX: Container with aspect ratio and explicit image dimensions */}
+                  <div className="w-full md:w-1/2 h-1/2 md:h-full relative" style={{ aspectRatio: '3/4' }}>
                     <img 
                       src={thankYou1} 
-                      alt="Professional with passport" 
+                      alt="Professional with passport"
+                      width="600"
+                      height="800"
                       className="w-full h-full object-cover rounded-lg"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   
