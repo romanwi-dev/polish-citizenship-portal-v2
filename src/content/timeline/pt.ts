@@ -93,7 +93,14 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Documentação e Tradução',
     priority: 'Construção de Base',
     detailedInfo: 'Todos os documentos em língua estrangeira passam por nosso serviço de tradução por IA para tradução inicial. Essas traduções por IA são então revisadas e certificadas por Tradutores Juramentados Poloneses que adicionam seus carimbos e assinaturas oficiais. Nosso Agente de Traduções dedicado supervisiona todo o processo.',
-    keyPoints: ['Tradução inicial alimentada por IA de todos os documentos estrangeiros', 'Certificação por Tradutores Juramentados Poloneses com carimbos oficiais', 'Agente de Traduções dedicado supervisiona todo o fluxo de trabalho', 'Verificação dupla independente de erros antes do arquivamento com autoridades']
+    keyPoints: [
+      'Tradução inicial alimentada por IA de todos os documentos estrangeiros',
+      'Certificação por Tradutores Juramentados Poloneses com carimbos oficiais',
+      'Agente de Traduções dedicado supervisiona todo o fluxo de trabalho',
+      'Verificação dupla independente de erros antes do arquivamento com autoridades'
+    ],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '9',
@@ -103,7 +110,14 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Documentação e Tradução',
     priority: 'Construção de Base',
     detailedInfo: 'Submetemos todos os documentos locais coletados (certidões de nascimento, casamento, atos de naturalização, registros militares) e documentos de arquivo poloneses às autoridades de cidadania. Também submetemos documentação detalhada de informações familiares. O objetivo é concluir este arquivamento de documentos antes de receber a resposta inicial em sua aplicação de cidadania sempre que possível.',
-    keyPoints: ['Submeter documentos de nascimento, casamento, naturalização e militares', 'Arquivar documentos de arquivo poloneses recuperados de pesquisas históricas', 'Fornecer documentação abrangente de árvore genealógica', 'Completar antes da resposta inicial para cronograma mais rápido quando possível']
+    keyPoints: [
+      'Submeter documentos de nascimento, casamento, naturalização e militares',
+      'Arquivar documentos de arquivo poloneses recuperados de pesquisas históricas',
+      'Fornecer documentação abrangente de árvore genealógica',
+      'Completar antes da resposta inicial para cronograma mais rápido quando possível'
+    ],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '10',
@@ -113,7 +127,14 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Processamento Governamental',
     priority: 'Marco Principal',
     detailedInfo: 'Nosso Agente de Atos Civis dedicado prepara aplicações para certidões de nascimento e casamento polonesas para você e seus ancestrais. Isso envolve processamento de pagamento para os escritórios de Registro Civil Polonês. Submetemos essas aplicações ao escritório de Registro Civil Polonês relevante (determinado pelo local de nascimento/casamento do ancestral).',
-    keyPoints: ['Preparação de aplicações de atos civis poloneses com agente dedicado', 'Processamento de pagamento para taxas do escritório de Registro Civil Polonês', 'Submissão ao escritório de Registro Civil apropriado baseado na localização', 'Receber certidões oficiais de nascimento/casamento polonesas para caso de cidadania']
+    keyPoints: [
+      'Preparação de aplicações de atos civis poloneses com agente dedicado',
+      'Processamento de pagamento para taxas do escritório de Registro Civil Polonês',
+      'Submissão ao escritório de Registro Civil apropriado baseado na localização',
+      'Receber certidões oficiais de nascimento/casamento polonesas para caso de cidadania'
+    ],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '11',
@@ -123,7 +144,14 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Processamento Governamental',
     priority: 'Marco Principal',
     detailedInfo: 'Você recebe a carta de RESPOSTA INICIAL do escritório do Voivoda da Mazóvia em seu caso de cidadania polonesa. Avaliamos as demandas e solicitações feitas pelo governo. Enviamos uma cópia da carta com explicações detalhadas do que significa. Se necessário, estendemos o prazo do procedimento de cidadania.',
-    keyPoints: ['Receber Resposta Inicial do escritório do Voivoda da Mazóvia', 'Avaliação detalhada de demandas e solicitações do governo', 'Estender prazo do procedimento de cidadania se tempo adicional for necessário', 'Reunir e submeter evidências adicionais conforme solicitado pelas autoridades']
+    keyPoints: [
+      'Receber Resposta Inicial do escritório do Voivoda da Mazóvia',
+      'Avaliação detalhada de demandas e solicitações do governo',
+      'Estender prazo do procedimento de cidadania se tempo adicional for necessário',
+      'Reunir e submeter evidências adicionais conforme solicitado pelas autoridades'
+    ],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '12',
@@ -133,7 +161,14 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Processamento Governamental',
     priority: 'Construção de Base',
     detailedInfo: 'Oferecemos nossos esquemas especializados de impulso para acelerar seu caso: PUSH (submissões escritas), NUDGE (ligações telefônicas para autoridades) e SIT-DOWN (reuniões presenciais em Varsóvia). Explicamos cada esquema em detalhes incluindo custos e impacto esperado. Após seu pagamento pelos esquemas escolhidos, os introduzimos na prática com as autoridades.',
-    keyPoints: ['Três opções de aceleração: PUSH, NUDGE, SIT-DOWN explicadas em detalhes', 'Preços transparentes e impacto esperado para cada esquema', 'Processamento de pagamento e implementação com autoridades', 'Múltiplas rodadas possíveis para manter o impulso do caso']
+    keyPoints: [
+      'Três opções de aceleração: PUSH, NUDGE, SIT-DOWN explicadas em detalhes',
+      'Preços transparentes e impacto esperado para cada esquema',
+      'Processamento de pagamento e implementação com autoridades',
+      'Múltiplas rodadas possíveis para manter o impulso do caso'
+    ],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '13',
@@ -143,7 +178,14 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Etapas Finais',
     priority: 'Marco Principal',
     detailedInfo: 'O governo polonês emite sua DECISÃO DE CONFIRMAÇÃO DE CIDADANIA final. Se positiva, enviamos uma cópia da decisão oficial por e-mail e a adicionamos à sua conta do portal. Se a decisão for negativa, imediatamente preparamos e arquivamos um recurso ao Ministério do Interior (dentro do prazo de 2 semanas exigido).',
-    keyPoints: ['Decisão final de cidadania recebida do governo polonês', 'Positiva: Confirmação oficial enviada por e-mail e adicionada ao portal', 'Negativa: Recurso preparado e arquivado dentro do prazo de 2 semanas', 'Processo de recurso: 6-12 meses adicionais com boa taxa de sucesso']
+    keyPoints: [
+      'Decisão final de cidadania recebida do governo polonês',
+      'Positiva: Confirmação oficial enviada por e-mail e adicionada ao portal',
+      'Negativa: Recurso preparado e arquivado dentro do prazo de 2 semanas',
+      'Processo de recurso: 6-12 meses adicionais com boa taxa de sucesso'
+    ],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '14',
@@ -153,7 +195,14 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Etapas Finais',
     priority: 'Marco Principal',
     detailedInfo: 'Preparamos todos os documentos necessários para você solicitar seu passaporte polonês no Consulado Polonês mais próximo. Após processar o PAGAMENTO FINAL por nossos serviços, enviamos todos os documentos preparados para você via FedEx. Também ajudamos você a agendar sua visita ao Consulado Polonês.',
-    keyPoints: ['Pacote completo de documentos preparado para aplicação de passaporte', 'Pagamento final processado e documentos enviados via FedEx', 'Visita ao consulado agendada no local mais próximo de você', 'Submeter aplicação e receber passaporte polonês dentro de 4-8 semanas']
+    keyPoints: [
+      'Pacote completo de documentos preparado para aplicação de passaporte',
+      'Pagamento final processado e documentos enviados via FedEx',
+      'Visita ao consulado agendada no local mais próximo de você',
+      'Submeter aplicação e receber passaporte polonês dentro de 4-8 semanas'
+    ],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   },
   {
     number: '15',
@@ -163,6 +212,13 @@ export const timelinePt: TimelineStep[] = [
     keyAction: 'Etapas Finais',
     priority: 'Construção de Base',
     detailedInfo: 'Oferecemos serviços jurídicos familiares estendidos para ajudar outros membros de sua família a obter cidadania polonesa. Com sua cidadania estabelecida, agora podemos ajudar seu cônjuge, filhos e outros familiares elegíveis a obter cidadania polonesa também, aproveitando seu caso bem-sucedido.',
-    keyPoints: ['Avaliação de elegibilidade de membros da família', 'Processo simplificado baseado em sua cidadania estabelecida', 'Assistência para cônjuge e filhos', 'Suporte estendido para familiares adicionais elegíveis']
+    keyPoints: [
+      'Avaliação de elegibilidade de membros da família',
+      'Processo simplificado baseado em sua cidadania estabelecida',
+      'Assistência para cônjuge e filhos',
+      'Suporte estendido para familiares adicionais elegíveis'
+    ],
+    clickToSeeDetails: 'Clique para ver detalhes',
+    openAccountLabel: 'Abrir Conta'
   }
 ];
