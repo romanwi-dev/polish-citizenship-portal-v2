@@ -77,7 +77,6 @@ const Navigation = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                dir={i18n.language === 'he' ? 'rtl' : 'ltr'}
                 className="w-[440px] p-0 bg-background dark:bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col" 
                 style={{
                   height: 'calc(100vh - 5rem)'
@@ -86,7 +85,7 @@ const Navigation = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
                 
-                <div className="relative flex flex-col h-full">
+                <div dir={i18n.language === 'he' ? 'rtl' : 'ltr'} className="relative flex flex-col h-full">
                   {/* Header */}
                   <div className="flex items-center gap-2 p-4 border-b border-border/50">
                     <Sparkles className="h-5 w-5 text-primary" />
