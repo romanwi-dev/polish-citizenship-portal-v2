@@ -7,16 +7,9 @@ const landing = {
     title: "TODO: timeline title (ru)",
     subtitle: "TODO: timeline subtitle (ru)"
   },
-  onboarding: {
-    step1KeyPoints: [],
-    step2KeyPoints: [],
-    step3KeyPoints: [],
-    step4KeyPoints: []
-  },
+  onboarding: {},
   pricing: {},
-  testimonials: {
-    reviews: []
-  },
+  testimonials: {},
   faq: {},
   contact: {}
 };

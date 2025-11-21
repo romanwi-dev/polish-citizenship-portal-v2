@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SocialShare } from "@/components/social/SocialShare";
 
 const FooterWeb3 = () => {
-  const { t } = useTranslation('landing');
+  const { t } = useTranslation();
   
   return (
     <footer className="relative py-20 -mt-2 pt-12">

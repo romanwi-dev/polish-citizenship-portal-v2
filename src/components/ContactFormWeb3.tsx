@@ -35,7 +35,7 @@ const contactSchema = z.object({
 });
 
 const ContactFormWeb3 = memo(() => {
-  const { t, i18n } = useTranslation('landing');
+  const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
   const isRTL = i18n.language === 'he';

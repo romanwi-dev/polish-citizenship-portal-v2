@@ -13,7 +13,7 @@ import agreementImg from "@/assets/onboarding-agreement.png";
 import initiationImg from "@/assets/onboarding-initiation.png";
 
 export default function ClientOnboardingSection() {
-  const { t } = useTranslation('landing');
+  const { t } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
 
   const toggleFlip = (stepNumber: string) => {

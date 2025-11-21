@@ -7,7 +7,7 @@ import { getStaggerDelay } from '@/config/animations';
 import { memo, useCallback } from 'react';
 
 export default memo(function TestimonialsSection() {
-  const { t } = useTranslation('landing');
+  const { t } = useTranslation();
   const testimonials = t('testimonials.reviews', { returnObjects: true }) as Array<{
     name: string;
     location: string;

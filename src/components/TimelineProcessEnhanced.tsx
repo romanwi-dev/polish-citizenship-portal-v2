@@ -30,7 +30,7 @@ const getStepSlug = (step: number): string => {
 };
 
 export default function TimelineProcessEnhanced() {
-  const { t, i18n } = useTranslation('landing');
+  const { t, i18n } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [firstCardAnimated, setFirstCardAnimated] = useState(false);
   const isMobile = useIsMobile();

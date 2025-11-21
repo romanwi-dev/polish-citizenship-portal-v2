@@ -13,7 +13,7 @@ import { Search, Users, Clock, DollarSign, FileText, AlertCircle, HelpCircle } f
 import { useTranslation } from 'react-i18next';
 
 const FAQSection = () => {
-  const { t, i18n } = useTranslation('landing');
+  const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
   const faqCategories = [

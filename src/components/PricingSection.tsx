@@ -34,7 +34,7 @@ const FlippablePricingCard = ({
   badge?: { text: string; colors: string };
   onClick: () => void;
 }) => {
-  const { t } = useTranslation('landing');
+  const { t } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
