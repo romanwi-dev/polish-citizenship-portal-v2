@@ -1,3 +1,9 @@
+// 🛑 AI & LOVABLE WARNING
+// This file belongs to the Polish Citizenship Portal LEGACY. 
+// DO NOT change layout, structure or delete content.
+// Only SMALL, EXPLICIT changes described in the current task are allowed.
+// i18n engine lives in src/i18n/** and MUST NOT be edited by AI.
+
 import { lazy, Suspense } from "react";
 import { GlobalBackground } from "@/components/GlobalBackground";
 import { SkipToContent } from "@/components/ui/skip-to-content";
