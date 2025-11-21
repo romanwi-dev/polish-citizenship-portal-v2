@@ -30,9 +30,9 @@ const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
 const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
 const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
 
-// Simple loading fallback
+// CLS FIX: Loader with min-height to prevent layout shift when sections load
 const SectionLoader = () => (
-  <div className="w-full h-32 flex items-center justify-center">
+  <div className="w-full flex items-center justify-center" style={{ minHeight: '400px' }}>
     <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
   </div>
 );

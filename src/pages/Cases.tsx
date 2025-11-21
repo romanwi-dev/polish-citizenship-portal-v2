@@ -233,7 +233,8 @@ const Cases = () => {
             </h1>
           </div>
 
-          <div className="max-w-7xl mx-auto mb-8">
+          {/* CLS FIX: min-h on search/filter container prevents shift */}
+          <div className="max-w-7xl mx-auto mb-8 min-h-[56px]">
             <div className="flex gap-2 items-center">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
