@@ -139,761 +139,131 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <AccessibilityProvider>
           <TooltipProvider>
-            <Suspense fallback={<PageLoader />}>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <AppRouter>
-          <Routes>
-            {/* Language redirect at root */}
-            <Route path="/" element={<LanguageRedirect />} />
-            
-            {/* Language-prefixed routes for homepage */}
-            <Route path="/:lang" element={
-              <LanguageSyncWrapper>
-                <Index />
-              </LanguageSyncWrapper>
-            } />
-            <Route path="/translation-demo" element={
-              <Suspense fallback={<PageLoader />}>
-                <TranslationDemo />
-              </Suspense>
-            } />
-            <Route path="/demos" element={
-              <Suspense fallback={<PageLoader />}>
-                <DemosHub />
-              </Suspense>
-            } />
-            <Route path="/hero-gallery" element={
-              <Suspense fallback={<PageLoader />}>
-                <HeroGallery />
-              </Suspense>
-            } />
-            <Route path="/demos/main-cta-reference" element={
-              <Suspense fallback={<PageLoader />}>
-                <MainCTAReference />
-              </Suspense>
-            } />
-            <Route path="/multi-step-demo" element={
-              <Suspense fallback={<PageLoader />}>
-                <MultiStepDemo />
-              </Suspense>
-            } />
-            <Route path="/font-styles-demo" element={
-              <Suspense fallback={<PageLoader />}>
-                <FontStylesDemo />
-              </Suspense>
-            } />
-            <Route path="/design-showcase" element={
-              <Suspense fallback={<PageLoader />}>
-                <DesignShowcase />
-              </Suspense>
-            } />
-            <Route path="/warsaw-demo" element={
-              <Suspense fallback={<PageLoader />}>
-                <WarsawDemo />
-              </Suspense>
-            } />
-            <Route path="/eu-celebration-demo" element={
-              <Suspense fallback={<PageLoader />}>
-                <EUCelebrationDemo />
-              </Suspense>
-            } />
-            <Route path="/thank-you-images-demo" element={
-              <Suspense fallback={<PageLoader />}>
-                <ThankYouImagesDemo />
-              </Suspense>
-            } />
-            <Route path="/contact-forms-demo" element={
-              <Suspense fallback={<PageLoader />}>
-                <ContactFormsDemo />
-              </Suspense>
-            } />
-            <Route path="/request-access" element={
-              <Suspense fallback={<PageLoader />}>
-                <RequestAccess />
-              </Suspense>
-            } />
-            <Route path="/login" element={
-              <Suspense fallback={<PageLoader />}>
-                <Login />
-              </Suspense>
-            } />
-            <Route path="/cases" element={
-              <Suspense fallback={<PageLoader />}>
-                <Cases />
-              </Suspense>
-            } />
-            
-            {/* Portal Entry Route */}
-            <Route 
-              path="/portal" 
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <PortalIndex />
-                </Suspense>
-              } 
-            />
-            
-            {/* Client Portal Routes */}
-            <Route 
-              path="/client/login"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <ClientLogin />
-                </Suspense>
-              } 
-            />
-            <Route
-              path="/client/dashboard/:caseId"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <ClientDashboard />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/client/intake/:token"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <ClientIntakeWizard />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/client/security"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <ClientSecurity />
-                </Suspense>
-              }
-            />
-          {/* Admin Routes - Lazy Loaded */}
-          <Route 
-            path="/admin" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Dashboard />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <CasesManagement />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/new" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <NewCase />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <CaseDetail />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id/poa-ocr"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <POAOCRPage />
-              </Suspense>
-            } 
-          />
-          <Route
-            path="/admin/cases/:id/additional-data"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <AdditionalData />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/intake-demo" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <IntakeDemo />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/form-scanner"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <FormScanner />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/qa-harness" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <QAHarness />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/dropbox-migration" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <DropboxMigration />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/dropbox" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <DropboxWorkflow />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id/authority-review" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <AuthorityReview />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/system-health" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <SystemHealth />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/system-overview" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <SystemOverview />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/pdf-inspector" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PDFInspector />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/pdf-field-inspector" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PDFFieldInspector />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/pdf-inspector-new" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PDFFieldInspectorNew />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/pdf-system-verification" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PDFSystemVerification />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/pdf-verification-test" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PDFVerificationTest />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/pdf-generation-test" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PDFGenerationTest />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/code-review" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <CodeReview />
-              </Suspense>
-            } 
-          />
-          <Route
-            path="/admin/zero-errors-checklist" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ZeroErrorsChecklist />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/upload-pdf-templates" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <UploadPDFTemplates />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/manual-pdf-upload" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ManualPDFUpload />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/citizenship-field-review" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <CitizenshipFieldReview />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/big-plan-tracker" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <BigPlanTracker />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/testing-dashboard" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <TestingDashboard />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/forms-demo" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <FormsDemo />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/documents-collection/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <DocumentsCollection />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/civil-acts" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PolishCivilActs />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/citizenship" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PolishCitizenship />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/passport" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PassportWorkflow />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/passport-legacy" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PolishPassport />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/archives-search"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ArchivesWorkflow />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/archives-search-legacy"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ArchivesSearch />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/translations" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <TranslationsWorkflow />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/translations-legacy" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Translations />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/translation-workflow-test" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <TranslationWorkflowTest />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/workflows" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <AllWorkflows />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/workflow-notifications" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <WorkflowNotifications />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/ai-workflow" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <AIWorkflow />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/extended-services" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ExtendedServices />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/ocr-review" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <OCRReview />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/ocr-processing-monitor" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <OCRProcessingMonitor />
-              </Suspense>
-            } 
-          />
-          {/* Removed unused 3D demo routes for performance */}
-          <Route 
-            path="/admin/security-audit"
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <SecurityAudit />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/researcher/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Researcher />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/translator/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Translator />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/writer/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Writer />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/designer/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Designer />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/supervisor/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <Supervisor />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/role-management" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <RoleManagement />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/ai-agent-diagnostics" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <AIAgentDiagnostics />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/documents/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <DocumentBrowser />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/pdf-demo" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PDFDemo />
-              </Suspense>
-            } 
-          />
-          
-          
-          {/* Form Routes */}
-          <Route 
-            path="/admin/intake/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <IntakeForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/family-tree/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <FamilyTreeForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/family-tree-view/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <FamilyTreePage />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/bloodline-dashboard/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <BloodlineDashboardPage />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/family-history/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <FamilyHistoryForm />
-              </Suspense>
-            }
-          />
-          <Route 
-            path="/admin/poa/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <POAForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/citizenship/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <CitizenshipForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/civil-registry/:id" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <CivilRegistryForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/skyline-bg-removal" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <SkylineBackgroundRemoval />
-              </Suspense>
-            } 
-          />
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AppRouter>
+                <Routes>
+                  {/* Language redirect at root */}
+                  <Route path="/" element={<LanguageRedirect />} />
+                  
+                  {/* Language-prefixed routes for homepage */}
+                  <Route path="/:lang" element={
+                    <LanguageSyncWrapper>
+                      <Index />
+                    </LanguageSyncWrapper>
+                  } />
+                  <Route path="/translation-demo" element={<TranslationDemo />} />
+                  <Route path="/demos" element={<DemosHub />} />
+                  <Route path="/hero-gallery" element={<HeroGallery />} />
+                  <Route path="/demos/main-cta-reference" element={<MainCTAReference />} />
+                  <Route path="/multi-step-demo" element={<MultiStepDemo />} />
+                  <Route path="/font-styles-demo" element={<FontStylesDemo />} />
+                  <Route path="/design-showcase" element={<DesignShowcase />} />
+                  <Route path="/warsaw-demo" element={<WarsawDemo />} />
+                  <Route path="/eu-celebration-demo" element={<EUCelebrationDemo />} />
+                  <Route path="/thank-you-images-demo" element={<ThankYouImagesDemo />} />
+                  <Route path="/contact-forms-demo" element={<ContactFormsDemo />} />
+                  <Route path="/request-access" element={<RequestAccess />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/cases" element={<Cases />} />
+                  
+                  {/* Portal Entry Route */}
+                  <Route path="/portal" element={<PortalIndex />} />
+                  
+                  {/* Client Portal Routes */}
+                  <Route path="/client/login" element={<ClientLogin />} />
+                  <Route path="/client/dashboard/:caseId" element={<ClientDashboard />} />
+                  <Route path="/client/intake/:token" element={<ClientIntakeWizard />} />
+                  <Route path="/client/security" element={<ClientSecurity />} />
 
-          {/* AI Agents Routes */}
-          <Route 
-            path="/admin/ai-agents" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <AIAgentsDashboard />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/agent-approvals" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <AgentApprovals />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/verify-changes" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <VerifyChanges />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/verification-results" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <VerificationResults />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/verification-b" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <VerificationB />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/phase-b" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <PhaseBVerification />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/mobile-guardian" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <MobileFirstGuardian />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/selftest" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <SelfTest />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/test-lock-pdf" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <TestLockPdf />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/poa-diagnostics" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <POADiagnostics />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/proven-patterns" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ProvenPatterns />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/abex-pdf-master" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ABEXPDFMaster />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/abex-ocr-master" 
-            element={
-              <Suspense fallback={<PageLoader />}>
-                <ABEXOCRMaster />
-              </Suspense>
-            } 
-          />
-          
-          {/* Catch-all */}
-          <Route path="*" element={
-            <Suspense fallback={<PageLoader />}>
-              <NotFound />
-            </Suspense>
-          } />
-          </Routes>
-                </AppRouter>
-          </BrowserRouter>
-            </Suspense>
+                  {/* Admin Routes */}
+                  <Route path="/admin" element={<Dashboard />} />
+                  <Route path="/admin/cases" element={<CasesManagement />} />
+                  <Route path="/admin/cases/new" element={<NewCase />} />
+                  <Route path="/admin/cases/:id" element={<CaseDetail />} />
+                  <Route path="/admin/cases/:id/poa-ocr" element={<POAOCRPage />} />
+                  <Route path="/admin/cases/:id/additional-data" element={<AdditionalData />} />
+                  <Route path="/admin/intake-demo" element={<IntakeDemo />} />
+                  <Route path="/admin/form-scanner" element={<FormScanner />} />
+                  <Route path="/admin/qa-harness" element={<QAHarness />} />
+                  <Route path="/admin/dropbox-migration" element={<DropboxMigration />} />
+                  <Route path="/admin/dropbox" element={<DropboxWorkflow />} />
+                  <Route path="/admin/cases/:id/authority-review" element={<AuthorityReview />} />
+                  <Route path="/admin/system-health" element={<SystemHealth />} />
+                  <Route path="/admin/system-overview" element={<SystemOverview />} />
+                  <Route path="/admin/pdf-inspector" element={<PDFInspector />} />
+                  <Route path="/admin/pdf-field-inspector" element={<PDFFieldInspector />} />
+                  <Route path="/pdf-inspector-new" element={<PDFFieldInspectorNew />} />
+                  <Route path="/admin/pdf-system-verification" element={<PDFSystemVerification />} />
+                  <Route path="/admin/pdf-verification-test" element={<PDFVerificationTest />} />
+                  <Route path="/admin/pdf-generation-test" element={<PDFGenerationTest />} />
+                  <Route path="/admin/code-review" element={<CodeReview />} />
+                  <Route path="/admin/zero-errors-checklist" element={<ZeroErrorsChecklist />} />
+                  <Route path="/admin/upload-pdf-templates" element={<UploadPDFTemplates />} />
+                  <Route path="/admin/manual-pdf-upload" element={<ManualPDFUpload />} />
+                  <Route path="/admin/citizenship-field-review" element={<CitizenshipFieldReview />} />
+                  <Route path="/admin/big-plan-tracker" element={<BigPlanTracker />} />
+                  <Route path="/admin/testing-dashboard" element={<TestingDashboard />} />
+                  <Route path="/admin/forms-demo" element={<FormsDemo />} />
+                  <Route path="/admin/documents-collection/:id" element={<DocumentsCollection />} />
+                  <Route path="/admin/civil-acts" element={<PolishCivilActs />} />
+                  <Route path="/admin/citizenship" element={<PolishCitizenship />} />
+                  <Route path="/admin/passport" element={<PassportWorkflow />} />
+                  <Route path="/admin/passport-legacy" element={<PolishPassport />} />
+                  <Route path="/admin/archives-search" element={<ArchivesWorkflow />} />
+                  <Route path="/admin/archives-search-legacy" element={<ArchivesSearch />} />
+                  <Route path="/admin/translations" element={<TranslationsWorkflow />} />
+                  <Route path="/admin/translations-legacy" element={<Translations />} />
+                  <Route path="/admin/translation-workflow-test" element={<TranslationWorkflowTest />} />
+                  <Route path="/admin/workflows" element={<AllWorkflows />} />
+                  <Route path="/admin/workflow-notifications" element={<WorkflowNotifications />} />
+                  <Route path="/admin/ai-workflow" element={<AIWorkflow />} />
+                  <Route path="/admin/extended-services" element={<ExtendedServices />} />
+                  <Route path="/admin/ocr-review" element={<OCRReview />} />
+                  <Route path="/admin/ocr-processing-monitor" element={<OCRProcessingMonitor />} />
+                  <Route path="/admin/security-audit" element={<SecurityAudit />} />
+                  <Route path="/admin/researcher/:id" element={<Researcher />} />
+                  <Route path="/admin/translator/:id" element={<Translator />} />
+                  <Route path="/admin/writer/:id" element={<Writer />} />
+                  <Route path="/admin/designer/:id" element={<Designer />} />
+                  <Route path="/admin/supervisor/:id" element={<Supervisor />} />
+                  <Route path="/admin/role-management" element={<RoleManagement />} />
+                  <Route path="/admin/ai-agent-diagnostics" element={<AIAgentDiagnostics />} />
+                  <Route path="/admin/documents/:id" element={<DocumentBrowser />} />
+                  <Route path="/admin/pdf-demo" element={<PDFDemo />} />
+                  
+                  {/* Form Routes */}
+                  <Route path="/admin/intake/:id" element={<IntakeForm />} />
+                  <Route path="/admin/family-tree/:id" element={<FamilyTreeForm />} />
+                  <Route path="/admin/family-tree-view/:id" element={<FamilyTreePage />} />
+                  <Route path="/admin/bloodline-dashboard/:id" element={<BloodlineDashboardPage />} />
+                  <Route path="/admin/family-history/:id" element={<FamilyHistoryForm />} />
+                  <Route path="/admin/poa/:id" element={<POAForm />} />
+                  <Route path="/admin/citizenship/:id" element={<CitizenshipForm />} />
+                  <Route path="/admin/civil-registry/:id" element={<CivilRegistryForm />} />
+                  <Route path="/admin/skyline-bg-removal" element={<SkylineBackgroundRemoval />} />
+
+                  {/* AI Agents Routes */}
+                  <Route path="/admin/ai-agents" element={<AIAgentsDashboard />} />
+                  <Route path="/admin/agent-approvals" element={<AgentApprovals />} />
+                  <Route path="/admin/verify-changes" element={<VerifyChanges />} />
+                  <Route path="/admin/verification-results" element={<VerificationResults />} />
+                  <Route path="/verification-b" element={<VerificationB />} />
+                  <Route path="/phase-b" element={<PhaseBVerification />} />
+                  <Route path="/mobile-guardian" element={<MobileFirstGuardian />} />
+                  <Route path="/admin/selftest" element={<SelfTest />} />
+                  <Route path="/test-lock-pdf" element={<TestLockPdf />} />
+                  <Route path="/admin/poa-diagnostics" element={<POADiagnostics />} />
+                  <Route path="/proven-patterns" element={<ProvenPatterns />} />
+                  <Route path="/abex-pdf" element={<ABEXPDFMaster />} />
+                  <Route path="/abex-ocr" element={<ABEXOCRMaster />} />
+                  
+                  {/* Catch-all */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AppRouter>
+            </BrowserRouter>
           </TooltipProvider>
         </AccessibilityProvider>
       </QueryClientProvider>
