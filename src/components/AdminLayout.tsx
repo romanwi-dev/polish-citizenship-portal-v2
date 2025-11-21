@@ -1,3 +1,5 @@
+// NOTE: Admin backend is EN/PL only by project policy.
+// Currently uses raw English strings. To be localized in future if needed.
 import { ReactNode } from "react";
 import * as React from "react";
 import {
