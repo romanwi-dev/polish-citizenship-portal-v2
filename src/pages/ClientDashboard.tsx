@@ -97,7 +97,7 @@ export default function ClientDashboard() {
     };
   }, [caseId, navigate]);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
     try {
       // Load case data
       const { data: caseInfo } = await supabase
@@ -141,13 +141,13 @@ export default function ClientDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [caseId, t]);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     toast.success(t('dashboard.logoutSuccess')); // Logged out successfully
     navigate("/client/login");
-  };
+  }, [t, navigate]);
 
   if (loading) {
     return (

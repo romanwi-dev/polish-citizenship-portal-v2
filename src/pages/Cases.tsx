@@ -93,7 +93,7 @@ const Cases = () => {
     return STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.other;
   };
 
-  const handleUpdateStatus = async (caseId: string, status: string) => {
+  const handleUpdateStatus = useCallback(async (caseId: string, status: string) => {
     try {
       await updateStatusMutation.mutateAsync({ caseId, status });
       
@@ -115,21 +115,21 @@ const Cases = () => {
         variant: "destructive",
       });
     }
-  };
+  }, [updateStatusMutation, toast]);
 
-  const handleDeleteCase = (caseId: string) => {
+  const handleDeleteCase = useCallback((caseId: string) => {
     deleteMutation.mutate(caseId);
-  };
+  }, [deleteMutation]);
 
-  const handleEdit = (clientCase: any) => {
+  const handleEdit = useCallback((clientCase: any) => {
     setEditCase(clientCase);
-  };
+  }, []);
 
-  // Calculate case age in days
-  const getCaseAge = (startDate: string | null) => {
+  // Calculate case age in days - memoized
+  const getCaseAge = useCallback((startDate: string | null) => {
     if (!startDate) return 0;
     return Math.floor((Date.now() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24));
-  };
+  }, []);
 
   // Filter cases based on all criteria
   const filteredCases = useMemo(() => {
@@ -195,14 +195,14 @@ const Cases = () => {
     return count;
   }, [statusFilter, processingModeFilter, ageFilter, scoreFilter, progressFilter]);
 
-  // Clear all filters
-  const handleClearFilters = () => {
+  // Clear all filters - memoized
+  const handleClearFilters = useCallback(() => {
     setStatusFilter("all");
     setProcessingModeFilter("all");
     setScoreFilter([0, 100]);
     setAgeFilter("all");
     setProgressFilter([0, 100]);
-  };
+  }, []);
 
   if (authLoading) {
     return (
