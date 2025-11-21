@@ -7,8 +7,7 @@ const landing = {
   hero: {
     badge: "Soluções de Cidadania com IA",
     title: "Desbloqueie Sua <br/>Herança Polonesa",
-    subtitle1: "Orientação especializada em cada etapa da sua jornada de cidadania polonesa. Desde avaliação de elegibilidade até entrega do passaporte, cuidamos das complexidades enquanto você foca no seu futuro.",
-    subtitle2: "Junte-se a milhares de clientes satisfeitos que recuperaram sua herança europeia com nosso processo comprovado.",
+    subtitle: "Orientação especializada em cada etapa da sua jornada de cidadania polonesa. Desde avaliação de elegibilidade até entrega do passaporte, cuidamos das complexidades enquanto você foca no seu futuro.",
     cta: "Fazer Teste de Cidadania Polonesa",
     stats: {
       experience: "Anos de Experiência",

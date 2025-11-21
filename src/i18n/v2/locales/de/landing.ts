@@ -7,8 +7,7 @@ const landing = {
   hero: {
     badge: "KI-gestützte Staatsbürgerschaftslösungen",
     title: "Entdecken Sie Ihr <br/>Polnisches Erbe",
-    subtitle1: "Fachkundige Begleitung bei jedem Schritt Ihrer polnischen Staatsbürgerschaftsreise. Von der Eignungsprüfung bis zur Passabholung kümmern wir uns um die Komplexität, während Sie sich auf Ihre Zukunft konzentrieren.",
-    subtitle2: "Schließen Sie sich Tausenden zufriedener Kunden an, die mit unserem bewährten Prozess ihr europäisches Erbe zurückgewonnen haben.",
+    subtitle: "Fachkundige Begleitung bei jedem Schritt Ihrer polnischen Staatsbürgerschaftsreise. Von der Eignungsprüfung bis zur Passabholung kümmern wir uns um die Komplexität, während Sie sich auf Ihre Zukunft konzentrieren.",
     cta: "Polnischen Staatsbürgerschaftstest Machen",
     stats: {
       experience: "Jahre Erfahrung",
