@@ -5,9 +5,16 @@ const landing = {
     signOut: "Se Déconnecter"
   },
   hero: {
-    title: "TODO: landing hero title (fr)",
-    subtitle: "TODO: landing hero subtitle (fr)",
-    cta: "Passer le Test de Citoyenneté Polonaise"
+    badge: "Solutions de Citoyenneté avec IA",
+    title: "Découvrez Votre <br/>Héritage Polonais",
+    subtitle1: "Conseils d'experts à chaque étape de votre parcours de citoyenneté polonaise. De l'évaluation d'éligibilité à la livraison du passeport, nous gérons les complexités pendant que vous vous concentrez sur votre avenir.",
+    subtitle2: "Rejoignez des milliers de clients satisfaits qui ont revendiqué leur héritage européen grâce à notre processus éprouvé.",
+    cta: "Passer le Test de Citoyenneté Polonaise",
+    stats: {
+      experience: "Années d'Expérience",
+      cases: "Cas Réussis",
+      success: "Taux de Réussite"
+    }
   },
   timeline: {
     title: "TODO: timeline title (fr)",

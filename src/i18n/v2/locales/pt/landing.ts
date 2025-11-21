@@ -5,9 +5,16 @@ const landing = {
     signOut: "Sair"
   },
   hero: {
-    title: "TODO: landing hero title (pt)",
-    subtitle: "TODO: landing hero subtitle (pt)",
-    cta: "Fazer Teste de Cidadania Polonesa"
+    badge: "Soluções de Cidadania com IA",
+    title: "Desbloqueie Sua <br/>Herança Polonesa",
+    subtitle1: "Orientação especializada em cada etapa da sua jornada de cidadania polonesa. Desde avaliação de elegibilidade até entrega do passaporte, cuidamos das complexidades enquanto você foca no seu futuro.",
+    subtitle2: "Junte-se a milhares de clientes satisfeitos que recuperaram sua herança europeia com nosso processo comprovado.",
+    cta: "Fazer Teste de Cidadania Polonesa",
+    stats: {
+      experience: "Anos de Experiência",
+      cases: "Casos Bem-sucedidos",
+      success: "Taxa de Sucesso"
+    }
   },
   timeline: {
     title: "TODO: timeline title (pt)",

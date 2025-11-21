@@ -14,13 +14,12 @@ import { StructuredData } from "@/components/StructuredData";
 import Navigation from "@/components/Navigation";
 import { HeroWavingFlags } from "@/components/heroes/premium/HeroWavingFlags";
 import { WarsawSkyline } from "@/components/WarsawSkyline";
-import { BudapestSkyline } from "@/components/BudapestSkyline";
-import { BerlinSkyline } from "@/components/BerlinSkyline";
 
 import AboutSection from "@/components/AboutSection";
-import AIAnalysisSection from "@/components/AIAnalysisSection";
 
-// Lazy load below-the-fold components for better code splitting
+// Lazy load below-the-fold components for better code splitting and LCP optimization
+const BudapestSkyline = lazy(() => import("@/components/BudapestSkyline"));
+const BerlinSkyline = lazy(() => import("@/components/BerlinSkyline"));
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
 const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
 const TimelineProcessEnhanced = lazy(() => import("@/components/TimelineProcessEnhanced"));
@@ -70,7 +69,9 @@ const Index = () => {
         </Suspense>
         
         <div className="my-16 md:my-24">
-          <BudapestSkyline />
+          <Suspense fallback={<SectionLoader />}>
+            <BudapestSkyline />
+          </Suspense>
         </div>
         
         <Suspense fallback={<SectionLoader />}>
@@ -78,7 +79,9 @@ const Index = () => {
         </Suspense>
         
         <div className="my-16 md:my-24">
-          <BerlinSkyline />
+          <Suspense fallback={<SectionLoader />}>
+            <BerlinSkyline />
+          </Suspense>
         </div>
         
         <Suspense fallback={<SectionLoader />}>

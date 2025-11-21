@@ -5,9 +5,16 @@ const landing = {
     signOut: "Cerrar Sesión"
   },
   hero: {
-    title: "TODO: landing hero title (es)",
-    subtitle: "TODO: landing hero subtitle (es)",
-    cta: "Realizar Test de Ciudadanía Polaca"
+    badge: "Soluciones de Ciudadanía con IA",
+    title: "Desbloquea Tu <br/>Herencia Polaca",
+    subtitle1: "Orientación experta en cada paso de tu viaje hacia la ciudadanía polaca. Desde la evaluación de elegibilidad hasta la entrega del pasaporte, manejamos las complejidades mientras tú te enfocas en tu futuro.",
+    subtitle2: "Únete a miles de clientes satisfechos que han reclamado su herencia europea con nuestro proceso comprobado.",
+    cta: "Realizar Test de Ciudadanía Polaca",
+    stats: {
+      experience: "Años de Experiencia",
+      cases: "Casos Exitosos",
+      success: "Tasa de Éxito"
+    }
   },
   timeline: {
     title: "TODO: timeline title (es)",
