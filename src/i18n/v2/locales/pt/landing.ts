@@ -16,14 +16,38 @@ const landing = {
     }
   },
   timeline: {
-    title: "TODO: timeline title (pt)",
-    subtitle: "TODO: timeline subtitle (pt)"
+    badge: "O Processo",
+    title: "Seu Caminho para a Cidadania Polonesa",
+    subtitle: "Uma jornada transparente, passo a passo, desde a verificação de elegibilidade até o passaporte da UE.",
+    clickToSeeDetails: "Clique para ver detalhes",
+    tapToSeeDetails: "Toque para ver detalhes",
+    openAccountCta: "Abra Sua Conta em Nosso Portal"
   },
-  onboarding: {},
-  pricing: {},
-  testimonials: {},
-  faq: {},
-  contact: {},
+  onboarding: {
+    badge: "Começando",
+    title: "Como Iniciar Sua Jornada",
+    description: "Passos simples para começar sua candidatura de cidadania polonesa com confiança."
+  },
+  pricing: {
+    badge: "Planos de Preços",
+    title: "Preços Transparentes e Flexíveis",
+    subtitle: "Escolha o nível de serviço que se adequa ao seu cronograma e orçamento.",
+    cta: "Solicitar Cotação Personalizada"
+  },
+  testimonials: {
+    badge: "Histórias de Sucesso de Clientes",
+    title: "O Que Nossos Clientes Dizem",
+    subtitle: "Histórias reais de pessoas que obtiveram com sucesso a cidadania polonesa através de nossos serviços."
+  },
+  faq: {
+    badge: "Perguntas Frequentes",
+    title: "Perguntas Frequentes",
+    searchPlaceholder: "Buscar perguntas..."
+  },
+  contact: {
+    badge: "Comece Hoje",
+    title: "Inicie Sua Jornada"
+  },
   footer: {
     description: "Serviços jurídicos especializados para pedidos de cidadania polonesa. Mais de 20 anos de experiência ajudando famílias a recuperar sua herança europeia.",
     servicesTitle: "Serviços",
