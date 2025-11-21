@@ -13,7 +13,7 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 import { SocialShare } from '@/components/social/SocialShare';
 
 export const MobileNavigationSheet = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing');
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { user, signOut } = useAuth(false);
@@ -53,7 +53,7 @@ export const MobileNavigationSheet = () => {
           {/* Header */}
           <div className="flex items-center gap-2 p-4 border-b border-border/50">
             <Sparkles className="h-5 w-5 text-primary" />
-            <span className="font-semibold text-lg">Navigation</span>
+            <span className="font-semibold text-lg">{t('nav.navigation')}</span> {/* Navigation */}
           </div>
 
             {/* Scrollable Content */}
@@ -114,12 +114,12 @@ export const MobileNavigationSheet = () => {
                   {user ? (
                     <>
                       <LogOut className="mr-2 h-4 w-4" />
-                      Sign Out
+                      {t('nav.signOut')} {/* Sign Out */}
                     </>
                   ) : (
                     <>
                       <LogIn className="mr-2 h-4 w-4" />
-                      Register / Login
+                      {t('nav.register')} {/* Register / Login */}
                     </>
                   )}
                 </Button>
