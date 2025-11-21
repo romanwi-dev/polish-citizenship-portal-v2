@@ -196,7 +196,7 @@ const TimelineProcess = () => {
                     // V4 timeline micro-tuning — safe
                     duration: 0.8, 
                     delay: index * 0.08, 
-                    ease: [0.16, 1, 0.3, 1]
+                    ease: [0.25, 0.46, 0.45, 0.94]
                   }}
                   viewport={{ once: true, margin: "-50px" }}
                 >

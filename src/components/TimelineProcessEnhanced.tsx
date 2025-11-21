@@ -128,7 +128,7 @@ export default function TimelineProcessEnhanced() {
               transition={{ 
                 duration: 0.8, 
                 delay: index * 0.08, 
-                ease: [0.16, 1, 0.3, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
               viewport={{ once: true, margin: "-150px" }}
               className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
@@ -241,7 +241,7 @@ export default function TimelineProcessEnhanced() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-150px" }}
-                transition={{ duration: 0.6, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
                   <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
