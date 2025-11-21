@@ -82,7 +82,9 @@ export const timelineDe: TimelineStep[] = [
       'KI-Agent erstellt alle Dokumente einschließlich Staatsbürgerschaftsantrag',
       'Generierte Dokumente vor Einreichung überprüfen und genehmigen',
       'Offizieller Antrag eingereicht, Kopie an Sie gesendet und zum Portal hinzugefügt'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '6',
@@ -97,7 +99,9 @@ export const timelineDe: TimelineStep[] = [
       'Dokumente sammeln: Geburts-/Heiratsurkunden, Einbürgerung, Militärunterlagen',
       'Partnerunterstützung verfügbar für schwer zu beschaffende Dokumente',
       'Expertenprüfung und Auswahl von Dokumenten für Übersetzung/Einreichung'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '7',
@@ -112,7 +116,9 @@ export const timelineDe: TimelineStep[] = [
       'Internationale Archivsuchen in relevanten Ländern',
       'Suche nach Familienbesitz nach alten polnischen Dokumenten',
       'Partnerunterstützte Dokumentenabruf und Expertenauswahl für Einreichung'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '8',
@@ -127,7 +133,9 @@ export const timelineDe: TimelineStep[] = [
       'Zertifizierung durch polnische vereidigte Übersetzer mit offiziellen Stempeln',
       'Dedizierter Übersetzungsagent überwacht gesamten Workflow',
       'Unabhängige Fehlerprüfung vor Einreichung bei Behörden'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '9',
@@ -142,7 +150,9 @@ export const timelineDe: TimelineStep[] = [
       'Polnische Archivdokumente aus historischen Suchen einreichen',
       'Umfassenden Stammbaum und genealogische Dokumentation bereitstellen',
       'Vor erster Antwort abschließen für schnelleren Zeitplan wenn möglich'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '10',
@@ -157,7 +167,9 @@ export const timelineDe: TimelineStep[] = [
       'Zahlungsabwicklung für polnische Standesamtsgebühren',
       'Einreichung beim entsprechenden Standesamt basierend auf Ort',
       'Offizielle polnische Geburts-/Heiratsurkunden für Staatsbürgerschaftsfall erhalten'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '11',
@@ -172,7 +184,9 @@ export const timelineDe: TimelineStep[] = [
       'Detaillierte Bewertung der Regierungsforderungen und -anfragen',
       'Staatsbürgerschaftsverfahrensfrist verlängern, wenn zusätzliche Zeit benötigt wird',
       'Zusätzliche Beweise gemäß Behördenanforderung sammeln und einreichen'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '12',
@@ -187,7 +201,9 @@ export const timelineDe: TimelineStep[] = [
       'Transparente Preise und erwartete Auswirkung für jedes Schema',
       'Zahlungsabwicklung und Umsetzung mit Behörden',
       'Mehrere Runden möglich, um Falldynamik aufrechtzuerhalten'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '13',
@@ -202,7 +218,9 @@ export const timelineDe: TimelineStep[] = [
       'Positiv: Offizielle Bestätigung per E-Mail und zum Portal hinzugefügt',
       'Negativ: Berufung innerhalb 2-Wochen-Frist vorbereitet und eingereicht',
       'Berufungsverfahren: 6-12 zusätzliche Monate mit guter Erfolgsquote'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '14',
@@ -217,7 +235,9 @@ export const timelineDe: TimelineStep[] = [
       'Endzahlung verarbeitet und Dokumente per FedEx gesendet',
       'Konsulatsbesuch am nächstgelegenen Ort vereinbart',
       'Antrag einreichen und polnischen Reisepass innerhalb 4-8 Wochen erhalten'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   },
   {
     number: '15',
@@ -232,6 +252,8 @@ export const timelineDe: TimelineStep[] = [
       'Kinder und Nachkommen qualifizieren sich automatisch',
       'Vollständige Pass- und Dokumentationsunterstützung',
       'Generationsübergreifende Vorteile: Polnische & EU-Staatsbürgerschaft für gesamte Familienlinie'
-    ]
+    ],
+    clickToSeeDetails: 'Klicken für Details',
+    openAccountLabel: 'Konto Eröffnen'
   }
 ];

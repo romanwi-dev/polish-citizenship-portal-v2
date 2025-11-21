@@ -87,151 +87,171 @@ export const timelineEs: TimelineStep[] = [
   {
     number: '6',
     title: 'DOCUMENTOS LOCALES',
-    description: 'Aclaración de documentos, recopilación de documentos locales y colaboración con socios para la recolección',
+    description: 'Aclaración de documentos, recopilación de documentos locales y colaboración con socios para la recopilación',
     duration: 'Semana 4-8',
     keyAction: 'Documentación y Traducción',
-    priority: 'Construcción de Fundamento',
-    detailedInfo: 'Aclaramos qué documentos específicos se necesitan de sus jurisdicciones locales (certificados de nacimiento, certificados de matrimonio, registros de naturalización, documentos militares, etc.). Usted reúne estos documentos de su país de residencia o nacimiento. Cuando sea necesario, lo conectamos con nuestros socios locales de confianza que pueden ayudar a recopilar documentos en su nombre. Todos los documentos son luego examinados para seleccionar cuáles necesitan traducción y presentación.',
+    priority: 'Construcción de Fundamentos',
+    detailedInfo: 'Aclaramos qué documentos específicos se necesitan de tus jurisdicciones locales (certificados de nacimiento, certificados de matrimonio, registros de naturalización, registros militares, etc.). Tú recopilas estos documentos de tu país de residencia o nacimiento. Cuando sea necesario, te conectamos con nuestros socios locales de confianza que pueden ayudar a recopilar documentos en tu nombre. Todos los documentos se examinan para seleccionar aquellos que necesitan traducción y presentación.',
     keyPoints: [
-      'Aclaración de documentos locales específicos necesarios para su caso',
-      'Reúna documentos: certificados de nacimiento/matrimonio, naturalización, registros militares',
+      'Aclaración de documentos locales específicos necesarios para tu caso',
+      'Recopilar documentos: certificados de nacimiento/matrimonio, naturalización, registros militares',
       'Asistencia de socios disponible para documentos difíciles de obtener',
       'Examen experto y selección de documentos para traducción/presentación'
-    ]
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '7',
     title: 'DOCUMENTOS POLACOS',
-    description: 'Búsqueda en archivos polacos, búsqueda internacional y procesamiento de socios para documentos archivados',
+    description: 'Búsqueda en archivos polacos, búsqueda internacional y procesamiento de socios para documentos de archivo',
     duration: 'Semana 4-12',
     keyAction: 'Documentación y Traducción',
-    priority: 'Construcción de Fundamento',
-    detailedInfo: 'Realizamos búsquedas exhaustivas en los archivos polacos de documentos históricos de sus ancestros. Esto incluye búsquedas de archivos internacionales en múltiples países donde podrían existir registros polacos. También ayudamos a buscar posesiones familiares en busca de cualquier documento polaco antiguo. Nuestros socios de confianza procesan cada solicitud de búsqueda. Los documentos archivados recuperados son examinados y los más relevantes son seleccionados para posible traducción y presentación en su caso.',
+    priority: 'Construcción de Fundamentos',
+    detailedInfo: 'Realizamos búsquedas exhaustivas en archivos polacos para documentos históricos de tus antepasados. Esto incluye búsquedas de archivos internacionales en múltiples países donde pueden existir registros polacos. También ayudamos a buscar en posesiones familiares cualquier documento polaco antiguo. Nuestros socios de confianza procesan cada búsqueda de búsqueda. Los documentos de archivo recuperados se examinan y se seleccionan los más relevantes para posible traducción y presentación en tu caso.',
     keyPoints: [
-      'Búsqueda integral de archivos polacos para documentos de ancestros',
+      'Búsqueda completa en archivos polacos de documentos ancestrales',
       'Búsquedas de archivos internacionales en países relevantes',
-      'Búsquedas de posesiones familiares en busca de documentos polacos antiguos',
-      'Recuperación de documentos asistida por socios y selección experta para presentación'
-    ]
+      'Búsqueda en posesiones familiares de documentos polacos antiguos',
+      'Recuperación de documentos con asistencia de socios y selección experta para presentación'
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '8',
     title: 'TRADUCCIONES',
-    description: 'Servicio de traducción AI, certificación de traductor jurado certificado y supervisión del agente de traducción',
+    description: 'Servicio de traducción AI, certificación de traductor jurado y supervisión del agente de traducciones',
     duration: 'Semana 8-16',
     keyAction: 'Documentación y Traducción',
-    priority: 'Construcción de Fundamento',
-    detailedInfo: 'Todos los documentos en idiomas extranjeros pasan por nuestro servicio de traducción AI para la traducción inicial. Estas traducciones AI son luego revisadas y certificadas por Traductores Jurados Certificados Polacos que agregan sus sellos oficiales y firmas. Nuestro Agente de Traducciones dedicado supervisa todo el proceso. Un agente independiente de control de calidad verifica todas las traducciones en busca de errores antes de que se presenten a las autoridades.',
+    priority: 'Construcción de Fundamentos',
+    detailedInfo: 'Todos los documentos en idioma extranjero pasan por nuestro servicio de traducción AI para la traducción inicial. Estas traducciones AI son luego examinadas y certificadas por traductores jurados polacos que agregan sus sellos oficiales y firmas. Nuestro agente de traducciones dedicado supervisa todo el proceso. Un agente de garantía de calidad independiente verifica dos veces todas las traducciones en busca de errores antes de que se presenten a las autoridades.',
     keyPoints: [
       'Traducción inicial impulsada por AI de todos los documentos extranjeros',
-      'Certificación por Traductores Jurados Certificados Polacos con sellos oficiales',
-      'Agente de Traducciones dedicado supervisa todo el flujo de trabajo',
-      'Verificación independiente de errores antes de presentar a las autoridades'
-    ]
+      'Certificación por traductores jurados polacos con sellos oficiales',
+      'Agente de traducciones dedicado supervisa todo el flujo de trabajo',
+      'Doble verificación independiente de errores antes de presentar a las autoridades'
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '9',
     title: 'PRESENTACIÓN DE DOCUMENTOS',
-    description: 'Envío de documentos locales y polacos antes de la respuesta inicial cuando sea posible',
+    description: 'Presentación de documentos locales y polacos antes de recibir respuesta inicial cuando sea posible',
     duration: 'Semana 12-20',
     keyAction: 'Documentación y Traducción',
-    priority: 'Construcción de Fundamento',
-    detailedInfo: 'Enviamos todos los documentos locales recopilados (certificados de nacimiento, certificados de matrimonio, actas de naturalización, registros militares) y documentos archivados polacos a las autoridades de ciudadanía. También enviamos documentación detallada de información familiar. El objetivo es completar esta presentación de documentos antes de recibir la respuesta inicial en su solicitud de ciudadanía cuando sea posible, lo que ayuda a acelerar el cronograma general.',
+    priority: 'Construcción de Fundamentos',
+    detailedInfo: 'Presentamos todos los documentos locales recopilados (certificados de nacimiento, certificados de matrimonio, actas de naturalización, registros militares) y documentos de archivo polacos a las autoridades de ciudadanía. También presentamos documentación detallada con información familiar. El objetivo es completar esta presentación de documentos antes de recibir la respuesta inicial a tu solicitud de ciudadanía cuando sea posible, lo que ayuda a acelerar el cronograma general.',
     keyPoints: [
-      'Envíe documentos de nacimiento, matrimonio, naturalización y militares',
-      'Presente documentos archivados polacos recuperados de búsquedas históricas',
-      'Proporcione árbol genealógico integral y documentación genealógica',
-      'Complete antes de la respuesta inicial para un cronograma más rápido cuando sea posible'
-    ]
+      'Presentar documentos de nacimiento, matrimonio, naturalización y militares',
+      'Presentar documentos de archivo polacos recuperados de búsquedas históricas',
+      'Proporcionar documentación completa de árbol genealógico y genealogía',
+      'Completar antes de la respuesta inicial para un cronograma más rápido cuando sea posible'
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '10',
     title: 'ACTAS CIVILES',
-    description: 'Solicitudes de certificados de nacimiento/matrimonio polacos, envíos y supervisión de agente dedicado',
+    description: 'Solicitudes de certificados de nacimiento/matrimonio polacos, presentaciones y supervisión de agente dedicado',
     duration: 'Semana 16-24',
-    keyAction: 'Interacción Gubernamental',
+    keyAction: 'Interacción con el Gobierno',
     priority: 'Hito Mayor',
-    detailedInfo: 'Nuestro Agente de Actas Civiles dedicado prepara solicitudes de certificados de nacimiento y matrimonio polacos para usted y sus ancestros. Esto implica el procesamiento de pagos para las oficinas del Registro Civil Polaco. Enviamos estas solicitudes a la oficina del Registro Civil Polaco relevante (determinada por el lugar de nacimiento/matrimonio del ancestro). Después del tiempo de procesamiento, recibimos los certificados oficiales de actas civiles polacas que confirman sus conexiones ancestrales.',
+    detailedInfo: 'Nuestro agente de actas civiles dedicado prepara solicitudes para certificados de nacimiento y matrimonio polacos para ti y tus antepasados. Esto incluye el procesamiento de pagos para las oficinas de registro civil polacos. Presentamos estas solicitudes a la oficina de registro civil polaca adecuada (determinada por el lugar de nacimiento/matrimonio del antepasado). Después del tiempo de procesamiento, recibimos certificados de actas civiles polacos oficiales que confirman tus conexiones ancestrales.',
     keyPoints: [
-      'Preparación de solicitudes de actas civiles polacas con agente dedicado',
-      'Procesamiento de pagos para tarifas de la oficina del Registro Civil Polaco',
-      'Envío a la oficina del Registro Civil apropiada basada en la ubicación',
-      'Reciba certificados oficiales de nacimiento/matrimonio polacos para el caso de ciudadanía'
-    ]
+      'Preparación de solicitudes de actas civiles polacos con agente dedicado',
+      'Procesamiento de pagos para tarifas de oficina de registro civil polaco',
+      'Presentación a la oficina de registro adecuada basada en ubicación',
+      'Recibir certificados de nacimiento/matrimonio polacos oficiales para el caso de ciudadanía'
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '11',
     title: 'RESPUESTA INICIAL',
-    description: 'Respuesta inicial de las autoridades, extensión del plazo y envío de evidencia adicional',
+    description: 'Respuesta inicial de las autoridades, extensión de plazo y presentación de evidencia adicional',
     duration: 'Mes 10-18',
-    keyAction: 'Interacción Gubernamental',
+    keyAction: 'Interacción con el Gobierno',
     priority: 'Hito Mayor',
-    detailedInfo: 'Usted recibe la carta de RESPUESTA INICIAL de la oficina del Voivoda de Masovia en su caso de ciudadanía polaca. Evaluamos las demandas y solicitudes hechas por el gobierno. Le enviamos una copia de la carta con explicaciones detalladas de lo que significa. Si es necesario, extendemos el plazo del procedimiento de ciudadanía para permitir más tiempo para reunir evidencia adicional. Luego esperamos y recopilamos cualquier evidencia adicional (documentos e información) solicitada por las autoridades.',
+    detailedInfo: 'Recibes la carta de respuesta inicial de la Oficina del Voivodato de Mazovia en tu caso de ciudadanía polaca. Evaluamos las demandas y solicitudes presentadas por el gobierno. Te enviamos una copia de la carta con explicaciones detalladas de lo que significa. Extendemos el plazo del procedimiento de ciudadanía si se necesita tiempo adicional. Esperamos evidencia adicional de ti según lo solicitado y la presentamos a las autoridades.',
     keyPoints: [
-      'Reciba Respuesta Inicial de la oficina del Voivoda de Masovia',
+      'Recibir respuesta inicial de la Oficina del Voivodato de Mazovia',
       'Evaluación detallada de demandas y solicitudes del gobierno',
-      'Extienda el plazo del procedimiento de ciudadanía si se necesita tiempo adicional',
-      'Reúna y envíe evidencia adicional según lo solicitado por las autoridades'
-    ]
+      'Extensión del plazo del procedimiento de ciudadanía si se necesita tiempo adicional',
+      'Recopilación y presentación de evidencia adicional según lo solicitado por las autoridades'
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '12',
-    title: 'ESQUEMAS DE IMPULSO',
-    description: 'Ofrecer esquemas de impulso (PUSH, NUDGE, SIT-DOWN) e implementarlos en la práctica',
+    title: 'ESQUEMAS PUSH',
+    description: 'Explicación de esquemas PUSH, NUDGE, SIT-DOWN, pagos e implementación',
     duration: 'Mes 12-24',
-    keyAction: 'Interacción Gubernamental',
-    priority: 'Construcción de Fundamento',
-    detailedInfo: 'Ofrecemos nuestros esquemas especializados de impulso para acelerar su caso: PUSH (envíos escritos), NUDGE (llamadas telefónicas a las autoridades) y SIT-DOWN (reuniones en persona en Varsovia). Explicamos cada esquema en detalle incluyendo costos e impacto esperado. Después de su pago por los esquemas elegidos, los introducimos en la práctica con las autoridades. Rastreamos las respuestas y podemos implementar los esquemas múltiples veces durante el proceso para mantener el impulso.',
+    keyAction: 'Interacción con el Gobierno',
+    priority: 'Construcción de Fundamentos',
+    detailedInfo: 'Ofrecemos nuestros esquemas de empuje especiales para acelerar tu caso: PUSH (presentaciones escritas), NUDGE (llamadas telefónicas a las autoridades) y SIT-DOWN (reuniones en persona en Varsovia). Explicamos cada esquema en detalle, incluidos los costos y el impacto esperado. Procesamos los pagos e implementamos con las autoridades. Pueden realizarse múltiples rondas según sea necesario para mantener el impulso de tu caso hacia una decisión.',
     keyPoints: [
       'Tres opciones de aceleración: PUSH, NUDGE, SIT-DOWN explicadas en detalle',
       'Precios transparentes e impacto esperado para cada esquema',
-      'Procesamiento de pagos e implementación con autoridades',
+      'Procesamiento de pagos e implementación con las autoridades',
       'Múltiples rondas posibles para mantener el impulso del caso'
-    ]
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '13',
     title: 'DECISIÓN DE CIUDADANÍA',
-    description: 'Decisión de confirmación de ciudadanía polaca recibida, o preparación de apelación si es negativa',
+    description: 'Decisión de confirmación de ciudadanía polaca recibida, enviada al cliente por correo electrónico y agregada al portal',
     duration: 'Mes 18-36',
-    keyAction: 'Aprobación y Pago Final',
+    keyAction: 'Pasos Finales',
     priority: 'Hito Mayor',
-    detailedInfo: 'El gobierno polaco emite su DECISIÓN FINAL DE CONFIRMACIÓN DE CIUDADANÍA. Si es positiva, le enviamos por correo electrónico una copia de la decisión oficial y la agregamos a su cuenta del portal. Si la decisión es negativa, inmediatamente preparamos y presentamos una apelación al Ministerio del Interior (dentro del plazo requerido de 2 semanas). El proceso de apelación implica argumentos legales detallados y puede tomar de 6 a 12 meses adicionales, pero muchas apelaciones tienen éxito.',
+    detailedInfo: 'El gobierno polaco emite su decisión final de confirmación de ciudadanía. Si es positiva, te enviamos una copia de la decisión oficial por correo electrónico y la agregamos a tu cuenta de portal. Si la decisión es negativa, preparamos y presentamos inmediatamente una apelación al Ministerio del Interior dentro del plazo de dos semanas. Las apelaciones tienen un buen historial de éxito y generalmente toman 6-12 meses adicionales.',
     keyPoints: [
       'Decisión final de ciudadanía recibida del gobierno polaco',
-      'Positiva: Confirmación oficial enviada por correo electrónico y agregada al portal',
-      'Negativa: Apelación preparada y presentada dentro del plazo de 2 semanas',
-      'Proceso de apelación: 6-12 meses adicionales con buena tasa de éxito'
-    ]
+      'Positiva: confirmación oficial enviada por correo electrónico y agregada al portal',
+      'Negativa: apelación preparada y presentada dentro del plazo de dos semanas',
+      'Proceso de apelación: 6-12 meses adicionales con buen índice de éxito'
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '14',
     title: 'PASAPORTE POLACO',
-    description: 'Preparar documentos de pasaporte, pago final, entrega FedEx y programación de visita al consulado',
+    description: 'Preparación de documentos, pago final, envío por FedEx, coordinación de cita en el consulado',
     duration: 'Mes 20-40',
-    keyAction: 'Aprobación y Pago Final',
+    keyAction: 'Pasos Finales',
     priority: 'Hito Mayor',
-    detailedInfo: 'Preparamos todos los documentos necesarios para que solicite su pasaporte polaco en el Consulado Polaco más cercano. Después de que procese el PAGO FINAL por nuestros servicios, le enviamos todos los documentos preparados vía FedEx. También lo ayudamos a programar su visita al Consulado Polaco. En la cita del consulado, presenta su solicitud y datos biométricos. Su pasaporte polaco suele estar listo para recoger dentro de 4-8 semanas.',
+    detailedInfo: 'Preparamos todos los documentos necesarios para que solicites tu pasaporte polaco en el consulado polaco más cercano. Después de procesar el pago final de nuestros servicios, te enviamos todos los documentos preparados por FedEx. También te ayudamos a programar tu visita al consulado polaco. Presentas tu solicitud en el consulado y recibes tu pasaporte polaco en 4-8 semanas.',
     keyPoints: [
-      'Paquete completo de documentos preparado para solicitud de pasaporte',
-      'Pago final procesado y documentos enviados vía FedEx',
-      'Visita al consulado programada en la ubicación más cercana a usted',
-      'Presente solicitud y reciba pasaporte polaco dentro de 4-8 semanas'
-    ]
+      'Paquete de documentos completo preparado para solicitud de pasaporte',
+      'Pago final procesado y documentos enviados por FedEx',
+      'Visita al consulado programada en la ubicación más cercana a ti',
+      'Presentación de solicitud y recepción de pasaporte polaco en 4-8 semanas'
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   },
   {
     number: '15',
     title: 'SERVICIOS EXTENDIDOS',
-    description: 'Servicios legales para familiares extendidos para descendientes y miembros de la familia',
+    description: 'Servicios legales familiares extendidos disponibles después de una confirmación de ciudadanía exitosa',
     duration: 'Continuo',
-    keyAction: 'Apoyo Familiar Extendido',
-    priority: 'Construcción de Fundamento',
-    detailedInfo: 'Después de obtener exitosamente su ciudadanía polaca, ofrecemos servicios legales para familiares extendidos. Una vez que es ciudadano polaco, sus hijos, nietos y futuros descendientes califican automáticamente para la ciudadanía polaca. Podemos ayudarlos con sus casos de ciudadanía, pasaportes polacos y toda la documentación necesaria. Esto extiende los beneficios de la ciudadanía polaca y de la UE a toda su línea familiar.',
+    keyAction: 'Pasos Finales',
+    priority: 'Construcción de Fundamentos',
+    detailedInfo: 'Las familias pueden extender los servicios legales a cónyuges, hijos y padres después de la confirmación de ciudadanía inicial exitosa. Esto incluye ciudadanía para cónyuges (casados antes de la confirmación de ciudadanía inicial), hijos (de cualquier edad) y padres (en ciertos casos). Nuestro equipo legal experimentado guía a cada miembro de la familia elegible a través de su propio proceso de ciudadanía.',
     keyPoints: [
-      'Servicios de ciudadanía disponibles para todos los miembros de la familia',
-      'Los hijos y descendientes califican automáticamente',
-      'Asistencia completa con pasaportes y documentación',
-      'Beneficios generacionales: ciudadanía polaca y de la UE para toda la línea familiar'
-    ]
+      'Extensión de servicios legales familiares para cónyuges elegibles',
+      'Solicitudes de ciudadanía para hijos de todas las edades',
+      'Extensión de beneficios de ciudadanía polaca y UE a toda tu familia',
+      'Apoyo legal continuo para todos los miembros de la familia elegibles'
+    ],
+    clickToSeeDetails: 'Haga clic para ver detalles',
+    openAccountLabel: 'Abrir Cuenta'
   }
 ];
