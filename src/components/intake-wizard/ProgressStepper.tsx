@@ -12,20 +12,20 @@ export const ProgressStepper = ({ currentStep, totalSteps, stepLabels }: Progres
   const { t } = useTranslation();
   
   return (
-    <div className="w-full py-6 px-4">
+    <div className="w-full py-4 sm:py-6 px-3 sm:px-4"> {/* ONBOARDING-UX-SAFE: Tighter padding on mobile */}
       {/* Mobile: Simple progress bar */}
       <div className="block md:hidden">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium">
+        <div className="flex justify-between items-center mb-2 gap-2"> {/* ONBOARDING-UX-SAFE: Add gap for spacing */}
+          <span className="text-xs sm:text-sm font-medium truncate flex-shrink"> {/* ONBOARDING-UX-SAFE: Smaller text + truncate */}
             {t('step')} {currentStep} {t('of')} {totalSteps}
           </span>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-xs sm:text-sm text-muted-foreground truncate flex-shrink-0 max-w-[50%]"> {/* ONBOARDING-UX-SAFE: Smaller text + truncate + max width */}
             {stepLabels[currentStep - 1]}
           </span>
         </div>
         <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
           <div
-            className="h-full bg-primary transition-all duration-500"
+            className="h-full bg-primary transition-all duration-500 ease-out" /* ONBOARDING-UX-SAFE: Smoother animation */
             style={{ width: `${(currentStep / totalSteps) * 100}%` }}
           />
         </div>
@@ -44,7 +44,7 @@ export const ProgressStepper = ({ currentStep, totalSteps, stepLabels }: Progres
                 <div className="flex flex-col items-center">
                   <div
                     className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300",
+                      "w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-500 ease-out", /* ONBOARDING-UX-SAFE: Smoother animation */
                       isCompleted && "bg-primary text-primary-foreground",
                       isCurrent && "bg-primary text-primary-foreground ring-4 ring-primary/20",
                       !isCompleted && !isCurrent && "bg-secondary text-muted-foreground"
@@ -58,7 +58,7 @@ export const ProgressStepper = ({ currentStep, totalSteps, stepLabels }: Progres
                   </div>
                   <span
                     className={cn(
-                      "mt-2 text-xs text-center max-w-[120px] transition-colors",
+                      "mt-2 text-xs text-center max-w-[120px] transition-colors line-clamp-2", /* ONBOARDING-UX-SAFE: Line clamp to prevent overflow */
                       isCurrent && "text-primary font-medium",
                       !isCurrent && "text-muted-foreground"
                     )}
@@ -71,7 +71,7 @@ export const ProgressStepper = ({ currentStep, totalSteps, stepLabels }: Progres
                 {index < stepLabels.length - 1 && (
                   <div
                     className={cn(
-                      "flex-1 h-0.5 mx-2 transition-all duration-500",
+                      "flex-1 h-0.5 mx-2 transition-all duration-500 ease-out", /* ONBOARDING-UX-SAFE: Smoother animation */
                       stepNumber < currentStep ? "bg-primary" : "bg-secondary"
                     )}
                   />
