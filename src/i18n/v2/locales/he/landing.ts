@@ -5,9 +5,16 @@ const landing = {
     signOut: "התנתק"
   },
   hero: {
-    title: "TODO: landing hero title (he)",
-    subtitle: "TODO: landing hero subtitle (he)",
-    cta: "לעבור מבחן אזרחות פולנית"
+    badge: "פתרונות אזרחות מבוססי AI",
+    title: "גלה את <br/>המורשת הפולנית שלך",
+    subtitle1: "הדרכה מומחית בכל שלב של מסע האזרחות הפולנית שלך. מהערכת זכאות ועד למסירת הדרכון, אנחנו מטפלים במורכבות בזמן שאתה מתמקד בעתיד שלך.",
+    subtitle2: "הצטרף לאלפי לקוחות מרוצים שהחזירו את המורשת האירופית שלהם בתהליך המוכח שלנו.",
+    cta: "לעבור מבחן אזרחות פולנית",
+    stats: {
+      experience: "שנות ניסיון",
+      cases: "מקרים מוצלחים",
+      success: "אחוז הצלחה"
+    }
   },
   timeline: {
     title: "TODO: timeline title (he)",

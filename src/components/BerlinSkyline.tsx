@@ -1,6 +1,6 @@
 import berlinSkyline from "@/assets/berlin-skyline.png";
 
-export const BerlinSkyline = () => {
+const BerlinSkyline = () => {
   return (
     <div className="relative z-10 w-full flex justify-center">
       <div className="w-full md:w-[60%]">
@@ -8,6 +8,7 @@ export const BerlinSkyline = () => {
           src={berlinSkyline} 
           alt="Berlin skyline silhouette" 
           className="w-full h-auto opacity-70 dark:opacity-40 transition-all duration-300 block dark:invert"
+          loading="lazy"
           style={{
             filter: 'var(--skyline-filter)',
           }}
@@ -16,3 +17,5 @@ export const BerlinSkyline = () => {
     </div>
   );
 };
+
+export default BerlinSkyline;
