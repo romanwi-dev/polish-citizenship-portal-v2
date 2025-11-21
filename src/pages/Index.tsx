@@ -20,6 +20,13 @@ import AboutSection from "@/components/AboutSection";
 // Lazy load below-the-fold components for better code splitting and LCP optimization
 const BudapestSkyline = lazy(() => import("@/components/BudapestSkyline"));
 const BerlinSkyline = lazy(() => import("@/components/BerlinSkyline"));
+const PragueSkyline = lazy(() => import("@/components/PragueSkyline"));
+const ParisSkyline = lazy(() => import("@/components/ParisSkyline"));
+const MadridSkyline = lazy(() => import("@/components/MadridSkyline"));
+const RomeSkyline = lazy(() => import("@/components/RomeSkyline"));
+const AthensSkyline = lazy(() => import("@/components/AthensSkyline"));
+const BrusselsSkyline = lazy(() => import("@/components/BrusselsSkyline"));
+const WarsawSkylineBottom = lazy(() => import("@/components/WarsawSkylineBottom"));
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
 const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
 const TimelineProcessEnhanced = lazy(() => import("@/components/TimelineProcessEnhanced"));
@@ -64,6 +71,12 @@ const Index = () => {
           </div>
           <AboutSection />
         
+        <div className="my-16 md:my-24">
+          <Suspense fallback={<SectionLoader />}>
+            <PragueSkyline />
+          </Suspense>
+        </div>
+
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
         </Suspense>
@@ -71,6 +84,12 @@ const Index = () => {
         <div className="my-16 md:my-24">
           <Suspense fallback={<SectionLoader />}>
             <BudapestSkyline />
+          </Suspense>
+        </div>
+
+        <div className="my-16 md:my-24">
+          <Suspense fallback={<SectionLoader />}>
+            <ParisSkyline />
           </Suspense>
         </div>
         
@@ -83,22 +102,52 @@ const Index = () => {
             <BerlinSkyline />
           </Suspense>
         </div>
+
+        <div className="my-16 md:my-24">
+          <Suspense fallback={<SectionLoader />}>
+            <MadridSkyline />
+          </Suspense>
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
+
+        <div className="my-16 md:my-24">
+          <Suspense fallback={<SectionLoader />}>
+            <RomeSkyline />
+          </Suspense>
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
         </Suspense>
+
+        <div className="my-16 md:my-24">
+          <Suspense fallback={<SectionLoader />}>
+            <AthensSkyline />
+          </Suspense>
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsSection />
         </Suspense>
+
+        <div className="my-16 md:my-24">
+          <Suspense fallback={<SectionLoader />}>
+            <BrusselsSkyline />
+          </Suspense>
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <FAQSection />
         </Suspense>
+
+        <div className="my-16 md:my-24">
+          <Suspense fallback={<SectionLoader />}>
+            <WarsawSkylineBottom />
+          </Suspense>
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />
