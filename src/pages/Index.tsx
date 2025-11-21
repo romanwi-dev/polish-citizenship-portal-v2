@@ -20,7 +20,6 @@ import AboutSection from "@/components/AboutSection";
 // Lazy load below-the-fold components for better code splitting and LCP optimization
 const BudapestSkyline = lazy(() => import("@/components/BudapestSkyline"));
 const BerlinSkyline = lazy(() => import("@/components/BerlinSkyline"));
-const CitySkyline = lazy(() => import("@/components/skyline/CitySkyline").then(m => ({ default: m.CitySkyline })));
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
 const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
 const TimelineProcessEnhanced = lazy(() => import("@/components/TimelineProcessEnhanced"));
@@ -64,73 +63,30 @@ const Index = () => {
             <WarsawSkyline />
           </div>
           <AboutSection />
-        
-        
-        <div className="my-16 md:my-24">
-          <Suspense fallback={<SectionLoader />}>
-            <CitySkyline city="prague" />
-          </Suspense>
-        </div>
 
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
         </Suspense>
-        
-        <div className="my-16 md:my-24">
-          <Suspense fallback={<SectionLoader />}>
-            <CitySkyline city="paris" />
-          </Suspense>
-        </div>
 
         <Suspense fallback={<SectionLoader />}>
           <TimelineProcessEnhanced />
         </Suspense>
-        
-        <div className="my-16 md:my-24">
-          <Suspense fallback={<SectionLoader />}>
-            <CitySkyline city="madrid" />
-          </Suspense>
-        </div>
 
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
-        
-        <div className="my-16 md:my-24">
-          <Suspense fallback={<SectionLoader />}>
-            <CitySkyline city="rome" />
-          </Suspense>
-        </div>
 
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
         </Suspense>
-        
-        <div className="my-16 md:my-24">
-          <Suspense fallback={<SectionLoader />}>
-            <CitySkyline city="athens" />
-          </Suspense>
-        </div>
 
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsSection />
         </Suspense>
-        
-        <div className="my-16 md:my-24">
-          <Suspense fallback={<SectionLoader />}>
-            <CitySkyline city="brussels" />
-          </Suspense>
-        </div>
 
         <Suspense fallback={<SectionLoader />}>
           <FAQSection />
         </Suspense>
-        
-        <div className="my-16 md:my-24">
-          <Suspense fallback={<SectionLoader />}>
-            <CitySkyline city="warsaw-2" />
-          </Suspense>
-        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />
