@@ -16,7 +16,11 @@ import { useTranslation } from 'react-i18next';
 import { SocialShare } from "@/components/social/SocialShare";
 
 const Navigation = () => {
-  const { t } = useTranslation('landing');
+  const { t, i18n } = useTranslation('landing');
+  
+  // Safe translation helper with fallback
+  const tt = (key: string, fallback: string) => t(key, fallback);
+  
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,9 +75,13 @@ const Navigation = () => {
                   <Menu className="h-5 w-5 text-primary dark:text-foreground" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[440px] p-0 bg-background dark:bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col" style={{
-              height: 'calc(100vh - 5rem)'
-            }}>
+              <DropdownMenuContent 
+                align="end" 
+                dir={i18n.language === 'he' ? 'rtl' : 'ltr'}
+                className="w-[440px] p-0 bg-background dark:bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col" 
+                style={{
+                  height: 'calc(100vh - 5rem)'
+                }}>
                 {/* Simple background matching footer */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -82,7 +90,7 @@ const Navigation = () => {
                   {/* Header */}
                   <div className="flex items-center gap-2 p-4 border-b border-border/50">
                     <Sparkles className="h-5 w-5 text-primary" />
-                    <span className="font-semibold text-lg">{t('nav.navigation')}</span> {/* Navigation */}
+                    <span className="font-semibold text-lg">{tt('nav.navigation', 'Navigation')}</span>
                   </div>
                     
                     {/* Scrollable Content */}
@@ -124,10 +132,10 @@ const Navigation = () => {
                         <Button onClick={user ? handleSignOut : () => navigate('/login')} className="w-full h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all">
                           {user ? <>
                               <LogOut className="mr-2 h-4 w-4" />
-                              {t('nav.signOut')} {/* Sign Out */}
+                              {tt('nav.signOut', 'Sign Out')}
                             </> : <>
                               <LogIn className="mr-2 h-4 w-4" />
-                              {t('nav.register')} {/* Register / Login */}
+                              {tt('nav.register', 'Register / Login')}
                             </>}
                         </Button>
 
@@ -148,7 +156,7 @@ const Navigation = () => {
                       {/* Citizenship Test Button */}
                       <div className="p-4 pt-3">
                         <Button onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')} className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all" aria-label="Take the Polish Citizenship Test to check your eligibility">
-                          {t('hero.cta')}
+                          {tt('hero.cta', 'Take Polish Citizenship Test')}
                         </Button>
                       </div>
                     </div>
