@@ -22,6 +22,7 @@ const HeroGallery = lazy(() => import("./pages/HeroGallery"));
 
 
 // Client portal pages
+const PortalIndex = lazy(() => import("./pages/PortalIndex"));
 const ClientLogin = lazy(() => import("./pages/ClientLogin"));
 const ClientDashboard = lazy(() => import("./pages/ClientDashboard"));
 const ClientSecurity = lazy(() => import("./pages/ClientSecurity"));
@@ -224,9 +225,19 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/cases" element={<Cases />} />
             
+            {/* Portal Entry Route */}
+            <Route 
+              path="/portal" 
+              element={
+                <Suspense fallback={<AdminLoader />}>
+                  <PortalIndex />
+                </Suspense>
+              } 
+            />
+            
             {/* Client Portal Routes */}
             <Route 
-              path="/client/login" 
+              path="/client/login"
               element={
                 <Suspense fallback={<AdminLoader />}>
                   <ClientLogin />
