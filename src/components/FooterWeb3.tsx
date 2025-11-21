@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SocialShare } from "@/components/social/SocialShare";
 
 const FooterWeb3 = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing'); // Use landing namespace for homepage footer
   
   return (
     <footer className="relative py-20 -mt-2 pt-12">
