@@ -863,3 +863,17 @@ All colors MUST be HSL.
   }
 }
 
+/* RTL Support for Hebrew */
+.rtl {
+  direction: rtl;
+}
+
+.rtl body {
+  direction: rtl;
+}
+
+.rtl [dir="auto"],
+.rtl [dir="rtl"] {
+  text-align: right;
+}
+

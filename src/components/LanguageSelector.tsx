@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -8,7 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const LANGUAGES = [
+// Available languages - single source of truth
+const AVAILABLE_LANGUAGES = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
   { code: 'es', label: 'Español', flag: '🇪🇸' },
   { code: 'pt', label: 'Português', flag: '🇵🇹' },
@@ -25,7 +26,14 @@ export function LanguageSelector() {
   const { lang } = useParams<{ lang: string }>();
   const [open, setOpen] = useState(false);
 
-  const currentLanguage = LANGUAGES.find(lang => lang.code === i18n.language) || LANGUAGES[0];
+  const currentLanguage = AVAILABLE_LANGUAGES.find(lang => lang.code === i18n.language) || AVAILABLE_LANGUAGES[0];
+
+  // RTL toggle for Hebrew
+  useEffect(() => {
+    const isRTL = i18n.language === 'he';
+    document.documentElement.classList.toggle('rtl', isRTL);
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+  }, [i18n.language]);
 
   const handleLanguageChange = async (code: string) => {
     console.log('🔄 Changing language to:', code);
@@ -58,7 +66,7 @@ export function LanguageSelector() {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20 z-50">
-        {LANGUAGES.map((lang) => (
+        {AVAILABLE_LANGUAGES.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
