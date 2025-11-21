@@ -26,11 +26,11 @@
     <link rel="preload" href="https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" as="font" type="font/woff2" crossorigin>
     
-    <!-- Fonts with swap display for mobile performance - deferred loading -->
+    <!-- CLS FIX: Fonts with swap display for instant text rendering, prevents layout shift -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" media="all">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap"></noscript>
     
-    <!-- Preload critical logo image with correct dimensions -->
+    <!-- CLS FIX: Preload critical logo with explicit dimensions to prevent navbar shift -->
     <link rel="preload" href="/src/assets/logo.png" as="image" fetchpriority="high" imagesrcset="/src/assets/logo.png 1x" imagesizes="305px">
     
     <!-- Resource hints for performance -->
@@ -58,7 +58,8 @@
       .z-10{z-index:10}
       button{cursor:pointer;font-family:inherit}
       img{max-width:100%;height:auto}
-      nav{position:fixed;top:0;width:100%;z-index:50;background:rgba(10,10,10,.95);backdrop-filter:blur(10px)}
+      /* CLS FIX: Fixed nav height prevents layout shift when nav loads */
+      nav{position:fixed;top:0;width:100%;z-index:50;background:rgba(10,10,10,.95);backdrop-filter:blur(10px);height:80px}
     </style>
     <!-- Load main CSS -->
     <link rel="stylesheet" href="/src/index.css">
