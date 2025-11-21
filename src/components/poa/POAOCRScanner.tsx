@@ -64,21 +64,22 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
   const [uploadETA, setUploadETA] = useState(0);
 
 
-  const handlePersonSelect = (personType: PersonType, docType: DocumentType) => {
+  // PERF-V6: Memoized handlers
+  const handlePersonSelect = useCallback((personType: PersonType, docType: DocumentType) => {
     setSelectedPerson(personType);
     setSelectedDocType(docType);
     setOcrPreviewData(null);
     setOcrWarnings([]);
     setRetryCount(0);
-  };
+  }, []);
 
-  const confirmPersonSelection = () => {
+  const confirmPersonSelection = useCallback(() => {
     if (!selectedPerson || !selectedDocType) {
       toast.error("Please select person and document type");
       return;
     }
     setStep(selectedDocType === 'passport' ? 'passport' : 'birthcert');
-  };
+  }, [selectedPerson, selectedDocType]);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>, docType: 'passport' | 'birthcert') => {
     const file = e.target.files?.[0];
@@ -154,6 +155,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
     }
   };
 
+  // PERF-V6: Memoized image processing
   const getCroppedImg = useCallback(async (
     image: HTMLImageElement,
     pixelCrop: PixelCrop,

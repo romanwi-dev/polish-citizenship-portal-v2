@@ -111,7 +111,7 @@ export default function ClientDashboard() {
     };
   }, [caseId, navigate]);
 
-  // PERF-MICRO-V2: Stable data loading callback
+  // PERF-V6: Stable data loading callback
   const loadDashboardData = useCallback(async () => {
     try {
       // Load case data
@@ -158,7 +158,7 @@ export default function ClientDashboard() {
     }
   }, [caseId, t]);
 
-  // PERF-MICRO-V2: Stable logout callback
+  // PERF-V6: Stable logout callback
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     toast.success(t('dashboard.logoutSuccess')); // Logged out successfully
