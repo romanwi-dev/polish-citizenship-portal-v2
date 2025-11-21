@@ -64,29 +64,99 @@ const Index = () => {
           </div>
           <AboutSection />
 
+        <div className="w-full flex justify-center my-24 opacity-50">
+          <img 
+            src="/images/skyline-prague.png"
+            alt="Prague skyline"
+            className="w-full max-w-[2400px] pointer-events-none select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
+
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
         </Suspense>
+
+        <div className="w-full flex justify-center my-24 opacity-50">
+          <img 
+            src="/images/skyline-paris.png"
+            alt="Paris skyline"
+            className="w-full max-w-[2400px] pointer-events-none select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
 
         <Suspense fallback={<SectionLoader />}>
           <TimelineProcessEnhanced />
         </Suspense>
 
+        <div className="w-full flex justify-center my-24 opacity-50">
+          <img 
+            src="/images/skyline-madrid.png"
+            alt="Madrid skyline"
+            className="w-full max-w-[2400px] pointer-events-none select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
+
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
+
+        <div className="w-full flex justify-center my-24 opacity-50">
+          <img 
+            src="/images/skyline-rome.png"
+            alt="Rome skyline"
+            className="w-full max-w-[2400px] pointer-events-none select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
 
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
         </Suspense>
 
+        <div className="w-full flex justify-center my-24 opacity-50">
+          <img 
+            src="/images/skyline-athens.png"
+            alt="Athens skyline"
+            className="w-full max-w-[2400px] pointer-events-none select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
+
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsSection />
         </Suspense>
 
+        <div className="w-full flex justify-center my-24 opacity-50">
+          <img 
+            src="/images/skyline-brussels.png"
+            alt="Brussels skyline"
+            className="w-full max-w-[2400px] pointer-events-none select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
+
         <Suspense fallback={<SectionLoader />}>
           <FAQSection />
         </Suspense>
+
+        <div className="w-full flex justify-center my-24 opacity-50">
+          <img 
+            src="/images/skyline-warsaw.png"
+            alt="Warsaw skyline"
+            className="w-full max-w-[2400px] pointer-events-none select-none"
+            draggable="false"
+            loading="lazy"
+          />
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />
