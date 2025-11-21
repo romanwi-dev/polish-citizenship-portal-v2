@@ -64,11 +64,11 @@ const Index = () => {
           </div>
           <AboutSection />
 
-        <div className="w-full flex justify-center my-24 opacity-50">
+        <div className="w-full flex justify-center my-24">
           <img 
             src="/images/skyline-prague.png"
             alt="Prague skyline"
-            className="w-full max-w-[2400px] pointer-events-none select-none"
+            className="w-full max-w-[2400px] pointer-events-none select-none opacity-30 dark:opacity-20"
             draggable="false"
             loading="lazy"
           />
@@ -78,11 +78,11 @@ const Index = () => {
           <ServicesWeb3 />
         </Suspense>
 
-        <div className="w-full flex justify-center my-24 opacity-50">
+        <div className="w-full flex justify-center my-24">
           <img 
             src="/images/skyline-paris.png"
             alt="Paris skyline"
-            className="w-full max-w-[2400px] pointer-events-none select-none"
+            className="w-full max-w-[2400px] pointer-events-none select-none opacity-30 dark:opacity-20"
             draggable="false"
             loading="lazy"
           />
@@ -92,11 +92,11 @@ const Index = () => {
           <TimelineProcessEnhanced />
         </Suspense>
 
-        <div className="w-full flex justify-center my-24 opacity-50">
+        <div className="w-full flex justify-center my-24">
           <img 
             src="/images/skyline-madrid.png"
             alt="Madrid skyline"
-            className="w-full max-w-[2400px] pointer-events-none select-none"
+            className="w-full max-w-[2400px] pointer-events-none select-none opacity-30 dark:opacity-20"
             draggable="false"
             loading="lazy"
           />
@@ -106,11 +106,11 @@ const Index = () => {
           <ClientOnboardingSection />
         </Suspense>
 
-        <div className="w-full flex justify-center my-24 opacity-50">
+        <div className="w-full flex justify-center my-24">
           <img 
             src="/images/skyline-rome.png"
             alt="Rome skyline"
-            className="w-full max-w-[2400px] pointer-events-none select-none"
+            className="w-full max-w-[2400px] pointer-events-none select-none opacity-30 dark:opacity-20"
             draggable="false"
             loading="lazy"
           />
@@ -120,11 +120,11 @@ const Index = () => {
           <PricingSection />
         </Suspense>
 
-        <div className="w-full flex justify-center my-24 opacity-50">
+        <div className="w-full flex justify-center my-24">
           <img 
             src="/images/skyline-athens.png"
             alt="Athens skyline"
-            className="w-full max-w-[2400px] pointer-events-none select-none"
+            className="w-full max-w-[2400px] pointer-events-none select-none opacity-30 dark:opacity-20"
             draggable="false"
             loading="lazy"
           />
@@ -134,11 +134,11 @@ const Index = () => {
           <TestimonialsSection />
         </Suspense>
 
-        <div className="w-full flex justify-center my-24 opacity-50">
+        <div className="w-full flex justify-center my-24">
           <img 
             src="/images/skyline-brussels.png"
             alt="Brussels skyline"
-            className="w-full max-w-[2400px] pointer-events-none select-none"
+            className="w-full max-w-[2400px] pointer-events-none select-none opacity-30 dark:opacity-20"
             draggable="false"
             loading="lazy"
           />
