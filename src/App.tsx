@@ -11,10 +11,13 @@ import { LanguageRedirect } from "@/components/LanguageRedirect";
 import { LanguageSyncWrapper } from "@/components/LanguageSyncWrapper";
 import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
 import { AppRouter } from "@/components/AppRouter";
+// Homepage - loaded immediately (critical path)
 import Index from "./pages/Index";
-import Cases from "./pages/Cases";
-import Login from "./pages/Login";
-import NotFound from "./pages/NotFound";
+
+// Auth pages - lazy loaded
+const Cases = lazy(() => import("./pages/Cases"));
+const Login = lazy(() => import("./pages/Login"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const ContactFormsDemo = lazy(() => import("./pages/ContactFormsDemo"));
 const TranslationDemo = lazy(() => import("./pages/TranslationDemo"));
@@ -128,8 +131,8 @@ const queryClient = new QueryClient({
   },
 });
 
-// Loading fallback for admin pages
-const AdminLoader = () => (
+// Loading fallback for lazy-loaded pages
+const PageLoader = () => (
   <div className="flex items-center justify-center h-screen">
     <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
   </div>
@@ -150,7 +153,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <AccessibilityProvider>
           <TooltipProvider>
-            <Suspense fallback={<AdminLoader />}>
+            <Suspense fallback={<PageLoader />}>
               <Toaster />
               <Sonner />
               <BrowserRouter>
@@ -166,73 +169,81 @@ const App = () => {
               </LanguageSyncWrapper>
             } />
             <Route path="/translation-demo" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <TranslationDemo />
               </Suspense>
             } />
             <Route path="/demos" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <DemosHub />
               </Suspense>
             } />
             <Route path="/hero-gallery" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <HeroGallery />
               </Suspense>
             } />
             <Route path="/demos/main-cta-reference" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <MainCTAReference />
               </Suspense>
             } />
             <Route path="/multi-step-demo" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <MultiStepDemo />
               </Suspense>
             } />
             <Route path="/font-styles-demo" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <FontStylesDemo />
               </Suspense>
             } />
             <Route path="/design-showcase" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <DesignShowcase />
               </Suspense>
             } />
             <Route path="/warsaw-demo" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <WarsawDemo />
               </Suspense>
             } />
             <Route path="/eu-celebration-demo" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <EUCelebrationDemo />
               </Suspense>
             } />
             <Route path="/thank-you-images-demo" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ThankYouImagesDemo />
               </Suspense>
             } />
             <Route path="/contact-forms-demo" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ContactFormsDemo />
               </Suspense>
             } />
             <Route path="/request-access" element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <RequestAccess />
               </Suspense>
             } />
-            <Route path="/login" element={<Login />} />
-            <Route path="/cases" element={<Cases />} />
+            <Route path="/login" element={
+              <Suspense fallback={<PageLoader />}>
+                <Login />
+              </Suspense>
+            } />
+            <Route path="/cases" element={
+              <Suspense fallback={<PageLoader />}>
+                <Cases />
+              </Suspense>
+            } />
             
             {/* Portal Entry Route */}
             <Route 
               path="/portal" 
               element={
-                <Suspense fallback={<AdminLoader />}>
+                <Suspense fallback={<PageLoader />}>
                   <PortalIndex />
                 </Suspense>
               } 
@@ -242,7 +253,7 @@ const App = () => {
             <Route 
               path="/client/login"
               element={
-                <Suspense fallback={<AdminLoader />}>
+                <Suspense fallback={<PageLoader />}>
                   <ClientLogin />
                 </Suspense>
               } 
@@ -250,7 +261,7 @@ const App = () => {
             <Route
               path="/client/dashboard/:caseId"
               element={
-                <Suspense fallback={<AdminLoader />}>
+                <Suspense fallback={<PageLoader />}>
                   <ClientDashboard />
                 </Suspense>
               }
@@ -258,7 +269,7 @@ const App = () => {
             <Route
               path="/client/intake/:token"
               element={
-                <Suspense fallback={<AdminLoader />}>
+                <Suspense fallback={<PageLoader />}>
                   <ClientIntakeWizard />
                 </Suspense>
               }
@@ -266,7 +277,7 @@ const App = () => {
             <Route
               path="/client/security"
               element={
-                <Suspense fallback={<AdminLoader />}>
+                <Suspense fallback={<PageLoader />}>
                   <ClientSecurity />
                 </Suspense>
               }
@@ -275,7 +286,7 @@ const App = () => {
           <Route 
             path="/admin" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <Dashboard />
               </Suspense>
             } 
@@ -283,7 +294,7 @@ const App = () => {
           <Route 
             path="/admin/cases" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <CasesManagement />
               </Suspense>
             } 
@@ -291,7 +302,7 @@ const App = () => {
           <Route 
             path="/admin/cases/new" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <NewCase />
               </Suspense>
             } 
@@ -299,7 +310,7 @@ const App = () => {
           <Route 
             path="/admin/cases/:id"
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <CaseDetail />
               </Suspense>
             } 
@@ -307,7 +318,7 @@ const App = () => {
           <Route 
             path="/admin/cases/:id/poa-ocr"
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <POAOCRPage />
               </Suspense>
             } 
@@ -315,7 +326,7 @@ const App = () => {
           <Route
             path="/admin/cases/:id/additional-data"
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <AdditionalData />
               </Suspense>
             } 
@@ -323,7 +334,7 @@ const App = () => {
           <Route 
             path="/admin/intake-demo" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <IntakeDemo />
               </Suspense>
             } 
@@ -331,7 +342,7 @@ const App = () => {
           <Route 
             path="/admin/form-scanner"
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <FormScanner />
               </Suspense>
             } 
@@ -339,7 +350,7 @@ const App = () => {
           <Route 
             path="/admin/qa-harness" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <QAHarness />
               </Suspense>
             } 
@@ -347,7 +358,7 @@ const App = () => {
           <Route 
             path="/admin/dropbox-migration" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <DropboxMigration />
               </Suspense>
             } 
@@ -355,7 +366,7 @@ const App = () => {
           <Route 
             path="/admin/dropbox" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <DropboxWorkflow />
               </Suspense>
             } 
@@ -363,7 +374,7 @@ const App = () => {
           <Route 
             path="/admin/cases/:id/authority-review" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <AuthorityReview />
               </Suspense>
             } 
@@ -371,7 +382,7 @@ const App = () => {
           <Route 
             path="/admin/system-health" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <SystemHealth />
               </Suspense>
             } 
@@ -379,7 +390,7 @@ const App = () => {
           <Route 
             path="/admin/system-overview" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <SystemOverview />
               </Suspense>
             } 
@@ -387,7 +398,7 @@ const App = () => {
           <Route 
             path="/admin/pdf-inspector" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PDFInspector />
               </Suspense>
             } 
@@ -395,7 +406,7 @@ const App = () => {
           <Route 
             path="/admin/pdf-field-inspector" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PDFFieldInspector />
               </Suspense>
             } 
@@ -403,7 +414,7 @@ const App = () => {
           <Route 
             path="/pdf-inspector-new" 
             element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<PageLoader />}>
                 <PDFFieldInspectorNew />
               </Suspense>
             } 
@@ -411,7 +422,7 @@ const App = () => {
           <Route 
             path="/admin/pdf-system-verification" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PDFSystemVerification />
               </Suspense>
             } 
@@ -419,7 +430,7 @@ const App = () => {
           <Route 
             path="/admin/pdf-verification-test" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PDFVerificationTest />
               </Suspense>
             } 
@@ -427,7 +438,7 @@ const App = () => {
           <Route 
             path="/admin/pdf-generation-test" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PDFGenerationTest />
               </Suspense>
             } 
@@ -435,7 +446,7 @@ const App = () => {
           <Route 
             path="/admin/code-review" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <CodeReview />
               </Suspense>
             } 
@@ -443,7 +454,7 @@ const App = () => {
           <Route
             path="/admin/zero-errors-checklist" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ZeroErrorsChecklist />
               </Suspense>
             } 
@@ -451,7 +462,7 @@ const App = () => {
           <Route 
             path="/admin/upload-pdf-templates" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <UploadPDFTemplates />
               </Suspense>
             } 
@@ -459,7 +470,7 @@ const App = () => {
           <Route 
             path="/admin/manual-pdf-upload" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ManualPDFUpload />
               </Suspense>
             } 
@@ -467,7 +478,7 @@ const App = () => {
           <Route 
             path="/admin/citizenship-field-review" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <CitizenshipFieldReview />
               </Suspense>
             } 
@@ -475,7 +486,7 @@ const App = () => {
           <Route 
             path="/admin/big-plan-tracker" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <BigPlanTracker />
               </Suspense>
             } 
@@ -483,7 +494,7 @@ const App = () => {
           <Route 
             path="/admin/testing-dashboard" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <TestingDashboard />
               </Suspense>
             } 
@@ -491,7 +502,7 @@ const App = () => {
           <Route 
             path="/admin/forms-demo" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <FormsDemo />
               </Suspense>
             } 
@@ -499,7 +510,7 @@ const App = () => {
           <Route 
             path="/admin/documents-collection/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <DocumentsCollection />
               </Suspense>
             } 
@@ -507,7 +518,7 @@ const App = () => {
           <Route 
             path="/admin/civil-acts" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PolishCivilActs />
               </Suspense>
             } 
@@ -515,7 +526,7 @@ const App = () => {
           <Route 
             path="/admin/citizenship" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PolishCitizenship />
               </Suspense>
             } 
@@ -523,7 +534,7 @@ const App = () => {
           <Route 
             path="/admin/passport" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PassportWorkflow />
               </Suspense>
             } 
@@ -531,7 +542,7 @@ const App = () => {
           <Route 
             path="/admin/passport-legacy" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PolishPassport />
               </Suspense>
             } 
@@ -539,7 +550,7 @@ const App = () => {
           <Route 
             path="/admin/archives-search"
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ArchivesWorkflow />
               </Suspense>
             } 
@@ -547,7 +558,7 @@ const App = () => {
           <Route 
             path="/admin/archives-search-legacy"
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ArchivesSearch />
               </Suspense>
             } 
@@ -555,7 +566,7 @@ const App = () => {
           <Route 
             path="/admin/translations" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <TranslationsWorkflow />
               </Suspense>
             } 
@@ -563,7 +574,7 @@ const App = () => {
           <Route 
             path="/admin/translations-legacy" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <Translations />
               </Suspense>
             } 
@@ -571,7 +582,7 @@ const App = () => {
           <Route 
             path="/admin/translation-workflow-test" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <TranslationWorkflowTest />
               </Suspense>
             } 
@@ -579,7 +590,7 @@ const App = () => {
           <Route 
             path="/admin/workflows" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <AllWorkflows />
               </Suspense>
             } 
@@ -587,7 +598,7 @@ const App = () => {
           <Route 
             path="/admin/workflow-notifications" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <WorkflowNotifications />
               </Suspense>
             } 
@@ -595,7 +606,7 @@ const App = () => {
           <Route 
             path="/admin/ai-workflow" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <AIWorkflow />
               </Suspense>
             } 
@@ -603,7 +614,7 @@ const App = () => {
           <Route 
             path="/admin/extended-services" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ExtendedServices />
               </Suspense>
             } 
@@ -611,7 +622,7 @@ const App = () => {
           <Route 
             path="/admin/ocr-review" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <OCRReview />
               </Suspense>
             } 
@@ -619,7 +630,7 @@ const App = () => {
           <Route 
             path="/admin/ocr-processing-monitor" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <OCRProcessingMonitor />
               </Suspense>
             } 
@@ -628,7 +639,7 @@ const App = () => {
           <Route 
             path="/admin/security-audit"
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <SecurityAudit />
               </Suspense>
             } 
@@ -636,7 +647,7 @@ const App = () => {
           <Route 
             path="/admin/researcher/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <Researcher />
               </Suspense>
             } 
@@ -644,7 +655,7 @@ const App = () => {
           <Route 
             path="/admin/translator/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <Translator />
               </Suspense>
             } 
@@ -652,7 +663,7 @@ const App = () => {
           <Route 
             path="/admin/writer/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <Writer />
               </Suspense>
             } 
@@ -660,7 +671,7 @@ const App = () => {
           <Route 
             path="/admin/designer/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <Designer />
               </Suspense>
             } 
@@ -668,7 +679,7 @@ const App = () => {
           <Route 
             path="/admin/supervisor/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <Supervisor />
               </Suspense>
             } 
@@ -676,7 +687,7 @@ const App = () => {
           <Route 
             path="/admin/role-management" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <RoleManagement />
               </Suspense>
             } 
@@ -684,7 +695,7 @@ const App = () => {
           <Route 
             path="/admin/ai-agent-diagnostics" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <AIAgentDiagnostics />
               </Suspense>
             } 
@@ -692,7 +703,7 @@ const App = () => {
           <Route 
             path="/admin/documents/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <DocumentBrowser />
               </Suspense>
             } 
@@ -700,7 +711,7 @@ const App = () => {
           <Route 
             path="/admin/pdf-demo" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PDFDemo />
               </Suspense>
             } 
@@ -711,7 +722,7 @@ const App = () => {
           <Route 
             path="/admin/intake/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <IntakeForm />
               </Suspense>
             } 
@@ -719,7 +730,7 @@ const App = () => {
           <Route 
             path="/admin/family-tree/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <FamilyTreeForm />
               </Suspense>
             } 
@@ -727,7 +738,7 @@ const App = () => {
           <Route 
             path="/admin/family-tree-view/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <FamilyTreePage />
               </Suspense>
             } 
@@ -735,7 +746,7 @@ const App = () => {
           <Route 
             path="/admin/bloodline-dashboard/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <BloodlineDashboardPage />
               </Suspense>
             } 
@@ -743,7 +754,7 @@ const App = () => {
           <Route 
             path="/admin/family-history/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <FamilyHistoryForm />
               </Suspense>
             }
@@ -751,7 +762,7 @@ const App = () => {
           <Route 
             path="/admin/poa/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <POAForm />
               </Suspense>
             } 
@@ -759,7 +770,7 @@ const App = () => {
           <Route 
             path="/admin/citizenship/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <CitizenshipForm />
               </Suspense>
             } 
@@ -767,7 +778,7 @@ const App = () => {
           <Route 
             path="/admin/civil-registry/:id" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <CivilRegistryForm />
               </Suspense>
             } 
@@ -775,7 +786,7 @@ const App = () => {
           <Route 
             path="/admin/skyline-bg-removal" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <SkylineBackgroundRemoval />
               </Suspense>
             } 
@@ -785,7 +796,7 @@ const App = () => {
           <Route 
             path="/admin/ai-agents" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <AIAgentsDashboard />
               </Suspense>
             } 
@@ -793,7 +804,7 @@ const App = () => {
           <Route 
             path="/admin/agent-approvals" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <AgentApprovals />
               </Suspense>
             } 
@@ -801,7 +812,7 @@ const App = () => {
           <Route 
             path="/admin/verify-changes" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <VerifyChanges />
               </Suspense>
             } 
@@ -809,7 +820,7 @@ const App = () => {
           <Route 
             path="/admin/verification-results" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <VerificationResults />
               </Suspense>
             } 
@@ -817,7 +828,7 @@ const App = () => {
           <Route 
             path="/verification-b" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <VerificationB />
               </Suspense>
             } 
@@ -825,7 +836,7 @@ const App = () => {
           <Route 
             path="/phase-b" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <PhaseBVerification />
               </Suspense>
             } 
@@ -833,7 +844,7 @@ const App = () => {
           <Route 
             path="/mobile-guardian" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <MobileFirstGuardian />
               </Suspense>
             } 
@@ -841,7 +852,7 @@ const App = () => {
           <Route 
             path="/admin/selftest" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <SelfTest />
               </Suspense>
             } 
@@ -849,7 +860,7 @@ const App = () => {
           <Route 
             path="/test-lock-pdf" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <TestLockPdf />
               </Suspense>
             } 
@@ -857,7 +868,7 @@ const App = () => {
           <Route 
             path="/admin/poa-diagnostics" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <POADiagnostics />
               </Suspense>
             } 
@@ -865,7 +876,7 @@ const App = () => {
           <Route 
             path="/proven-patterns" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ProvenPatterns />
               </Suspense>
             } 
@@ -873,7 +884,7 @@ const App = () => {
           <Route 
             path="/abex-pdf-master" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ABEXPDFMaster />
               </Suspense>
             } 
@@ -881,14 +892,18 @@ const App = () => {
           <Route 
             path="/abex-ocr-master" 
             element={
-              <Suspense fallback={<AdminLoader />}>
+              <Suspense fallback={<PageLoader />}>
                 <ABEXOCRMaster />
               </Suspense>
             } 
           />
           
           {/* Catch-all */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={
+            <Suspense fallback={<PageLoader />}>
+              <NotFound />
+            </Suspense>
+          } />
           </Routes>
                 </AppRouter>
           </BrowserRouter>

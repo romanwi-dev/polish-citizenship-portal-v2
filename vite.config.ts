@@ -38,25 +38,83 @@ export default defineConfig(({ mode }) => ({
           }
           return `assets/[name]-[hash][extname]`;
         },
-        manualChunks: {
+        manualChunks: (id) => {
+          // Homepage chunk - completely independent
+          if (id.includes('/pages/Index.tsx') || id.includes('components/TimelineProcessEnhanced') || id.includes('components/ClientOnboardingSection')) {
+            return 'homepage';
+          }
+          
+          // Client portal chunk - separate from homepage
+          if (id.includes('/pages/ClientDashboard') || id.includes('/pages/ClientLogin') || id.includes('/pages/ClientIntakeWizard') || id.includes('/pages/PortalIndex') || id.includes('components/client/')) {
+            return 'client-portal';
+          }
+          
+          // Admin chunks - completely separate
+          if (id.includes('/pages/admin/')) {
+            return 'admin-portal';
+          }
+          
           // Core React libraries
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-router-dom/')) {
+            return 'react-vendor';
+          }
+          
           // UI component library
-          'radix-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot', '@radix-ui/react-tabs', '@radix-ui/react-toast', '@radix-ui/react-accordion', '@radix-ui/react-select'],
-          // Form and validation
-          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          if (id.includes('node_modules/@radix-ui/')) {
+            return 'radix-vendor';
+          }
+          
+          // Form and validation (admin/portal only)
+          if (id.includes('node_modules/react-hook-form/') || id.includes('node_modules/@hookform/') || id.includes('node_modules/zod/')) {
+            return 'form-vendor';
+          }
+          
           // Three.js separate chunk (loaded on demand)
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          // Supabase and API
-          'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
+          if (id.includes('node_modules/three/') || id.includes('node_modules/@react-three/')) {
+            return 'three-vendor';
+          }
+          
+          // Supabase and API (portal/admin only, NOT homepage)
+          if (id.includes('node_modules/@supabase/') || id.includes('node_modules/@tanstack/react-query/')) {
+            return 'supabase-vendor';
+          }
+          
           // Utilities
-          'utils-vendor': ['date-fns', 'clsx', 'tailwind-merge', 'class-variance-authority'],
+          if (id.includes('node_modules/date-fns/') || id.includes('node_modules/clsx/') || id.includes('node_modules/tailwind-merge/') || id.includes('node_modules/class-variance-authority/')) {
+            return 'utils-vendor';
+          }
+          
           // Admin-only heavy dependencies (PDF, AI, Dropbox)
-          'admin-heavy': ['pdf-lib', '@huggingface/transformers', 'react-pdf'],
+          if (id.includes('node_modules/pdf-lib/') || id.includes('node_modules/@huggingface/') || id.includes('node_modules/react-pdf/')) {
+            return 'admin-heavy';
+          }
+          
           // Translation and i18n
-          'i18n-vendor': ['i18next', 'react-i18next'],
+          if (id.includes('node_modules/i18next/') || id.includes('node_modules/react-i18next/')) {
+            return 'i18n-vendor';
+          }
         }
       }
     }
+  },
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@radix-ui/react-slot',
+      'clsx',
+      'tailwind-merge',
+      'i18next',
+      'react-i18next'
+    ],
+    exclude: [
+      '@supabase/supabase-js',
+      'pdf-lib',
+      '@huggingface/transformers',
+      'three',
+      '@react-three/fiber',
+      '@react-three/drei'
+    ]
   }
 }));
