@@ -1,6 +1,7 @@
+import { memo } from "react";
 import warsawSkyline from "@/assets/warsaw-skyline.png";
 
-export const WarsawSkyline = () => {
+export const WarsawSkyline = memo(() => {
   return (
     // CLS FIX: Container with explicit aspect ratio to prevent layout shift
     <div className="relative z-10 w-full flex justify-center" style={{ minHeight: '200px' }}>
@@ -21,4 +22,4 @@ export const WarsawSkyline = () => {
       </div>
     </div>
   );
-};
+});

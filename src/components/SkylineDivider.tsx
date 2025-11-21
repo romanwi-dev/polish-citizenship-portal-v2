@@ -139,7 +139,11 @@ const SkylineDivider = ({ imageSrc, alt = "City skyline", cityName = 'warsaw' }:
         <img 
           src={getSkylineImage()} 
           alt={alt} 
+          width="1920"
+          height="640"
           className="w-full h-full object-cover transition-opacity duration-500"
+          loading="lazy"
+          decoding="async"
           style={{
             filter: getSkylineFilter(),
             opacity: getSkylineOpacity(),

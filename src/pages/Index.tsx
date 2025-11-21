@@ -18,8 +18,6 @@ import { WarsawSkyline } from "@/components/WarsawSkyline";
 import AboutSection from "@/components/AboutSection";
 
 // Lazy load below-the-fold components for better code splitting and LCP optimization
-const BudapestSkyline = lazy(() => import("@/components/BudapestSkyline"));
-const BerlinSkyline = lazy(() => import("@/components/BerlinSkyline"));
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
 const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
 const TimelineProcessEnhanced = lazy(() => import("@/components/TimelineProcessEnhanced"));

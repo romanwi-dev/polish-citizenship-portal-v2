@@ -328,7 +328,11 @@ const ContactFormWeb3 = memo(() => {
                     <img 
                       src={thankYou1} 
                       alt="Professional with passport" 
+                      width="800"
+                      height="600"
                       className="w-full h-full object-cover rounded-lg"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   
