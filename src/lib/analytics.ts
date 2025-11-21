@@ -32,10 +32,17 @@ if (import.meta.env.DEV && !GA_MEASUREMENT_ID) {
 /**
  * Initialize Google Analytics 4
  * Only loads if GA_MEASUREMENT_ID is properly configured
+ * PERF-V5: Enhanced safeguards to prevent undefined ID injection
  */
 export const initGA = (language: string) => {
   // Skip if no GA ID configured or in dev mode
   if (!GA_MEASUREMENT_ID || import.meta.env.DEV) {
+    return;
+  }
+  
+  // Additional safety: verify ID is valid string
+  if (typeof GA_MEASUREMENT_ID !== 'string' || GA_MEASUREMENT_ID.trim() === '') {
+    console.error('Invalid GA_MEASUREMENT_ID. Analytics initialization aborted.');
     return;
   }
 

@@ -78,7 +78,7 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
           </span>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20 z-50">
+      <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20 z-50" role="menu" aria-label="Language selection menu">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
@@ -87,8 +87,11 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
             role="menuitemradio"
             aria-checked={currentLanguage.code === lang.code}
           >
-            <span className="mr-2">{lang.flag}</span>
+            <span className="mr-2" aria-hidden="true">{lang.flag}</span>
             <span>{lang.label}</span>
+            {currentLanguage.code === lang.code && (
+              <span className="ml-auto text-primary" aria-label="Selected">✓</span>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
