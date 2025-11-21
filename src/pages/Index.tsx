@@ -119,6 +119,10 @@ const Index = () => {
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />
         </Suspense>
+
+        <div className="my-16 md:my-24">
+          <WarsawSkyline />
+        </div>
         
         <Suspense fallback={<SectionLoader />}>
           <FooterWeb3 />
