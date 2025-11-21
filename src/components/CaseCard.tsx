@@ -1,3 +1,4 @@
+// PERF-V7: Enhanced memoization for CaseCard
 import { useState, memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star, Edit2, FolderOpen, GitBranch } from "lucide-react";
@@ -97,61 +98,62 @@ export const CaseCard = memo(({
   const { data: userRole } = useUserRole(user?.id);
   const isStaff = userRole === 'admin' || userRole === 'assistant';
 
-  const getStatusBadge = (status: string) => {
+  // PERF-V7: Memoize status badge to prevent recalculations
+  const getStatusBadge = useCallback((status: string) => {
     return STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.other;
-  };
+  }, []);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setIsFlipped(!isFlipped);
-  };
+  }, [isFlipped]);
 
-  const handleDoubleClick = () => {
+  const handleDoubleClick = useCallback(() => {
     navigate(`/admin/cases/${clientCase.id}`);
     setIsFlipped(false);
-  };
+  }, [navigate, clientCase.id]);
 
-  const handleEdit = (e: React.MouseEvent) => {
+  const handleEdit = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     onEdit(clientCase);
-  };
+  }, [onEdit, clientCase]);
 
-  const handleCopyId = async (e: React.MouseEvent) => {
+  const handleCopyId = useCallback(async (e: React.MouseEvent) => {
     e.stopPropagation();
     await navigator.clipboard.writeText(clientCase.id);
     toast.success("Case ID copied to clipboard");
-  };
+  }, [clientCase.id]);
 
-  const handlePostpone = (e: React.MouseEvent) => {
+  const handlePostpone = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     onUpdateStatus(clientCase.id, "on_hold");
-  };
+  }, [onUpdateStatus, clientCase.id]);
 
-  const handleSuspend = (e: React.MouseEvent) => {
+  const handleSuspend = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     onUpdateStatus(clientCase.id, "suspended");
-  };
+  }, [onUpdateStatus, clientCase.id]);
 
-  const handleCancel = (e: React.MouseEvent) => {
+  const handleCancel = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     onUpdateStatus(clientCase.id, "failed");
-  };
+  }, [onUpdateStatus, clientCase.id]);
 
-  const handleArchive = (e: React.MouseEvent) => {
+  const handleArchive = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     onUpdateStatus(clientCase.id, "finished");
-  };
+  }, [onUpdateStatus, clientCase.id]);
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
+  const handleDeleteClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     setShowDeleteDialog(true);
-  };
+  }, []);
 
-  const confirmDelete = () => {
+  const confirmDelete = useCallback(() => {
     onDelete(clientCase.id);
     setShowDeleteDialog(false);
-  };
+  }, [onDelete, clientCase.id]);
 
-  const handleSaveAdminNotes = async () => {
+  const handleSaveAdminNotes = useCallback(async () => {
     try {
       const { error } = await supabase
         .from('cases')
@@ -165,20 +167,20 @@ export const CaseCard = memo(({
       console.error('Error saving admin notes:', error);
       toast.error('Failed to save admin notes');
     }
-  };
+  }, [adminNotes, clientCase.id]);
 
-  const handleProcessingModeChange = (mode: string) => {
+  const handleProcessingModeChange = useCallback((mode: string) => {
     updateProcessingMode.mutate({ caseId: clientCase.id, processingMode: mode });
-  };
+  }, [updateProcessingMode, clientCase.id]);
 
-  const handlePaymentStatusChange = (status: string) => {
+  const handlePaymentStatusChange = useCallback((status: string) => {
     updateCase.mutate({ 
       caseId: clientCase.id, 
       updates: { payment_status: status } as any 
     });
-  };
+  }, [updateCase, clientCase.id]);
 
-  const getProcessingModeIcon = () => {
+  const getProcessingModeIcon = useCallback(() => {
     switch (clientCase.processing_mode) {
       case "expedited":
         return <Zap className="w-4 h-4" />;
@@ -188,7 +190,7 @@ export const CaseCard = memo(({
       default:
         return null;
     }
-  };
+  }, [clientCase.processing_mode]);
 
   return (
     <div 
