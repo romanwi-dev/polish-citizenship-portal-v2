@@ -19,6 +19,8 @@ function classifyError(errorMessage: string): 'permanent' | 'transient' {
     /image.*too.*large/i,
     /no.*text.*found/i,
     /pdf.*not.*supported/i,
+    /404/i, // File not found
+    /path.*error/i,
   ];
   
   const transientPatterns = [
@@ -38,6 +40,20 @@ function classifyError(errorMessage: string): 'permanent' | 'transient' {
   }
   
   return 'transient';
+}
+
+// Calculate exponential backoff for retry timing
+function calculateNextRetry(retryCount: number): Date {
+  const baseDelayMs = 60000; // 1 minute
+  const maxDelayMs = 3600000; // 1 hour
+  
+  // Exponential: 1min, 2min, 4min, 8min, etc.
+  const delayMs = Math.min(
+    baseDelayMs * Math.pow(2, retryCount),
+    maxDelayMs
+  );
+  
+  return new Date(Date.now() + delayMs);
 }
 
 Deno.serve(async (req) => {
@@ -99,16 +115,18 @@ Deno.serve(async (req) => {
       }
     }
 
-    // STEP 2: Fetch pending documents (with service role = bypasses RLS)
+    // STEP 2: Fetch pending documents with exponential backoff support
     console.log("📥 Fetching pending documents from valid /CASES paths...");
+    const now = new Date().toISOString();
     const { data: queuedDocs, error: fetchError } = await supabase
       .from("documents")
-      .select("id, case_id, dropbox_path, document_type, person_type, name, ocr_retry_count, file_extension")
+      .select("id, case_id, dropbox_path, document_type, person_type, name, ocr_retry_count, file_extension, ocr_next_retry_at")
       .eq("ocr_status", "pending")
       .like("dropbox_path", "/CASES/%")           // Must be in /CASES
       .not("dropbox_path", "like", "/CASES/###%") // NOT archived
       .not("dropbox_path", "like", "/TEST/%")     // NOT test
       .lt("ocr_retry_count", MAX_RETRIES)
+      .or(`ocr_next_retry_at.is.null,ocr_next_retry_at.lte.${now}`) // Only ready for retry
       .order("created_at", { ascending: true })
       .limit(MAX_CONCURRENT_OCR);
 
@@ -302,21 +320,26 @@ Deno.serve(async (req) => {
         const retryCount = (doc.ocr_retry_count || 0) + 1;
         
         let newStatus: string;
+        let nextRetry: Date | null = null;
+        
         if (errorType === 'permanent' || retryCount >= MAX_RETRIES) {
           newStatus = 'failed';
           console.log(`❌ Marking as FAILED (${errorType} error or max retries reached)`);
         } else {
           newStatus = 'pending';
-          console.log(`🔄 Marking as PENDING for retry ${retryCount}/${MAX_RETRIES}`);
+          nextRetry = calculateNextRetry(retryCount);
+          const delayMinutes = Math.round((nextRetry.getTime() - Date.now()) / 60000);
+          console.log(`🔄 Marking as PENDING for retry ${retryCount}/${MAX_RETRIES} (next attempt in ${delayMinutes} min)`);
         }
 
-        // Update document status
+        // Update document status with exponential backoff
         await supabase
           .from("documents")
           .update({ 
             ocr_status: newStatus,
             ocr_retry_count: retryCount,
             ocr_error_message: errorMessage,
+            ocr_next_retry_at: nextRetry?.toISOString() || null,
             updated_at: new Date().toISOString()
           })
           .eq("id", doc.id);
