@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { RouteErrorBoundary } from "@/components/RouteErrorBoundary";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import { LanguageRedirect } from "@/components/LanguageRedirect";
 import { LanguageSyncWrapper } from "@/components/LanguageSyncWrapper";
@@ -124,11 +125,17 @@ const queryClient = new QueryClient({
       retry: 1,
       staleTime: 30000,
       gcTime: 300000, // 5 minutes cache retention
+      // V7 HARDENING: Prevent unhandled promise rejections
+      throwOnError: false,
+    },
+    mutations: {
+      // V7 HARDENING: Prevent unhandled promise rejections
+      throwOnError: false,
     },
   },
 });
 
-// Loading fallback for admin pages
+// V7 HARDENING: Loading fallback for admin pages with error protection
 const AdminLoader = () => (
   <div className="flex items-center justify-center h-screen">
     <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -159,82 +166,118 @@ const App = () => {
             {/* Language redirect at root */}
             <Route path="/" element={<LanguageRedirect />} />
             
-            {/* Language-prefixed routes for homepage */}
+            {/* Language-prefixed routes for homepage - V7 DO NOT MODIFY */}
             <Route path="/:lang" element={
-              <LanguageSyncWrapper>
-                <Index />
-              </LanguageSyncWrapper>
+              <RouteErrorBoundary>
+                <LanguageSyncWrapper>
+                  <Index />
+                </LanguageSyncWrapper>
+              </RouteErrorBoundary>
             } />
             <Route path="/translation-demo" element={
-              <Suspense fallback={<AdminLoader />}>
-                <TranslationDemo />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <TranslationDemo />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/demos" element={
-              <Suspense fallback={<AdminLoader />}>
-                <DemosHub />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <DemosHub />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/hero-gallery" element={
-              <Suspense fallback={<AdminLoader />}>
-                <HeroGallery />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <HeroGallery />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/demos/main-cta-reference" element={
-              <Suspense fallback={<AdminLoader />}>
-                <MainCTAReference />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <MainCTAReference />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/multi-step-demo" element={
-              <Suspense fallback={<AdminLoader />}>
-                <MultiStepDemo />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <MultiStepDemo />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/font-styles-demo" element={
-              <Suspense fallback={<AdminLoader />}>
-                <FontStylesDemo />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <FontStylesDemo />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/design-showcase" element={
-              <Suspense fallback={<AdminLoader />}>
-                <DesignShowcase />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <DesignShowcase />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/warsaw-demo" element={
-              <Suspense fallback={<AdminLoader />}>
-                <WarsawDemo />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <WarsawDemo />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/eu-celebration-demo" element={
-              <Suspense fallback={<AdminLoader />}>
-                <EUCelebrationDemo />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <EUCelebrationDemo />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/thank-you-images-demo" element={
-              <Suspense fallback={<AdminLoader />}>
-                <ThankYouImagesDemo />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <ThankYouImagesDemo />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/contact-forms-demo" element={
-              <Suspense fallback={<AdminLoader />}>
-                <ContactFormsDemo />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <ContactFormsDemo />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
             <Route path="/request-access" element={
-              <Suspense fallback={<AdminLoader />}>
-                <RequestAccess />
-              </Suspense>
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <RequestAccess />
+                </Suspense>
+              </RouteErrorBoundary>
             } />
-            <Route path="/login" element={<Login />} />
-            <Route path="/cases" element={<Cases />} />
+            <Route path="/login" element={
+              <RouteErrorBoundary>
+                <Login />
+              </RouteErrorBoundary>
+            } />
+            <Route path="/cases" element={
+              <RouteErrorBoundary>
+                <Cases />
+              </RouteErrorBoundary>
+            } />
             
             {/* Portal Entry Route */}
             <Route 
               path="/portal" 
               element={
-                <Suspense fallback={<AdminLoader />}>
-                  <PortalIndex />
-                </Suspense>
+                <RouteErrorBoundary>
+                  <Suspense fallback={<AdminLoader />}>
+                    <PortalIndex />
+                  </Suspense>
+                </RouteErrorBoundary>
               } 
             />
             

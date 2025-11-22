@@ -8,14 +8,19 @@ interface CrashState {
   createdAt: string;
 }
 
-// Generate session ID (persists across page refreshes)
+// V7 HARDENING: Safe session ID generation with fallback
 const getSessionId = (): string => {
-  let sessionId = sessionStorage.getItem('crash_recovery_session_id');
-  if (!sessionId) {
-    sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-    sessionStorage.setItem('crash_recovery_session_id', sessionId);
+  try {
+    let sessionId = sessionStorage.getItem('crash_recovery_session_id');
+    if (!sessionId) {
+      sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+      sessionStorage.setItem('crash_recovery_session_id', sessionId);
+    }
+    return sessionId;
+  } catch (error) {
+    // Fallback to memory-only session ID if sessionStorage fails
+    return `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
   }
-  return sessionId;
 };
 
 export const useCrashStateRecovery = () => {
