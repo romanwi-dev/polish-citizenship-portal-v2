@@ -138,18 +138,17 @@ const ContactFormWeb3 = memo(() => {
             className="relative w-full animate-fade-in z-20" 
             style={{ 
               perspective: '1000px',
-              animationDelay: '100ms',
-              height: '900px'
+              animationDelay: '100ms'
             }}
           >
             <div 
-              className="relative w-full h-full transition-transform duration-700"
+              className="relative w-full transition-transform duration-700"
               style={{ 
                 transformStyle: 'preserve-3d',
                 transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}
             >
-              {/* Front Side - Form */}
+              {/* Front Side - Image + Form */}
               <div 
                 className={`w-full absolute inset-0 ${isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 style={{ 
@@ -159,8 +158,20 @@ const ContactFormWeb3 = memo(() => {
                   transition: 'opacity 0s 0.35s'
                 }}
               >
-                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl">
-                  <form 
+                <div className="flex flex-col lg:flex-row gap-6 overflow-visible">
+                  {/* Left Side - Image */}
+                  <div className="w-full lg:w-1/2">
+                    <img
+                      src={thankYou1}
+                      alt="Professional consultation"
+                      className="w-full h-auto rounded-2xl object-contain object-top"
+                    />
+                  </div>
+
+                  {/* Right Side - Form */}
+                  <div className="w-full lg:w-1/2">
+                    <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full">
+                      <form
                     onSubmit={handleSubmit} 
                     className="space-y-8"
                     aria-label="Contact form"
@@ -308,6 +319,8 @@ const ContactFormWeb3 = memo(() => {
                       </span>
                     </Button>
                   </form>
+                    </div>
+                  </div>
                 </div>
               </div>
 
