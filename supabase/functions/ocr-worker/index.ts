@@ -10,6 +10,55 @@ const corsHeaders = {
 const MAX_CONCURRENT_OCR = 5;
 const MAX_RETRIES = 3;
 const PROCESSING_TIMEOUT_MINUTES = 5;
+const RATE_LIMIT_DELAY_MS = 200; // V9.3: Delay between Dropbox API calls
+const CIRCUIT_BREAKER_THRESHOLD = 5; // V9.3: Number of consecutive errors before circuit opens
+const CIRCUIT_BREAKER_TIMEOUT_MS = 15 * 60 * 1000; // V9.3: 15 minutes
+
+// V9.3: Circuit breaker state
+const circuitBreaker = {
+  failureCount: 0,
+  lastErrorType: null as string | null,
+  openedAt: null as number | null,
+  
+  recordFailure(errorType: string): boolean {
+    if (this.lastErrorType === errorType) {
+      this.failureCount++;
+    } else {
+      this.failureCount = 1;
+      this.lastErrorType = errorType;
+    }
+    
+    if (this.failureCount >= CIRCUIT_BREAKER_THRESHOLD) {
+      this.openedAt = Date.now();
+      return true; // Circuit opened
+    }
+    return false;
+  },
+  
+  recordSuccess() {
+    this.failureCount = 0;
+    this.lastErrorType = null;
+    this.openedAt = null;
+  },
+  
+  isOpen(): boolean {
+    if (!this.openedAt) return false;
+    
+    const elapsed = Date.now() - this.openedAt;
+    if (elapsed > CIRCUIT_BREAKER_TIMEOUT_MS) {
+      // Circuit timeout expired, reset
+      this.reset();
+      return false;
+    }
+    return true;
+  },
+  
+  reset() {
+    this.failureCount = 0;
+    this.lastErrorType = null;
+    this.openedAt = null;
+  }
+};
 
 // Error classification for intelligent retry logic with terminal states
 type ErrorClassification = {
@@ -99,26 +148,76 @@ Deno.serve(async (req) => {
   }> = [];
 
   try {
-    // STEP 1: Reset stuck documents (processing > 5 minutes)
-    console.log(`🔄 Checking for stuck documents (processing > ${PROCESSING_TIMEOUT_MINUTES} min)...`);
+    // V9.3: Check circuit breaker before processing
+    if (circuitBreaker.isOpen()) {
+      const timeRemaining = Math.ceil((CIRCUIT_BREAKER_TIMEOUT_MS - (Date.now() - circuitBreaker.openedAt!)) / 1000 / 60);
+      console.log(`⚠️  Circuit breaker OPEN due to repeated ${circuitBreaker.lastErrorType} errors. Skipping processing for ${timeRemaining} more minutes.`);
+      
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: "Circuit breaker open",
+          error_type: circuitBreaker.lastErrorType,
+          retry_after_minutes: timeRemaining
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 503 }
+      );
+    }
+
+    // STEP 1: V9.2: Reset stuck documents (processing > 5 min OR pending with past retry time)
+    console.log(`🔄 Checking for stuck documents...`);
     const timeoutThreshold = new Date(Date.now() - PROCESSING_TIMEOUT_MINUTES * 60 * 1000).toISOString();
     
-    const { data: stuckDocs, error: stuckError } = await supabase
+    // Stuck in processing state
+    const { data: stuckProcessing } = await supabase
       .from("documents")
-      .select("id, name, updated_at")
+      .select("id, case_id, name, updated_at")
       .eq("ocr_status", "processing")
       .lt("updated_at", timeoutThreshold);
+    
+    // Stuck in pending with past retry time
+    const { data: stuckPending } = await supabase
+      .from("documents")
+      .select("id, case_id, name, ocr_next_retry_at")
+      .eq("ocr_status", "pending")
+      .not("ocr_next_retry_at", "is", null)
+      .lt("ocr_next_retry_at", new Date().toISOString());
+    
+    const stuckDocs = [...(stuckProcessing || []), ...(stuckPending || [])];
 
-    if (stuckError) {
-      console.error("❌ Error checking stuck documents:", stuckError);
-    } else if (stuckDocs && stuckDocs.length > 0) {
-      console.log(`⚠️  Found ${stuckDocs.length} stuck documents, resetting to queued...`);
+    if (stuckDocs.length > 0) {
+      console.log(`⚠️  Found ${stuckDocs.length} stuck documents, resetting to pending...`);
+      
+      // V9.2: Log stuck document resets to HAC
+      for (const doc of stuckDocs) {
+      const stuckDuration = (doc as any).updated_at 
+        ? Math.floor((Date.now() - new Date((doc as any).updated_at).getTime()) / 1000 / 60)
+        : 'unknown';
+      
+      const resetReason = (doc as any).ocr_next_retry_at 
+        ? "pending_with_past_retry_time" 
+        : "processing_timeout";
+      
+      await supabase.from("hac_logs").insert({
+        case_id: doc.case_id,
+        action_type: "ocr_stuck_documents_reset",
+        action_details: `Reset stuck document: ${doc.name}`,
+        performed_by: "system",
+        metadata: {
+          scope: 'ocr_worker',
+          document_id: doc.id,
+          stuck_duration_minutes: stuckDuration,
+          reset_reason: resetReason
+        }
+      });
+      }
       
       const { error: resetError } = await supabase
         .from("documents")
         .update({ 
           ocr_status: "pending",
-          ocr_error_message: "Reset from stuck processing state",
+          ocr_next_retry_at: null,
+          ocr_error_message: "Reset from stuck state",
           updated_at: new Date().toISOString()
         })
         .in("id", stuckDocs.map(d => d.id));
@@ -165,10 +264,16 @@ Deno.serve(async (req) => {
 
     console.log(`📋 Found ${queuedDocs.length} documents to process`);
 
-    // STEP 3: Process each document
-    for (const doc of queuedDocs) {
+    // STEP 3: Process each document with rate limiting
+    for (let i = 0; i < queuedDocs.length; i++) {
+      const doc = queuedDocs[i];
       const logId = crypto.randomUUID();
       const startTime = new Date();
+      
+      // V9.3: Rate limiting - delay between Dropbox API calls (except first)
+      if (i > 0) {
+        await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_DELAY_MS));
+      }
       
       try {
         console.log(`\n🔄 Processing document ${doc.id} (${doc.name})`);
@@ -242,6 +347,9 @@ Deno.serve(async (req) => {
           });
 
           console.log(`✅ PDF extraction successful for ${doc.name}`);
+          
+          // V9.3: Record success for circuit breaker
+          circuitBreaker.recordSuccess();
           continue;
         }
 
@@ -332,6 +440,9 @@ Deno.serve(async (req) => {
         });
 
         console.log(`✅ Successfully processed ${doc.name}`);
+        
+        // V9.3: Record success for circuit breaker
+        circuitBreaker.recordSuccess();
 
       } catch (error) {
         console.error(`❌ Error processing document ${doc.id}:`, error);
@@ -340,6 +451,31 @@ Deno.serve(async (req) => {
         const errorData = (error as any)?.dropboxErrorData;
         const errorClassification = classifyError(errorMessage, errorData);
         const retryCount = (doc.ocr_retry_count || 0) + 1;
+        
+        // V9.3: Record failure for circuit breaker
+        const circuitOpened = circuitBreaker.recordFailure(errorClassification.terminalStatus || errorClassification.type);
+        if (circuitOpened) {
+          console.error(`⚠️  CIRCUIT BREAKER OPENED after ${CIRCUIT_BREAKER_THRESHOLD} consecutive ${circuitBreaker.lastErrorType} errors`);
+          
+          // Log circuit breaker activation to HAC
+          await supabase.from("hac_logs").insert({
+            case_id: doc.case_id,
+            action_type: "ocr_circuit_breaker_opened",
+            action_details: `Circuit breaker activated after ${CIRCUIT_BREAKER_THRESHOLD} consecutive ${circuitBreaker.lastErrorType} errors`,
+            performed_by: "system",
+            metadata: {
+              scope: 'ocr_worker',
+              error_type: circuitBreaker.lastErrorType,
+              threshold: CIRCUIT_BREAKER_THRESHOLD,
+              timeout_minutes: CIRCUIT_BREAKER_TIMEOUT_MS / 1000 / 60,
+              last_error_message: errorMessage,
+              action_recommended: 'System will automatically resume processing after timeout period'
+            }
+          });
+          
+          // Stop processing immediately
+          break;
+        }
         
         let newStatus: string;
         let nextRetry: Date | null = null;
@@ -440,6 +576,7 @@ Deno.serve(async (req) => {
         processed: results.length,
         successful: results.filter(r => r.status === 'success').length,
         failed: results.filter(r => r.status === 'failed').length,
+        circuit_breaker_status: circuitBreaker.isOpen() ? 'open' : 'closed',
         results 
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
