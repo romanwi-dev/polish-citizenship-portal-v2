@@ -27,7 +27,7 @@ export const HeroWavingFlags = () => {
 
   const features = [
     { icon: Award, stat: '>20', text: t('hero.stats.experience') },
-    { icon: Users, stat: '>25,000', text: t('hero.stats.cases') },
+    { icon: Users, stat: '>20,000', text: t('hero.stats.cases') },
     { icon: Trophy, stat: '100%', text: t('hero.stats.success') }
   ];
 
