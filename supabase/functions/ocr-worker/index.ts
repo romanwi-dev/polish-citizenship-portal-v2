@@ -178,7 +178,7 @@ Deno.serve(async (req) => {
     // Stuck in pending with past retry time
     const { data: stuckPending } = await supabase
       .from("documents")
-      .select("id, case_id, name, ocr_next_retry_at")
+      .select("id, case_id, name, ocr_next_retry_at, updated_at")
       .eq("ocr_status", "pending")
       .not("ocr_next_retry_at", "is", null)
       .lt("ocr_next_retry_at", new Date().toISOString());
