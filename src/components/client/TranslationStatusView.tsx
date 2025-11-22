@@ -74,7 +74,7 @@ export const TranslationStatusView = ({ caseId }: TranslationStatusViewProps) =>
     return (
       <Card>
         <CardContent className="py-8">
-          <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto" />
+          <div className="animate-spin w-5 h-5 sm:w-6 sm:h-6 border-2 border-primary border-t-transparent rounded-full mx-auto" />
         </CardContent>
       </Card>
     );
@@ -84,8 +84,8 @@ export const TranslationStatusView = ({ caseId }: TranslationStatusViewProps) =>
     return (
       <Card>
         <CardContent className="py-8 text-center text-muted-foreground">
-          <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
-          <p>No translation requests at this time</p>
+          <FileText className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 opacity-50" />
+          <p className="text-sm sm:text-base">No translation requests at this time</p>
         </CardContent>
       </Card>
     );
@@ -93,31 +93,31 @@ export const TranslationStatusView = ({ caseId }: TranslationStatusViewProps) =>
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Translation Status</h2>
-      <p className="text-muted-foreground">
+      <h2 className="text-xl sm:text-2xl font-bold">Translation Status</h2>
+      <p className="text-sm sm:text-base text-muted-foreground">
         Track the progress of your document translations
       </p>
 
-      <div className="grid gap-4">
+      <div className="grid gap-3 sm:gap-4">
         {requests.map((request) => {
           const statusInfo = getStatusInfo(request.status);
           const StatusIcon = statusInfo.icon;
 
           return (
             <Card key={request.id}>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <FileText className="w-5 h-5" />
-                      {request.documents?.name || 'Document'}
+              <CardHeader className="pb-3">
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0 w-full sm:w-auto">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+                      <FileText className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                      <span className="truncate">{request.documents?.name || 'Document'}</span>
                     </CardTitle>
-                    <div className="flex gap-2 mt-2">
-                      <Badge className={statusInfo.color}>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      <Badge className={`${statusInfo.color} text-xs`}>
                         <StatusIcon className="w-3 h-3 mr-1" />
                         {statusInfo.label}
                       </Badge>
-                      <Badge variant="outline">
+                      <Badge variant="outline" className="text-xs">
                         {request.source_language} → {request.target_language}
                       </Badge>
                     </div>
@@ -130,20 +130,20 @@ export const TranslationStatusView = ({ caseId }: TranslationStatusViewProps) =>
                 </p>
 
                 {request.assigned_translator_id && request.sworn_translators && (
-                  <div className="text-sm">
+                  <div className="text-xs sm:text-sm">
                     <span className="text-muted-foreground">Translator: </span>
-                    <span className="font-medium">{request.sworn_translators.full_name}</span>
+                    <span className="font-medium truncate">{request.sworn_translators.full_name}</span>
                   </div>
                 )}
 
                 {request.deadline && (
-                  <div className="text-sm">
+                  <div className="text-xs sm:text-sm">
                     <span className="text-muted-foreground">Expected completion: </span>
-                    <span className="font-medium">{format(new Date(request.deadline), 'PPP')}</span>
+                    <span className="font-medium">{format(new Date(request.deadline), 'PP')}</span>
                   </div>
                 )}
 
-                <div className="flex items-center gap-3 pt-2">
+                <div className="flex items-center gap-2 sm:gap-3 pt-2">
                   {/* Timeline */}
                   <div className="flex-1 flex items-center gap-2">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -170,8 +170,8 @@ export const TranslationStatusView = ({ caseId }: TranslationStatusViewProps) =>
                 </div>
 
                 {request.status === 'completed' && request.certified_translation_document_id && (
-                  <Button className="w-full">
-                    <Download className="w-4 h-4 mr-2" />
+                  <Button className="w-full h-10 sm:h-11 text-xs sm:text-sm">
+                    <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                     Download Certified Translation
                   </Button>
                 )}

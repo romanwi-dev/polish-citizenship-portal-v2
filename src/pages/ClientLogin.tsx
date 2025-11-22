@@ -43,8 +43,8 @@ export default function ClientLogin() {
 
   if (showEmailSent) {
     return (
-      <div className="flex items-center justify-center p-4 min-h-screen">
-        <Card className="w-full max-w-md">
+      <div className="flex items-center justify-center p-4 sm:p-6 min-h-screen">
+        <Card className="w-full max-w-md p-6 sm:p-8">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
               <CheckCircle className="h-6 w-6 text-green-600" />
@@ -76,8 +76,8 @@ export default function ClientLogin() {
   }
 
   return (
-    <div className="flex items-center justify-center p-4 min-h-screen">
-      <Card className="w-full max-w-md">
+    <div className="flex items-center justify-center p-4 sm:p-6 min-h-screen">
+      <Card className="w-full max-w-md p-6 sm:p-8">
         <CardHeader>
           <CardTitle className="text-2xl">{t('login.title')}</CardTitle> {/* Client Portal Login */}
           <CardDescription>
@@ -94,6 +94,7 @@ export default function ClientLogin() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
+              className="w-full h-11"
             />
           </div>
 
@@ -106,12 +107,13 @@ export default function ClientLogin() {
               value={caseId}
               onChange={(e) => setCaseId(e.target.value)}
               disabled={loading}
+              className="w-full h-11"
             />
           </div>
 
           <Button
             onClick={handleMagicLinkLogin}
-            className="w-full"
+            className="w-full h-11 mt-2"
             disabled={loading || !email || !caseId}
           >
             {loading ? (
