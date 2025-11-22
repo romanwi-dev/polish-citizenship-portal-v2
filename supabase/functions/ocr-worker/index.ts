@@ -11,15 +11,30 @@ const MAX_CONCURRENT_OCR = 5;
 const MAX_RETRIES = 3;
 const PROCESSING_TIMEOUT_MINUTES = 5;
 
-// Error classification for intelligent retry logic
-function classifyError(errorMessage: string): 'permanent' | 'transient' {
+// Error classification for intelligent retry logic with terminal states
+type ErrorClassification = {
+  type: 'permanent' | 'transient';
+  terminalStatus?: string; // Specific terminal status if permanent
+};
+
+function classifyError(errorMessage: string, errorData?: any): ErrorClassification {
+  // Permanent errors with specific terminal states
+  if (/404/i.test(errorMessage) || /file.*not.*found/i.test(errorMessage) || 
+      /path.*not.*found/i.test(errorMessage) || errorData?.isPermanent === true) {
+    return { type: 'permanent', terminalStatus: 'missing_remote_file' };
+  }
+  
+  if (/invalid.*pdf/i.test(errorMessage) || /corrupted.*pdf/i.test(errorMessage) || 
+      /pdf.*parse.*error/i.test(errorMessage)) {
+    return { type: 'permanent', terminalStatus: 'pdf_corrupt' };
+  }
+  
   const permanentPatterns = [
     /invalid.*image/i,
     /unsupported.*format/i,
     /image.*too.*large/i,
     /no.*text.*found/i,
     /pdf.*not.*supported/i,
-    /404/i, // File not found
     /path.*error/i,
   ];
   
@@ -32,14 +47,14 @@ function classifyError(errorMessage: string): 'permanent' | 'transient' {
   ];
   
   if (permanentPatterns.some(pattern => pattern.test(errorMessage))) {
-    return 'permanent';
+    return { type: 'permanent' };
   }
   
   if (transientPatterns.some(pattern => pattern.test(errorMessage))) {
-    return 'transient';
+    return { type: 'transient' };
   }
   
-  return 'transient';
+  return { type: 'transient' };
 }
 
 // Calculate exponential backoff for retry timing
@@ -240,12 +255,20 @@ Deno.serve(async (req) => {
         const { data: downloadData, error: downloadError } = await supabase.functions.invoke(
           "dropbox-download",
           {
-            body: { file_path: doc.dropbox_path }
+            body: { 
+              file_path: doc.dropbox_path,
+              document_id: doc.id,
+              case_id: doc.case_id
+            }
           }
         );
 
         if (downloadError) {
-          throw new Error(`Dropbox download failed: ${downloadError.message}`);
+          // Pass download error data for better classification
+          throw Object.assign(
+            new Error(`Dropbox download failed: ${downloadError.message}`),
+            { dropboxErrorData: downloadData }
+          );
         }
 
         if (!downloadData?.arrayBuffer) {
@@ -316,16 +339,32 @@ Deno.serve(async (req) => {
         console.error(`❌ Error processing document ${doc.id}:`, error);
         
         const errorMessage = error instanceof Error ? error.message : String(error);
-        const errorType = classifyError(errorMessage);
+        const errorData = (error as any)?.dropboxErrorData;
+        const errorClassification = classifyError(errorMessage, errorData);
         const retryCount = (doc.ocr_retry_count || 0) + 1;
         
         let newStatus: string;
         let nextRetry: Date | null = null;
+        let isTerminal = false;
         
-        if (errorType === 'permanent' || retryCount >= MAX_RETRIES) {
-          newStatus = 'failed';
-          console.log(`❌ Marking as FAILED (${errorType} error or max retries reached)`);
+        // Determine if this is a terminal failure
+        if (errorClassification.terminalStatus) {
+          // Specific terminal state (e.g., missing_remote_file, pdf_corrupt)
+          newStatus = errorClassification.terminalStatus;
+          isTerminal = true;
+          console.log(`❌ Marking as TERMINAL: ${newStatus}`);
+        } else if (errorClassification.type === 'permanent') {
+          // Generic permanent failure
+          newStatus = 'permanent_failure';
+          isTerminal = true;
+          console.log(`❌ Marking as PERMANENT_FAILURE`);
+        } else if (retryCount >= MAX_RETRIES) {
+          // Exhausted retries
+          newStatus = 'permanent_failure';
+          isTerminal = true;
+          console.log(`❌ Marking as PERMANENT_FAILURE (max retries reached: ${retryCount}/${MAX_RETRIES})`);
         } else {
+          // Transient error - schedule retry
           newStatus = 'pending';
           nextRetry = calculateNextRetry(retryCount);
           const delayMinutes = Math.round((nextRetry.getTime() - Date.now()) / 60000);
@@ -344,7 +383,38 @@ Deno.serve(async (req) => {
           })
           .eq("id", doc.id);
 
-        // Log failure
+        // Log terminal failures to HAC for manual review
+        if (isTerminal) {
+          try {
+            let actionRecommended = 'Review document and error details';
+            
+            if (newStatus === 'missing_remote_file') {
+              actionRecommended = 'Ask client to re-upload the document or verify Dropbox path';
+            } else if (newStatus === 'pdf_corrupt') {
+              actionRecommended = 'Ask client to re-upload a clean copy of the PDF document';
+            }
+            
+            await supabase.from('hac_logs').insert({
+              case_id: doc.case_id,
+              action_type: 'ocr_terminal_failure',
+              action_details: `Document OCR failed permanently: ${doc.name}`,
+              metadata: {
+                scope: 'ocr_worker',
+                document_id: doc.id,
+                final_status: newStatus,
+                last_error_message: errorMessage,
+                retry_count: retryCount,
+                action_recommended: actionRecommended
+              },
+              performed_by: 'system'
+            });
+            console.log(`📝 Logged terminal failure to HAC logs`);
+          } catch (logError) {
+            console.error('Failed to log terminal failure to HAC:', logError);
+          }
+        }
+
+        // Log failure to processing logs
         await supabase
           .from("ocr_processing_logs")
           .update({
