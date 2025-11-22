@@ -217,9 +217,8 @@ Deno.serve(async (req) => {
             .from("documents")
             .update({ 
               ocr_status: "completed",
-              ocr_extracted_text: pdfData.extractedText,
+              ocr_text: pdfData.extractedText,
               ocr_confidence: 0.95, // PDFs have high confidence
-              ocr_completed_at: new Date().toISOString(),
               updated_at: new Date().toISOString()
             })
             .eq("id", doc.id);
@@ -307,10 +306,9 @@ Deno.serve(async (req) => {
           .from("documents")
           .update({ 
             ocr_status: "completed",
-            ocr_extracted_data: ocrData.extractedData,
-            ocr_extracted_text: ocrData.extractedText,
+            ocr_data: ocrData.extractedData,
+            ocr_text: ocrData.extractedText,
             ocr_confidence: ocrData.confidence,
-            ocr_completed_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           })
           .eq("id", doc.id);
