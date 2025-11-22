@@ -6,6 +6,26 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Sanitize Dropbox path for special characters and format issues
+function sanitizeDropboxPath(path: string): string {
+  let sanitized = path.trim();
+  
+  // Handle special characters
+  sanitized = sanitized.replace(/'/g, "'"); // Smart quotes to straight
+  sanitized = sanitized.replace(/"/g, '"'); // Smart quotes to straight
+  sanitized = sanitized.replace(/'/g, "'"); // Another smart quote variant
+  
+  // Ensure leading slash
+  if (!sanitized.startsWith('/')) {
+    sanitized = '/' + sanitized;
+  }
+  
+  // Remove double slashes
+  sanitized = sanitized.replace(/\/\//g, '/');
+  
+  return sanitized;
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -48,15 +68,21 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json();
-    const filePath = body.file_path || body.dropboxPath; // Support both parameter names
-    console.log(`[dropbox-download-${requestId}] File path: ${filePath}`);
-
-    if (!filePath) {
+    const rawFilePath = body.file_path || body.dropboxPath; // Support both parameter names
+    
+    if (!rawFilePath) {
       console.error(`[dropbox-download-${requestId}] ❌ No file path provided`);
       return new Response(
         JSON.stringify({ error: 'Missing file_path or dropboxPath parameter' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
+    }
+    
+    // Sanitize the path
+    const filePath = sanitizeDropboxPath(rawFilePath);
+    console.log(`[dropbox-download-${requestId}] Original path: ${rawFilePath}`);
+    if (filePath !== rawFilePath) {
+      console.log(`[dropbox-download-${requestId}] Sanitized path: ${filePath}`);
     }
 
     const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
@@ -85,13 +111,23 @@ Deno.serve(async (req) => {
     if (!downloadResponse.ok) {
       const errorText = await downloadResponse.text();
       console.error(`[dropbox-download-${requestId}] ❌ Dropbox API error: ${downloadResponse.status}`);
+      console.error(`[dropbox-download-${requestId}] Original path: ${rawFilePath}`);
+      console.error(`[dropbox-download-${requestId}] Sanitized path: ${filePath}`);
       console.error(`[dropbox-download-${requestId}] Error details: ${errorText}`);
+      
+      // Provide detailed error for path issues
+      const errorDetails = downloadResponse.status === 404 
+        ? `File not found at path: ${filePath}. Original path: ${rawFilePath}`
+        : errorText;
       
       return new Response(
         JSON.stringify({
           error: 'Failed to download file from Dropbox',
-          details: errorText,
+          details: errorDetails,
           status: downloadResponse.status,
+          originalPath: rawFilePath,
+          sanitizedPath: filePath,
+          pathMismatch: rawFilePath !== filePath,
         }),
         {
           status: downloadResponse.status === 404 ? 404 : 409,
