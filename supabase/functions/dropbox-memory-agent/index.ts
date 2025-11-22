@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { getErrorMessage } from '../_shared/error-utils.ts';
 
 const AGENT_NAME = 'dropbox_memory';
 
@@ -130,11 +131,11 @@ Deno.serve(async (req) => {
       agent_name: AGENT_NAME,
       activity_type: 'memory_update',
       status: 'failed',
-      details: { error: error.message },
+      details: { error: getErrorMessage(error) },
     });
 
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: getErrorMessage(error) }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

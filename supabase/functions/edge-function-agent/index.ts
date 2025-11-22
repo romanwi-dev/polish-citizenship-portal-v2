@@ -224,10 +224,7 @@ function analyzeCrashPatterns(crashStates: any[], functions: FunctionHealthMetri
         crash_pattern: pattern,
         root_cause: rootCause,
         recommended_action: recommendedAction,
-        severity,
-        affected_users: 1,
-        firstSeen: firstCrash.created_at,
-        lastSeen: lastCrash.created_at,
+        severity: severity as 'low' | 'medium' | 'high' | 'critical'
       });
     }
   }
