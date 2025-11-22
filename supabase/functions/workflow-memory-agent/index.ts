@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { getErrorMessage } from '../_shared/error-utils.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -75,7 +76,7 @@ serve(async (req) => {
   } catch (error) {
     console.error("❌ Workflows Memory Agent error:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: getErrorMessage(error) }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
@@ -135,8 +136,8 @@ async function analyzeWorkflowStages(supabase: any): Promise<WorkflowStageMetric
       .in("workflow_run_id", stageWorkflows.map((w: any) => w.id))
       .limit(5);
 
-    const commonIssues = errors 
-      ? [...new Set(errors.map((e: any) => e.error_message.substring(0, 100)))]
+    const commonIssues: string[] = errors && Array.isArray(errors)
+      ? [...new Set(errors.map((e: any) => String(e.error_message).substring(0, 100)))]
       : [];
 
     // Determine if this is a bottleneck

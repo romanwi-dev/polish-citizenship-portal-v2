@@ -116,8 +116,8 @@ export class ProvenPatternsLibrary {
         );
         return { ...pattern, relevance_score: relevanceScore };
       })
-      .filter((pattern) => pattern.relevance_score > 0.3) // Only patterns with >30% relevance
-      .sort((a, b) => {
+      .filter((pattern: ProvenPattern & { relevance_score: number }) => pattern.relevance_score > 0.3) // Only patterns with >30% relevance
+      .sort((a: ProvenPattern & { relevance_score: number }, b: ProvenPattern & { relevance_score: number }) => {
         // Sort by relevance first, then effectiveness
         if (Math.abs(a.relevance_score - b.relevance_score) > 0.1) {
           return b.relevance_score - a.relevance_score;
