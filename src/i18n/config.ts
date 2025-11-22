@@ -110,7 +110,7 @@ const resources = {
         title: 'Why Choose Us for Your Polish Citizenship Journey?',
         description: 'We bring two decades of specialized experience in Polish citizenship law, combining traditional legal expertise with cutting-edge AI technology to streamline your path to obtaining Polish and EU citizenship through ancestry.',
         subtitle: 'Our proven track record speaks for itself: thousands of successful cases, personalized attention to every client, and a commitment to transparency throughout your entire citizenship journey.',
-        card1Title: 'Expert Legal Guidance',
+        card1Title: 'Expert Guidance',
         card1Text: 'Our team specializes exclusively in Polish citizenship by descent cases, with an unmatched 100% success rate across 20,000+ cases. We know every detail of the process.',
         card2Title: 'AI-Powered Efficiency',
         card2Text: 'Leverage our proprietary AI systems that analyze your eligibility, predict timelines, and automate document processing - reducing typical processing time by 40%.',
