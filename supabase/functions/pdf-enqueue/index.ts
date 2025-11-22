@@ -4,6 +4,7 @@
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { getErrorMessage } from '../_shared/error-utils.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -140,7 +141,7 @@ Deno.serve(async (req) => {
       JSON.stringify({ 
         success: false, 
         error: 'INTERNAL_ERROR',
-        message: error.message 
+        message: getErrorMessage(error) 
       }),
       { 
         status: 500, 

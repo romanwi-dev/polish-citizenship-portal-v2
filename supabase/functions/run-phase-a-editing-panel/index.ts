@@ -166,10 +166,11 @@ The EditCaseDialog was designed for desktop with insufficient mobile considerati
     );
   } catch (error) {
     console.error('❌ [PHASE A] Error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message,
+        error: errorMessage,
         analysis_failed: true,
       }),
       { 

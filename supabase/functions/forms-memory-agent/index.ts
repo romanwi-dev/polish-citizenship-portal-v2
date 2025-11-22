@@ -9,6 +9,7 @@ import {
   DOCUMENT_RADAR_RULES,
   SYSTEM_PROMPT_FORMS_ANALYSIS,
 } from '../_shared/form-analysis-prompts.ts';
+import { getErrorMessage } from '../_shared/error-utils.ts';
 
 const AGENT_NAME = 'forms_memory';
 
@@ -175,11 +176,11 @@ serve(async (req) => {
       agent_name: AGENT_NAME,
       activity_type: 'memory_update',
       status: 'failed',
-      details: { error: error.message },
+      details: { error: getErrorMessage(error) },
     });
 
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: getErrorMessage(error) }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

@@ -722,10 +722,12 @@ Deno.serve(async (req) => {
     const duration = Date.now() - startTime;
     console.error('[pdf-simple] ERROR after', duration, 'ms:', error);
     
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
     return new Response(
       JSON.stringify({ 
         success: false,
-        error: error.message,
+        error: errorMessage,
         duration
       }),
       { 

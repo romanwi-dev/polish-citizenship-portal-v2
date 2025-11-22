@@ -180,8 +180,9 @@ DATA LOSS RISK: ZERO
 
   } catch (error) {
     console.error('❌ Phase A failed:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
