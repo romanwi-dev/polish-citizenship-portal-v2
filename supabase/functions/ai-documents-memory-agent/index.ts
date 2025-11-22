@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { getErrorMessage } from '../_shared/error-utils.ts';
 
 const AGENT_NAME = 'ai_documents_memory';
 
@@ -117,15 +118,16 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     );
 
+    const errorMsg = getErrorMessage(error);
     await supabase.from('ai_agent_activity').insert({
       agent_name: AGENT_NAME,
       activity_type: 'memory_update',
       status: 'failed',
-      details: { error: error.message },
+      details: { error: errorMsg },
     });
 
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: errorMsg }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

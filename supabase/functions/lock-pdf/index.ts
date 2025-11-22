@@ -63,7 +63,7 @@ serve(async (req) => {
     }
 
     const { documentId: docId, caseId, pdfUrl }: LockPDFRequest = await req.json();
-    documentId = docId;
+    documentId = docId || null;
 
     console.log(`[lock-pdf] Request received:`, { documentId, caseId, pdfUrl: pdfUrl.substring(0, 50) + '...', userId: user.id });
 

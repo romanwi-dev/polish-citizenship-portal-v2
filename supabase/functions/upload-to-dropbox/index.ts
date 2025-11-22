@@ -4,6 +4,7 @@ import { withRetry, RETRY_CONFIGS } from '../_shared/pdf-retry.ts';
 import { performanceTracker } from '../_shared/performance-tracker.ts';
 import { logEdgeFunctionCall } from '../_shared/monitoring.ts';
 import { validateFile } from '../_shared/validation.ts';
+import { isAbortError } from '../_shared/error-utils.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -183,7 +184,7 @@ serve(async (req) => {
           return await response.json();
         } catch (error) {
           clearTimeout(timeoutId);
-          if (error.name === 'AbortError') {
+          if (isAbortError(error)) {
             console.error('[upload-to-dropbox] ⏱️ Dropbox upload timeout after 30s');
             throw new Error('Dropbox upload timeout after 30 seconds');
           }

@@ -11,6 +11,7 @@ export enum PDFErrorCode {
   INVALID_CASE_ID = 'INVALID_CASE_ID',
   INVALID_TEMPLATE_TYPE = 'INVALID_TEMPLATE_TYPE',
   MISSING_REQUIRED_FIELD = 'MISSING_REQUIRED_FIELD',
+  VALIDATION_FAILED = 'VALIDATION_FAILED',
   
   // Data retrieval errors
   CASE_NOT_FOUND = 'CASE_NOT_FOUND',
@@ -113,6 +114,11 @@ const ERROR_METADATA: Record<PDFErrorCode, {
     severity: ErrorSeverity.WARNING,
     retryable: false,
     userMessage: 'Some required fields are missing',
+  },
+  [PDFErrorCode.VALIDATION_FAILED]: {
+    severity: ErrorSeverity.ERROR,
+    retryable: false,
+    userMessage: 'Data validation failed',
   },
   [PDFErrorCode.CASE_NOT_FOUND]: {
     severity: ErrorSeverity.ERROR,
