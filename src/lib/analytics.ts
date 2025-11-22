@@ -1,7 +1,10 @@
 /**
- * Google Analytics 4 Integration
+ * V7 Hardened Google Analytics 4 Integration
  * Tracks page views, events, and user interactions across all languages
+ * WITH SAFE FALLBACKS for missing environment variables
  */
+
+import { env, isGAConfigured } from '@/lib/env';
 
 interface GAEvent {
   action: string;
@@ -22,79 +25,102 @@ declare global {
   }
 }
 
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+const GA_MEASUREMENT_ID = env.ga.measurementId;
 
 // Validate GA ID in development
-if (import.meta.env.DEV && !GA_MEASUREMENT_ID) {
-  console.warn('⚠️ VITE_GA_MEASUREMENT_ID not configured. Analytics disabled in development.');
+if (import.meta.env.DEV && !isGAConfigured()) {
+  console.warn('⚠️ Google Analytics not configured. Analytics disabled.');
 }
 
 /**
- * Initialize Google Analytics 4
+ * V7 Initialize Google Analytics 4
  * Only loads if GA_MEASUREMENT_ID is properly configured
- * PERF-V5: Enhanced safeguards to prevent undefined ID injection
+ * ENHANCED: Safe fallbacks prevent crashes from malformed config
  */
 export const initGA = (language: string) => {
-  // Skip if no GA ID configured or in dev mode
-  if (!GA_MEASUREMENT_ID || import.meta.env.DEV) {
+  // V7 HARDENING: Multiple safety checks
+  if (!isGAConfigured() || import.meta.env.DEV) {
     return;
   }
   
-  // Additional safety: verify ID is valid string
-  if (typeof GA_MEASUREMENT_ID !== 'string' || GA_MEASUREMENT_ID.trim() === '') {
-    console.error('Invalid GA_MEASUREMENT_ID. Analytics initialization aborted.');
-    return;
-  }
-
-  // Load GA4 script
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  document.head.appendChild(script);
-
-  // Initialize dataLayer
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function() {
-    window.dataLayer?.push(arguments);
-  };
-  
-  window.gtag('js', new Date() as any);
-  window.gtag('config', GA_MEASUREMENT_ID, {
-    send_page_view: true,
-    language: language,
-    custom_map: {
-      dimension1: 'language',
-      dimension2: 'page_type'
+  if (!GA_MEASUREMENT_ID || typeof GA_MEASUREMENT_ID !== 'string' || GA_MEASUREMENT_ID.trim() === '') {
+    if (import.meta.env.DEV) {
+      console.error('❌ Invalid GA_MEASUREMENT_ID. Analytics initialization aborted.');
     }
-  });
+    return;
+  }
+
+  try {
+
+    // Load GA4 script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+    document.head.appendChild(script);
+
+    // Initialize dataLayer
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function() {
+      window.dataLayer?.push(arguments);
+    };
+    
+    window.gtag('js', new Date() as any);
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      send_page_view: true,
+      language: language,
+      custom_map: {
+        dimension1: 'language',
+        dimension2: 'page_type'
+      }
+    });
+  } catch (error) {
+    // V7 HARDENING: Prevent GA failures from crashing the app
+    if (import.meta.env.DEV) {
+      console.error('❌ GA initialization failed:', error);
+    }
+  }
 };
 
 /**
- * Track page view
+ * V7 Track page view (with error protection)
  */
 export const trackPageView = (path: string, title: string, language: string) => {
   if (import.meta.env.DEV || !window.gtag) return;
 
-  window.gtag('event', 'page_view', {
-    page_path: path,
-    page_title: title,
-    language: language,
-    page_location: window.location.href
-  });
+  try {
+    window.gtag('event', 'page_view', {
+      page_path: path,
+      page_title: title,
+      language: language,
+      page_location: window.location.href
+    });
+  } catch (error) {
+    // V7 HARDENING: Silent fail for tracking errors
+    if (import.meta.env.DEV) {
+      console.warn('⚠️ GA trackPageView failed:', error);
+    }
+  }
 };
 
 /**
- * Track custom event
+ * V7 Track custom event (with error protection)
  */
 export const trackEvent = ({ action, category, label, value, language }: GAEvent) => {
   if (import.meta.env.DEV || !window.gtag) return;
 
-  window.gtag('event', action, {
-    event_category: category,
-    event_label: label,
-    value: value,
-    language: language
-  });
+  try {
+    window.gtag('event', action, {
+      event_category: category,
+      event_label: label,
+      value: value,
+      language: language
+    });
+  } catch (error) {
+    // V7 HARDENING: Silent fail for tracking errors
+    if (import.meta.env.DEV) {
+      console.warn('⚠️ GA trackEvent failed:', error);
+    }
+  }
 };
 
 /**
