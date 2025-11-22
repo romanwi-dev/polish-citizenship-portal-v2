@@ -1,8 +1,21 @@
-import { pipeline, env } from '@huggingface/transformers';
+/**
+ * AI-Powered Background Removal using Hugging Face Transformers
+ * Dynamically imported to reduce initial bundle size
+ */
 
-// Configure transformers.js to always download models
-env.allowLocalModels = false;
-env.useBrowserCache = false;
+// Lazy load the transformers library only when needed
+let transformersModule: typeof import('@huggingface/transformers') | null = null;
+
+async function getTransformers() {
+  if (!transformersModule) {
+    transformersModule = await import('@huggingface/transformers');
+    const { env } = transformersModule;
+    // Configure transformers.js to always download models
+    env.allowLocalModels = false;
+    env.useBrowserCache = false;
+  }
+  return transformersModule;
+}
 
 const MAX_IMAGE_DIMENSION = 1024;
 
@@ -34,6 +47,8 @@ function resizeImageIfNeeded(canvas: HTMLCanvasElement, ctx: CanvasRenderingCont
 export const removeBackground = async (imageElement: HTMLImageElement): Promise<Blob> => {
   try {
     console.log('Starting background removal process...');
+    // Dynamically import transformers to reduce initial bundle size
+    const { pipeline } = await getTransformers();
     const segmenter = await pipeline('image-segmentation', 'Xenova/segformer-b0-finetuned-ade-512-512',{
       device: 'webgpu',
     });
