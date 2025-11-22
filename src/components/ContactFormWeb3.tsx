@@ -100,9 +100,9 @@ const ContactFormWeb3 = memo(() => {
   }, []);
 
   return (
-    <section 
+      <section 
       id="contact" 
-      className="pt-12 md:pt-20 pb-0 relative overflow-hidden overflow-x-hidden"
+      className="pt-24 pb-24 relative overflow-hidden overflow-x-hidden"
       aria-labelledby="contact-heading"
       dir={isRTL ? 'rtl' : 'ltr'}
     >
@@ -322,23 +322,22 @@ const ContactFormWeb3 = memo(() => {
                   transition: 'opacity 0s 0.35s'
                 }}
               >
-                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col md:flex-row items-center justify-center gap-8 relative overflow-hidden">
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col lg:flex-row gap-6 relative overflow-visible">
                   {/* Left Side - Image */}
-                  {/* CLS FIX: Container with aspect ratio and explicit image dimensions */}
-                  <div className="w-full md:w-1/2 h-1/2 md:h-full relative" style={{ aspectRatio: '3/4' }}>
+                  <div className="w-full lg:w-1/2">
                     <img 
                       src={thankYou1} 
                       alt="Professional with passport"
                       width="600"
                       height="800"
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-auto rounded-2xl object-contain object-top"
                       loading="lazy"
                       decoding="async"
                     />
                   </div>
                   
                   {/* Right Side - Message */}
-                  <div className="w-full md:w-1/2 flex flex-col items-center justify-center space-y-12 text-center px-4">
+                  <div className="w-full lg:w-1/2 flex flex-col items-center justify-center space-y-12 text-center px-4">
                     <p className="bg-gradient-to-r from-slate-400 to-slate-600 bg-clip-text text-transparent text-2xl md:text-3xl font-semibold">
                       {t('contact.thankYouMessage')}
                     </p>
