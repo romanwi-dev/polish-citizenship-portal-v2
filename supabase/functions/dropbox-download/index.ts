@@ -115,6 +115,35 @@ Deno.serve(async (req) => {
       console.error(`[dropbox-download-${requestId}] Sanitized path: ${filePath}`);
       console.error(`[dropbox-download-${requestId}] Error details: ${errorText}`);
       
+      // Parse request body to get document info for logging
+      const documentId = body.document_id || null;
+      const caseId = body.case_id || null;
+      
+      // Log 404 errors to HAC logs for manual review
+      if (downloadResponse.status === 404 && caseId) {
+        try {
+          await supabase.from('hac_logs').insert({
+            case_id: caseId,
+            action_type: 'dropbox_download_404',
+            action_details: `File not found in Dropbox: ${filePath}`,
+            metadata: {
+              scope: 'dropbox_download',
+              document_id: documentId,
+              dropbox_path: filePath,
+              original_path: rawFilePath,
+              path_mismatch: rawFilePath !== filePath,
+              error_code: '404',
+              error_message: errorText,
+              action_recommended: 'Verify the file exists in Dropbox or update the stored path.'
+            },
+            performed_by: 'system'
+          });
+          console.log(`[dropbox-download-${requestId}] 📝 Logged 404 error to HAC logs`);
+        } catch (logError) {
+          console.error(`[dropbox-download-${requestId}] Failed to log to HAC:`, logError);
+        }
+      }
+      
       // Provide detailed error for path issues
       const errorDetails = downloadResponse.status === 404 
         ? `File not found at path: ${filePath}. Original path: ${rawFilePath}`
@@ -128,6 +157,7 @@ Deno.serve(async (req) => {
           originalPath: rawFilePath,
           sanitizedPath: filePath,
           pathMismatch: rawFilePath !== filePath,
+          isPermanent: downloadResponse.status === 404, // Signal to caller this is permanent
         }),
         {
           status: downloadResponse.status === 404 ? 404 : 409,
