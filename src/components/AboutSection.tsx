@@ -74,7 +74,8 @@ const FlippableAboutCard = ({
 };
 
 const AboutSection = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'he';
   
   return (
     <SectionLayout
@@ -93,7 +94,7 @@ const AboutSection = () => {
       }
       cta={<MainCTA ariaLabel="Start your Polish citizenship application">{t('hero.cta')}</MainCTA>}
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto ${isRTL ? '[&_*]:text-right' : ''}`}>
         <FlippableAboutCard
           icon={Users}
           title={t('about.card1Title')}

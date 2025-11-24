@@ -34,8 +34,9 @@ const FlippablePricingCard = ({
   badge?: { text: string; colors: string };
   onClick: () => void;
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
+  const isRTL = i18n.language === 'he';
 
   return (
     <div 
@@ -63,7 +64,7 @@ const FlippablePricingCard = ({
             </div>
           )}
           
-          <div className="flex items-center gap-3 mb-6">
+          <div className={`flex items-center gap-3 mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className={`w-12 h-12 rounded-full ${gradient} flex items-center justify-center`}>
               <Icon className={`w-6 h-6 ${iconColor}`} />
             </div>
@@ -87,7 +88,7 @@ const FlippablePricingCard = ({
 
           <ul className="space-y-3 mb-8 flex-1">
             {features.map((feature, idx) => (
-              <li key={idx} className="flex items-start gap-2">
+              <li key={idx} className={`flex items-start gap-2 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                 <Check className={`w-5 h-5 ${checkColor} mt-0.5 flex-shrink-0`} />
                 <span className="text-sm">{feature}</span>
               </li>
