@@ -68,14 +68,16 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className={`glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto ${isRTL ? 'lg:mr-0' : 'lg:ml-0'} lg:-mt-20 relative`} style={{ perspective: '1000px' }}>
+          <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-20 relative" style={{ perspective: '1000px' }}>
             <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
+                {/* CLS FIX: Container with explicit aspect ratio to prevent image layout shift */}
                 <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100" style={{ aspectRatio: '4/3' }}>
                   <img 
                     src={professionalWoman} 
                     alt="Professional consultation"
+                    // CLS FIX: Added explicit dimensions to prevent layout shift
                     width="400"
                     height="300"
                     className="w-full h-full object-cover"
@@ -120,7 +122,7 @@ export const HeroWavingFlags = () => {
                       value={formData.country}
                       onValueChange={(value) => setFormData({...formData, country: value})}
                     >
-                      <SelectTrigger className={`!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right [&>svg]:order-first [&>svg]:mr-2' : ''}`}>
+                      <SelectTrigger className={`!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                         <SelectValue placeholder={t('contact.countryPlaceholder')} />
                       </SelectTrigger>
                       <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -177,7 +179,7 @@ export const HeroWavingFlags = () => {
               >
                 <div className="w-full h-full flex flex-col items-center justify-center gap-3">
                   <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
-                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">{feature.stat}</h3>
+                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
                   <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
                 </div>
               </div>
