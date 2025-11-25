@@ -45,7 +45,7 @@ export const HeroWavingFlags = () => {
         {/* Desktop: Two column layout, Mobile: Stacked */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr,380px] gap-8 lg:gap-8 xl:gap-10 items-start max-w-7xl mx-auto">
           {/* Left Column: Badge + Title + Text + Stats Cards */}
-          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 lg:pt-8 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
+          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 lg:-mt-12 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
             {/* Badge + Title Section */}
             <div className="space-y-5 md:space-y-6 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm">
