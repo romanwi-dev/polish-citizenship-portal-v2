@@ -72,26 +72,25 @@ export const HeroWavingFlags = () => {
               </div>
             </div>
             
-            {/* Second Grid Column - Form Card - Right side on desktop */}
-            <div className={`glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:sticky lg:top-24 relative order-2 lg:w-full ${isRTL ? 'lg:order-1' : 'lg:order-2'}`} style={{ perspective: '1000px' }}>
+            {/* Second Grid Column - Form Card - Right side on desktop, Fixed position */}
+            <div className={`glass-card p-6 md:p-7 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:fixed lg:right-8 xl:right-16 lg:top-24 lg:w-[420px] lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto relative order-2 z-20 ${isRTL ? 'lg:order-1 lg:left-8 xl:left-16 lg:right-auto' : 'lg:order-2'}`} style={{ perspective: '1000px' }}>
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
-                {/* CLS FIX: Container with explicit aspect ratio to prevent image layout shift */}
-                <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100" style={{ aspectRatio: '4/3' }}>
+                {/* Secretary Photo - Full visibility, no aspect ratio constraint */}
+                <div className="mb-5 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100">
                   <img 
                     src={professionalWoman} 
                     alt="Professional consultation"
-                    // CLS FIX: Added explicit dimensions to prevent layout shift
                     width="400"
                     height="300"
-                    className="w-full h-full object-cover"
+                    className="w-full h-auto object-cover max-h-[280px]"
                     loading="eager"
                     decoding="async"
                   />
                 </div>
-                <form onSubmit={handleSubmit} className="space-y-1.5">
-                  <div className="space-y-1.5">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="space-y-2">
                     <Label htmlFor="name" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                       {t('contact.nameLabel')} *
                     </Label>
@@ -105,7 +104,7 @@ export const HeroWavingFlags = () => {
                       required
                     />
                   </div>
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     <Label htmlFor="email" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                       {t('contact.emailLabel')} *
                     </Label>
@@ -119,7 +118,7 @@ export const HeroWavingFlags = () => {
                       required
                     />
                   </div>
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     <Label htmlFor="country" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                       {t('contact.countryLabel')}
                     </Label>
