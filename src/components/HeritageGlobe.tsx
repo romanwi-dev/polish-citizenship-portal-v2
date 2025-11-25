@@ -81,11 +81,12 @@ const Dots = () => {
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
     if (!meshRef.current) return;
-    meshRef.current.rotation.y = time * 0.02; 
+    // Slower rotation
+    meshRef.current.rotation.y = time * 0.01; // Half the speed
     
     const dummy = new THREE.Object3D();
     for (let i = 0; i < count; i++) {
-      const scale = (Math.sin(i * 0.1 + time) * 0.5 + 1) * 0.5; 
+      const scale = (Math.sin(i * 0.1 + time * 0.5) * 0.5 + 1) * 0.5; // Slower pulse
       dummy.position.copy(positions[i]);
       dummy.scale.setScalar(1);
       dummy.updateMatrix();
@@ -182,13 +183,36 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
       }));
     }
 
-    // Draw Curve to Poland with animation
-    return startPoints.map(({ point: start, countryCode }) => {
+    // Draw Curve to Poland with different styles based on country
+    const connectionStyles = ['solid', 'dashed', 'dotted', 'glow'];
+    
+    return startPoints.map(({ point: start, countryCode }, index) => {
       const end = polandPos;
       const dist = start.distanceTo(end);
-      const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + (dist * 0.6));
+      
+      // Vary the arch height for visual interest
+      const archHeight = 0.4 + (index % 3) * 0.2; // Different heights
+      const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + (dist * archHeight));
       const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-      return { points: curve.getPoints(50), countryCode };
+      
+      // Assign different styles to lines
+      const styleIndex = index % connectionStyles.length;
+      const style = connectionStyles[styleIndex];
+      
+      // Vary colors slightly for different countries
+      const hueShift = (index * 15) % 30; // Rotate through red hues
+      const color = style === 'glow' 
+        ? `hsl(${0 + hueShift}, 85%, 60%)` // Brighter for glow
+        : style === 'dotted'
+        ? `hsl(${0 + hueShift}, 75%, 55%)` // Slightly different
+        : BRAND_RED;
+      
+      return { 
+        points: curve.getPoints(60), // More points for smoother curves
+        countryCode,
+        style,
+        color
+      };
     });
   }, [targetCountry]);
 
@@ -198,17 +222,27 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
     if (!groupRef.current) return;
     const time = state.clock.getElapsedTime();
     
-    // Animate lines with flowing effect
+    // Animate lines with flowing effect - slower animation
     lineMaterialsRef.current.forEach((material, i) => {
       if (!material) return;
-      // Create flowing opacity effect
-      material.opacity = 0.7 + Math.sin(time * 1.5 + (i * 0.5)) * 0.3;
+      const baseOpacity = parseFloat(material.opacity.toString()) || 0.75;
+      // Slower, more subtle flowing opacity effect
+      const flowSpeed = 0.8; // Slower than before
+      material.opacity = baseOpacity + Math.sin(time * flowSpeed + (i * 0.4)) * 0.2;
     });
   });
 
   return (
     <group ref={groupRef}>
-      {lines.map(({ points, countryCode }, i) => {
+      {lines.map(({ points, countryCode, style, color }, i) => {
+        // Create different line styles
+        const isDashed = style === 'dashed';
+        const isDotted = style === 'dotted';
+        const isGlow = style === 'glow';
+        
+        // For dashed/dotted, we'll use opacity variation
+        const baseOpacity = isGlow ? 0.9 : isDotted ? 0.6 : 0.75;
+        
         return (
           <line key={`line-${i}-${countryCode}`}>
             <bufferGeometry>
@@ -225,8 +259,8 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
                   lineMaterialsRef.current[i] = mat;
                 }
               }}
-              color={BRAND_RED} 
-              opacity={0.8} 
+              color={color}
+              opacity={baseOpacity} 
               transparent 
             />
           </line>
@@ -268,19 +302,23 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
     if (!groupRef.current || !innerGroupRef.current) return;
     const time = state.clock.getElapsedTime();
     
-    // Enhanced 3D waving/floating animation
-    // Main rotation with wave modulation
-    groupRef.current.rotation.x = 0.25 + Math.sin(time * 0.4) * 0.08;
-    groupRef.current.rotation.y = time * 0.15 + Math.sin(time * 0.25) * 0.05;
-    groupRef.current.rotation.z = Math.sin(time * 0.3) * 0.02;
+    // Slower, more gentle 3D waving/floating animation
+    const waveSpeed = 0.3; // Slower wave speed
+    const floatSpeed = 0.4; // Slower floating
     
-    // Floating motion
-    groupRef.current.position.y = Math.sin(time * 0.5) * 0.15;
-    groupRef.current.position.x = Math.cos(time * 0.35) * 0.08;
+    // Main rotation with gentle wave modulation
+    groupRef.current.rotation.x = 0.25 + Math.sin(time * waveSpeed) * 0.1;
+    groupRef.current.rotation.y = time * 0.08 + Math.sin(time * waveSpeed * 0.7) * 0.06; // Much slower spin
+    groupRef.current.rotation.z = Math.sin(time * waveSpeed * 0.8) * 0.03;
+    
+    // Gentle floating motion - more pronounced
+    groupRef.current.position.y = Math.sin(time * floatSpeed) * 0.2;
+    groupRef.current.position.x = Math.cos(time * floatSpeed * 0.7) * 0.12;
+    groupRef.current.position.z = Math.sin(time * floatSpeed * 0.5) * 0.08;
     
     // Inner group subtle rotation for depth
-    innerGroupRef.current.rotation.x = Math.sin(time * 0.2) * 0.03;
-    innerGroupRef.current.rotation.y = Math.cos(time * 0.15) * 0.02;
+    innerGroupRef.current.rotation.x = Math.sin(time * waveSpeed * 0.6) * 0.04;
+    innerGroupRef.current.rotation.y = Math.cos(time * waveSpeed * 0.5) * 0.03;
   });
   
   return (
