@@ -102,7 +102,7 @@ const Dots = () => {
   );
 };
 
-// --- Country Marker with Flag ---
+// --- Country Marker (No Flags) ---
 const CountryMarker = ({ 
   position, 
   countryCode, 
@@ -119,52 +119,34 @@ const CountryMarker = ({
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.getElapsedTime();
-    // Pulsing animation
-    const pulse = 1 + Math.sin(time * 2 + (position.x || 0)) * 0.15;
+    // Gentle pulsing animation
+    const pulse = 1 + Math.sin(time * 1.5 + (position.x || 0)) * 0.12;
     meshRef.current.scale.setScalar(pulse);
   });
 
-  const flagEmoji = FLAG_EMOJIS[countryCode] || "📍";
-  const markerSize = isPoland ? 0.08 : 0.06;
+  const markerSize = isPoland ? 0.1 : 0.07;
+  const glowColor = isPoland ? "#ffffff" : BRAND_RED;
 
   return (
     <group position={position}>
-      {/* Flag Icon using HTML */}
-      <Html
-        position={[0, markerSize + 0.15, 0]}
-        center
-        style={{ pointerEvents: 'none' }}
-        transform
-      >
-        <div style={{
-          fontSize: isPoland ? '32px' : '24px',
-          filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.8))',
-          textAlign: 'center',
-          lineHeight: 1,
-          userSelect: 'none',
-        }}>
-          {flagEmoji}
-        </div>
-      </Html>
-      
       {/* Glowing marker sphere */}
       <mesh ref={meshRef}>
         <sphereGeometry args={[markerSize, 16, 16]} />
         <meshBasicMaterial 
-          color={isPoland ? "#ffffff" : BRAND_RED} 
+          color={glowColor} 
           toneMapped={false}
           transparent
-          opacity={0.9}
+          opacity={0.95}
         />
       </mesh>
       
       {/* Outer glow ring */}
       <mesh>
-        <ringGeometry args={[markerSize * 1.5, markerSize * 1.8, 32]} />
+        <ringGeometry args={[markerSize * 1.4, markerSize * 1.7, 32]} />
         <meshBasicMaterial 
-          color={isPoland ? "#ffffff" : BRAND_RED}
+          color={glowColor}
           transparent
-          opacity={0.3}
+          opacity={0.4}
           side={THREE.DoubleSide}
         />
       </mesh>
