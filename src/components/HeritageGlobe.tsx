@@ -609,7 +609,11 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
   if (asBackground) {
     return (
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-        <Suspense fallback={null}>
+        <Suspense fallback={
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="text-slate-400 text-sm">Loading globe...</div>
+          </div>
+        }>
           <Canvas 
             camera={{ position: [0, 0, 6], fov: 50 }}
             gl={{ 
@@ -621,35 +625,38 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
             }}
             dpr={[1, 2]}
             style={{ background: 'transparent' }}
+            onError={(error) => {
+              console.error('Canvas error:', error);
+            }}
           >
-            {/* Enhanced lighting setup */}
-            <ambientLight intensity={0.4} color="#ffffff" />
+            {/* Consistent lighting setup - uniform illumination */}
+            <ambientLight intensity={0.5} color="#ffffff" />
             <directionalLight 
               position={[5, 5, 5]} 
-              intensity={1.5} 
+              intensity={1.2} 
               color="#ffffff"
-              castShadow
             />
             <directionalLight 
-              position={[-3, -2, -3]} 
-              intensity={0.4} 
-              color="#4a90e2"
+              position={[-5, -5, -5]} 
+              intensity={0.5} 
+              color="#ffffff"
             />
             <pointLight 
               position={[10, 10, 10]} 
-              intensity={1.0} 
-              color="#ffeb3b" 
-              distance={25} 
+              intensity={0.8} 
+              color="#ffffff" 
+              distance={30} 
               decay={2}
             />
             <pointLight 
               position={[-10, -10, -10]} 
-              intensity={0.3} 
+              intensity={0.4} 
               color="#ffffff"
+              distance={30}
             />
             
             {/* Starfield background */}
-            <Stars radius={100} depth={60} count={3000} factor={6} fade speed={0.5} />
+            <Stars radius={100} depth={60} count={2000} factor={6} fade speed={0.5} />
             
             <WavingGlobeGroup targetCountry={country}>
               <Atmosphere />
@@ -693,10 +700,12 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
             }}
             dpr={[1, 2]}
           >
-            <ambientLight intensity={0.4} color="#ffffff" />
-            <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
-            <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#4a90e2" />
-            <pointLight position={[10, 10, 10]} intensity={1.0} color="#ffeb3b" distance={25} decay={2} />
+            {/* Consistent lighting - uniform shades */}
+            <ambientLight intensity={0.5} color="#ffffff" />
+            <directionalLight position={[5, 5, 5]} intensity={1.2} color="#ffffff" />
+            <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#ffffff" />
+            <pointLight position={[10, 10, 10]} intensity={0.8} color="#ffffff" distance={30} decay={2} />
+            <pointLight position={[-10, -10, -10]} intensity={0.4} color="#ffffff" distance={30} />
             
             <Stars radius={80} depth={50} count={2000} factor={5} fade speed={0.5} />
             
