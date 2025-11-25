@@ -82,7 +82,7 @@ export const HeroWavingFlags = () => {
                 {/* Front - Photo + Form */}
                 <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
                   {/* Form - Photo and fields inside form with same padding, made taller */}
-                  <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5 lg:space-y-6 p-5 md:p-6 lg:p-7">
+                  <form onSubmit={handleSubmit} className="space-y-3 md:space-y-3.5 lg:space-y-4 p-5 md:p-6 lg:p-7">
                     {/* Secretary Photo - Inside form, fills container fully */}
                     <div className="w-full overflow-hidden aspect-[4/3] lg:aspect-[4/3.5] bg-muted/20 opacity-70 dark:opacity-70 lg:opacity-100 rounded-lg">
                       <img 
@@ -96,7 +96,7 @@ export const HeroWavingFlags = () => {
                         decoding="async"
                       />
                     </div>
-                    <div className="space-y-2.5">
+                    <div className="space-y-1.5">
                       <Label htmlFor="name" className={`text-sm md:text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.nameLabel')} *
                       </Label>
@@ -110,7 +110,7 @@ export const HeroWavingFlags = () => {
                         required
                       />
                     </div>
-                    <div className="space-y-2.5">
+                    <div className="space-y-1.5">
                       <Label htmlFor="email" className={`text-sm md:text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.emailLabel')} *
                       </Label>
@@ -124,7 +124,7 @@ export const HeroWavingFlags = () => {
                         required
                       />
                     </div>
-                    <div className="space-y-2.5">
+                    <div className="space-y-1.5">
                       <Label htmlFor="country" className={`text-sm md:text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.countryLabel')}
                       </Label>
