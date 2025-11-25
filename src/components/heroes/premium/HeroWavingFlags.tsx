@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
 import { SocialShare } from '@/components/social/SocialShare';
+import HeritageGlobe from '@/components/HeritageGlobe';
 export const HeroWavingFlags = () => {
   const { t, i18n } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -66,9 +67,9 @@ export const HeroWavingFlags = () => {
                 </p>
               </div>
             </div>
-          </div>
-
-          <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-20 relative" style={{ perspective: '1000px' }}>
+            
+            {/* Second Grid Column - Form Card */}
+            <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-20 relative" style={{ perspective: '1000px' }}>
             <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
@@ -163,6 +164,11 @@ export const HeroWavingFlags = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Heritage Globe - Full width below headline and description */}
+        <div className="mt-12 md:mt-16 w-full max-w-7xl mx-auto">
+          <HeritageGlobe />
         </div>
       </div>
 

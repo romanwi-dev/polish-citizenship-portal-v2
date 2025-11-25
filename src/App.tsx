@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 const ContactFormsDemo = lazy(() => import("./pages/ContactFormsDemo"));
 const TranslationDemo = lazy(() => import("./pages/TranslationDemo"));
 const HeroGallery = lazy(() => import("./pages/HeroGallery"));
+const CountryLanding = lazy(() => import("./pages/CountryLanding"));
 
 
 // Client portal pages
@@ -266,6 +267,13 @@ const App = () => {
             <Route path="/cases" element={
               <RouteErrorBoundary>
                 <Cases />
+              </RouteErrorBoundary>
+            } />
+            <Route path="/country/:countryCode" element={
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <CountryLanding />
+                </Suspense>
               </RouteErrorBoundary>
             } />
             
