@@ -74,49 +74,17 @@ export const HeroWavingFlags = () => {
               </div>
             </div>
             
-            {/* Stats Cards - In left column on desktop, below contact card on mobile */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full order-3 lg:order-none">
-              {features.map((feature, index) => {
-                const FeatureIcon = feature.icon;
-                return (
-                  <div 
-                    key={index}
-                    className="glass-card hover-glow rounded-lg text-center px-5 py-4 md:px-6 md:py-5 lg:px-6 lg:py-5 backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
-                  >
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 md:gap-3">
-                      <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
-                      <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
-                      <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
           
           {/* Right Column: Photo + Form Card - Separate card with lighter background */}
           <div className={`w-full max-w-[380px] mx-auto lg:mx-0 relative order-2 lg:order-2 lg:mt-0 ${isRTL ? 'lg:order-1' : ''}`} style={{ perspective: '1000px' }}>
             <div className="glass-card rounded-2xl border border-primary/10 backdrop-blur-sm p-0 shadow-lg overflow-hidden">
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
-                {/* Front - Photo + Form */}
+                {/* Front - Form + Photo */}
                 <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
-                  {/* Secretary Photo - Full width at top, proper aspect ratio, head not cropped */}
-                  <div className="w-full overflow-hidden aspect-[4/3] bg-muted/20 opacity-70 dark:opacity-70 lg:opacity-100">
-                    <img 
-                      src={professionalWoman} 
-                      alt="Professional consultation"
-                      width="400"
-                      height="300"
-                      className="w-full h-full object-cover object-center"
-                      style={{ objectPosition: 'center 30%' }}
-                      loading="eager"
-                      decoding="async"
-                    />
-                  </div>
-                  
-                  {/* Form - Below photo */}
-                  <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5 p-5 md:p-6">
-                    <div className="space-y-2">
+                  {/* Form - At top, made taller */}
+                  <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6 p-5 md:p-6 lg:p-7">
+                    <div className="space-y-2.5">
                       <Label htmlFor="name" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.nameLabel')} *
                       </Label>
@@ -126,11 +94,11 @@ export const HeroWavingFlags = () => {
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        className="h-16 md:h-14 lg:h-16 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-4 outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2.5">
                       <Label htmlFor="email" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.emailLabel')} *
                       </Label>
@@ -140,11 +108,11 @@ export const HeroWavingFlags = () => {
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        className="h-16 md:h-14 lg:h-16 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-4 outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2.5">
                       <Label htmlFor="country" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.countryLabel')}
                       </Label>
@@ -152,7 +120,7 @@ export const HeroWavingFlags = () => {
                         value={formData.country}
                         onValueChange={(value) => setFormData({...formData, country: value})}
                       >
-                        <SelectTrigger className={`!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                        <SelectTrigger className={`!h-16 md:!h-14 lg:!h-16 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                           <SelectValue placeholder={t('contact.countryPlaceholder')} />
                         </SelectTrigger>
                         <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -166,11 +134,24 @@ export const HeroWavingFlags = () => {
                     </div>
                     <button
                       type="submit"
-                      className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-6 break-words hyphens-auto [&_span]:text-lg [&_span]:md:text-base [&_span]:leading-tight [&_span]:[font-size:clamp(0.75rem,2.5vw,1rem)]"
+                      className="w-full h-auto min-h-[64px] md:min-h-[56px] lg:min-h-[64px] py-4 md:py-3 lg:py-4 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-6 break-words hyphens-auto [&_span]:text-lg [&_span]:md:text-base [&_span]:leading-tight [&_span]:[font-size:clamp(0.75rem,2.5vw,1rem)]"
                     >
                       <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
                     </button>
                   </form>
+                  
+                  {/* Secretary Photo - Below form, taller, head fully visible */}
+                  <div className="w-full overflow-hidden aspect-[4/3] lg:aspect-[4/3.5] bg-muted/20 opacity-70 dark:opacity-70 lg:opacity-100">
+                    <img 
+                      src={professionalWoman} 
+                      alt="Professional consultation"
+                      width="400"
+                      height="300"
+                      className="w-full h-full object-contain object-center"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </div>
                 </div>
                 
                 {/* Back - Success */}
@@ -196,8 +177,31 @@ export const HeroWavingFlags = () => {
           </div>
         </div>
         
+        {/* Stats Cards - Below form bottom edge on desktop, below contact card on mobile */}
+        <div className="mt-8 md:mt-10 lg:mt-12">
+          <div className="w-full lg:flex lg:justify-end">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 max-w-[380px] lg:max-w-[380px] mx-auto lg:mx-0">
+              {features.map((feature, index) => {
+                const FeatureIcon = feature.icon;
+                return (
+                  <div 
+                    key={index}
+                    className="glass-card hover-glow rounded-lg text-center px-5 py-4 md:px-6 md:py-5 lg:px-6 lg:py-5 backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                  >
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 md:gap-3">
+                      <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
+                      <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
+                      <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        
         {/* Social Share Buttons */}
-        <div className="mt-16 md:mt-20 flex justify-center">
+        <div className="mt-24 md:mt-28 lg:mt-32 flex justify-center">
           <SocialShare 
             title={t('hero.title')}
             description={t('hero.subtitle1')}
