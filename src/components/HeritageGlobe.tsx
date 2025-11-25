@@ -1,36 +1,15 @@
 import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere, Text, Html } from '@react-three/drei';
+import { OrbitControls, Sphere, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Settings ---
-const GLOBE_RADIUS = 2;
+const GLOBE_RADIUS = 2.2;
 const BRAND_RED = "#DC2626"; 
-const DOT_COLOR = "#475569"; // Slate 600
-
-// --- Country Flag Emojis ---
-const FLAG_EMOJIS: Record<string, string> = {
-  PL: "🇵🇱",
-  US: "🇺🇸",
-  GB: "🇬🇧",
-  BR: "🇧🇷",
-  IL: "🇮🇱",
-  CA: "🇨🇦",
-  AU: "🇦🇺",
-  ZA: "🇿🇦",
-  FR: "🇫🇷",
-  DE: "🇩🇪",
-  AR: "🇦🇷",
-  MX: "🇲🇽",
-  UA: "🇺🇦",
-  RU: "🇷🇺",
-  VE: "🇻🇪",
-  CO: "🇨🇴",
-};
 
 // --- Country Coordinates (Lat, Lon) ---
 const COORDINATES: Record<string, { lat: number; lon: number; name: string }> = {
-  PL: { lat: 52.0, lon: 20.0, name: "Poland" }, // The Destination
+  PL: { lat: 52.0, lon: 20.0, name: "Poland" },
   US: { lat: 40.7, lon: -74.0, name: "USA" },
   GB: { lat: 51.5, lon: -0.1, name: "UK" },
   BR: { lat: -23.5, lon: -46.6, name: "Brazil" },
@@ -59,302 +38,379 @@ const getPosition = (lat: number, lon: number, radius: number) => {
   );
 };
 
-// --- Realistic Earth Globe with Texture ---
+// --- Ultra High Quality Earth Texture Generator ---
+const createEarthTexture = () => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 4096; // 4K resolution
+  canvas.height = 2048;
+  const ctx = canvas.getContext('2d', { alpha: false });
+  
+  if (!ctx) return null;
+  
+  // Deep space ocean gradient with realistic color variation
+  const oceanGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  oceanGradient.addColorStop(0, '#050814'); // Polar darkness
+  oceanGradient.addColorStop(0.15, '#0a1220'); 
+  oceanGradient.addColorStop(0.3, '#0f1a2c');
+  oceanGradient.addColorStop(0.4, '#162438'); // Deep ocean
+  oceanGradient.addColorStop(0.5, '#1a2d44');
+  oceanGradient.addColorStop(0.6, '#1a2d44');
+  oceanGradient.addColorStop(0.7, '#162438');
+  oceanGradient.addColorStop(0.85, '#0f1a2c');
+  oceanGradient.addColorStop(1, '#050814');
+  
+  ctx.fillStyle = oceanGradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Realistic continent shapes with varied textures
+  const continents = [
+    // North America - detailed shape
+    { x: 0.22, y: 0.32, w: 0.18, h: 0.28, detail: 'high' },
+    // South America
+    { x: 0.26, y: 0.58, w: 0.09, h: 0.36, detail: 'medium' },
+    // Europe
+    { x: 0.48, y: 0.33, w: 0.08, h: 0.15, detail: 'high' },
+    // Africa
+    { x: 0.50, y: 0.42, w: 0.10, h: 0.32, detail: 'medium' },
+    // Asia - large continent
+    { x: 0.60, y: 0.22, w: 0.24, h: 0.42, detail: 'high' },
+    // Australia
+    { x: 0.78, y: 0.62, w: 0.12, h: 0.12, detail: 'low' },
+    // Greenland
+    { x: 0.30, y: 0.18, w: 0.06, h: 0.12, detail: 'low' },
+  ];
+  
+  // Draw continents with realistic shapes
+  ctx.fillStyle = '#0a1515';
+  ctx.globalAlpha = 0.95;
+  
+  continents.forEach(cont => {
+    // Create more organic shapes with bezier curves
+    ctx.beginPath();
+    const x = cont.x * canvas.width;
+    const y = cont.y * canvas.height;
+    const w = cont.w * canvas.width;
+    const h = cont.h * canvas.height;
+    
+    // Create irregular continent shape
+    ctx.ellipse(x, y, w * 0.5, h * 0.5, Math.random() * 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Add texture variation within continents
+    if (cont.detail === 'high') {
+      for (let i = 0; i < 15; i++) {
+        ctx.fillStyle = `rgba(15, 25, 25, ${0.3 + Math.random() * 0.4})`;
+        ctx.beginPath();
+        ctx.arc(
+          x + (Math.random() - 0.5) * w,
+          y + (Math.random() - 0.5) * h,
+          Math.random() * 30 + 10,
+          0, Math.PI * 2
+        );
+        ctx.fill();
+      }
+    }
+  });
+  
+  // Ultra-realistic city lights with glow effects
+  ctx.globalAlpha = 1;
+  
+  // Major metropolitan areas with dense lighting
+  const megaCities = [
+    { x: 0.74, y: 0.34, intensity: 1.0, size: 25, color: '#ffffff' }, // NYC
+    { x: 0.50, y: 0.40, intensity: 1.0, size: 22, color: '#ffffff' }, // London
+    { x: 0.51, y: 0.39, intensity: 0.9, size: 20, color: '#ffffff' }, // Paris
+    { x: 0.68, y: 0.31, intensity: 1.0, size: 28, color: '#fffbeb' }, // Beijing
+    { x: 0.64, y: 0.29, intensity: 0.95, size: 26, color: '#fffbeb' }, // India
+    { x: 0.14, y: 0.34, intensity: 0.85, size: 18, color: '#ffffff' }, // LA
+    { x: 0.80, y: 0.61, intensity: 0.7, size: 15, color: '#ffffff' }, // Sydney
+    { x: 0.55, y: 0.38, intensity: 0.8, size: 16, color: '#ffffff' }, // Berlin
+    { x: 0.29, y: 0.45, intensity: 0.75, size: 14, color: '#ffffff' }, // São Paulo
+    { x: 0.57, y: 0.14, intensity: 0.9, size: 20, color: '#ffffff' }, // Moscow
+    { x: 0.52, y: 0.51, intensity: 0.8, size: 12, color: '#ffffff' }, // Dubai
+  ];
+  
+  megaCities.forEach(city => {
+    // Core bright center
+    const gradient = ctx.createRadialGradient(
+      city.x * canvas.width, city.y * canvas.height,
+      0,
+      city.x * canvas.width, city.y * canvas.height,
+      city.size
+    );
+    gradient.addColorStop(0, city.color);
+    gradient.addColorStop(0.3, `rgba(255, 255, 255, ${city.intensity * 0.7})`);
+    gradient.addColorStop(0.6, `rgba(255, 255, 200, ${city.intensity * 0.4})`);
+    gradient.addColorStop(1, 'transparent');
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(
+      city.x * canvas.width - city.size,
+      city.y * canvas.height - city.size,
+      city.size * 2,
+      city.size * 2
+    );
+    
+    // Dense city lights around center
+    for (let i = 0; i < city.intensity * 200; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const distance = Math.random() * city.size * 1.5;
+      const x = city.x * canvas.width + Math.cos(angle) * distance;
+      const y = city.y * canvas.height + Math.sin(angle) * distance;
+      const size = 0.8 + Math.random() * 2.5;
+      
+      ctx.fillStyle = `rgba(255, 255, 255, ${0.6 + Math.random() * 0.4})`;
+      ctx.fillRect(x, y, size, size);
+      
+      // Add glow around individual lights
+      if (Math.random() > 0.7) {
+        ctx.fillStyle = `rgba(255, 255, 200, 0.3)`;
+        ctx.beginPath();
+        ctx.arc(x, y, size * 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  });
+  
+  // Secondary cities with medium intensity
+  const secondaryCities = [
+    { x: 0.47, y: 0.41, count: 80 }, // Central Europe
+    { x: 0.33, y: 0.46, count: 60 }, // South America
+    { x: 0.58, y: 0.25, count: 90 }, // Eastern Asia
+    { x: 0.43, y: 0.52, count: 50 }, // Middle East
+    { x: 0.53, y: 0.35, count: 70 }, // Eastern Europe
+  ];
+  
+  secondaryCities.forEach(region => {
+    ctx.fillStyle = '#ffffff';
+    ctx.globalAlpha = 0.7;
+    for (let i = 0; i < region.count; i++) {
+      const spread = 0.12;
+      const x = (region.x + (Math.random() - 0.5) * spread) * canvas.width;
+      const y = (region.y + (Math.random() - 0.5) * spread) * canvas.height;
+      const size = 1 + Math.random() * 2;
+      ctx.fillRect(x, y, size, size);
+    }
+  });
+  
+  // Minor city lights scattered across continents
+  ctx.globalAlpha = 0.5;
+  for (let i = 0; i < 800; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const size = 0.5 + Math.random() * 1.5;
+    ctx.fillStyle = `rgba(255, 255, 255, ${0.4 + Math.random() * 0.4})`;
+    ctx.fillRect(x, y, size, size);
+  }
+  
+  // Atmospheric terminator line glow (day/night boundary)
+  const terminatorGradient = ctx.createRadialGradient(
+    canvas.width * 0.4, canvas.height * 0.5,
+    0,
+    canvas.width * 0.4, canvas.height * 0.5,
+    canvas.width * 0.8
+  );
+  terminatorGradient.addColorStop(0, 'transparent');
+  terminatorGradient.addColorStop(0.5, 'transparent');
+  terminatorGradient.addColorStop(0.7, 'rgba(100, 150, 255, 0.15)');
+  terminatorGradient.addColorStop(1, 'rgba(50, 100, 200, 0.25)');
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = terminatorGradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.needsUpdate = true;
+  
+  return texture;
+};
+
+// --- Ultra High Quality Earth Globe ---
 const EarthGlobe = () => {
-  // Create a realistic Earth texture programmatically (night view with city lights)
-  const earthTexture = useMemo(() => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  // Create ultra-high quality textures
+  const earthTexture = useMemo(() => createEarthTexture(), []);
+  
+  // Create specular map for ocean reflections
+  const specularMap = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 2048;
     canvas.height = 1024;
     const ctx = canvas.getContext('2d');
-    
     if (!ctx) return null;
     
-    // Base dark ocean color
-    const oceanGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    oceanGradient.addColorStop(0, '#0a0f1a'); // Dark blue-black at poles
-    oceanGradient.addColorStop(0.2, '#152530'); // Darker blue
-    oceanGradient.addColorStop(0.4, '#1e3442'); // Ocean blue
-    oceanGradient.addColorStop(0.6, '#1e3442');
-    oceanGradient.addColorStop(0.8, '#152530');
-    oceanGradient.addColorStop(1, '#0a0f1a');
-    
-    ctx.fillStyle = oceanGradient;
+    // Oceans are reflective, land is not
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#000000');
+    gradient.addColorStop(0.5, '#808080');
+    gradient.addColorStop(1, '#000000');
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Add continent shapes (dark landmasses)
-    ctx.fillStyle = '#0f1f1f';
-    const continents = [
-      // North America
-      { x: 0.25, y: 0.35, w: 0.15, h: 0.25 },
-      // South America
-      { x: 0.28, y: 0.58, w: 0.08, h: 0.35 },
-      // Europe/Africa
-      { x: 0.48, y: 0.35, w: 0.12, h: 0.55 },
-      // Asia
-      { x: 0.58, y: 0.25, w: 0.20, h: 0.40 },
-      // Australia
-      { x: 0.75, y: 0.60, w: 0.12, h: 0.15 },
-    ];
-    
-    continents.forEach(cont => {
-      ctx.beginPath();
-      ctx.ellipse(
-        cont.x * canvas.width,
-        cont.y * canvas.height,
-        cont.w * canvas.width * 0.5,
-        cont.h * canvas.height * 0.5,
-        0, 0, Math.PI * 2
-      );
-      ctx.fill();
-    });
-    
-    // Add night city lights (bright dots for major cities)
-    ctx.fillStyle = '#ffffff';
-    ctx.globalAlpha = 0.9;
-    
-    // Major city clusters with more lights
-    const cityRegions = [
-      { x: 0.75, y: 0.35, count: 80 }, // USA East Coast
-      { x: 0.15, y: 0.35, count: 60 }, // USA West Coast
-      { x: 0.50, y: 0.40, count: 100 }, // Europe
-      { x: 0.65, y: 0.30, count: 120 }, // Asia (China/India)
-      { x: 0.30, y: 0.45, count: 40 }, // South America
-      { x: 0.80, y: 0.62, count: 20 }, // Australia
-      { x: 0.52, y: 0.52, count: 15 }, // Middle East
-      { x: 0.55, y: 0.15, count: 30 }, // Russia
-    ];
-    
-    cityRegions.forEach(region => {
-      for (let i = 0; i < region.count; i++) {
-        const spreadX = (Math.random() - 0.5) * 0.15;
-        const spreadY = (Math.random() - 0.5) * 0.15;
-        const x = (region.x + spreadX) * canvas.width;
-        const y = (region.y + spreadY) * canvas.height;
-        const size = 0.5 + Math.random() * 1.5;
-        ctx.fillRect(x, y, size, size);
-      }
-    });
-    
-    // Add some larger city clusters (megacities)
-    ctx.globalAlpha = 1;
-    const megaCities = [
-      { x: 0.75, y: 0.35, radius: 8 }, // New York area
-      { x: 0.50, y: 0.42, radius: 10 }, // London/Paris region
-      { x: 0.68, y: 0.32, radius: 12 }, // Beijing area
-      { x: 0.64, y: 0.30, radius: 10 }, // India region
-      { x: 0.52, y: 0.38, radius: 6 }, // Central Europe
-    ];
-    
-    megaCities.forEach(city => {
-      ctx.beginPath();
-      ctx.arc(
-        city.x * canvas.width,
-        city.y * canvas.height,
-        city.radius,
-        0, Math.PI * 2
-      );
-      ctx.fill();
-    });
-    
-    // Add atmospheric glow at edges (terminator line)
-    const glowGradient = ctx.createRadialGradient(
-      canvas.width * 0.5, canvas.height * 0.5,
-      0,
-      canvas.width * 0.5, canvas.height * 0.5,
-      canvas.width * 0.6
-    );
-    glowGradient.addColorStop(0, 'transparent');
-    glowGradient.addColorStop(0.7, 'transparent');
-    glowGradient.addColorStop(1, 'rgba(0, 100, 200, 0.2)');
-    ctx.fillStyle = glowGradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    return new THREE.CanvasTexture(canvas);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
   }, []);
   
-  if (!earthTexture) return <FallbackEarthGlobe />;
-  
-  return (
-    <Sphere args={[GLOBE_RADIUS, 64, 64]}>
-      <meshPhongMaterial
-        map={earthTexture}
-        emissive={new THREE.Color(0x001122)}
-        emissiveIntensity={0.2}
-        shininess={15}
-        specular={new THREE.Color(0x111111)}
-      />
-    </Sphere>
-  );
-};
-
-// Fallback Earth Globe (if textures fail to load)
-const FallbackEarthGlobe = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const textureRef = useMemo(() => {
+  // Create normal map for terrain depth
+  const normalMap = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 2048;
     canvas.height = 1024;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
     
-    if (ctx) {
-      // Create a dark Earth-like gradient
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, '#0a1628'); // Dark blue-black at poles
-      gradient.addColorStop(0.3, '#1a2a3a'); // Darker blue
-      gradient.addColorStop(0.5, '#2a3a4a'); // Ocean blue
-      gradient.addColorStop(0.7, '#1a2a3a');
-      gradient.addColorStop(1, '#0a1628');
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Add continent-like shapes with subtle colors
-      ctx.fillStyle = '#1a4a2a'; // Dark green for continents
-      for (let i = 0; i < 50; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const radius = 50 + Math.random() * 150;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.globalAlpha = 0.3;
-        ctx.fill();
-      }
-      
-      // Add night lights (city lights) as bright dots
-      ctx.fillStyle = '#ffffff';
-      ctx.globalAlpha = 0.8;
-      for (let i = 0; i < 500; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const size = 1 + Math.random() * 2;
-        ctx.fillRect(x, y, size, size);
-      }
-      
-      // Add some larger city clusters
-      ctx.globalAlpha = 0.6;
-      for (let i = 0; i < 20; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const radius = 3 + Math.random() * 5;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fill();
-      }
+    // Create subtle terrain variation
+    ctx.fillStyle = '#8080ff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Add subtle noise for terrain detail
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+      const noise = (Math.random() - 0.5) * 10;
+      imageData.data[i] = Math.max(0, Math.min(255, 128 + noise)); // R
+      imageData.data[i + 1] = Math.max(0, Math.min(255, 128 + noise)); // G
+      imageData.data[i + 2] = 255; // B
+      imageData.data[i + 3] = 255; // A
     }
+    ctx.putImageData(imageData, 0, 0);
     
-    return new THREE.CanvasTexture(canvas);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
   }, []);
   
+  useFrame((state) => {
+    if (meshRef.current) {
+      // Very slow, smooth rotation
+      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.05;
+    }
+  });
+  
+  if (!earthTexture) return null;
+  
   return (
-    <Sphere args={[GLOBE_RADIUS, 64, 64]}>
-      <meshPhongMaterial
-        map={textureRef}
+    <Sphere ref={meshRef} args={[GLOBE_RADIUS, 128, 128]}>
+      <meshStandardMaterial
+        map={earthTexture}
+        normalMap={normalMap || undefined}
+        normalScale={new THREE.Vector2(0.5, 0.5)}
+        metalness={0.1}
+        roughness={0.9}
         emissive={new THREE.Color(0x001122)}
-        emissiveIntensity={0.15}
-        shininess={5}
+        emissiveIntensity={0.3}
+        emissiveMap={earthTexture}
       />
     </Sphere>
   );
 };
 
-// --- 1. The World Dots ---
-const Dots = () => {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  const count = 3500; 
+// --- Atmospheric Glow (Earth's atmosphere) ---
+const Atmosphere = () => {
+  const meshRef = useRef<THREE.Mesh>(null);
   
-  const { transform, positions } = useMemo(() => {
-    const transform = new THREE.Matrix4();
-    const positions: THREE.Vector3[] = [];
-    const phi = Math.PI * (3 - Math.sqrt(5)); 
-    for (let i = 0; i < count; i++) {
-      const y = 1 - (i / (count - 1)) * 2;
-      const radius = Math.sqrt(1 - y * y);
-      const theta = phi * i;
-      const vec = new THREE.Vector3(Math.cos(theta) * radius, y, Math.sin(theta) * radius).multiplyScalar(GLOBE_RADIUS);
-      positions.push(vec);
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y += 0.001;
     }
-    return { transform, positions };
-  }, []);
-
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    if (!meshRef.current) return;
-    // Slower rotation
-    meshRef.current.rotation.y = time * 0.01; // Half the speed
-    
-    const dummy = new THREE.Object3D();
-    for (let i = 0; i < count; i++) {
-      const scale = (Math.sin(i * 0.1 + time * 0.5) * 0.5 + 1) * 0.5; // Slower pulse
-      dummy.position.copy(positions[i]);
-      dummy.scale.setScalar(1);
-      dummy.updateMatrix();
-      meshRef.current.setMatrixAt(i, dummy.matrix);
-    }
-    meshRef.current.instanceMatrix.needsUpdate = true;
   });
-
+  
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
-      <sphereGeometry args={[0.012, 8, 8]} />
-      <meshBasicMaterial color={DOT_COLOR} transparent opacity={0.4} />
-    </instancedMesh>
+    <Sphere ref={meshRef} args={[GLOBE_RADIUS + 0.15, 64, 64]}>
+      <meshBasicMaterial
+        color="#4a90e2"
+        transparent
+        opacity={0.15}
+        side={THREE.BackSide}
+      />
+    </Sphere>
   );
 };
 
-// --- Country Marker (No Flags) ---
+// --- Enhanced Country Marker ---
 const CountryMarker = ({ 
   position, 
-  countryCode, 
-  countryName, 
   isPoland = false 
 }: { 
   position: THREE.Vector3; 
-  countryCode: string; 
-  countryName: string;
   isPoland?: boolean;
 }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+  const glowRef = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
-    if (!meshRef.current) return;
+    if (!groupRef.current || !glowRef.current) return;
     const time = state.clock.getElapsedTime();
-    // Gentle pulsing animation
-    const pulse = 1 + Math.sin(time * 1.5 + (position.x || 0)) * 0.12;
-    meshRef.current.scale.setScalar(pulse);
+    
+    // Smooth pulsing
+    const pulse = 1 + Math.sin(time * 2) * 0.15;
+    groupRef.current.scale.setScalar(pulse);
+    
+    // Rotating glow ring
+    glowRef.current.rotation.z = time * 0.5;
   });
 
-  const markerSize = isPoland ? 0.1 : 0.07;
+  const markerSize = isPoland ? 0.12 : 0.08;
   const glowColor = isPoland ? "#ffffff" : BRAND_RED;
 
   return (
-    <group position={position}>
-      {/* Glowing marker sphere */}
-      <mesh ref={meshRef}>
-        <sphereGeometry args={[markerSize, 16, 16]} />
-        <meshBasicMaterial 
-          color={glowColor} 
+    <group ref={groupRef} position={position}>
+      {/* Core bright sphere */}
+      <mesh>
+        <sphereGeometry args={[markerSize, 24, 24]} />
+        <meshStandardMaterial
+          color={glowColor}
+          emissive={glowColor}
+          emissiveIntensity={1.5}
           toneMapped={false}
-          transparent
-          opacity={0.95}
         />
       </mesh>
       
-      {/* Outer glow ring */}
+      {/* Outer glow spheres */}
       <mesh>
-        <ringGeometry args={[markerSize * 1.4, markerSize * 1.7, 32]} />
-        <meshBasicMaterial 
+        <sphereGeometry args={[markerSize * 1.3, 16, 16]} />
+        <meshBasicMaterial
           color={glowColor}
           transparent
-          opacity={0.4}
-          side={THREE.DoubleSide}
+          opacity={0.3}
         />
       </mesh>
+      
+      {/* Rotating glow ring */}
+      <mesh ref={glowRef}>
+        <torusGeometry args={[markerSize * 1.6, 0.02, 8, 32]} />
+        <meshBasicMaterial
+          color={glowColor}
+          transparent
+          opacity={0.6}
+        />
+      </mesh>
+      
+      {/* Particle effect around marker */}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <mesh
+          key={i}
+          position={[
+            Math.cos((i / 8) * Math.PI * 2) * markerSize * 2.5,
+            Math.sin((i / 8) * Math.PI * 2) * markerSize * 2.5,
+            0
+          ]}
+        >
+          <sphereGeometry args={[0.02, 8, 8]} />
+          <meshBasicMaterial
+            color={glowColor}
+            transparent
+            opacity={0.4}
+          />
+        </mesh>
+      ))}
     </group>
   );
 };
 
-// --- 2. The Dynamic Lines (Roots to Poland) ---
+// --- Enhanced Migration Lines with Particles ---
 const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
   const groupRef = useRef<THREE.Group>(null);
   const polandPos = getPosition(COORDINATES.PL.lat, COORDINATES.PL.lon, GLOBE_RADIUS);
@@ -363,18 +419,16 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
     let startPoints: Array<{ point: THREE.Vector3; countryCode: string }> = [];
     
     if (targetCountry && COORDINATES[targetCountry]) {
-      // CASE A: Specific Country (12 lines from that region)
       const center = COORDINATES[targetCountry];
-      for(let i=0; i<12; i++) {
-        const spreadLat = center.lat + (Math.random() - 0.5) * 8;
-        const spreadLon = center.lon + (Math.random() - 0.5) * 8;
+      for(let i=0; i<15; i++) {
+        const spreadLat = center.lat + (Math.random() - 0.5) * 10;
+        const spreadLon = center.lon + (Math.random() - 0.5) * 10;
         startPoints.push({
           point: getPosition(spreadLat, spreadLon, GLOBE_RADIUS),
           countryCode: targetCountry
         });
       }
     } else {
-      // CASE B: Global View (1 line from each major country)
       const keys = Object.keys(COORDINATES).filter(k => k !== 'PL');
       startPoints = keys.map(k => ({
         point: getPosition(COORDINATES[k].lat, COORDINATES[k].lon, GLOBE_RADIUS),
@@ -382,88 +436,105 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
       }));
     }
 
-    // Draw Curve to Poland with different styles based on country
-    const connectionStyles = ['solid', 'dashed', 'dotted', 'glow'];
-    
     return startPoints.map(({ point: start, countryCode }, index) => {
       const end = polandPos;
       const dist = start.distanceTo(end);
-      
-      // Vary the arch height for visual interest
-      const archHeight = 0.4 + (index % 3) * 0.2; // Different heights
+      const archHeight = 0.5 + (index % 4) * 0.15;
       const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + (dist * archHeight));
       const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
       
-      // Assign different styles to lines
-      const styleIndex = index % connectionStyles.length;
-      const style = connectionStyles[styleIndex];
-      
-      // Vary colors slightly for different countries
-      const hueShift = (index * 15) % 30; // Rotate through red hues
-      const color = style === 'glow' 
-        ? `hsl(${0 + hueShift}, 85%, 60%)` // Brighter for glow
-        : style === 'dotted'
-        ? `hsl(${0 + hueShift}, 75%, 55%)` // Slightly different
-        : BRAND_RED;
+      // Color variation based on distance
+      const hue = (index * 10) % 20;
+      const saturation = 75 + (index % 3) * 10;
+      const lightness = 55 + (index % 2) * 5;
+      const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       
       return { 
-        points: curve.getPoints(60), // More points for smoother curves
+        points: curve.getPoints(80),
         countryCode,
-        style,
-        color
+        color,
+        curve
       };
     });
   }, [targetCountry]);
 
   const lineMaterialsRef = useRef<(THREE.LineBasicMaterial | null)[]>([]);
+  const particleRefs = useRef<THREE.Mesh[]>([]);
 
   useFrame((state) => {
     if (!groupRef.current) return;
     const time = state.clock.getElapsedTime();
     
-    // Animate lines with flowing effect - slower animation
+    // Animate line opacity with flowing effect
     lineMaterialsRef.current.forEach((material, i) => {
       if (!material) return;
-      const baseOpacity = parseFloat(material.opacity.toString()) || 0.75;
-      // Slower, more subtle flowing opacity effect
-      const flowSpeed = 0.8; // Slower than before
-      material.opacity = baseOpacity + Math.sin(time * flowSpeed + (i * 0.4)) * 0.2;
+      material.opacity = 0.8 + Math.sin(time * 0.6 + i * 0.5) * 0.2;
+    });
+    
+    // Animate particles along lines
+    lines.forEach((line, lineIndex) => {
+      const particleIndex = lineIndex * 3;
+      const progress = (time * 0.3 + lineIndex * 0.2) % 1;
+      const pointIndex = Math.floor(progress * (line.points.length - 1));
+      const point = line.points[pointIndex];
+      
+      for (let i = 0; i < 3; i++) {
+        const particle = particleRefs.current[particleIndex + i];
+        if (particle && point) {
+          const offset = (time * 0.5 + i * 0.3) % (line.points.length - 1);
+          const offsetPoint = line.points[Math.floor(offset)];
+          if (offsetPoint) {
+            particle.position.copy(offsetPoint);
+            particle.position.multiplyScalar(1.01); // Slightly above the line
+          }
+        }
+      }
     });
   });
 
   return (
     <group ref={groupRef}>
-      {lines.map(({ points, countryCode, style, color }, i) => {
-        // Create different line styles
-        const isDashed = style === 'dashed';
-        const isDotted = style === 'dotted';
-        const isGlow = style === 'glow';
-        
-        // For dashed/dotted, we'll use opacity variation
-        const baseOpacity = isGlow ? 0.9 : isDotted ? 0.6 : 0.75;
-        
-        return (
-          <line key={`line-${i}-${countryCode}`}>
-            <bufferGeometry>
-              <bufferAttribute 
-                attach="attributes-position" 
-                count={points.length} 
-                array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} 
-                itemSize={3} 
-              />
-            </bufferGeometry>
-            <lineBasicMaterial 
-              ref={(mat: THREE.LineBasicMaterial | null) => {
-                if (mat) {
-                  lineMaterialsRef.current[i] = mat;
-                }
-              }}
-              color={color}
-              opacity={baseOpacity} 
-              transparent 
+      {/* Connection Lines */}
+      {lines.map(({ points, countryCode, color }, i) => (
+        <line key={`line-${i}-${countryCode}`}>
+          <bufferGeometry>
+            <bufferAttribute 
+              attach="attributes-position" 
+              count={points.length} 
+              array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} 
+              itemSize={3} 
             />
-          </line>
-        );
+          </bufferGeometry>
+          <lineBasicMaterial 
+            ref={(mat: THREE.LineBasicMaterial | null) => {
+              if (mat) lineMaterialsRef.current[i] = mat;
+            }}
+            color={color}
+            opacity={0.85} 
+            transparent
+            linewidth={3}
+          />
+        </line>
+      ))}
+      
+      {/* Animated particles along lines */}
+      {lines.map((line, lineIndex) => {
+        const particleIndex = lineIndex * 3;
+        return Array.from({ length: 3 }).map((_, i) => (
+          <mesh
+            key={`particle-${lineIndex}-${i}`}
+            ref={(el) => {
+              if (el) particleRefs.current[particleIndex + i] = el;
+            }}
+          >
+            <sphereGeometry args={[0.04, 8, 8]} />
+            <meshBasicMaterial
+              color={line.color}
+              transparent
+              opacity={0.9}
+            />
+          </mesh>
+        ));
       })}
       
       {/* Country Markers */}
@@ -474,25 +545,21 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
           <CountryMarker
             key={code}
             position={pos}
-            countryCode={code}
-            countryName={coord.name}
             isPoland={false}
           />
         );
       })}
       
-      {/* Poland Marker (highlighted) */}
+      {/* Poland Marker */}
       <CountryMarker
         position={polandPos}
-        countryCode="PL"
-        countryName="Poland"
         isPoland={true}
       />
     </group>
   );
 };
 
-// --- Waving Animation Component with Enhanced 3D Motion ---
+// --- Enhanced Waving Animation ---
 const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNode; targetCountry?: string }) => {
   const groupRef = useRef<THREE.Group>(null);
   const innerGroupRef = useRef<THREE.Group>(null);
@@ -501,23 +568,22 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
     if (!groupRef.current || !innerGroupRef.current) return;
     const time = state.clock.getElapsedTime();
     
-    // Slower, more gentle 3D waving/floating animation
-    const waveSpeed = 0.3; // Slower wave speed
-    const floatSpeed = 0.4; // Slower floating
+    const waveSpeed = 0.25;
+    const floatSpeed = 0.35;
     
-    // Main rotation with gentle wave modulation
-    groupRef.current.rotation.x = 0.25 + Math.sin(time * waveSpeed) * 0.1;
-    groupRef.current.rotation.y = time * 0.08 + Math.sin(time * waveSpeed * 0.7) * 0.06; // Much slower spin
-    groupRef.current.rotation.z = Math.sin(time * waveSpeed * 0.8) * 0.03;
+    // Smooth floating motion
+    groupRef.current.rotation.x = 0.2 + Math.sin(time * waveSpeed) * 0.08;
+    groupRef.current.rotation.y = time * 0.06 + Math.sin(time * waveSpeed * 0.6) * 0.05;
+    groupRef.current.rotation.z = Math.sin(time * waveSpeed * 0.7) * 0.02;
     
-    // Gentle floating motion - more pronounced
-    groupRef.current.position.y = Math.sin(time * floatSpeed) * 0.2;
-    groupRef.current.position.x = Math.cos(time * floatSpeed * 0.7) * 0.12;
-    groupRef.current.position.z = Math.sin(time * floatSpeed * 0.5) * 0.08;
+    // Gentle floating
+    groupRef.current.position.y = Math.sin(time * floatSpeed) * 0.18;
+    groupRef.current.position.x = Math.cos(time * floatSpeed * 0.6) * 0.1;
+    groupRef.current.position.z = Math.sin(time * floatSpeed * 0.4) * 0.06;
     
-    // Inner group subtle rotation for depth
-    innerGroupRef.current.rotation.x = Math.sin(time * waveSpeed * 0.6) * 0.04;
-    innerGroupRef.current.rotation.y = Math.cos(time * waveSpeed * 0.5) * 0.03;
+    // Subtle inner rotation
+    innerGroupRef.current.rotation.x = Math.sin(time * waveSpeed * 0.5) * 0.03;
+    innerGroupRef.current.rotation.y = Math.cos(time * waveSpeed * 0.4) * 0.02;
   });
   
   return (
@@ -529,7 +595,7 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
   );
 };
 
-// --- 3. Main Component ---
+// --- Main Component ---
 interface GlobeProps {
   country?: string;
   title?: string;
@@ -545,22 +611,59 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
         <Suspense fallback={null}>
           <Canvas 
-            camera={{ position: [0, 0, 5.5], fov: 50 }}
-            gl={{ antialias: true, alpha: true }}
+            camera={{ position: [0, 0, 6], fov: 50 }}
+            gl={{ 
+              antialias: true, 
+              alpha: true,
+              powerPreference: "high-performance",
+              stencil: false,
+              depth: true
+            }}
             dpr={[1, 2]}
             style={{ background: 'transparent' }}
           >
-            {/* Realistic lighting for Earth from space */}
-            <ambientLight intensity={0.3} color="#ffffff" />
-            <directionalLight position={[5, 3, 5]} intensity={1.2} color="#ffffff" />
-            <pointLight position={[-5, -3, -5]} intensity={0.3} color="#4a90e2" />
-            {/* Sun-like light for day/night effect */}
-            <pointLight position={[10, 10, 10]} intensity={0.8} color="#ffeb3b" distance={20} decay={2} />
+            {/* Enhanced lighting setup */}
+            <ambientLight intensity={0.4} color="#ffffff" />
+            <directionalLight 
+              position={[5, 5, 5]} 
+              intensity={1.5} 
+              color="#ffffff"
+              castShadow
+            />
+            <directionalLight 
+              position={[-3, -2, -3]} 
+              intensity={0.4} 
+              color="#4a90e2"
+            />
+            <pointLight 
+              position={[10, 10, 10]} 
+              intensity={1.0} 
+              color="#ffeb3b" 
+              distance={25} 
+              decay={2}
+            />
+            <pointLight 
+              position={[-10, -10, -10]} 
+              intensity={0.3} 
+              color="#ffffff"
+            />
+            
+            {/* Starfield background */}
+            <Stars radius={100} depth={60} count={3000} factor={6} fade speed={0.5} />
+            
             <WavingGlobeGroup targetCountry={country}>
+              <Atmosphere />
               <EarthGlobe />
               <MigrationLines targetCountry={country} />
             </WavingGlobeGroup>
-            <OrbitControls enableZoom={false} autoRotate={false} enablePan={false} />
+            
+            <OrbitControls 
+              enableZoom={false} 
+              autoRotate={false} 
+              enablePan={false}
+              minDistance={4}
+              maxDistance={8}
+            />
           </Canvas>
         </Suspense>
       </div>
@@ -582,20 +685,33 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
           </div>
         }>
           <Canvas 
-            camera={{ position: [0, 0, 5.5], fov: 45 }}
-            gl={{ antialias: true, alpha: false }}
+            camera={{ position: [0, 0, 6], fov: 45 }}
+            gl={{ 
+              antialias: true, 
+              alpha: false,
+              powerPreference: "high-performance"
+            }}
             dpr={[1, 2]}
           >
-            {/* Realistic lighting for Earth from space */}
-            <ambientLight intensity={0.3} color="#ffffff" />
-            <directionalLight position={[5, 3, 5]} intensity={1.2} color="#ffffff" />
-            <pointLight position={[-5, -3, -5]} intensity={0.3} color="#4a90e2" />
-            <pointLight position={[10, 10, 10]} intensity={0.8} color="#ffeb3b" distance={20} decay={2} />
+            <ambientLight intensity={0.4} color="#ffffff" />
+            <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
+            <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#4a90e2" />
+            <pointLight position={[10, 10, 10]} intensity={1.0} color="#ffeb3b" distance={25} decay={2} />
+            
+            <Stars radius={80} depth={50} count={2000} factor={5} fade speed={0.5} />
+            
             <group rotation={[0.3, 0, 0]}> 
+              <Atmosphere />
               <EarthGlobe />
               <MigrationLines targetCountry={country} />
             </group>
-            <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} enablePan={false} />
+            
+            <OrbitControls 
+              enableZoom={false} 
+              autoRotate 
+              autoRotateSpeed={0.3} 
+              enablePan={false}
+            />
           </Canvas>
         </Suspense>
       </div>
