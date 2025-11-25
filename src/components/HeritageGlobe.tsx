@@ -40,12 +40,16 @@ const getPosition = (lat: number, lon: number, radius: number) => {
 
 // --- Ultra High Quality Earth Texture Generator ---
 const createEarthTexture = () => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 4096; // 4K resolution
-  canvas.height = 2048;
-  const ctx = canvas.getContext('2d', { alpha: false });
-  
-  if (!ctx) return null;
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 4096; // 4K resolution
+    canvas.height = 2048;
+    const ctx = canvas.getContext('2d', { alpha: false });
+    
+    if (!ctx) {
+      console.warn('Failed to get 2D context for Earth texture');
+      return null;
+    }
   
   // Deep space ocean gradient with realistic color variation
   const oceanGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -218,12 +222,16 @@ const createEarthTexture = () => {
   ctx.fillStyle = terminatorGradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.needsUpdate = true;
-  
-  return texture;
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.needsUpdate = true;
+    
+    return texture;
+  } catch (error) {
+    console.error('Error creating Earth texture:', error);
+    return null;
+  }
 };
 
 // --- Ultra High Quality Earth Globe ---

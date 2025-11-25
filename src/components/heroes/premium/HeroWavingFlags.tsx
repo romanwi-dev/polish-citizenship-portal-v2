@@ -41,7 +41,7 @@ export const HeroWavingFlags = () => {
       {/* Gradient overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
 
-      <div className="container relative z-10 px-4 mx-auto lg:pr-[460px] xl:pr-[480px]">
+      <div className="container relative z-10 px-4 mx-auto">
         {/* Desktop: Side by side layout, Mobile: Stacked */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr,420px] gap-8 lg:gap-8 xl:gap-12 items-start lg:items-center max-w-7xl mx-auto">
             <div className={`space-y-8 md:pt-8 lg:pt-0 flex flex-col justify-center w-full lg:w-auto order-1 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
@@ -171,7 +171,7 @@ export const HeroWavingFlags = () => {
         </div>
       </div>
 
-      {/* Stats Cards at Bottom - Adjusted to avoid form overlap */}
+      {/* Stats Cards at Bottom - Adjusted to avoid form overlap on desktop */}
       <div className="container relative z-10 px-4 mx-auto mt-16 md:mt-20 lg:pr-[460px] xl:pr-[480px]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {features.map((feature, index) => {
