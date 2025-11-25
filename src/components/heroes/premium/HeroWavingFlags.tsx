@@ -96,23 +96,12 @@ export const HeroWavingFlags = () => {
           
           {/* Right Column: Photo + Form Card - Separate card with lighter background */}
           <div className={`w-full max-w-[380px] mx-auto lg:mx-0 relative order-2 lg:mt-0 ${isRTL ? 'lg:order-1' : 'lg:order-2'}`} style={{ perspective: '1000px' }}>
-            <div className="glass-card rounded-2xl border border-primary/10 backdrop-blur-sm p-5 md:p-6">
+            <div className="glass-card rounded-2xl border border-primary/10 backdrop-blur-sm p-5 md:p-6 shadow-lg">
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
-                {/* Front - Photo + Form */}
+                {/* Front - Form + Photo */}
                 <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
-                  {/* Secretary Photo - Fixed aspect ratio, object-contain to show full head */}
-                  <div className="mb-4 md:mb-5 rounded-xl overflow-hidden aspect-[4/3] bg-muted/20 flex items-center justify-center opacity-70 dark:opacity-70 lg:opacity-100">
-                    <img 
-                      src={professionalWoman} 
-                      alt="Professional consultation"
-                      width="400"
-                      height="300"
-                      className="w-full h-full object-contain object-center"
-                      loading="eager"
-                      decoding="async"
-                    />
-                  </div>
-                  <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
+                  {/* Form - Moved to top on desktop */}
+                  <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5 mb-4 md:mb-5">
                     <div className="space-y-2">
                       <Label htmlFor="name" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.nameLabel')} *
@@ -123,7 +112,7 @@ export const HeroWavingFlags = () => {
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        className="h-16 md:h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
@@ -137,7 +126,7 @@ export const HeroWavingFlags = () => {
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="h-16 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        className="h-16 md:h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm sm:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
@@ -149,7 +138,7 @@ export const HeroWavingFlags = () => {
                         value={formData.country}
                         onValueChange={(value) => setFormData({...formData, country: value})}
                       >
-                        <SelectTrigger className={`!h-16 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                        <SelectTrigger className={`!h-16 md:!h-14 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm sm:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                           <SelectValue placeholder={t('contact.countryPlaceholder')} />
                         </SelectTrigger>
                         <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -163,11 +152,24 @@ export const HeroWavingFlags = () => {
                     </div>
                     <button
                       type="submit"
-                      className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-6 break-words hyphens-auto [&_span]:text-lg [&_span]:md:text-base [&_span]:leading-tight [&_span]:[font-size:clamp(0.75rem,2.5vw,1rem)]"
+                      className="w-full h-auto min-h-[64px] md:min-h-[56px] py-4 md:py-3 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-6 break-words hyphens-auto [&_span]:text-lg [&_span]:md:text-base [&_span]:leading-tight [&_span]:[font-size:clamp(0.75rem,2.5vw,1rem)]"
                     >
                       <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
                     </button>
                   </form>
+                  
+                  {/* Secretary Photo - Wider to fill container, moved below form */}
+                  <div className="rounded-xl overflow-hidden aspect-[16/10] lg:aspect-[16/9] bg-muted/20 opacity-70 dark:opacity-70 lg:opacity-100">
+                    <img 
+                      src={professionalWoman} 
+                      alt="Professional consultation"
+                      width="400"
+                      height="300"
+                      className="w-full h-full object-cover object-center"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </div>
                 </div>
                 
                 {/* Back - Success */}
