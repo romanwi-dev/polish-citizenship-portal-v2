@@ -42,78 +42,77 @@ export const HeroWavingFlags = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
 
       <div className="container relative z-10 px-4 mx-auto">
-        {/* Unified Hero Panel - Single container for title, stats, and form */}
-        <div className="glass-card rounded-2xl border border-primary/20 backdrop-blur-xl p-6 md:p-8 lg:p-10 max-w-7xl mx-auto shadow-xl">
-          {/* Desktop: Side by side layout, Mobile: Stacked */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr,420px] gap-8 lg:gap-10 xl:gap-12 items-start">
-            {/* Left Column: Title + Stats Cards */}
-            <div className={`space-y-8 flex flex-col justify-start w-full order-1 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
-              {/* Title Section */}
-              <div className="space-y-6 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm">
-                  <Sparkles className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    {t('hero.badge')}
-                  </span>
-                </div>
-                <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
-                  <span className="inline-block" style={{ 
-                    backgroundImage: 'var(--gradient-title)',
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    color: 'transparent'
-                  }} dangerouslySetInnerHTML={{ __html: t('hero.title') }}>
-                  </span>
-                </h1>
-                <div className="space-y-3" key={t('hero.subtitle1')}>
-                  <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
-                    {t('hero.subtitle1')}
-                  </p>
-                  <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
-                    {t('hero.subtitle2')}
-                  </p>
-                </div>
+        {/* Desktop: Two column layout, Mobile: Stacked */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr,380px] gap-8 lg:gap-8 xl:gap-10 items-start max-w-7xl mx-auto">
+          {/* Left Column: Badge + Title + Text + Stats Cards */}
+          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
+            {/* Badge + Title Section */}
+            <div className="space-y-5 md:space-y-6 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  {t('hero.badge')}
+                </span>
               </div>
-              
-              {/* Stats Cards - Now inside the unified panel, wider but shorter */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 w-full">
-                {features.map((feature, index) => {
-                  const FeatureIcon = feature.icon;
-                  return (
-                    <div 
-                      key={index}
-                      className="rounded-lg text-center p-4 md:p-5 backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/40 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:shadow-lg"
-                    >
-                      <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-                        <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
-                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
-                        <p className="text-xs sm:text-sm font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
-                      </div>
-                    </div>
-                  );
-                })}
+              <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-heading font-black leading-tight">
+                <span className="inline-block" style={{ 
+                  backgroundImage: 'var(--gradient-title)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  color: 'transparent'
+                }} dangerouslySetInnerHTML={{ __html: t('hero.title') }}>
+                </span>
+              </h1>
+              <div className="space-y-3" key={t('hero.subtitle1')}>
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
+                  {t('hero.subtitle1')}
+                </p>
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal max-w-3xl mx-auto lg:mx-0 break-words hyphens-auto">
+                  {t('hero.subtitle2')}
+                </p>
               </div>
             </div>
             
-            {/* Right Column: Form Card - Same surface as title and stats */}
-            <div className={`w-full max-w-md mx-auto lg:mx-0 relative order-2 lg:mt-0 ${isRTL ? 'lg:order-1' : 'lg:order-2'}`} style={{ perspective: '1000px' }}>
+            {/* Stats Cards - Wider and shorter, compact stat tiles */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 w-full">
+              {features.map((feature, index) => {
+                const FeatureIcon = feature.icon;
+                return (
+                  <div 
+                    key={index}
+                    className="rounded-lg text-center px-4 py-3 md:px-5 md:py-4 backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/40 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:shadow-lg"
+                  >
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 md:gap-2">
+                      <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
+                      <h3 className="text-2xl md:text-3xl lg:text-3xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
+                      <p className="text-xs sm:text-sm font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Right Column: Photo + Form Card - Separate card with lighter background */}
+          <div className={`w-full max-w-[380px] mx-auto lg:mx-0 relative order-2 lg:mt-0 ${isRTL ? 'lg:order-1' : 'lg:order-2'}`} style={{ perspective: '1000px' }}>
+            <div className="glass-card rounded-2xl border border-primary/10 backdrop-blur-sm p-5 md:p-6">
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
-                {/* Front - Form */}
+                {/* Front - Photo + Form */}
                 <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
-                  {/* Secretary Photo - Full visibility, no aspect ratio constraint */}
-                  <div className="mb-5 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100">
+                  {/* Secretary Photo - Fixed aspect ratio, object-contain to show full head */}
+                  <div className="mb-4 md:mb-5 rounded-xl overflow-hidden aspect-[4/3] bg-muted/20 flex items-center justify-center opacity-70 dark:opacity-70 lg:opacity-100">
                     <img 
                       src={professionalWoman} 
                       alt="Professional consultation"
                       width="400"
                       height="300"
-                      className="w-full h-auto object-cover max-h-[280px]"
+                      className="w-full h-full object-contain object-center"
                       loading="eager"
                       decoding="async"
                     />
                   </div>
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="name" className={`text-base md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.nameLabel')} *
@@ -164,7 +163,7 @@ export const HeroWavingFlags = () => {
                     </div>
                     <button
                       type="submit"
-                      className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8 break-words hyphens-auto [&_span]:text-lg [&_span]:md:text-base [&_span]:leading-tight [&_span]:[font-size:clamp(0.75rem,2.5vw,1rem)]"
+                      className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-6 break-words hyphens-auto [&_span]:text-lg [&_span]:md:text-base [&_span]:leading-tight [&_span]:[font-size:clamp(0.75rem,2.5vw,1rem)]"
                     >
                       <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
                     </button>
