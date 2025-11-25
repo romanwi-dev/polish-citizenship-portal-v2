@@ -42,8 +42,9 @@ export const HeroWavingFlags = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
 
       <div className="container relative z-10 px-4 mx-auto">
-        <div className="grid lg:grid-cols-[1fr,420px] gap-8 lg:gap-8 xl:gap-12 items-start lg:items-center max-w-7xl mx-auto">
-            <div className={`space-y-8 md:pt-8 lg:pt-0 flex flex-col justify-center ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
+        {/* Desktop: Side by side layout, Mobile: Stacked */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr,420px] gap-8 lg:gap-8 xl:gap-12 items-start lg:items-center max-w-7xl mx-auto">
+            <div className={`space-y-8 md:pt-8 lg:pt-0 flex flex-col justify-center w-full lg:w-auto order-1 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
               <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mb-6">
                 <Sparkles className="w-4 h-4 text-primary" />
@@ -71,8 +72,8 @@ export const HeroWavingFlags = () => {
               </div>
             </div>
             
-            {/* Second Grid Column - Form Card */}
-            <div className={`glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:sticky lg:top-24 relative ${isRTL ? 'lg:order-1' : ''}`} style={{ perspective: '1000px' }}>
+            {/* Second Grid Column - Form Card - Right side on desktop */}
+            <div className={`glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:sticky lg:top-24 relative order-2 lg:w-full ${isRTL ? 'lg:order-1' : 'lg:order-2'}`} style={{ perspective: '1000px' }}>
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
