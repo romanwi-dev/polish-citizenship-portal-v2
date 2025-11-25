@@ -41,9 +41,9 @@ export const HeroWavingFlags = () => {
       {/* Gradient overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
 
-      <div className="container relative z-10 px-4 mx-auto">
+      <div className="container relative z-10 px-4 mx-auto lg:pr-[460px] xl:pr-[480px]">
         {/* Desktop: Side by side layout, Mobile: Stacked */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr,420px] gap-8 lg:gap-8 xl:gap-12 items-start lg:items-center max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr,420px] gap-8 lg:gap-8 xl:gap-12 items-start lg:items-center max-w-7xl mx-auto">
             <div className={`space-y-8 md:pt-8 lg:pt-0 flex flex-col justify-center w-full lg:w-auto order-1 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
               <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mb-6">
