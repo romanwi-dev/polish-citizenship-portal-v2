@@ -59,6 +59,205 @@ const getPosition = (lat: number, lon: number, radius: number) => {
   );
 };
 
+// --- Realistic Earth Globe with Texture ---
+const EarthGlobe = () => {
+  // Create a realistic Earth texture programmatically (night view with city lights)
+  const earthTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 2048;
+    canvas.height = 1024;
+    const ctx = canvas.getContext('2d');
+    
+    if (!ctx) return null;
+    
+    // Base dark ocean color
+    const oceanGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    oceanGradient.addColorStop(0, '#0a0f1a'); // Dark blue-black at poles
+    oceanGradient.addColorStop(0.2, '#152530'); // Darker blue
+    oceanGradient.addColorStop(0.4, '#1e3442'); // Ocean blue
+    oceanGradient.addColorStop(0.6, '#1e3442');
+    oceanGradient.addColorStop(0.8, '#152530');
+    oceanGradient.addColorStop(1, '#0a0f1a');
+    
+    ctx.fillStyle = oceanGradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Add continent shapes (dark landmasses)
+    ctx.fillStyle = '#0f1f1f';
+    const continents = [
+      // North America
+      { x: 0.25, y: 0.35, w: 0.15, h: 0.25 },
+      // South America
+      { x: 0.28, y: 0.58, w: 0.08, h: 0.35 },
+      // Europe/Africa
+      { x: 0.48, y: 0.35, w: 0.12, h: 0.55 },
+      // Asia
+      { x: 0.58, y: 0.25, w: 0.20, h: 0.40 },
+      // Australia
+      { x: 0.75, y: 0.60, w: 0.12, h: 0.15 },
+    ];
+    
+    continents.forEach(cont => {
+      ctx.beginPath();
+      ctx.ellipse(
+        cont.x * canvas.width,
+        cont.y * canvas.height,
+        cont.w * canvas.width * 0.5,
+        cont.h * canvas.height * 0.5,
+        0, 0, Math.PI * 2
+      );
+      ctx.fill();
+    });
+    
+    // Add night city lights (bright dots for major cities)
+    ctx.fillStyle = '#ffffff';
+    ctx.globalAlpha = 0.9;
+    
+    // Major city clusters with more lights
+    const cityRegions = [
+      { x: 0.75, y: 0.35, count: 80 }, // USA East Coast
+      { x: 0.15, y: 0.35, count: 60 }, // USA West Coast
+      { x: 0.50, y: 0.40, count: 100 }, // Europe
+      { x: 0.65, y: 0.30, count: 120 }, // Asia (China/India)
+      { x: 0.30, y: 0.45, count: 40 }, // South America
+      { x: 0.80, y: 0.62, count: 20 }, // Australia
+      { x: 0.52, y: 0.52, count: 15 }, // Middle East
+      { x: 0.55, y: 0.15, count: 30 }, // Russia
+    ];
+    
+    cityRegions.forEach(region => {
+      for (let i = 0; i < region.count; i++) {
+        const spreadX = (Math.random() - 0.5) * 0.15;
+        const spreadY = (Math.random() - 0.5) * 0.15;
+        const x = (region.x + spreadX) * canvas.width;
+        const y = (region.y + spreadY) * canvas.height;
+        const size = 0.5 + Math.random() * 1.5;
+        ctx.fillRect(x, y, size, size);
+      }
+    });
+    
+    // Add some larger city clusters (megacities)
+    ctx.globalAlpha = 1;
+    const megaCities = [
+      { x: 0.75, y: 0.35, radius: 8 }, // New York area
+      { x: 0.50, y: 0.42, radius: 10 }, // London/Paris region
+      { x: 0.68, y: 0.32, radius: 12 }, // Beijing area
+      { x: 0.64, y: 0.30, radius: 10 }, // India region
+      { x: 0.52, y: 0.38, radius: 6 }, // Central Europe
+    ];
+    
+    megaCities.forEach(city => {
+      ctx.beginPath();
+      ctx.arc(
+        city.x * canvas.width,
+        city.y * canvas.height,
+        city.radius,
+        0, Math.PI * 2
+      );
+      ctx.fill();
+    });
+    
+    // Add atmospheric glow at edges (terminator line)
+    const glowGradient = ctx.createRadialGradient(
+      canvas.width * 0.5, canvas.height * 0.5,
+      0,
+      canvas.width * 0.5, canvas.height * 0.5,
+      canvas.width * 0.6
+    );
+    glowGradient.addColorStop(0, 'transparent');
+    glowGradient.addColorStop(0.7, 'transparent');
+    glowGradient.addColorStop(1, 'rgba(0, 100, 200, 0.2)');
+    ctx.fillStyle = glowGradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    return new THREE.CanvasTexture(canvas);
+  }, []);
+  
+  if (!earthTexture) return <FallbackEarthGlobe />;
+  
+  return (
+    <Sphere args={[GLOBE_RADIUS, 64, 64]}>
+      <meshPhongMaterial
+        map={earthTexture}
+        emissive={new THREE.Color(0x001122)}
+        emissiveIntensity={0.2}
+        shininess={15}
+        specular={new THREE.Color(0x111111)}
+      />
+    </Sphere>
+  );
+};
+
+// Fallback Earth Globe (if textures fail to load)
+const FallbackEarthGlobe = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const textureRef = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 2048;
+    canvas.height = 1024;
+    const ctx = canvas.getContext('2d');
+    
+    if (ctx) {
+      // Create a dark Earth-like gradient
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#0a1628'); // Dark blue-black at poles
+      gradient.addColorStop(0.3, '#1a2a3a'); // Darker blue
+      gradient.addColorStop(0.5, '#2a3a4a'); // Ocean blue
+      gradient.addColorStop(0.7, '#1a2a3a');
+      gradient.addColorStop(1, '#0a1628');
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Add continent-like shapes with subtle colors
+      ctx.fillStyle = '#1a4a2a'; // Dark green for continents
+      for (let i = 0; i < 50; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const radius = 50 + Math.random() * 150;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.globalAlpha = 0.3;
+        ctx.fill();
+      }
+      
+      // Add night lights (city lights) as bright dots
+      ctx.fillStyle = '#ffffff';
+      ctx.globalAlpha = 0.8;
+      for (let i = 0; i < 500; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = 1 + Math.random() * 2;
+        ctx.fillRect(x, y, size, size);
+      }
+      
+      // Add some larger city clusters
+      ctx.globalAlpha = 0.6;
+      for (let i = 0; i < 20; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const radius = 3 + Math.random() * 5;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    
+    return new THREE.CanvasTexture(canvas);
+  }, []);
+  
+  return (
+    <Sphere args={[GLOBE_RADIUS, 64, 64]}>
+      <meshPhongMaterial
+        map={textureRef}
+        emissive={new THREE.Color(0x001122)}
+        emissiveIntensity={0.15}
+        shininess={5}
+      />
+    </Sphere>
+  );
+};
+
 // --- 1. The World Dots ---
 const Dots = () => {
   const meshRef = useRef<THREE.InstancedMesh>(null);
@@ -351,17 +550,15 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
             dpr={[1, 2]}
             style={{ background: 'transparent' }}
           >
-            <ambientLight intensity={0.7} />
-            <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#4b5563" />
-            <pointLight position={[0, 10, 0]} intensity={0.6} color="#DC2626" />
-            <directionalLight position={[5, 5, 5]} intensity={0.4} />
+            {/* Realistic lighting for Earth from space */}
+            <ambientLight intensity={0.3} color="#ffffff" />
+            <directionalLight position={[5, 3, 5]} intensity={1.2} color="#ffffff" />
+            <pointLight position={[-5, -3, -5]} intensity={0.3} color="#4a90e2" />
+            {/* Sun-like light for day/night effect */}
+            <pointLight position={[10, 10, 10]} intensity={0.8} color="#ffeb3b" distance={20} decay={2} />
             <WavingGlobeGroup targetCountry={country}>
-              <Dots />
+              <EarthGlobe />
               <MigrationLines targetCountry={country} />
-              <Sphere args={[GLOBE_RADIUS - 0.05, 32, 32]}>
-                <meshBasicMaterial color="#020617" transparent opacity={0.25} />
-              </Sphere>
             </WavingGlobeGroup>
             <OrbitControls enableZoom={false} autoRotate={false} enablePan={false} />
           </Canvas>
@@ -389,14 +586,14 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
             gl={{ antialias: true, alpha: false }}
             dpr={[1, 2]}
           >
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
+            {/* Realistic lighting for Earth from space */}
+            <ambientLight intensity={0.3} color="#ffffff" />
+            <directionalLight position={[5, 3, 5]} intensity={1.2} color="#ffffff" />
+            <pointLight position={[-5, -3, -5]} intensity={0.3} color="#4a90e2" />
+            <pointLight position={[10, 10, 10]} intensity={0.8} color="#ffeb3b" distance={20} decay={2} />
             <group rotation={[0.3, 0, 0]}> 
-              <Dots />
+              <EarthGlobe />
               <MigrationLines targetCountry={country} />
-              <Sphere args={[GLOBE_RADIUS - 0.05, 32, 32]}>
-                 <meshBasicMaterial color="#020617" />
-              </Sphere>
             </group>
             <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} enablePan={false} />
           </Canvas>
