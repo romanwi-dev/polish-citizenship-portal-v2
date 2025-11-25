@@ -73,7 +73,7 @@ export const HeroWavingFlags = () => {
             </div>
             
             {/* Second Grid Column - Form Card - Right side on desktop, Fixed position */}
-            <div className={`glass-card p-6 md:p-7 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:fixed lg:right-8 xl:right-16 lg:top-24 lg:w-[420px] lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto relative order-2 z-20 ${isRTL ? 'lg:order-1 lg:left-8 xl:left-16 lg:right-auto' : 'lg:order-2'}`} style={{ perspective: '1000px' }}>
+            <div className={`glass-card p-6 md:p-7 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:fixed lg:right-8 xl:right-16 lg:top-32 lg:w-[420px] lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto relative order-2 z-30 ${isRTL ? 'lg:order-1 lg:left-8 xl:left-16 lg:right-auto' : 'lg:order-2'}`} style={{ perspective: '1000px' }}>
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
@@ -171,8 +171,8 @@ export const HeroWavingFlags = () => {
         </div>
       </div>
 
-      {/* Stats Cards at Bottom */}
-      <div className="container relative z-10 px-4 mx-auto mt-16 md:mt-20">
+      {/* Stats Cards at Bottom - Adjusted to avoid form overlap */}
+      <div className="container relative z-10 px-4 mx-auto mt-16 md:mt-20 lg:pr-[460px] xl:pr-[480px]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {features.map((feature, index) => {
             const FeatureIcon = feature.icon;
