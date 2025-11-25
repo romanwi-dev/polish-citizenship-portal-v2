@@ -176,15 +176,15 @@ export const HeroWavingFlags = () => {
           </div>
         </div>
         
-        {/* Stats Cards - Full width below form bottom edge on desktop, square and centered on mobile */}
+        {/* Stats Cards - Full width below form bottom edge on desktop, same size as BenefitCard on mobile */}
         <div className="mt-12 md:mt-16 lg:mt-32 order-3 lg:order-none">
-          <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-sm sm:max-w-7xl mx-auto px-4 sm:px-0 items-center sm:items-stretch">
+          <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-[280px] sm:max-w-7xl mx-auto px-4 sm:px-0 items-center sm:items-stretch">
             {features.map((feature, index) => {
               const FeatureIcon = feature.icon;
               return (
                 <div 
                   key={index}
-                  className="glass-card hover-glow rounded-lg text-center px-5 py-4 md:px-6 md:py-5 lg:px-6 lg:py-5 backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)] w-full sm:w-auto aspect-square sm:aspect-auto"
+                  className="glass-card hover-glow rounded-lg text-center px-5 py-4 md:px-6 md:py-5 lg:px-6 lg:py-5 backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)] w-full max-w-[280px] sm:max-w-none h-[180px] md:h-[200px] sm:h-auto flex items-center justify-center"
                 >
                   <div className="w-full h-full flex flex-col items-center justify-center gap-2 md:gap-3">
                     <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
