@@ -45,7 +45,7 @@ export const HeroWavingFlags = () => {
         {/* Desktop: Two column layout, Mobile: Stacked */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr,380px] gap-8 lg:gap-8 xl:gap-10 items-start max-w-7xl mx-auto">
           {/* Left Column: Badge + Title + Text + Stats Cards */}
-          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 lg:pt-20 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
+          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 lg:pt-8 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
             {/* Badge + Title Section */}
             <div className="space-y-5 md:space-y-6 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm">
@@ -189,7 +189,7 @@ export const HeroWavingFlags = () => {
                   <div className="w-full h-full flex flex-col items-center justify-center gap-2 md:gap-3">
                     <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
                     <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
-                    <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
+                    <p className="text-lg md:text-xl font-medium dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
                   </div>
                 </div>
               );
