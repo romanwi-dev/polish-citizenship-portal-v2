@@ -115,15 +115,13 @@ const CountryMarker = ({
   isPoland?: boolean;
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
-  const scaleRef = useRef(1);
   
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.getElapsedTime();
     // Pulsing animation
-    const pulse = 1 + Math.sin(time * 2 + position.x) * 0.15;
-    scaleRef.current = pulse;
-    meshRef.current.scale.setScalar(scaleRef.current);
+    const pulse = 1 + Math.sin(time * 2 + (position.x || 0)) * 0.15;
+    meshRef.current.scale.setScalar(pulse);
   });
 
   const flagEmoji = FLAG_EMOJIS[countryCode] || "📍";
@@ -137,13 +135,13 @@ const CountryMarker = ({
         center
         style={{ pointerEvents: 'none' }}
         transform
-        occlude
       >
         <div style={{
           fontSize: isPoland ? '32px' : '24px',
           filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.8))',
           textAlign: 'center',
           lineHeight: 1,
+          userSelect: 'none',
         }}>
           {flagEmoji}
         </div>
@@ -212,51 +210,46 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
     });
   }, [targetCountry]);
 
-  const lineRefs = useRef<Array<{ material?: THREE.LineBasicMaterial }>>([]);
+  const lineMaterialsRef = useRef<(THREE.LineBasicMaterial | null)[]>([]);
 
   useFrame((state) => {
     if (!groupRef.current) return;
     const time = state.clock.getElapsedTime();
     
     // Animate lines with flowing effect
-    lineRefs.current.forEach((lineRef, i) => {
-      if (!lineRef?.material) return;
+    lineMaterialsRef.current.forEach((material, i) => {
+      if (!material) return;
       // Create flowing opacity effect
-      lineRef.material.opacity = 0.7 + Math.sin(time * 1.5 + i * 0.5) * 0.3;
+      material.opacity = 0.7 + Math.sin(time * 1.5 + (i * 0.5)) * 0.3;
     });
   });
 
   return (
     <group ref={groupRef}>
-      {lines.map(({ points, countryCode }, i) => (
-        <line 
-          key={i} 
-          ref={(el: any) => {
-            if (el?.material) {
-              if (!lineRefs.current[i]) {
-                lineRefs.current[i] = { material: el.material };
-              } else {
-                lineRefs.current[i].material = el.material;
-              }
-            }
-          }}
-        >
-          <bufferGeometry>
-            <bufferAttribute 
-              attach="attributes-position" 
-              count={points.length} 
-              array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} 
-              itemSize={3} 
+      {lines.map(({ points, countryCode }, i) => {
+        return (
+          <line key={`line-${i}-${countryCode}`}>
+            <bufferGeometry>
+              <bufferAttribute 
+                attach="attributes-position" 
+                count={points.length} 
+                array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} 
+                itemSize={3} 
+              />
+            </bufferGeometry>
+            <lineBasicMaterial 
+              ref={(mat: THREE.LineBasicMaterial | null) => {
+                if (mat) {
+                  lineMaterialsRef.current[i] = mat;
+                }
+              }}
+              color={BRAND_RED} 
+              opacity={0.8} 
+              transparent 
             />
-          </bufferGeometry>
-          <lineBasicMaterial 
-            color={BRAND_RED} 
-            opacity={0.8} 
-            transparent 
-            linewidth={2}
-          />
-        </line>
-      ))}
+          </line>
+        );
+      })}
       
       {/* Country Markers */}
       {(targetCountry ? [targetCountry] : Object.keys(COORDINATES).filter(k => k !== 'PL')).map((code) => {
