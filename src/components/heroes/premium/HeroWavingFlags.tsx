@@ -35,8 +35,11 @@ export const HeroWavingFlags = () => {
   return (
     // CLS FIX: min-h-screen ensures stable height, no layout shift
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-48 lg:pb-24">
-      {/* Removed duplicate 3D Canvas - now using unified background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
+      {/* Heritage Globe as Background */}
+      <HeritageGlobe asBackground={true} />
+      
+      {/* Gradient overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
 
       <div className="container relative z-10 px-4 mx-auto">
         <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
@@ -165,11 +168,6 @@ export const HeroWavingFlags = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Heritage Globe - Full width below headline and description */}
-        <div className="mt-12 md:mt-16 w-full max-w-7xl mx-auto relative z-20">
-          <HeritageGlobe />
         </div>
       </div>
 

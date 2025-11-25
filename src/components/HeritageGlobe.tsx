@@ -140,15 +140,62 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
   );
 };
 
+// --- Waving Animation Component ---
+const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNode; targetCountry?: string }) => {
+  const groupRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (!groupRef.current) return;
+    const time = state.clock.getElapsedTime();
+    
+    // Subtle waving/floating animation
+    groupRef.current.rotation.x = 0.3 + Math.sin(time * 0.3) * 0.05;
+    groupRef.current.rotation.y = time * 0.1 + Math.sin(time * 0.2) * 0.03;
+    groupRef.current.position.y = Math.sin(time * 0.4) * 0.1;
+  });
+  
+  return <group ref={groupRef}>{children}</group>;
+};
+
 // --- 3. Main Component ---
 interface GlobeProps {
   country?: string;
   title?: string;
+  asBackground?: boolean;
 }
 
-const HeritageGlobe = ({ country, title }: GlobeProps) => {
+const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => {
   const displayTitle = title || (country && COORDINATES[country] ? `${COORDINATES[country].name} to Poland` : "Global Reach");
 
+  // Background version - no text, full height, behind content
+  if (asBackground) {
+    return (
+      <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+        <Suspense fallback={null}>
+          <Canvas 
+            camera={{ position: [0, 0, 5.5], fov: 50 }}
+            gl={{ antialias: true, alpha: true }}
+            dpr={[1, 2]}
+            style={{ background: 'transparent' }}
+          >
+            <ambientLight intensity={0.6} />
+            <pointLight position={[10, 10, 10]} intensity={0.8} />
+            <pointLight position={[-10, -10, -10]} intensity={0.4} />
+            <WavingGlobeGroup targetCountry={country}>
+              <Dots />
+              <MigrationLines targetCountry={country} />
+              <Sphere args={[GLOBE_RADIUS - 0.05, 32, 32]}>
+                <meshBasicMaterial color="#020617" transparent opacity={0.3} />
+              </Sphere>
+            </WavingGlobeGroup>
+            <OrbitControls enableZoom={false} autoRotate={false} enablePan={false} />
+          </Canvas>
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Regular version with text overlay
   return (
     <div className="w-full h-[500px] md:h-[600px] bg-slate-950 rounded-xl overflow-hidden relative shadow-2xl border border-slate-800 z-10">
       <div className="absolute top-8 left-8 z-20 pointer-events-none">
