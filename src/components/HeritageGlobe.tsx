@@ -289,7 +289,20 @@ const EarthGlobe = () => {
     }
   });
   
-  if (!earthTexture) return null;
+  if (!earthTexture) {
+    // Fallback if texture creation fails
+    return (
+      <Sphere ref={meshRef} args={[GLOBE_RADIUS, 64, 64]}>
+        <meshStandardMaterial
+          color="#0a1220"
+          emissive={new THREE.Color(0x001122)}
+          emissiveIntensity={0.2}
+          metalness={0.1}
+          roughness={0.9}
+        />
+      </Sphere>
+    );
+  }
   
   return (
     <Sphere ref={meshRef} args={[GLOBE_RADIUS, 128, 128]}>
