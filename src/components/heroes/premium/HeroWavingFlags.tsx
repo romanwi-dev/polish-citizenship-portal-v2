@@ -43,7 +43,7 @@ export const HeroWavingFlags = () => {
 
       <div className="container relative z-10 px-4 mx-auto">
         {/* Unified Hero Panel - Single container for title, stats, and form */}
-        <div className="glass-card rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 p-6 md:p-8 lg:p-10 max-w-7xl mx-auto">
+        <div className="glass-card rounded-2xl border border-primary/20 backdrop-blur-xl p-6 md:p-8 lg:p-10 max-w-7xl mx-auto shadow-xl">
           {/* Desktop: Side by side layout, Mobile: Stacked */}
           <div className="grid grid-cols-1 lg:grid-cols-[1fr,420px] gap-8 lg:gap-10 xl:gap-12 items-start">
             {/* Left Column: Title + Stats Cards */}
