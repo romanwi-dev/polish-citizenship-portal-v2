@@ -176,9 +176,9 @@ export const HeroWavingFlags = () => {
           </div>
         </div>
         
-        {/* Stats Cards - Full width below form bottom edge on desktop, below contact card on mobile */}
-        <div className="mt-12 md:mt-16 lg:mt-20 order-3 lg:order-none">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-7xl mx-auto">
+        {/* Stats Cards - Full width below form bottom edge on desktop, narrower on mobile */}
+        <div className="mt-12 md:mt-16 lg:mt-32 order-3 lg:order-none">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-sm sm:max-w-7xl mx-auto px-4 sm:px-0">
             {features.map((feature, index) => {
               const FeatureIcon = feature.icon;
               return (
