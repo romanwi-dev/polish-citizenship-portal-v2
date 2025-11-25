@@ -81,22 +81,23 @@ export const HeroWavingFlags = () => {
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
                 {/* Front - Photo + Form */}
                 <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
-                  {/* Form - Photo and fields inside form with same padding */}
-                  <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4 p-4 md:p-5 lg:p-6">
-                    {/* Secretary Photo - Inside form, same width as form fields, head fully visible */}
-                    <div className="w-full overflow-hidden aspect-[4/3] bg-muted/20 opacity-70 dark:opacity-70 lg:opacity-100 rounded-lg">
+                  {/* Form - Photo and fields inside form with same padding, made taller */}
+                  <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5 lg:space-y-6 p-5 md:p-6 lg:p-7">
+                    {/* Secretary Photo - Inside form, fills container fully */}
+                    <div className="w-full overflow-hidden aspect-[4/3] lg:aspect-[4/3.5] bg-muted/20 opacity-70 dark:opacity-70 lg:opacity-100 rounded-lg">
                       <img 
                         src={professionalWoman} 
                         alt="Professional consultation"
                         width="400"
                         height="300"
-                        className="w-full h-full object-contain object-center"
+                        className="w-full h-full object-cover object-center"
+                        style={{ objectPosition: 'center 25%' }}
                         loading="eager"
                         decoding="async"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className={`text-sm md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <div className="space-y-2.5">
+                      <Label htmlFor="name" className={`text-sm md:text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.nameLabel')} *
                       </Label>
                       <input
@@ -105,12 +106,12 @@ export const HeroWavingFlags = () => {
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="h-12 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        className="h-14 md:h-14 lg:h-16 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm md:text-base w-full rounded-md px-4 outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className={`text-sm md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <div className="space-y-2.5">
+                      <Label htmlFor="email" className={`text-sm md:text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.emailLabel')} *
                       </Label>
                       <input
@@ -119,19 +120,19 @@ export const HeroWavingFlags = () => {
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="h-12 md:h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                        className="h-14 md:h-14 lg:h-16 !border-2 dark:!border-primary/20 light:!border-primary/30 bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-sm md:text-base w-full rounded-md px-4 outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="country" className={`text-sm md:text-sm bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <div className="space-y-2.5">
+                      <Label htmlFor="country" className={`text-sm md:text-base bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold break-words block ${isRTL ? 'text-right' : 'text-left'}`}>
                         {t('contact.countryLabel')}
                       </Label>
                       <Select
                         value={formData.country}
                         onValueChange={(value) => setFormData({...formData, country: value})}
                       >
-                        <SelectTrigger className={`!h-12 md:!h-12 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                        <SelectTrigger className={`!h-14 md:!h-14 lg:!h-16 !border-2 dark:!border-primary/20 light:!border-primary/30 !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/30 dark:hover:!bg-blue-950/30 focus:!bg-blue-50/30 dark:focus:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm md:!text-base [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent !shadow-none hover:!shadow-none focus:!shadow-none ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                           <SelectValue placeholder={t('contact.countryPlaceholder')} />
                         </SelectTrigger>
                         <SelectContent className="dark:bg-card dark:border-border bg-background border-2 z-[100]">
@@ -145,7 +146,7 @@ export const HeroWavingFlags = () => {
                     </div>
                     <button
                       type="submit"
-                      className="w-full h-auto min-h-[48px] md:min-h-[48px] py-2.5 md:py-2.5 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-4 break-words hyphens-auto [&_span]:text-base [&_span]:leading-tight"
+                      className="w-full h-auto min-h-[56px] md:min-h-[56px] lg:min-h-[64px] py-3.5 md:py-3.5 lg:py-4 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-6 break-words hyphens-auto [&_span]:text-base md:[&_span]:text-lg [&_span]:leading-tight"
                     >
                       <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
                     </button>
@@ -176,7 +177,7 @@ export const HeroWavingFlags = () => {
         </div>
         
         {/* Stats Cards - Full width below form bottom edge on desktop, below contact card on mobile */}
-        <div className="mt-8 md:mt-10 lg:mt-12 order-3 lg:order-none">
+        <div className="mt-12 md:mt-16 lg:mt-20 order-3 lg:order-none">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-7xl mx-auto">
             {features.map((feature, index) => {
               const FeatureIcon = feature.icon;
@@ -197,7 +198,7 @@ export const HeroWavingFlags = () => {
         </div>
         
         {/* Social Share Buttons */}
-        <div className="mt-24 md:mt-28 lg:mt-32 flex justify-center">
+        <div className="mt-32 md:mt-40 lg:mt-48 flex justify-center">
           <SocialShare 
             title={t('hero.title')}
             description={t('hero.subtitle1')}
