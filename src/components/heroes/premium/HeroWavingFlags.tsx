@@ -168,7 +168,7 @@ export const HeroWavingFlags = () => {
         </div>
 
         {/* Heritage Globe - Full width below headline and description */}
-        <div className="mt-12 md:mt-16 w-full max-w-7xl mx-auto">
+        <div className="mt-12 md:mt-16 w-full max-w-7xl mx-auto relative z-20">
           <HeritageGlobe />
         </div>
       </div>
