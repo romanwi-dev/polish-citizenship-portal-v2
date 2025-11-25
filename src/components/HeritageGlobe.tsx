@@ -1,12 +1,32 @@
 import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere } from '@react-three/drei';
+import { OrbitControls, Sphere, Text, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Settings ---
 const GLOBE_RADIUS = 2;
 const BRAND_RED = "#DC2626"; 
 const DOT_COLOR = "#475569"; // Slate 600
+
+// --- Country Flag Emojis ---
+const FLAG_EMOJIS: Record<string, string> = {
+  PL: "🇵🇱",
+  US: "🇺🇸",
+  GB: "🇬🇧",
+  BR: "🇧🇷",
+  IL: "🇮🇱",
+  CA: "🇨🇦",
+  AU: "🇦🇺",
+  ZA: "🇿🇦",
+  FR: "🇫🇷",
+  DE: "🇩🇪",
+  AR: "🇦🇷",
+  MX: "🇲🇽",
+  UA: "🇺🇦",
+  RU: "🇷🇺",
+  VE: "🇻🇪",
+  CO: "🇨🇴",
+};
 
 // --- Country Coordinates (Lat, Lon) ---
 const COORDINATES: Record<string, { lat: number; lon: number; name: string }> = {
@@ -82,79 +102,219 @@ const Dots = () => {
   );
 };
 
+// --- Country Marker with Flag ---
+const CountryMarker = ({ 
+  position, 
+  countryCode, 
+  countryName, 
+  isPoland = false 
+}: { 
+  position: THREE.Vector3; 
+  countryCode: string; 
+  countryName: string;
+  isPoland?: boolean;
+}) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const scaleRef = useRef(1);
+  
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    const time = state.clock.getElapsedTime();
+    // Pulsing animation
+    const pulse = 1 + Math.sin(time * 2 + position.x) * 0.15;
+    scaleRef.current = pulse;
+    meshRef.current.scale.setScalar(scaleRef.current);
+  });
+
+  const flagEmoji = FLAG_EMOJIS[countryCode] || "📍";
+  const markerSize = isPoland ? 0.08 : 0.06;
+
+  return (
+    <group position={position}>
+      {/* Flag Icon using HTML */}
+      <Html
+        position={[0, markerSize + 0.15, 0]}
+        center
+        style={{ pointerEvents: 'none' }}
+        transform
+        occlude
+      >
+        <div style={{
+          fontSize: isPoland ? '32px' : '24px',
+          filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.8))',
+          textAlign: 'center',
+          lineHeight: 1,
+        }}>
+          {flagEmoji}
+        </div>
+      </Html>
+      
+      {/* Glowing marker sphere */}
+      <mesh ref={meshRef}>
+        <sphereGeometry args={[markerSize, 16, 16]} />
+        <meshBasicMaterial 
+          color={isPoland ? "#ffffff" : BRAND_RED} 
+          toneMapped={false}
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+      
+      {/* Outer glow ring */}
+      <mesh>
+        <ringGeometry args={[markerSize * 1.5, markerSize * 1.8, 32]} />
+        <meshBasicMaterial 
+          color={isPoland ? "#ffffff" : BRAND_RED}
+          transparent
+          opacity={0.3}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+    </group>
+  );
+};
+
 // --- 2. The Dynamic Lines (Roots to Poland) ---
 const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
   const groupRef = useRef<THREE.Group>(null);
   const polandPos = getPosition(COORDINATES.PL.lat, COORDINATES.PL.lon, GLOBE_RADIUS);
 
   const lines = useMemo(() => {
-    let startPoints: THREE.Vector3[] = [];
+    let startPoints: Array<{ point: THREE.Vector3; countryCode: string }> = [];
     
     if (targetCountry && COORDINATES[targetCountry]) {
-      // CASE A: Specific Country (15 lines from that region)
+      // CASE A: Specific Country (12 lines from that region)
       const center = COORDINATES[targetCountry];
-      for(let i=0; i<15; i++) {
-        // Add random spread so lines don't overlap perfectly
-        const spreadLat = center.lat + (Math.random() - 0.5) * 10;
-        const spreadLon = center.lon + (Math.random() - 0.5) * 10;
-        startPoints.push(getPosition(spreadLat, spreadLon, GLOBE_RADIUS));
+      for(let i=0; i<12; i++) {
+        const spreadLat = center.lat + (Math.random() - 0.5) * 8;
+        const spreadLon = center.lon + (Math.random() - 0.5) * 8;
+        startPoints.push({
+          point: getPosition(spreadLat, spreadLon, GLOBE_RADIUS),
+          countryCode: targetCountry
+        });
       }
     } else {
       // CASE B: Global View (1 line from each major country)
       const keys = Object.keys(COORDINATES).filter(k => k !== 'PL');
-      startPoints = keys.map(k => getPosition(COORDINATES[k].lat, COORDINATES[k].lon, GLOBE_RADIUS));
+      startPoints = keys.map(k => ({
+        point: getPosition(COORDINATES[k].lat, COORDINATES[k].lon, GLOBE_RADIUS),
+        countryCode: k
+      }));
     }
 
-    // Draw Curve to Poland
-    return startPoints.map(start => {
+    // Draw Curve to Poland with animation
+    return startPoints.map(({ point: start, countryCode }) => {
       const end = polandPos;
       const dist = start.distanceTo(end);
-      // The "Arch" height depends on distance
-      const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + (dist * 0.5));
+      const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + (dist * 0.6));
       const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-      return curve.getPoints(40);
+      return { points: curve.getPoints(50), countryCode };
     });
   }, [targetCountry]);
 
-  useFrame((state) => {
-    if(groupRef.current) groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.02;
-  });
+  const lineRefs = useRef<Array<{ material?: THREE.LineBasicMaterial }>>([]);
 
-  return (
-    <group ref={groupRef}>
-      {lines.map((points, i) => (
-        <line key={i}>
-          <bufferGeometry>
-            <bufferAttribute attach="attributes-position" count={points.length} array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} itemSize={3} />
-          </bufferGeometry>
-          <lineBasicMaterial color={BRAND_RED} opacity={0.6} transparent linewidth={1} />
-        </line>
-      ))}
-      
-      {/* Poland Marker */}
-      <mesh position={polandPos}>
-        <sphereGeometry args={[0.04, 16, 16]} />
-        <meshBasicMaterial color="white" toneMapped={false} />
-      </mesh>
-    </group>
-  );
-};
-
-// --- Waving Animation Component ---
-const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNode; targetCountry?: string }) => {
-  const groupRef = useRef<THREE.Group>(null);
-  
   useFrame((state) => {
     if (!groupRef.current) return;
     const time = state.clock.getElapsedTime();
     
-    // Subtle waving/floating animation
-    groupRef.current.rotation.x = 0.3 + Math.sin(time * 0.3) * 0.05;
-    groupRef.current.rotation.y = time * 0.1 + Math.sin(time * 0.2) * 0.03;
-    groupRef.current.position.y = Math.sin(time * 0.4) * 0.1;
+    // Animate lines with flowing effect
+    lineRefs.current.forEach((lineRef, i) => {
+      if (!lineRef?.material) return;
+      // Create flowing opacity effect
+      lineRef.material.opacity = 0.7 + Math.sin(time * 1.5 + i * 0.5) * 0.3;
+    });
+  });
+
+  return (
+    <group ref={groupRef}>
+      {lines.map(({ points, countryCode }, i) => (
+        <line 
+          key={i} 
+          ref={(el: any) => {
+            if (el?.material) {
+              if (!lineRefs.current[i]) {
+                lineRefs.current[i] = { material: el.material };
+              } else {
+                lineRefs.current[i].material = el.material;
+              }
+            }
+          }}
+        >
+          <bufferGeometry>
+            <bufferAttribute 
+              attach="attributes-position" 
+              count={points.length} 
+              array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} 
+              itemSize={3} 
+            />
+          </bufferGeometry>
+          <lineBasicMaterial 
+            color={BRAND_RED} 
+            opacity={0.8} 
+            transparent 
+            linewidth={2}
+          />
+        </line>
+      ))}
+      
+      {/* Country Markers */}
+      {(targetCountry ? [targetCountry] : Object.keys(COORDINATES).filter(k => k !== 'PL')).map((code) => {
+        const coord = COORDINATES[code];
+        const pos = getPosition(coord.lat, coord.lon, GLOBE_RADIUS);
+        return (
+          <CountryMarker
+            key={code}
+            position={pos}
+            countryCode={code}
+            countryName={coord.name}
+            isPoland={false}
+          />
+        );
+      })}
+      
+      {/* Poland Marker (highlighted) */}
+      <CountryMarker
+        position={polandPos}
+        countryCode="PL"
+        countryName="Poland"
+        isPoland={true}
+      />
+    </group>
+  );
+};
+
+// --- Waving Animation Component with Enhanced 3D Motion ---
+const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNode; targetCountry?: string }) => {
+  const groupRef = useRef<THREE.Group>(null);
+  const innerGroupRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (!groupRef.current || !innerGroupRef.current) return;
+    const time = state.clock.getElapsedTime();
+    
+    // Enhanced 3D waving/floating animation
+    // Main rotation with wave modulation
+    groupRef.current.rotation.x = 0.25 + Math.sin(time * 0.4) * 0.08;
+    groupRef.current.rotation.y = time * 0.15 + Math.sin(time * 0.25) * 0.05;
+    groupRef.current.rotation.z = Math.sin(time * 0.3) * 0.02;
+    
+    // Floating motion
+    groupRef.current.position.y = Math.sin(time * 0.5) * 0.15;
+    groupRef.current.position.x = Math.cos(time * 0.35) * 0.08;
+    
+    // Inner group subtle rotation for depth
+    innerGroupRef.current.rotation.x = Math.sin(time * 0.2) * 0.03;
+    innerGroupRef.current.rotation.y = Math.cos(time * 0.15) * 0.02;
   });
   
-  return <group ref={groupRef}>{children}</group>;
+  return (
+    <group ref={groupRef}>
+      <group ref={innerGroupRef}>
+        {children}
+      </group>
+    </group>
+  );
 };
 
 // --- 3. Main Component ---
@@ -178,14 +338,16 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
             dpr={[1, 2]}
             style={{ background: 'transparent' }}
           >
-            <ambientLight intensity={0.6} />
-            <pointLight position={[10, 10, 10]} intensity={0.8} />
-            <pointLight position={[-10, -10, -10]} intensity={0.4} />
+            <ambientLight intensity={0.7} />
+            <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
+            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#4b5563" />
+            <pointLight position={[0, 10, 0]} intensity={0.6} color="#DC2626" />
+            <directionalLight position={[5, 5, 5]} intensity={0.4} />
             <WavingGlobeGroup targetCountry={country}>
               <Dots />
               <MigrationLines targetCountry={country} />
               <Sphere args={[GLOBE_RADIUS - 0.05, 32, 32]}>
-                <meshBasicMaterial color="#020617" transparent opacity={0.3} />
+                <meshBasicMaterial color="#020617" transparent opacity={0.25} />
               </Sphere>
             </WavingGlobeGroup>
             <OrbitControls enableZoom={false} autoRotate={false} enablePan={false} />
