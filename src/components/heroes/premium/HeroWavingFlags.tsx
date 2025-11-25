@@ -70,7 +70,7 @@ export const HeroWavingFlags = () => {
             
             {/* Second Grid Column - Form Card */}
             <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-20 relative" style={{ perspective: '1000px' }}>
-            <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
+              <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
                 {/* CLS FIX: Container with explicit aspect ratio to prevent image layout shift */}
@@ -161,6 +161,7 @@ export const HeroWavingFlags = () => {
                     {t('contact.submitAnother')}
                   </button>
                 </div>
+              </div>
               </div>
             </div>
           </div>
