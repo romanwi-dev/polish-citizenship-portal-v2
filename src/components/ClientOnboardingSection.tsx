@@ -228,19 +228,23 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on other side - Desktop */}
                 <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
-                  <div className={`relative flex items-center justify-center ${isLeft ? '-ml-12' : '-mr-12'}`}>
+                  <div className={`relative flex items-center justify-center ${isLeft ? '-ml-12' : '-mr-12'}`} style={{ width: '320px', height: '320px' }}>
                     <img
                       src={step.image}
                       alt={step.title}
-                      className="object-contain"
                       style={{
                         width: '320px',
                         height: '320px',
+                        minWidth: '320px',
+                        minHeight: '320px',
                         maxWidth: '320px',
                         maxHeight: '320px',
+                        objectFit: 'contain',
                         filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
                         opacity: 0.85,
                         imageRendering: 'crisp-edges',
+                        display: 'block',
+                        flexShrink: 0,
                       }}
                     />
                   </div>
@@ -248,19 +252,23 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on mobile/tablet - below card */}
                 <div className="lg:hidden w-full mt-6 sm:mt-8 flex items-center justify-center">
-                  <div className="relative flex items-center justify-center">
+                  <div className="relative flex items-center justify-center" style={{ width: '240px', height: '240px' }}>
                     <img
                       src={step.image}
                       alt={step.title}
-                      className="object-contain"
                       style={{
                         width: '240px',
                         height: '240px',
+                        minWidth: '240px',
+                        minHeight: '240px',
                         maxWidth: '240px',
                         maxHeight: '240px',
+                        objectFit: 'contain',
                         filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
                         opacity: 0.85,
                         imageRendering: 'crisp-edges',
+                        display: 'block',
+                        flexShrink: 0,
                       }}
                     />
                   </div>
