@@ -135,8 +135,24 @@ export default function TimelineProcessEnhanced() {
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
-                <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
-                  <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                <div className="relative flex items-center justify-center">
+                  {/* Step Icon Image for mobile - same size, less glow, closer to line */}
+                  <img 
+                    src={step.stepIcon} 
+                    alt={`Step ${step.number}`}
+                    className="absolute left-1/2 -translate-x-1/2 z-30"
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.08))',
+                      opacity: 0.8,
+                      top: '-4px',
+                    }}
+                  />
+                  <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center relative z-10">
+                    <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                  </div>
                 </div>
               </div>
               
@@ -243,8 +259,24 @@ export default function TimelineProcessEnhanced() {
                 viewport={{ once: true, margin: "-150px" }}
                 transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
-                <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
-                  <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                <div className="relative flex items-center justify-center">
+                  {/* Step Icon Image - same size, less glow, closer to line */}
+                  <img 
+                    src={step.stepIcon} 
+                    alt={`Step ${step.number}`}
+                    className="absolute left-1/2 -translate-x-1/2 z-30"
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.08))',
+                      opacity: 0.8,
+                      top: '-2px',
+                    }}
+                  />
+                  <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center relative z-10">
+                    <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
+                  </div>
                 </div>
               </motion.div>
 
