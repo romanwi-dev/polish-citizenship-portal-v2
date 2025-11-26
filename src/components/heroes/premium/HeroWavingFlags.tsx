@@ -189,7 +189,7 @@ export const HeroWavingFlags = () => {
                 >
                   <div className="w-full h-full flex flex-col items-center justify-center gap-3">
                     <FeatureIcon className="w-6 h-6 md:w-7 md:h-7 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
-                    <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60" dir="ltr">{feature.stat}</h3>
+                    <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:bg-clip-text light:text-transparent light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
                     <p className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
                   </div>
                 </div>
