@@ -7,10 +7,6 @@ import { MainCTA } from "./ui/main-cta";
 import { Card } from "./ui/card";
 import { useTranslation } from 'react-i18next';
 import { SectionLayout } from "./layout/SectionLayout";
-import consultationImg from "@/assets/onboarding-consultation.png";
-import reviewImg from "@/assets/onboarding-review.png";
-import agreementImg from "@/assets/onboarding-agreement.png";
-import initiationImg from "@/assets/onboarding-initiation.png";
 
 export default function ClientOnboardingSection() {
   const { t } = useTranslation();
@@ -32,7 +28,6 @@ export default function ClientOnboardingSection() {
       gradient: "from-primary to-secondary",
       cta: t('onboarding.step1Cta'),
       link: "#contact",
-      illustration: consultationImg,
       detailedInfo: t('onboarding.step1DetailedInfo'),
       keyPoints: t('onboarding.step1KeyPoints', { returnObjects: true }) as string[]
     },
@@ -44,7 +39,6 @@ export default function ClientOnboardingSection() {
       gradient: "from-secondary to-accent",
       cta: t('onboarding.step2Cta'),
       link: "https://polishcitizenship.typeform.com/to/PS5ecU",
-      illustration: reviewImg,
       detailedInfo: t('onboarding.step2DetailedInfo'),
       keyPoints: t('onboarding.step2KeyPoints', { returnObjects: true }) as string[]
     },
@@ -56,7 +50,6 @@ export default function ClientOnboardingSection() {
       gradient: "from-accent to-primary",
       cta: t('onboarding.step3Cta'),
       link: "#",
-      illustration: agreementImg,
       detailedInfo: t('onboarding.step3DetailedInfo'),
       keyPoints: t('onboarding.step3KeyPoints', { returnObjects: true }) as string[]
     },
@@ -68,7 +61,6 @@ export default function ClientOnboardingSection() {
       gradient: "from-primary to-secondary",
       cta: t('onboarding.step4Cta'),
       link: "#contact",
-      illustration: initiationImg,
       detailedInfo: t('onboarding.step4DetailedInfo'),
       keyPoints: t('onboarding.step4KeyPoints', { returnObjects: true }) as string[]
     },
@@ -80,7 +72,6 @@ export default function ClientOnboardingSection() {
       gradient: "from-secondary to-accent",
       cta: t('onboarding.step5Cta'),
       link: "#",
-      illustration: reviewImg,
       detailedInfo: t('onboarding.step5DetailedInfo'),
       keyPoints: t('onboarding.step5KeyPoints', { returnObjects: true }) as string[]
     }
