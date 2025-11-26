@@ -35,18 +35,26 @@ const StepIllustration = ({ step }: StepIllustrationProps) => {
   ).join('/');
 
   return (
-    <img
-      src={encodedSrc}
-      alt={image.alt}
-      width={320}
-      height={320}
-      className="w-72 lg:w-80 h-auto opacity-70 xl:opacity-60 pointer-events-none select-none"
-      loading="lazy"
-      style={{ 
-        mixBlendMode: 'multiply',
-        filter: 'brightness(1.1) saturate(1.1)'
+    <div 
+      className="relative"
+      style={{
+        mixBlendMode: 'screen',
+        isolation: 'isolate'
       }}
-    />
+    >
+      <img
+        src={encodedSrc}
+        alt={image.alt}
+        width={320}
+        height={320}
+        className="w-72 lg:w-80 h-auto opacity-70 xl:opacity-60 pointer-events-none select-none"
+        loading="lazy"
+        style={{ 
+          filter: 'brightness(1.2) contrast(1.1)',
+          mixBlendMode: 'screen'
+        }}
+      />
+    </div>
   );
 };
 
