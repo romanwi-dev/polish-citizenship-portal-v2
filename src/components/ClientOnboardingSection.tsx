@@ -20,20 +20,20 @@ export default function ClientOnboardingSection() {
       style.id = styleId;
       style.textContent = `
         .process-step-image {
-          width: 360px !important;
-          height: 360px !important;
-          min-width: 360px !important;
-          min-height: 360px !important;
-          max-width: 360px !important;
-          max-height: 360px !important;
+          width: 380px !important;
+          height: 380px !important;
+          min-width: 380px !important;
+          min-height: 380px !important;
+          max-width: 380px !important;
+          max-height: 380px !important;
         }
         .process-step-image-mobile {
-          width: 280px !important;
-          height: 280px !important;
-          min-width: 280px !important;
-          min-height: 280px !important;
-          max-width: 280px !important;
-          max-height: 280px !important;
+          width: 300px !important;
+          height: 300px !important;
+          min-width: 300px !important;
+          min-height: 300px !important;
+          max-width: 300px !important;
+          max-height: 300px !important;
         }
       `;
       document.head.appendChild(style);
@@ -257,15 +257,15 @@ export default function ClientOnboardingSection() {
                 {/* Image on other side - Desktop */}
                 <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
                   <div 
-                    className={`relative flex items-center justify-center group ${isLeft ? '-ml-24' : '-mr-24'}`}
+                    className={`relative flex items-center justify-center group ${isLeft ? '-ml-28' : '-mr-28'}`}
                     style={{
-                      perspective: '1200px',
+                      perspective: '1500px',
                     }}
                   >
                     <div
-                      className="transition-all duration-500 ease-out group-hover:scale-105"
+                      className="transition-all duration-700 ease-out group-hover:scale-[1.08] group-hover:translateZ-10"
                       style={{
-                        transform: `perspective(1200px) rotateY(${isLeft ? '-8deg' : '8deg'}) rotateX(2deg) translateZ(30px)`,
+                        transform: `perspective(1500px) rotateY(${isLeft ? '-6deg' : '6deg'}) rotateX(1deg) translateZ(40px)`,
                         transformStyle: 'preserve-3d',
                         willChange: 'transform',
                       }}
@@ -274,10 +274,9 @@ export default function ClientOnboardingSection() {
                         style={{
                           position: 'relative',
                           filter: `
-                            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15))
-                            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))
-                            drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06))
-                            drop-shadow(0 1px 2px rgba(0, 0, 0, 0.03))
+                            drop-shadow(0 10px 20px rgba(0, 0, 0, 0.12))
+                            drop-shadow(0 5px 10px rgba(0, 0, 0, 0.08))
+                            drop-shadow(0 2px 4px rgba(0, 0, 0, 0.04))
                           `,
                         }}
                       >
@@ -286,31 +285,28 @@ export default function ClientOnboardingSection() {
                           alt={step.title}
                           className="process-step-image"
                           style={{
-                            width: '360px',
-                            height: '360px',
-                            minWidth: '360px',
-                            minHeight: '360px',
-                            maxWidth: '360px',
-                            maxHeight: '360px',
+                            width: '380px',
+                            height: '380px',
+                            minWidth: '380px',
+                            minHeight: '380px',
+                            maxWidth: '380px',
+                            maxHeight: '380px',
                             objectFit: 'contain',
-                            filter: 'contrast(1.08) brightness(0.98) saturate(1.02)',
-                            opacity: 0.98,
+                            filter: 'contrast(1.12) brightness(0.96) saturate(1.08)',
+                            opacity: 0.92,
                             imageRendering: 'auto',
                             display: 'block',
                             flexShrink: 0,
-                            borderRadius: '12px',
+                            borderRadius: '16px',
                             backgroundColor: 'transparent',
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
-                            transition: 'all 0.5s ease-out',
-                            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1)',
+                            transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
-                            img.style.setProperty('width', '360px', 'important');
-                            img.style.setProperty('height', '360px', 'important');
-                            img.style.setProperty('box-shadow', '0 8px 16px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1)', 'important');
-                            console.log('Process step image loaded:', step.number, img.style.width, img.style.height);
+                            img.style.setProperty('width', '380px', 'important');
+                            img.style.setProperty('height', '380px', 'important');
                           }}
                         />
                       </div>
@@ -323,13 +319,13 @@ export default function ClientOnboardingSection() {
                   <div 
                     className="relative flex items-center justify-center"
                     style={{
-                      perspective: '900px',
+                      perspective: '1000px',
                     }}
                   >
                     <div
-                      className="transition-all duration-500 ease-out"
+                      className="transition-all duration-700 ease-out"
                       style={{
-                        transform: 'perspective(900px) rotateY(-3deg) rotateX(1deg) translateZ(20px)',
+                        transform: 'perspective(1000px) rotateY(-2deg) rotateX(0.5deg) translateZ(25px)',
                         transformStyle: 'preserve-3d',
                         willChange: 'transform',
                       }}
@@ -338,9 +334,9 @@ export default function ClientOnboardingSection() {
                         style={{
                           position: 'relative',
                           filter: `
-                            drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12))
-                            drop-shadow(0 3px 6px rgba(0, 0, 0, 0.08))
-                            drop-shadow(0 1px 3px rgba(0, 0, 0, 0.05))
+                            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.1))
+                            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.06))
+                            drop-shadow(0 2px 4px rgba(0, 0, 0, 0.03))
                           `,
                         }}
                       >
@@ -349,28 +345,28 @@ export default function ClientOnboardingSection() {
                           alt={step.title}
                           className="process-step-image-mobile"
                           style={{
-                            width: '280px',
-                            height: '280px',
-                            minWidth: '280px',
-                            minHeight: '280px',
-                            maxWidth: '280px',
-                            maxHeight: '280px',
+                            width: '300px',
+                            height: '300px',
+                            minWidth: '300px',
+                            minHeight: '300px',
+                            maxWidth: '300px',
+                            maxHeight: '300px',
                             objectFit: 'contain',
-                            filter: 'contrast(1.08) brightness(0.98) saturate(1.02)',
-                            opacity: 0.98,
+                            filter: 'contrast(1.12) brightness(0.96) saturate(1.08)',
+                            opacity: 0.92,
                             imageRendering: 'auto',
                             display: 'block',
                             flexShrink: 0,
-                            borderRadius: '12px',
+                            borderRadius: '16px',
                             backgroundColor: 'transparent',
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
-                            transition: 'all 0.5s ease-out',
+                            transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
-                            img.style.setProperty('width', '280px', 'important');
-                            img.style.setProperty('height', '280px', 'important');
+                            img.style.setProperty('width', '300px', 'important');
+                            img.style.setProperty('height', '300px', 'important');
                           }}
                         />
                       </div>
