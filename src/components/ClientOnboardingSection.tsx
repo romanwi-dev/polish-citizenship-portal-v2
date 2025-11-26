@@ -284,6 +284,7 @@ export default function ClientOnboardingSection() {
                           src={step.image}
                           alt={step.title}
                           className="process-step-image"
+                          key={`process-img-${step.number}-${Date.now()}`}
                           style={{
                             width: '380px',
                             height: '380px',
@@ -302,11 +303,14 @@ export default function ClientOnboardingSection() {
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
                             transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
+                            border: '2px solid rgba(255, 0, 0, 0.3)',
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
                             img.style.setProperty('width', '380px', 'important');
                             img.style.setProperty('height', '380px', 'important');
+                            img.style.setProperty('border', 'none', 'important');
+                            console.log('✅ Process image loaded - Step', step.number, 'Size:', img.offsetWidth, 'x', img.offsetHeight);
                           }}
                         />
                       </div>
