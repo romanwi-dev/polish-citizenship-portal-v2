@@ -228,61 +228,118 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on other side - Desktop */}
                 <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
-                  <div className={`relative flex items-center justify-center ${isLeft ? '-ml-12' : '-mr-12'}`}>
-                    <img
-                      src={step.image}
-                      alt={step.title}
+                  <div 
+                    className={`relative flex items-center justify-center group ${isLeft ? '-ml-24' : '-mr-24'}`}
+                    style={{
+                      perspective: '1200px',
+                    }}
+                  >
+                    <div
+                      className="transition-all duration-500 ease-out group-hover:scale-105"
                       style={{
-                        width: '340px',
-                        height: '340px',
-                        minWidth: '340px',
-                        minHeight: '340px',
-                        maxWidth: '340px',
-                        maxHeight: '340px',
-                        objectFit: 'contain',
-                        filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08)) contrast(1.1) saturate(1.05)',
-                        opacity: 0.9,
-                        imageRendering: 'auto',
-                        display: 'block',
-                        flexShrink: 0,
-                        transition: 'all 0.3s ease',
+                        transform: `perspective(1200px) rotateY(${isLeft ? '-8deg' : '8deg'}) rotateX(2deg) translateZ(30px)`,
+                        transformStyle: 'preserve-3d',
+                        willChange: 'transform',
                       }}
-                      onLoad={(e) => {
-                        // Ensure consistent rendering
-                        const img = e.target as HTMLImageElement;
-                        img.style.imageRendering = 'auto';
-                      }}
-                    />
+                    >
+                      <div
+                        style={{
+                          position: 'relative',
+                          filter: `
+                            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15))
+                            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))
+                            drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06))
+                            drop-shadow(0 1px 2px rgba(0, 0, 0, 0.03))
+                          `,
+                        }}
+                      >
+                        <img
+                          src={step.image}
+                          alt={step.title}
+                          className="transition-all duration-500 ease-out"
+                          style={{
+                            width: '360px',
+                            height: '360px',
+                            minWidth: '360px',
+                            minHeight: '360px',
+                            maxWidth: '360px',
+                            maxHeight: '360px',
+                            objectFit: 'contain',
+                            filter: 'contrast(1.08) brightness(0.98) saturate(1.02)',
+                            opacity: 0.98,
+                            imageRendering: 'auto',
+                            display: 'block',
+                            flexShrink: 0,
+                            borderRadius: '12px',
+                            backgroundColor: 'transparent',
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                          }}
+                          onLoad={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.style.imageRendering = 'auto';
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Image on mobile/tablet - below card */}
                 <div className="lg:hidden w-full mt-6 sm:mt-8 flex items-center justify-center">
-                  <div className="relative flex items-center justify-center">
-                    <img
-                      src={step.image}
-                      alt={step.title}
+                  <div 
+                    className="relative flex items-center justify-center"
+                    style={{
+                      perspective: '900px',
+                    }}
+                  >
+                    <div
+                      className="transition-all duration-500 ease-out"
                       style={{
-                        width: '260px',
-                        height: '260px',
-                        minWidth: '260px',
-                        minHeight: '260px',
-                        maxWidth: '260px',
-                        maxHeight: '260px',
-                        objectFit: 'contain',
-                        filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08)) contrast(1.1) saturate(1.05)',
-                        opacity: 0.9,
-                        imageRendering: 'auto',
-                        display: 'block',
-                        flexShrink: 0,
-                        transition: 'all 0.3s ease',
+                        transform: 'perspective(900px) rotateY(-3deg) rotateX(1deg) translateZ(20px)',
+                        transformStyle: 'preserve-3d',
+                        willChange: 'transform',
                       }}
-                      onLoad={(e) => {
-                        // Ensure consistent rendering
-                        const img = e.target as HTMLImageElement;
-                        img.style.imageRendering = 'auto';
-                      }}
-                    />
+                    >
+                      <div
+                        style={{
+                          position: 'relative',
+                          filter: `
+                            drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12))
+                            drop-shadow(0 3px 6px rgba(0, 0, 0, 0.08))
+                            drop-shadow(0 1px 3px rgba(0, 0, 0, 0.05))
+                          `,
+                        }}
+                      >
+                        <img
+                          src={step.image}
+                          alt={step.title}
+                          className="transition-all duration-500 ease-out"
+                          style={{
+                            width: '280px',
+                            height: '280px',
+                            minWidth: '280px',
+                            minHeight: '280px',
+                            maxWidth: '280px',
+                            maxHeight: '280px',
+                            objectFit: 'contain',
+                            filter: 'contrast(1.08) brightness(0.98) saturate(1.02)',
+                            opacity: 0.98,
+                            imageRendering: 'auto',
+                            display: 'block',
+                            flexShrink: 0,
+                            borderRadius: '12px',
+                            backgroundColor: 'transparent',
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                          }}
+                          onLoad={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.style.imageRendering = 'auto';
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
