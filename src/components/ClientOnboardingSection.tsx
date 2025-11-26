@@ -260,9 +260,6 @@ export default function ClientOnboardingSection() {
                     className={`relative flex items-center justify-center group ${isLeft ? '-ml-28' : '-mr-28'}`}
                     style={{
                       perspective: '1500px',
-                      backgroundColor: 'rgba(255, 0, 0, 0.05)',
-                      padding: '10px',
-                      borderRadius: '20px',
                     }}
                   >
                     <div
