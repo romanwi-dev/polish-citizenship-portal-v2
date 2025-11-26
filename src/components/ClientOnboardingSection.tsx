@@ -38,10 +38,11 @@ const StepIllustration = ({ step }: StepIllustrationProps) => {
     <img
       src={encodedSrc}
       alt={image.alt}
-      width={260}
-      height={260}
-      className="w-52 h-auto opacity-60 xl:opacity-50 pointer-events-none select-none"
+      width={320}
+      height={320}
+      className="w-72 lg:w-80 h-auto opacity-70 xl:opacity-60 pointer-events-none select-none"
       loading="lazy"
+      style={{ mixBlendMode: 'normal' }}
     />
   );
 };
@@ -265,7 +266,7 @@ export default function ClientOnboardingSection() {
                 </div>
 
                 {/* Step Illustration - Desktop only */}
-                <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
+                <div className={`hidden lg:flex lg:w-[42%] items-center ${isLeft ? 'justify-start pl-8' : 'justify-end pr-8'}`}>
                   <StepIllustration step={index + 1} />
                 </div>
               </div>
