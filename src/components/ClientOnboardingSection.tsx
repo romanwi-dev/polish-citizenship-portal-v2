@@ -234,12 +234,13 @@ export default function ClientOnboardingSection() {
                       alt={step.title}
                       className="object-contain"
                       style={{
-                        width: '220px',
-                        height: '220px',
-                        maxWidth: '220px',
-                        maxHeight: '220px',
+                        width: '320px',
+                        height: '320px',
+                        maxWidth: '320px',
+                        maxHeight: '320px',
                         filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
-                        opacity: 0.75,
+                        opacity: 0.85,
+                        imageRendering: 'crisp-edges',
                       }}
                     />
                   </div>
@@ -253,12 +254,13 @@ export default function ClientOnboardingSection() {
                       alt={step.title}
                       className="object-contain"
                       style={{
-                        width: '160px',
-                        height: '160px',
-                        maxWidth: '160px',
-                        maxHeight: '160px',
+                        width: '240px',
+                        height: '240px',
+                        maxWidth: '240px',
+                        maxHeight: '240px',
                         filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
-                        opacity: 0.75,
+                        opacity: 0.85,
+                        imageRendering: 'crisp-edges',
                       }}
                     />
                   </div>
