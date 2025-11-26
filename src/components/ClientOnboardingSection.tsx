@@ -269,7 +269,7 @@ export default function ClientOnboardingSection() {
                 </div>
 
                 {/* Step Illustration - Desktop only */}
-                <div className={`hidden lg:flex lg:w-[42%] items-center ${isLeft ? 'justify-start pl-8' : 'justify-end pr-8'}`}>
+                <div className={`hidden lg:flex lg:w-[42%] items-center ${isLeft ? 'justify-start pl-8' : 'justify-end pr-8'} bg-transparent`}>
                   <StepIllustration step={index + 1} />
                 </div>
               </div>
