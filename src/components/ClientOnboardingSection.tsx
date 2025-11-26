@@ -228,23 +228,29 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on other side - Desktop */}
                 <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
-                  <div className={`relative flex items-center justify-center ${isLeft ? '-ml-12' : '-mr-12'}`} style={{ width: '320px', height: '320px' }}>
+                  <div className={`relative flex items-center justify-center ${isLeft ? '-ml-12' : '-mr-12'}`} style={{ 
+                    width: index >= 3 ? '360px' : '320px', 
+                    height: index >= 3 ? '360px' : '320px' 
+                  }}>
                     <img
                       src={step.image}
                       alt={step.title}
                       style={{
-                        width: '320px',
-                        height: '320px',
-                        minWidth: '320px',
-                        minHeight: '320px',
-                        maxWidth: '320px',
-                        maxHeight: '320px',
+                        width: index >= 3 ? '360px' : '320px',
+                        height: index >= 3 ? '360px' : '320px',
+                        minWidth: index >= 3 ? '360px' : '320px',
+                        minHeight: index >= 3 ? '360px' : '320px',
+                        maxWidth: index >= 3 ? '360px' : '320px',
+                        maxHeight: index >= 3 ? '360px' : '320px',
                         objectFit: 'contain',
-                        filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
+                        filter: index >= 3 
+                          ? 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05)) contrast(1.1) brightness(0.95)' 
+                          : 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
                         opacity: 0.85,
                         imageRendering: 'crisp-edges',
                         display: 'block',
                         flexShrink: 0,
+                        transform: index >= 3 ? 'scale(1.05)' : 'scale(1)',
                       }}
                     />
                   </div>
@@ -252,23 +258,29 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on mobile/tablet - below card */}
                 <div className="lg:hidden w-full mt-6 sm:mt-8 flex items-center justify-center">
-                  <div className="relative flex items-center justify-center" style={{ width: '240px', height: '240px' }}>
+                  <div className="relative flex items-center justify-center" style={{ 
+                    width: index >= 3 ? '280px' : '240px', 
+                    height: index >= 3 ? '280px' : '240px' 
+                  }}>
                     <img
                       src={step.image}
                       alt={step.title}
                       style={{
-                        width: '240px',
-                        height: '240px',
-                        minWidth: '240px',
-                        minHeight: '240px',
-                        maxWidth: '240px',
-                        maxHeight: '240px',
+                        width: index >= 3 ? '280px' : '240px',
+                        height: index >= 3 ? '280px' : '240px',
+                        minWidth: index >= 3 ? '280px' : '240px',
+                        minHeight: index >= 3 ? '280px' : '240px',
+                        maxWidth: index >= 3 ? '280px' : '240px',
+                        maxHeight: index >= 3 ? '280px' : '240px',
                         objectFit: 'contain',
-                        filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
+                        filter: index >= 3 
+                          ? 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05)) contrast(1.1) brightness(0.95)' 
+                          : 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
                         opacity: 0.85,
                         imageRendering: 'crisp-edges',
                         display: 'block',
                         flexShrink: 0,
+                        transform: index >= 3 ? 'scale(1.05)' : 'scale(1)',
                       }}
                     />
                   </div>
