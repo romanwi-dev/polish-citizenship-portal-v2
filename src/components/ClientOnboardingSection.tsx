@@ -51,8 +51,17 @@ const StepIllustration = ({ step }: StepIllustrationProps) => {
         loading="lazy"
         style={{ 
           mixBlendMode: 'screen',
-          filter: 'brightness(1.3) contrast(1.2) saturate(1.1)',
-          opacity: 0.85
+          filter: 'brightness(1.4) contrast(1.3) saturate(1.2)',
+          opacity: 0.9,
+          WebkitFilter: 'brightness(1.4) contrast(1.3) saturate(1.2)'
+        }}
+      />
+      {/* Overlay to help blend backgrounds */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at center, transparent 0%, hsl(222 47% 11% / 0.3) 100%)',
+          mixBlendMode: 'multiply'
         }}
       />
     </div>
