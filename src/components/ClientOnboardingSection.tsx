@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { UserCircle } from "lucide-react";
 import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send } from "lucide-react";
@@ -286,6 +286,20 @@ export default function ClientOnboardingSection() {
                         }}
                       >
                         <img
+                          ref={(el) => {
+                            if (el) {
+                              el.style.setProperty('width', '380px', 'important');
+                              el.style.setProperty('height', '380px', 'important');
+                              el.style.setProperty('min-width', '380px', 'important');
+                              el.style.setProperty('min-height', '380px', 'important');
+                              el.style.setProperty('max-width', '380px', 'important');
+                              el.style.setProperty('max-height', '380px', 'important');
+                              el.style.setProperty('object-fit', 'contain', 'important');
+                              el.style.setProperty('filter', 'contrast(1.12) brightness(0.96) saturate(1.08)', 'important');
+                              el.style.setProperty('opacity', '0.92', 'important');
+                              el.style.setProperty('border-radius', '16px', 'important');
+                            }
+                          }}
                           src={step.image}
                           alt={step.title}
                           className="process-step-image"
@@ -310,14 +324,13 @@ export default function ClientOnboardingSection() {
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
-                            const parent = img.parentElement;
-                            if (parent) {
-                              parent.style.width = '380px';
-                              parent.style.height = '380px';
-                            }
-                            img.style.width = '380px';
-                            img.style.height = '380px';
-                            console.log('✅ Process image loaded - Step', step.number, 'Actual size:', img.offsetWidth, 'x', img.offsetHeight);
+                            img.style.setProperty('width', '380px', 'important');
+                            img.style.setProperty('height', '380px', 'important');
+                            img.style.setProperty('min-width', '380px', 'important');
+                            img.style.setProperty('min-height', '380px', 'important');
+                            img.style.setProperty('max-width', '380px', 'important');
+                            img.style.setProperty('max-height', '380px', 'important');
+                            console.log('✅ Process image loaded - Step', step.number, 'Size:', img.offsetWidth, 'x', img.offsetHeight);
                           }}
                         />
                       </div>
@@ -352,6 +365,20 @@ export default function ClientOnboardingSection() {
                         }}
                       >
                         <img
+                          ref={(el) => {
+                            if (el) {
+                              el.style.setProperty('width', '300px', 'important');
+                              el.style.setProperty('height', '300px', 'important');
+                              el.style.setProperty('min-width', '300px', 'important');
+                              el.style.setProperty('min-height', '300px', 'important');
+                              el.style.setProperty('max-width', '300px', 'important');
+                              el.style.setProperty('max-height', '300px', 'important');
+                              el.style.setProperty('object-fit', 'contain', 'important');
+                              el.style.setProperty('filter', 'contrast(1.12) brightness(0.96) saturate(1.08)', 'important');
+                              el.style.setProperty('opacity', '0.92', 'important');
+                              el.style.setProperty('border-radius', '16px', 'important');
+                            }
+                          }}
                           src={step.image}
                           alt={step.title}
                           className="process-step-image-mobile"
@@ -378,6 +405,10 @@ export default function ClientOnboardingSection() {
                             const img = e.target as HTMLImageElement;
                             img.style.setProperty('width', '300px', 'important');
                             img.style.setProperty('height', '300px', 'important');
+                            img.style.setProperty('min-width', '300px', 'important');
+                            img.style.setProperty('min-height', '300px', 'important');
+                            img.style.setProperty('max-width', '300px', 'important');
+                            img.style.setProperty('max-height', '300px', 'important');
                           }}
                         />
                       </div>
