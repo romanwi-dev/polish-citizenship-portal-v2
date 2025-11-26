@@ -31,6 +31,7 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
         { label: t('nav.contact'), href: '#contact' },
         { label: t('nav.timeline'), href: '#timeline' },
         { label: t('nav.services'), href: '#services' },
+        { label: 'Process', href: '#how-to-start' },
       ]
     },
     {
@@ -38,7 +39,6 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
       links: [
         { label: 'Law', href: '#faq' },
         { label: 'Passport', href: '#services' },
-        { label: 'Process', href: '#timeline' },
         { label: 'Documents', href: '#timeline' },
         { label: t('nav.testimonials'), href: '#testimonials' },
       ]
