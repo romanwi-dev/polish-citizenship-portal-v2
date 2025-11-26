@@ -69,7 +69,9 @@ export function ProjectMemoryDashboard() {
   const agentActivity = Array.isArray(activityData) ? activityData : [];
 
   const memoryMap = memory.reduce((acc: any, item: any) => {
-    acc[item.memory_key] = item.memory_value;
+    if (item?.memory_key) {
+      acc[item.memory_key] = item.memory_value;
+    }
     return acc;
   }, {} as Record<string, any>);
 
@@ -79,12 +81,15 @@ export function ProjectMemoryDashboard() {
 
   // Calculate agent statistics
   const agentStats = agentActivity.reduce((acc: any, activity: any) => {
-    if (!acc[activity.agent_type]) {
-      acc[activity.agent_type] = { total: 0, success: 0, totalTime: 0 };
+    const agentType = activity?.agent_type;
+    if (!agentType) return acc; // Skip if agent_type is missing
+    
+    if (!acc[agentType]) {
+      acc[agentType] = { total: 0, success: 0, totalTime: 0 };
     }
-    acc[activity.agent_type].total++;
-    if (activity.success) acc[activity.agent_type].success++;
-    acc[activity.agent_type].totalTime += activity.response_time_ms || 0;
+    acc[agentType].total++;
+    if (activity.success) acc[agentType].success++;
+    acc[agentType].totalTime += activity.response_time_ms || 0;
     return acc;
   }, {});
 
