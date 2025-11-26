@@ -11,6 +11,34 @@ import { SectionLayout } from "./layout/SectionLayout";
 export default function ClientOnboardingSection() {
   const { t } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  
+  // Inject CSS to ensure image styles are applied
+  if (typeof document !== 'undefined') {
+    const styleId = 'process-step-images-style';
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.textContent = `
+        .process-step-image {
+          width: 360px !important;
+          height: 360px !important;
+          min-width: 360px !important;
+          min-height: 360px !important;
+          max-width: 360px !important;
+          max-height: 360px !important;
+        }
+        .process-step-image-mobile {
+          width: 280px !important;
+          height: 280px !important;
+          min-width: 280px !important;
+          min-height: 280px !important;
+          max-width: 280px !important;
+          max-height: 280px !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
 
   const toggleFlip = (stepNumber: string) => {
     setFlippedCards(prev => ({
@@ -256,7 +284,7 @@ export default function ClientOnboardingSection() {
                         <img
                           src={step.image}
                           alt={step.title}
-                          className="transition-all duration-500 ease-out"
+                          className="process-step-image"
                           style={{
                             width: '360px',
                             height: '360px',
@@ -274,10 +302,12 @@ export default function ClientOnboardingSection() {
                             backgroundColor: 'transparent',
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
+                            transition: 'all 0.5s ease-out',
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
-                            img.style.imageRendering = 'auto';
+                            img.style.setProperty('width', '360px', 'important');
+                            img.style.setProperty('height', '360px', 'important');
                           }}
                         />
                       </div>
@@ -314,7 +344,7 @@ export default function ClientOnboardingSection() {
                         <img
                           src={step.image}
                           alt={step.title}
-                          className="transition-all duration-500 ease-out"
+                          className="process-step-image-mobile"
                           style={{
                             width: '280px',
                             height: '280px',
@@ -332,10 +362,12 @@ export default function ClientOnboardingSection() {
                             backgroundColor: 'transparent',
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
+                            transition: 'all 0.5s ease-out',
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
-                            img.style.imageRendering = 'auto';
+                            img.style.setProperty('width', '280px', 'important');
+                            img.style.setProperty('height', '280px', 'important');
                           }}
                         />
                       </div>
