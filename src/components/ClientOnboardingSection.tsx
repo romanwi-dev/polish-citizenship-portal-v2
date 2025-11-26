@@ -29,7 +29,8 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step1Cta'),
       link: "#contact",
       detailedInfo: t('onboarding.step1DetailedInfo'),
-      keyPoints: t('onboarding.step1KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step1KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/image%201.png"
     },
     {
       number: t('onboarding.step2Number'),
@@ -40,7 +41,8 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step2Cta'),
       link: "https://polishcitizenship.typeform.com/to/PS5ecU",
       detailedInfo: t('onboarding.step2DetailedInfo'),
-      keyPoints: t('onboarding.step2KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step2KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/image%202.png"
     },
     {
       number: t('onboarding.step3Number'),
@@ -51,7 +53,8 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step3Cta'),
       link: "#",
       detailedInfo: t('onboarding.step3DetailedInfo'),
-      keyPoints: t('onboarding.step3KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step3KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/image%203.png"
     },
     {
       number: t('onboarding.step4Number'),
@@ -62,7 +65,8 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step4Cta'),
       link: "#contact",
       detailedInfo: t('onboarding.step4DetailedInfo'),
-      keyPoints: t('onboarding.step4KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step4KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/image%204.png"
     },
     {
       number: t('onboarding.step5Number'),
@@ -73,7 +77,8 @@ export default function ClientOnboardingSection() {
       cta: t('onboarding.step5Cta'),
       link: "#",
       detailedInfo: t('onboarding.step5DetailedInfo'),
-      keyPoints: t('onboarding.step5KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step5KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/image%205.png"
     }
   ];
 
@@ -221,8 +226,33 @@ export default function ClientOnboardingSection() {
                   </div>
                 </div>
 
-                {/* Empty space on other side */}
-                <div className="hidden lg:block lg:w-[42%]" />
+                {/* Image on other side - Desktop */}
+                <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
+                  <div className="relative w-full max-w-lg flex items-center justify-center -ml-8">
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      className="w-full h-auto object-contain"
+                      style={{
+                        filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Image on mobile/tablet - below card */}
+                <div className="lg:hidden w-full mt-6 sm:mt-8 flex items-center justify-center">
+                  <div className="relative w-full max-w-xs sm:max-w-sm flex items-center justify-center">
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      className="w-full h-auto object-contain"
+                      style={{
+                        filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))'
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             );
