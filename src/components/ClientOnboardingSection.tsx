@@ -12,6 +12,34 @@ import reviewImg from "@/assets/onboarding-review.png";
 import agreementImg from "@/assets/onboarding-agreement.png";
 import initiationImg from "@/assets/onboarding-initiation.png";
 
+// StepIllustration component for desktop step illustrations
+interface StepIllustrationProps {
+  step: number;
+}
+
+const StepIllustration = ({ step }: StepIllustrationProps) => {
+  const imageMap: Record<number, { src: string; alt: string }> = {
+    1: { src: '/steps/step1-contact.png', alt: 'First Contact - 3D avatar with speech bubble' },
+    2: { src: '/steps/step2-eligibility.png', alt: 'Eligibility Check - 3D document with magnifying glass and checkmark' },
+    3: { src: '/steps/step3-documents.png', alt: 'Documents & POAs - 3D stack of folders' },
+    4: { src: '/steps/step4-assessment.png', alt: 'Case Assessment - 3D checklist with checks and circular bar chart' },
+    5: { src: '/steps/step5-send.png', alt: 'Send Documents to Warsaw - 3D FedEx-style glowing envelope with location pin' },
+  };
+
+  const image = imageMap[step];
+  if (!image) return null;
+
+  return (
+    <img
+      src={image.src}
+      alt={image.alt}
+      width={260}
+      height={260}
+      className="w-52 h-auto opacity-60 xl:opacity-50 pointer-events-none select-none"
+    />
+  );
+};
+
 export default function ClientOnboardingSection() {
   const { t } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -126,7 +154,7 @@ export default function ClientOnboardingSection() {
                 </div>
               </div>
               
-              <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-3 sm:gap-4 md:gap-12 items-center`}> {/* ONBOARDING-UX-SAFE: Tighter gap on mobile */}
+              <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-3 sm:gap-4 md:gap-10 lg:gap-12 items-center`}> {/* ONBOARDING-UX-SAFE: Tighter gap on mobile */}
                 {/* Card - adjusted for mobile spacing */}
                 <div className="w-full md:w-[42%] mt-16 sm:mt-20 md:mt-0"> {/* ONBOARDING-UX-SAFE: Reduced top margin on small mobile */}
                   <div 
@@ -230,8 +258,10 @@ export default function ClientOnboardingSection() {
                   </div>
                 </div>
 
-                {/* Empty space on other side */}
-                <div className="hidden md:block md:w-[42%]" />
+                {/* Step Illustration - Desktop only */}
+                <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
+                  <StepIllustration step={index + 1} />
+                </div>
               </div>
             </div>
             );
