@@ -11,7 +11,6 @@ import consultationImg from "@/assets/onboarding-consultation.png";
 import reviewImg from "@/assets/onboarding-review.png";
 import agreementImg from "@/assets/onboarding-agreement.png";
 import initiationImg from "@/assets/onboarding-initiation.png";
-import { StepIllustration } from "./StepIllustrations";
 
 export default function ClientOnboardingSection() {
   const { t } = useTranslation();
@@ -231,10 +230,8 @@ export default function ClientOnboardingSection() {
                   </div>
                 </div>
 
-                {/* Step Illustration - Desktop only */}
-                <div className={`hidden lg:flex lg:w-[42%] items-center ${isLeft ? 'justify-start pl-8' : 'justify-end pr-8'} bg-transparent`}>
-                  <StepIllustration step={index + 1} />
-                </div>
+                {/* Empty space on other side */}
+                <div className="hidden lg:block lg:w-[42%]" />
               </div>
             </div>
             );
