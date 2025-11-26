@@ -70,14 +70,29 @@ export function ProjectMemoryDashboard() {
 
   const memoryMap = memory.reduce((acc: any, item: any) => {
     if (item?.memory_key) {
-      acc[item.memory_key] = item.memory_value;
+      try {
+        // Try to parse if it's a JSON string, otherwise use as-is
+        const value = typeof item.memory_value === 'string' 
+          ? JSON.parse(item.memory_value) 
+          : item.memory_value;
+        acc[item.memory_key] = value;
+      } catch {
+        // If parsing fails, use the value as-is
+        acc[item.memory_key] = item.memory_value;
+      }
     }
     return acc;
   }, {} as Record<string, any>);
 
-  const systemConfig = memoryMap.system_configuration || {};
-  const agentCoordMap = memoryMap.agent_coordination_map || {};
-  const optimizations = memoryMap.learned_optimizations || [];
+  const systemConfig = (memoryMap.system_configuration && typeof memoryMap.system_configuration === 'object') 
+    ? memoryMap.system_configuration 
+    : {};
+  const agentCoordMap = (memoryMap.agent_coordination_map && typeof memoryMap.agent_coordination_map === 'object')
+    ? memoryMap.agent_coordination_map
+    : {};
+  const optimizations = Array.isArray(memoryMap.learned_optimizations) 
+    ? memoryMap.learned_optimizations 
+    : [];
 
   // Calculate agent statistics
   const agentStats = agentActivity.reduce((acc: any, activity: any) => {
@@ -150,13 +165,17 @@ export function ProjectMemoryDashboard() {
             </div>
             <div className="text-center p-4 rounded-lg bg-background border">
               <div className="text-3xl font-bold text-warning">
-                {systemConfig.resource_allocation?.urgent_tasks || 0}
+                {(systemConfig.resource_allocation && typeof systemConfig.resource_allocation === 'object')
+                  ? (systemConfig.resource_allocation.urgent_tasks || 0)
+                  : 0}
               </div>
               <div className="text-sm text-muted-foreground">Urgent Tasks</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-background border">
               <div className="text-3xl font-bold text-primary">
-                {systemConfig.resource_allocation?.high_priority_cases || 0}
+                {(systemConfig.resource_allocation && typeof systemConfig.resource_allocation === 'object')
+                  ? (systemConfig.resource_allocation.high_priority_cases || 0)
+                  : 0}
               </div>
               <div className="text-sm text-muted-foreground">Priority Cases</div>
             </div>
@@ -176,40 +195,43 @@ export function ProjectMemoryDashboard() {
         <CardContent>
           <ScrollArea className="h-[300px]">
             <div className="space-y-2">
-              {Object.entries(agentCoordMap).map(([agentType, status]: [string, any]) => (
-                <div
-                  key={agentType}
-                  className="flex items-center justify-between p-3 rounded-lg border"
-                >
-                  <div className="flex items-center gap-3 flex-1">
-                    {status.status === 'overloaded' && <AlertTriangle className="h-5 w-5 text-destructive" />}
-                    {status.status === 'busy' && <Activity className="h-5 w-5 text-warning" />}
-                    {status.status === 'idle' && <CheckCircle2 className="h-5 w-5 text-success" />}
-                    <div>
-                      <div className="font-medium">{agentType}</div>
-                      <div className="text-xs text-muted-foreground">
-                        Workload: {status.workload} requests/hr
+              {Object.entries(agentCoordMap).map(([agentType, status]: [string, any]) => {
+                if (!status || typeof status !== 'object') return null;
+                return (
+                  <div
+                    key={agentType}
+                    className="flex items-center justify-between p-3 rounded-lg border"
+                  >
+                    <div className="flex items-center gap-3 flex-1">
+                      {status.status === 'overloaded' && <AlertTriangle className="h-5 w-5 text-destructive" />}
+                      {status.status === 'busy' && <Activity className="h-5 w-5 text-warning" />}
+                      {status.status === 'idle' && <CheckCircle2 className="h-5 w-5 text-success" />}
+                      <div>
+                        <div className="font-medium">{agentType}</div>
+                        <div className="text-xs text-muted-foreground">
+                          Workload: {status.workload || 0} requests/hr
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right text-sm">
-                      <div className="font-medium">{status.success_rate?.toFixed(1)}%</div>
-                      <div className="text-xs text-muted-foreground">Success</div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right text-sm">
+                        <div className="font-medium">{(status.success_rate || 0).toFixed(1)}%</div>
+                        <div className="text-xs text-muted-foreground">Success</div>
+                      </div>
+                      <div className="text-right text-sm">
+                        <div className="font-medium">{(status.avg_response_time || 0).toFixed(0)}ms</div>
+                        <div className="text-xs text-muted-foreground">Avg Time</div>
+                      </div>
+                      <Badge variant={
+                        status.status === 'overloaded' ? 'destructive' :
+                        status.status === 'busy' ? 'secondary' : 'default'
+                      }>
+                        {status.status || 'unknown'}
+                      </Badge>
                     </div>
-                    <div className="text-right text-sm">
-                      <div className="font-medium">{status.avg_response_time?.toFixed(0)}ms</div>
-                      <div className="text-xs text-muted-foreground">Avg Time</div>
-                    </div>
-                    <Badge variant={
-                      status.status === 'overloaded' ? 'destructive' :
-                      status.status === 'busy' ? 'secondary' : 'default'
-                    }>
-                      {status.status}
-                    </Badge>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {Object.keys(agentCoordMap).length === 0 && (
                 <div className="text-center text-sm text-muted-foreground py-8">
                   No agent coordination data yet
