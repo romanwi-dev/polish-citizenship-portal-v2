@@ -11,62 +11,7 @@ import consultationImg from "@/assets/onboarding-consultation.png";
 import reviewImg from "@/assets/onboarding-review.png";
 import agreementImg from "@/assets/onboarding-agreement.png";
 import initiationImg from "@/assets/onboarding-initiation.png";
-
-// StepIllustration component for desktop step illustrations
-interface StepIllustrationProps {
-  step: number;
-}
-
-const StepIllustration = ({ step }: StepIllustrationProps) => {
-  const imageMap: Record<number, { src: string; alt: string }> = {
-    1: { src: '/steps/step1-contact.png – avatar + speech bubble.png', alt: 'First Contact - 3D avatar with speech bubble' },
-    2: { src: '/steps/step2-eligibility.png – document + magnifying glass + check.png', alt: 'Eligibility Check - 3D document with magnifying glass and checkmark' },
-    3: { src: '/steps/step3-documents.png – folder stack.png', alt: 'Documents & POAs - 3D stack of folders' },
-    4: { src: '/steps/step4-assessment.png – checklist + bar chart.png', alt: 'Case Assessment - 3D checklist with checks and circular bar chart' },
-    5: { src: '/steps/step5-send.png – FedEx-style envelope + pin.png', alt: 'Send Documents to Warsaw - 3D FedEx-style glowing envelope with location pin' },
-  };
-
-  const image = imageMap[step];
-  if (!image) return null;
-
-  // Encode the URL to handle special characters in filenames
-  const encodedSrc = image.src.split('/').map((part, index) => 
-    index === 0 ? part : encodeURIComponent(part)
-  ).join('/');
-
-  return (
-    <div 
-      className="relative"
-      style={{
-        mixBlendMode: 'screen',
-        isolation: 'isolate'
-      }}
-    >
-      <img
-        src={encodedSrc}
-        alt={image.alt}
-        width={320}
-        height={320}
-        className="w-72 lg:w-80 h-auto pointer-events-none select-none"
-        loading="lazy"
-        style={{ 
-          mixBlendMode: 'screen',
-          filter: 'brightness(1.4) contrast(1.3) saturate(1.2)',
-          opacity: 0.9,
-          WebkitFilter: 'brightness(1.4) contrast(1.3) saturate(1.2)'
-        }}
-      />
-      {/* Overlay to help blend backgrounds */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle at center, transparent 0%, hsl(222 47% 11% / 0.3) 100%)',
-          mixBlendMode: 'multiply'
-        }}
-      />
-    </div>
-  );
-};
+import { StepIllustration } from "./StepIllustrations";
 
 export default function ClientOnboardingSection() {
   const { t } = useTranslation();
