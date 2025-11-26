@@ -40,6 +40,10 @@ const getPosition = (lat: number, lon: number, radius: number) => {
 
 // --- Ultra High Quality Earth Texture Generator ---
 const createEarthTexture = () => {
+  // SSR guard: canvas API only available in browser
+  if (typeof window === 'undefined') {
+    return null;
+  }
   try {
     const canvas = document.createElement('canvas');
     canvas.width = 4096; // 4K resolution
@@ -243,6 +247,10 @@ const EarthGlobe = () => {
   
   // Create specular map for ocean reflections
   const specularMap = useMemo(() => {
+    // SSR guard: canvas API only available in browser
+    if (typeof window === 'undefined') {
+      return null;
+    }
     const canvas = document.createElement('canvas');
     canvas.width = 2048;
     canvas.height = 1024;
@@ -264,6 +272,10 @@ const EarthGlobe = () => {
   
   // Create normal map for terrain depth
   const normalMap = useMemo(() => {
+    // SSR guard: canvas API only available in browser
+    if (typeof window === 'undefined') {
+      return null;
+    }
     const canvas = document.createElement('canvas');
     canvas.width = 2048;
     canvas.height = 1024;
