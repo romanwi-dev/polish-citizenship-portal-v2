@@ -255,11 +255,14 @@ export default function ClientOnboardingSection() {
                 </div>
 
                 {/* Image on other side - Desktop */}
-                <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
+                <div className="hidden lg:flex lg:w-[42%] items-center justify-center" data-process-image-container="true">
                   <div 
                     className={`relative flex items-center justify-center group ${isLeft ? '-ml-28' : '-mr-28'}`}
                     style={{
                       perspective: '1500px',
+                      backgroundColor: 'rgba(255, 0, 0, 0.05)',
+                      padding: '10px',
+                      borderRadius: '20px',
                     }}
                   >
                     <div
@@ -273,6 +276,11 @@ export default function ClientOnboardingSection() {
                       <div
                         style={{
                           position: 'relative',
+                          width: '380px',
+                          height: '380px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                           filter: `
                             drop-shadow(0 10px 20px rgba(0, 0, 0, 0.12))
                             drop-shadow(0 5px 10px rgba(0, 0, 0, 0.08))
@@ -284,7 +292,6 @@ export default function ClientOnboardingSection() {
                           src={step.image}
                           alt={step.title}
                           className="process-step-image"
-                          key={`process-img-${step.number}-${Date.now()}`}
                           style={{
                             width: '380px',
                             height: '380px',
@@ -303,14 +310,17 @@ export default function ClientOnboardingSection() {
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
                             transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
-                            border: '2px solid rgba(255, 0, 0, 0.3)',
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
-                            img.style.setProperty('width', '380px', 'important');
-                            img.style.setProperty('height', '380px', 'important');
-                            img.style.setProperty('border', 'none', 'important');
-                            console.log('✅ Process image loaded - Step', step.number, 'Size:', img.offsetWidth, 'x', img.offsetHeight);
+                            const parent = img.parentElement;
+                            if (parent) {
+                              parent.style.width = '380px';
+                              parent.style.height = '380px';
+                            }
+                            img.style.width = '380px';
+                            img.style.height = '380px';
+                            console.log('✅ Process image loaded - Step', step.number, 'Actual size:', img.offsetWidth, 'x', img.offsetHeight);
                           }}
                         />
                       </div>
