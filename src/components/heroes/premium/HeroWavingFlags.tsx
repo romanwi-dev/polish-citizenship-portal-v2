@@ -45,7 +45,7 @@ export const HeroWavingFlags = () => {
         {/* Desktop: Two column layout, Mobile: Stacked */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr,380px] gap-8 lg:gap-8 xl:gap-10 items-start max-w-7xl mx-auto">
           {/* Left Column: Badge + Title + Text + Stats Cards */}
-          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 lg:-mt-12 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
+          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 lg:-mt-4 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
             {/* Badge + Title Section */}
             <div className="space-y-5 md:space-y-6 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm">
@@ -82,9 +82,9 @@ export const HeroWavingFlags = () => {
                 {/* Front - Photo + Form */}
                 <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
                   {/* Form - Photo and fields inside form with same padding, made taller */}
-                  <form onSubmit={handleSubmit} className="space-y-3 md:space-y-3.5 lg:space-y-4 p-5 md:p-6 lg:p-7">
+                  <form onSubmit={handleSubmit} className="space-y-4 md:space-y-3.5 lg:space-y-4 p-6 md:p-6 lg:p-7">
                     {/* Secretary Photo - Inside form, fills container fully */}
-                    <div className="w-full overflow-hidden aspect-[4/3] lg:aspect-[4/3.5] bg-muted/20 opacity-70 dark:opacity-70 lg:opacity-100 rounded-lg">
+                    <div className="w-full overflow-hidden aspect-[4/3.5] bg-muted/20 opacity-70 dark:opacity-70 lg:opacity-100 rounded-lg">
                       <img 
                         src={professionalWoman} 
                         alt="Professional consultation"
