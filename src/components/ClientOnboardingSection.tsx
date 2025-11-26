@@ -42,7 +42,10 @@ const StepIllustration = ({ step }: StepIllustrationProps) => {
       height={320}
       className="w-72 lg:w-80 h-auto opacity-70 xl:opacity-60 pointer-events-none select-none"
       loading="lazy"
-      style={{ mixBlendMode: 'normal' }}
+      style={{ 
+        mixBlendMode: 'multiply',
+        filter: 'brightness(1.1) saturate(1.1)'
+      }}
     />
   );
 };
