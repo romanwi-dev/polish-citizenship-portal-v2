@@ -228,74 +228,62 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on other side - Desktop */}
                 <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
-                  {(() => {
-                    const stepNum = parseInt(step.number);
-                    const isStep4Or5 = stepNum === 4 || stepNum === 5;
-                    return (
-                      <div className={`relative flex items-center justify-center ${isLeft ? '-ml-12' : '-mr-12'}`} style={{ 
-                        width: isStep4Or5 ? '360px' : '320px', 
-                        height: isStep4Or5 ? '360px' : '320px' 
-                      }}>
-                        <img
-                          src={step.image}
-                          alt={step.title}
-                          style={{
-                            width: isStep4Or5 ? '360px' : '320px',
-                            height: isStep4Or5 ? '360px' : '320px',
-                            minWidth: isStep4Or5 ? '360px' : '320px',
-                            minHeight: isStep4Or5 ? '360px' : '320px',
-                            maxWidth: isStep4Or5 ? '360px' : '320px',
-                            maxHeight: isStep4Or5 ? '360px' : '320px',
-                            objectFit: 'contain',
-                            filter: isStep4Or5 
-                              ? 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05)) contrast(1.15) brightness(0.9)' 
-                              : 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
-                            opacity: 0.85,
-                            imageRendering: 'crisp-edges',
-                            display: 'block',
-                            flexShrink: 0,
-                            transform: isStep4Or5 ? 'scale(1.08)' : 'scale(1)',
-                          }}
-                        />
-                      </div>
-                    );
-                  })()}
+                  <div className={`relative flex items-center justify-center ${isLeft ? '-ml-12' : '-mr-12'}`}>
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      style={{
+                        width: '340px',
+                        height: '340px',
+                        minWidth: '340px',
+                        minHeight: '340px',
+                        maxWidth: '340px',
+                        maxHeight: '340px',
+                        objectFit: 'contain',
+                        filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08)) contrast(1.1) saturate(1.05)',
+                        opacity: 0.9,
+                        imageRendering: 'auto',
+                        display: 'block',
+                        flexShrink: 0,
+                        transition: 'all 0.3s ease',
+                      }}
+                      onLoad={(e) => {
+                        // Ensure consistent rendering
+                        const img = e.target as HTMLImageElement;
+                        img.style.imageRendering = 'auto';
+                      }}
+                    />
+                  </div>
                 </div>
 
                 {/* Image on mobile/tablet - below card */}
                 <div className="lg:hidden w-full mt-6 sm:mt-8 flex items-center justify-center">
-                  {(() => {
-                    const stepNum = parseInt(step.number);
-                    const isStep4Or5 = stepNum === 4 || stepNum === 5;
-                    return (
-                      <div className="relative flex items-center justify-center" style={{ 
-                        width: isStep4Or5 ? '280px' : '240px', 
-                        height: isStep4Or5 ? '280px' : '240px' 
-                      }}>
-                        <img
-                          src={step.image}
-                          alt={step.title}
-                          style={{
-                            width: isStep4Or5 ? '280px' : '240px',
-                            height: isStep4Or5 ? '280px' : '240px',
-                            minWidth: isStep4Or5 ? '280px' : '240px',
-                            minHeight: isStep4Or5 ? '280px' : '240px',
-                            maxWidth: isStep4Or5 ? '280px' : '240px',
-                            maxHeight: isStep4Or5 ? '280px' : '240px',
-                            objectFit: 'contain',
-                            filter: isStep4Or5 
-                              ? 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05)) contrast(1.15) brightness(0.9)' 
-                              : 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
-                            opacity: 0.85,
-                            imageRendering: 'crisp-edges',
-                            display: 'block',
-                            flexShrink: 0,
-                            transform: isStep4Or5 ? 'scale(1.08)' : 'scale(1)',
-                          }}
-                        />
-                      </div>
-                    );
-                  })()}
+                  <div className="relative flex items-center justify-center">
+                    <img
+                      src={step.image}
+                      alt={step.title}
+                      style={{
+                        width: '260px',
+                        height: '260px',
+                        minWidth: '260px',
+                        minHeight: '260px',
+                        maxWidth: '260px',
+                        maxHeight: '260px',
+                        objectFit: 'contain',
+                        filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08)) contrast(1.1) saturate(1.05)',
+                        opacity: 0.9,
+                        imageRendering: 'auto',
+                        display: 'block',
+                        flexShrink: 0,
+                        transition: 'all 0.3s ease',
+                      }}
+                      onLoad={(e) => {
+                        // Ensure consistent rendering
+                        const img = e.target as HTMLImageElement;
+                        img.style.imageRendering = 'auto';
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
