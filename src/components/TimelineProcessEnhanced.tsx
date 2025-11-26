@@ -117,8 +117,9 @@ export default function TimelineProcessEnhanced() {
             <div className="absolute inset-0 w-1 bg-gradient-to-b from-primary/15 via-secondary/15 to-accent/15" />
           </div>
 
-          {timelineSteps.map((step, index) => {
-            const isLeft = index % 2 === 0;
+            {timelineSteps.map((step, index) => {
+              const isLeft = index % 2 === 0;
+              const Icon = step.icon;
             
             return (
             <motion.div 
@@ -171,7 +172,7 @@ export default function TimelineProcessEnhanced() {
                         {/* Icon */}
                         <div className="mb-2 relative flex items-center justify-center">
                           <div className={`w-16 h-16 md:w-20 md:h-20 rounded-lg bg-gradient-to-br ${step.gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-300 flex items-center justify-center`}>
-                            <step.icon className="w-8 h-8 md:w-10 md:h-10 text-primary relative z-10 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+                            <Icon className="w-8 h-8 md:w-10 md:h-10 text-primary relative z-10 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
                           </div>
                         </div>
                         <div className="flex items-center justify-center gap-2 mb-1">
