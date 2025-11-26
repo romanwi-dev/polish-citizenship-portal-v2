@@ -19,23 +19,29 @@ interface StepIllustrationProps {
 
 const StepIllustration = ({ step }: StepIllustrationProps) => {
   const imageMap: Record<number, { src: string; alt: string }> = {
-    1: { src: '/steps/step1-contact.png', alt: 'First Contact - 3D avatar with speech bubble' },
-    2: { src: '/steps/step2-eligibility.png', alt: 'Eligibility Check - 3D document with magnifying glass and checkmark' },
-    3: { src: '/steps/step3-documents.png', alt: 'Documents & POAs - 3D stack of folders' },
-    4: { src: '/steps/step4-assessment.png', alt: 'Case Assessment - 3D checklist with checks and circular bar chart' },
-    5: { src: '/steps/step5-send.png', alt: 'Send Documents to Warsaw - 3D FedEx-style glowing envelope with location pin' },
+    1: { src: '/steps/step1-contact.png – avatar + speech bubble.png', alt: 'First Contact - 3D avatar with speech bubble' },
+    2: { src: '/steps/step2-eligibility.png – document + magnifying glass + check.png', alt: 'Eligibility Check - 3D document with magnifying glass and checkmark' },
+    3: { src: '/steps/step3-documents.png – folder stack.png', alt: 'Documents & POAs - 3D stack of folders' },
+    4: { src: '/steps/step4-assessment.png – checklist + bar chart.png', alt: 'Case Assessment - 3D checklist with checks and circular bar chart' },
+    5: { src: '/steps/step5-send.png – FedEx-style envelope + pin.png', alt: 'Send Documents to Warsaw - 3D FedEx-style glowing envelope with location pin' },
   };
 
   const image = imageMap[step];
   if (!image) return null;
 
+  // Encode the URL to handle special characters in filenames
+  const encodedSrc = image.src.split('/').map((part, index) => 
+    index === 0 ? part : encodeURIComponent(part)
+  ).join('/');
+
   return (
     <img
-      src={image.src}
+      src={encodedSrc}
       alt={image.alt}
       width={260}
       height={260}
       className="w-52 h-auto opacity-60 xl:opacity-50 pointer-events-none select-none"
+      loading="lazy"
     />
   );
 };
