@@ -47,11 +47,12 @@ const StepIllustration = ({ step }: StepIllustrationProps) => {
         alt={image.alt}
         width={320}
         height={320}
-        className="w-72 lg:w-80 h-auto opacity-70 xl:opacity-60 pointer-events-none select-none"
+        className="w-72 lg:w-80 h-auto pointer-events-none select-none"
         loading="lazy"
         style={{ 
-          filter: 'brightness(1.2) contrast(1.1)',
-          mixBlendMode: 'screen'
+          mixBlendMode: 'screen',
+          filter: 'brightness(1.3) contrast(1.2) saturate(1.1)',
+          opacity: 0.85
         }}
       />
     </div>
