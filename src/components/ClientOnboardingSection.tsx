@@ -228,13 +228,16 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on other side - Desktop */}
                 <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
-                  <div className="relative w-full max-w-lg flex items-center justify-center -ml-8">
+                  <div className="relative flex items-center justify-center -ml-4">
                     <img
                       src={step.image}
                       alt={step.title}
-                      className="w-full h-auto object-contain"
+                      className="object-contain"
                       style={{
-                        filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))'
+                        width: '280px',
+                        height: '280px',
+                        filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08))',
+                        opacity: 0.85,
                       }}
                     />
                   </div>
@@ -242,13 +245,16 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on mobile/tablet - below card */}
                 <div className="lg:hidden w-full mt-6 sm:mt-8 flex items-center justify-center">
-                  <div className="relative w-full max-w-xs sm:max-w-sm flex items-center justify-center">
+                  <div className="relative flex items-center justify-center">
                     <img
                       src={step.image}
                       alt={step.title}
-                      className="w-full h-auto object-contain"
+                      className="object-contain"
                       style={{
-                        filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))'
+                        width: '200px',
+                        height: '200px',
+                        filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08))',
+                        opacity: 0.85,
                       }}
                     />
                   </div>
