@@ -228,16 +228,18 @@ export default function ClientOnboardingSection() {
 
                 {/* Image on other side - Desktop */}
                 <div className="hidden lg:flex lg:w-[42%] items-center justify-center">
-                  <div className="relative flex items-center justify-center -ml-4">
+                  <div className={`relative flex items-center justify-center ${isLeft ? '-ml-12' : '-mr-12'}`}>
                     <img
                       src={step.image}
                       alt={step.title}
                       className="object-contain"
                       style={{
-                        width: '280px',
-                        height: '280px',
-                        filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08))',
-                        opacity: 0.85,
+                        width: '220px',
+                        height: '220px',
+                        maxWidth: '220px',
+                        maxHeight: '220px',
+                        filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
+                        opacity: 0.75,
                       }}
                     />
                   </div>
@@ -251,10 +253,12 @@ export default function ClientOnboardingSection() {
                       alt={step.title}
                       className="object-contain"
                       style={{
-                        width: '200px',
-                        height: '200px',
-                        filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08))',
-                        opacity: 0.85,
+                        width: '160px',
+                        height: '160px',
+                        maxWidth: '160px',
+                        maxHeight: '160px',
+                        filter: 'drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05))',
+                        opacity: 0.75,
                       }}
                     />
                   </div>
