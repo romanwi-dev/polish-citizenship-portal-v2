@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { UserCircle } from "lucide-react";
 import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send } from "lucide-react";
@@ -13,7 +13,7 @@ export default function ClientOnboardingSection() {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   
   // Inject CSS to ensure image styles are applied
-  if (typeof document !== 'undefined') {
+  useEffect(() => {
     const styleId = 'process-step-images-style';
     if (!document.getElementById(styleId)) {
       const style = document.createElement('style');
@@ -38,7 +38,7 @@ export default function ClientOnboardingSection() {
       `;
       document.head.appendChild(style);
     }
-  }
+  }, []);
 
   const toggleFlip = (stepNumber: string) => {
     setFlippedCards(prev => ({
@@ -303,11 +303,14 @@ export default function ClientOnboardingSection() {
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
                             transition: 'all 0.5s ease-out',
+                            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1)',
                           }}
                           onLoad={(e) => {
                             const img = e.target as HTMLImageElement;
                             img.style.setProperty('width', '360px', 'important');
                             img.style.setProperty('height', '360px', 'important');
+                            img.style.setProperty('box-shadow', '0 8px 16px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1)', 'important');
+                            console.log('Process step image loaded:', step.number, img.style.width, img.style.height);
                           }}
                         />
                       </div>
