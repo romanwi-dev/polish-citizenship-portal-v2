@@ -4,11 +4,14 @@ import "./index.css";
 import "./i18n/config"; // Initialize i18n
 
 // Initialize default theme (dark-red)
-const defaultTheme = localStorage.getItem("theme") || "dark-red";
-const [mode, color] = defaultTheme.split('-') as ['dark' | 'light', 'red' | 'blue'];
-document.documentElement.classList.add(mode, `theme-${color}`);
-if (!localStorage.getItem("theme")) {
-  localStorage.setItem("theme", "dark-red");
+// SSR-SAFE: Only access browser APIs when window is available
+if (typeof window !== 'undefined') {
+  const defaultTheme = localStorage.getItem("theme") || "dark-red";
+  const [mode, color] = defaultTheme.split('-') as ['dark' | 'light', 'red' | 'blue'];
+  document.documentElement.classList.add(mode, `theme-${color}`);
+  if (!localStorage.getItem("theme")) {
+    localStorage.setItem("theme", "dark-red");
+  }
 }
 
 // Track performance metrics only in development
