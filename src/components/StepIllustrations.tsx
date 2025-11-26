@@ -35,47 +35,38 @@ export const StepIllustration = ({ step, className = '' }: StepIllustrationProps
   const renderStep = () => {
     switch (step) {
       case 1:
-        // First Contact - 3D Avatar + Speech Bubble with neon glow
+        // First Contact - Use actual PNG with background removal CSS
+        const encodedSrc1 = '/steps/step1-contact.png – avatar + speech bubble.png'.split('/').map((part, index) => 
+          index === 0 ? part : encodeURIComponent(part)
+        ).join('/');
         return (
-          <svg viewBox="0 0 320 320" className={className} xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="avatarGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor={neonRed} stopOpacity="0.9" />
-                <stop offset="50%" stopColor={neonPink} stopOpacity="0.8" />
-                <stop offset="100%" stopColor={neonBlue} stopOpacity="0.7" />
-              </linearGradient>
-              <radialGradient id="avatarGlow1" cx="50%" cy="50%">
-                <stop offset="0%" stopColor={neonRed} stopOpacity="0.6" />
-                <stop offset="100%" stopColor={neonRed} stopOpacity="0" />
-              </radialGradient>
-              <filter id="glow1" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-              <filter id="glowBlue1" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-            {/* Avatar head - 3D with neon red glow */}
-            <ellipse cx="140" cy="100" rx="50" ry="55" fill="url(#avatarGrad1)" filter="url(#glow1)" />
-            <ellipse cx="140" cy="100" rx="45" ry="50" fill={darkPurple} opacity="0.3" />
-            {/* Avatar shoulders - 3D effect */}
-            <ellipse cx="140" cy="190" rx="70" ry="45" fill="url(#avatarGrad1)" filter="url(#glow1)" opacity="0.9" />
-            <ellipse cx="140" cy="190" rx="65" ry="40" fill={darkPurple} opacity="0.4" />
-            {/* Speech bubble - neon blue glow */}
-            <path d="M 200 70 Q 230 50 260 70 L 260 100 Q 260 130 230 130 L 210 130 L 195 145 L 210 130 Z" 
-                  fill={neonBlueLight} filter="url(#glowBlue1)" opacity="0.9" />
-            <path d="M 200 70 Q 230 50 260 70 L 260 100 Q 260 130 230 130 L 210 130 L 195 145 L 210 130 Z" 
-                  fill={darkBlue} opacity="0.2" />
-            <circle cx="250" cy="85" r="10" fill={neonBlue} filter="url(#glowBlue1)" opacity="0.8" />
-          </svg>
+          <div className="relative w-full h-full">
+            <img
+              src={encodedSrc1}
+              alt="First Contact - 3D avatar with speech bubble"
+              width={320}
+              height={320}
+              className="w-full h-auto"
+              loading="lazy"
+              style={{
+                mixBlendMode: isDark ? 'screen' : 'multiply',
+                filter: isDark 
+                  ? 'brightness(1.5) contrast(1.3) saturate(1.2)' 
+                  : 'brightness(0.9) contrast(1.4) saturate(1.3)',
+                opacity: isDark ? 0.95 : 0.9
+              }}
+            />
+            {/* Overlay to help blend dark backgrounds */}
+            {isDark && (
+              <div 
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'radial-gradient(circle at center, transparent 30%, hsl(222 47% 11% / 0.4) 100%)',
+                  mixBlendMode: 'multiply'
+                }}
+              />
+            )}
+          </div>
         );
 
       case 2:
