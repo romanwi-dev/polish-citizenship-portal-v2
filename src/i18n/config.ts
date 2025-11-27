@@ -11,31 +11,52 @@ if (typeof window !== 'undefined') {
     initialValue?: U
   ): U {
     // Wrap ALL reduce callbacks to make them safe
-    // This catches i18next's pattern and any other unsafe property access
+    // This catches i18next's pattern: path.split('.').reduce((acc, key2) => acc[key2], obj)
     const safeCallback = (acc: any, currentValue: any, index: number, array: any[]): any => {
-      // CRITICAL: Before calling the original callback, check if acc is safe
-      // If acc is null/undefined and the callback tries to access properties, return undefined
-      if (acc == null || (typeof acc !== 'object' && typeof acc !== 'function')) {
-        // Check if callback likely accesses properties on acc
-        const callbackStr = callback.toString();
-        const accessesProperties = callbackStr.includes('acc[') || 
-                                   callbackStr.includes('acc.') ||
-                                   (callback.length >= 2 && typeof currentValue === 'string');
-        
-        if (accessesProperties) {
-          // Return undefined instead of crashing
+      // CRITICAL: Check if acc is null/undefined BEFORE calling callback
+      // i18next's pattern: path.split('.').reduce((acc, key2) => acc[key2], obj)
+      // When acc becomes undefined, accessing acc[key2] throws "undefined is not an object (evaluating 'acc[key2]')"
+      // We must intercept this BEFORE the callback runs
+      
+      // If acc is null/undefined, we cannot safely access properties on it
+      // This is the root cause of the "acc[key2]" error
+      if (acc == null) {
+        // If currentValue is a string (likely a key), this is probably i18next's nested key pattern
+        // Return undefined to safely break the chain instead of crashing
+        if (typeof currentValue === 'string') {
           return undefined;
+        }
+        // For other cases, still return undefined to be safe
+        return undefined;
+      }
+      
+      // If acc is not an object (and not null/undefined), check if callback accesses properties
+      if (typeof acc !== 'object' && typeof acc !== 'function') {
+        // Check if callback likely accesses properties on acc
+        try {
+          const callbackStr = String(callback);
+          if (callbackStr.includes('acc[') || callbackStr.includes('acc.')) {
+            // Callback tries to access properties, but acc is not an object
+            return undefined;
+          }
+        } catch {
+          // If we can't check, be safe
+          if (typeof currentValue === 'string') {
+            return undefined;
+          }
         }
       }
       
       try {
-        return callback(acc, currentValue, index, array);
+        const result = callback(acc, currentValue, index, array);
+        return result;
       } catch (error: any) {
-        // If it's the acc[key2] error or any property access error, return undefined
+        // Catch acc[key2] errors and return undefined instead of crashing
         if (error?.message?.includes('acc[key2]') || 
             error?.message?.includes('undefined is not an object') ||
             error?.message?.includes('Cannot read') ||
-            error?.message?.includes('Cannot access')) {
+            error?.message?.includes('Cannot access') ||
+            (error?.message?.includes('key2') && error?.message?.includes('undefined'))) {
           return undefined;
         }
         throw error;
