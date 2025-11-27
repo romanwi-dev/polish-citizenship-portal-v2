@@ -218,6 +218,13 @@ const Login = () => {
                 <Button 
                   type="submit" 
                   className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30 flex items-center justify-center"
+                  style={{ 
+                    paddingTop: '0',
+                    paddingBottom: '0',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem',
+                    boxSizing: 'border-box'
+                  }}
                   disabled={loading}
                 >
                   {loading ? (
@@ -242,7 +249,11 @@ const Login = () => {
                   variant="outline"
                   className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30 flex items-center justify-center"
                   style={{ 
-                    minHeight: '64px'
+                    paddingTop: '0',
+                    paddingBottom: '0',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem',
+                    boxSizing: 'border-box'
                   }}
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
@@ -252,18 +263,20 @@ const Login = () => {
                 </Button>
               </div>
             </form>
-            
-            {/* Back to Homepage Button */}
-            <div className="mt-6">
-              <Button
-                type="button"
-                variant="ghost"
-                className="w-full h-16 md:h-20 text-base md:text-lg font-medium bg-white/3 hover:bg-white/8 shadow-sm hover:shadow-md backdrop-blur-sm border border-white/20 text-muted-foreground hover:text-foreground transition-all"
-                onClick={() => navigate('/')}
-              >
-                ← Back to Homepage
-              </Button>
-            </div>
+        </div>
+        
+        {/* Back to Homepage Link */}
+        <div className="mt-12 md:mt-16 text-center">
+          <a
+            href="/"
+            className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/');
+            }}
+          >
+            ← Back to Homepage
+          </a>
         </div>
       </div>
     </div>
