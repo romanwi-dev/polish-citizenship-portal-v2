@@ -6040,95 +6040,7 @@ const rawResources = {
 // This ensures all nested objects exist before i18next processes them
 const resources = createSafeResources(rawResources);
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: 'en', // default language
-    fallbackLng: 'en',
-    // CRITICAL FIX: Safe handling of missing nested keys
-    returnNull: false, // Don't return null for missing keys
-    returnEmptyString: true, // Return empty string instead
-    // Keep keySeparator enabled (default '.') but we'll patch the internal resolver
-    keySeparator: '.',
-    nsSeparator: ':',
-    // Safe nested key resolution - prevents "acc[key2]" errors
-    parseMissingKeyHandler: (key: string) => {
-      // Return the key path as fallback instead of crashing
-      return key;
-    },
-    missingKeyHandler: (lng: string[], ns: string, key: string, fallbackValue: string) => {
-      // Log missing keys in development only
-      if (import.meta.env.DEV) {
-        console.warn(`[i18n] Missing translation key: ${key} in namespace: ${ns}`);
-      }
-      // Return the key path as fallback
-      return key;
-    },
-    interpolation: {
-      escapeValue: false, // React already escapes
-      // Safe nested object access
-      skipOnVariables: false,
-    },
-    react: {
-      useSuspense: true,
-      bindI18n: 'languageChanged loaded',
-      bindI18nStore: 'added removed',
-      transEmptyNodeValue: '',
-      transSupportBasicHtmlNodes: true,
-      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
-    },
-  })
-  .then(() => {
-    // CRITICAL: Patch AFTER initialization completes (i18n.init() is async)
-    patchI18nextStore();
-  })
-  .catch((error) => {
-    console.error('[i18n] Initialization failed:', error);
-    // Still try to patch even if init fails
-    patchI18nextStore();
-  });
-
-/**
- * Safe nested value helper that prevents "acc[key2]" errors.
- * This function safely walks nested object paths without throwing errors.
- * 
- * The bug: i18next internally uses patterns like:
- *   path.split('.').reduce((acc, key2) => acc[key2], obj)
- * 
- * When a nested key doesn't exist, `acc` becomes undefined, and `acc[key2]` throws.
- * 
- * Fix: Check at each step that `current` is a valid object before accessing properties.
- */
-function getNestedValue(obj: any, path: string, fallback: any = undefined): any {
-  // Early return for invalid inputs
-  if (!obj || !path) return fallback;
-  
-  const keys = path.split(".");
-  let current: any = obj;
-  
-  // CRITICAL: Check at each step that current is a valid object before accessing properties
-  // This prevents "undefined is not an object (evaluating 'acc[key2]')" errors
-  for (const key of keys) {
-    // Guard: If current is null/undefined, not an object, or key doesn't exist, return fallback
-    if (current == null || typeof current !== "object" || !(key in current)) {
-      return fallback;
-    }
-    current = current[key];
-  }
-  
-  return current ?? fallback;
-}
-
-/**
- * Patch i18next's store.utils.getPath to use safe nested access.
- * This prevents "acc[key2]" errors when i18next processes nested translation keys.
- * 
- * The error occurs because i18next's internal code uses:
- *   path.split('.').reduce((acc, key2) => acc[key2], obj)
- * 
- * When a nested key is missing, `acc` becomes undefined and `acc[key2]` throws.
- */
+// CRITICAL: Define patch function BEFORE init so it's available immediately
 function patchI18nextStore(): void {
   try {
     const store = (i18n as any).store;
@@ -6239,6 +6151,89 @@ function patchI18nextStore(): void {
     }
   }
 }
+
+// CRITICAL: Define getNestedValue BEFORE it's used
+function getNestedValue(obj: any, path: string, fallback: any = undefined): any {
+  // Early return for invalid inputs
+  if (!obj || !path) return fallback;
+  
+  const keys = path.split(".");
+  let current: any = obj;
+  
+  // CRITICAL: Check at each step that current is a valid object before accessing properties
+  // This prevents "undefined is not an object (evaluating 'acc[key2]')" errors
+  for (const key of keys) {
+    // Guard: If current is null/undefined, not an object, or key doesn't exist, return fallback
+    if (current == null || typeof current !== "object" || !(key in current)) {
+      return fallback;
+    }
+    current = current[key];
+  }
+  
+  return current ?? fallback;
+}
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources,
+    lng: 'en', // default language
+    fallbackLng: 'en',
+    // CRITICAL FIX: Safe handling of missing nested keys
+    returnNull: false, // Don't return null for missing keys
+    returnEmptyString: true, // Return empty string instead
+    // Keep keySeparator enabled (default '.') but we'll patch the internal resolver
+    keySeparator: '.',
+    nsSeparator: ':',
+    // Safe nested key resolution - prevents "acc[key2]" errors
+    parseMissingKeyHandler: (key: string) => {
+      // Return the key path as fallback instead of crashing
+      return key;
+    },
+    missingKeyHandler: (lng: string[], ns: string, key: string, fallbackValue: string) => {
+      // Log missing keys in development only
+      if (import.meta.env.DEV) {
+        console.warn(`[i18n] Missing translation key: ${key} in namespace: ${ns}`);
+      }
+      // Return the key path as fallback
+      return key;
+    },
+    interpolation: {
+      escapeValue: false, // React already escapes
+      // Safe nested object access
+      skipOnVariables: false,
+    },
+    react: {
+      useSuspense: true,
+      bindI18n: 'languageChanged loaded',
+      bindI18nStore: 'added removed',
+      transEmptyNodeValue: '',
+      transSupportBasicHtmlNodes: true,
+      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
+    },
+  })
+  .then(() => {
+    // CRITICAL: Patch AFTER initialization completes (i18n.init() is async)
+    patchI18nextStore();
+  })
+  .catch((error) => {
+    console.error('[i18n] Initialization failed:', error);
+    // Still try to patch even if init fails
+    patchI18nextStore();
+  });
+
+// CRITICAL: Try to patch immediately (store might be available synchronously)
+// This ensures the patch is applied before any component can use i18next
+if (typeof window !== 'undefined') {
+  // Use requestAnimationFrame to patch after current execution but before render
+  requestAnimationFrame(() => {
+    patchI18nextStore();
+  });
+  
+  // Also try immediately
+  patchI18nextStore();
+}
+
 
 // CRITICAL: Global error handler to catch acc[key2] errors before they crash the app
 if (typeof window !== 'undefined') {
