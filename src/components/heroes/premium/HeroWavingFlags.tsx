@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
 import { SocialShare } from '@/components/social/SocialShare';
-import HeritageGlobe from '@/components/HeritageGlobe';
+import RealisticGlobe from '@/components/visuals/RealisticGlobe';
 export const HeroWavingFlags = () => {
   const { t, i18n } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -34,18 +34,14 @@ export const HeroWavingFlags = () => {
 
   return (
     // CLS FIX: min-h-screen ensures stable height, no layout shift
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-48 lg:pb-24">
-      {/* Heritage Globe as Background */}
-      <HeritageGlobe asBackground={true} />
-      
-      {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
-
-      <div className="container relative z-10 px-4 mx-auto">
-        {/* Desktop: Two column layout, Mobile: Stacked */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr,380px] gap-8 lg:gap-8 xl:gap-10 items-start max-w-7xl mx-auto">
-          {/* Left Column: Badge + Title + Text + Stats Cards */}
-          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 lg:-mt-4 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
+    <section className="relative min-h-screen flex flex-col lg:flex-row items-center justify-center lg:justify-between overflow-hidden bg-background px-4 lg:px-16 pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-0 lg:pb-0">
+      {/* Left Column: Content */}
+      <div className="relative z-10 w-full lg:w-1/2 max-w-3xl mx-auto lg:mx-0">
+        <div className="container px-4 mx-auto lg:px-0">
+          {/* Desktop: Two column layout, Mobile: Stacked */}
+          <div className="flex flex-col gap-8 lg:gap-8 xl:gap-10">
+            {/* Badge + Title + Text */}
+            <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
             {/* Badge + Title Section */}
             <div className="space-y-5 md:space-y-6 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm">
@@ -73,10 +69,9 @@ export const HeroWavingFlags = () => {
                 </p>
               </div>
               </div>
-            </div>
             
-          {/* Right Column: Photo + Form Card - Separate card with lighter background, positioned above badge on desktop */}
-          <div className={`w-full max-w-[380px] mx-auto lg:mx-0 relative order-2 lg:order-2 lg:-mt-20 ${isRTL ? 'lg:order-1' : ''}`} style={{ perspective: '1000px' }}>
+            {/* Photo + Form Card */}
+            <div className={`w-full max-w-[380px] mx-auto lg:mx-0 relative ${isRTL ? '' : ''}`} style={{ perspective: '1000px' }}>
             <div className="glass-card rounded-2xl border border-primary/10 backdrop-blur-sm shadow-lg overflow-hidden">
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
                 {/* Front - Photo + Form */}
@@ -176,25 +171,28 @@ export const HeroWavingFlags = () => {
         </div>
       </div>
 
-        {/* Stats Cards - Full width below form bottom edge on desktop, same size as BenefitCard on mobile */}
-        <div className="mt-12 md:mt-16 lg:mt-32 order-3 lg:order-none">
+          </div>
+        </div>
+
+        {/* Stats Cards - Below content */}
+        <div className="mt-12 md:mt-16 lg:mt-8">
           <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-[280px] sm:max-w-7xl mx-auto px-4 sm:px-0 items-center sm:items-stretch">
-          {features.map((feature, index) => {
-            const FeatureIcon = feature.icon;
-            return (
-              <div 
-                key={index}
+            {features.map((feature, index) => {
+              const FeatureIcon = feature.icon;
+              return (
+                <div 
+                  key={index}
                   className="glass-card hover-glow rounded-lg text-center p-6 backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-transform transition-shadow duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-primary/20 light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background w-full max-w-[280px] sm:max-w-none h-[180px] md:h-[200px] sm:h-auto flex items-center justify-center"
                   tabIndex={0}
-              >
-                <div className="w-full h-full flex flex-col items-center justify-center gap-3">
+                >
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-3">
                     <FeatureIcon className="w-6 h-6 md:w-7 md:h-7 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
                     <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:bg-clip-text light:text-transparent light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
                     <p className="text-sm md:text-base font-normal bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
           </div>
         </div>
         
@@ -206,6 +204,11 @@ export const HeroWavingFlags = () => {
             variant="minimal"
           />
         </div>
+      </div>
+
+      {/* Right Column: Full-Screen Globe */}
+      <div className="hidden lg:flex relative w-full lg:w-1/2 h-screen items-center justify-center">
+        <RealisticGlobe />
       </div>
     </section>
   );
