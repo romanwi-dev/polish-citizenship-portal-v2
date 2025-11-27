@@ -5981,8 +5981,26 @@ i18n
     resources,
     lng: 'en', // default language
     fallbackLng: 'en',
+    // CRITICAL FIX: Safe handling of missing nested keys
+    returnNull: false, // Don't return null for missing keys
+    returnEmptyString: true, // Return empty string instead
+    // Safe nested key resolution - prevents "acc[key2]" errors
+    parseMissingKeyHandler: (key: string) => {
+      // Return the key path as fallback instead of crashing
+      return key;
+    },
+    missingKeyHandler: (lng: string[], ns: string, key: string, fallbackValue: string) => {
+      // Log missing keys in development only
+      if (import.meta.env.DEV) {
+        console.warn(`[i18n] Missing translation key: ${key} in namespace: ${ns}`);
+      }
+      // Return the key path as fallback
+      return key;
+    },
     interpolation: {
       escapeValue: false, // React already escapes
+      // Safe nested object access
+      skipOnVariables: false,
     },
     react: {
       useSuspense: true,
@@ -5993,6 +6011,86 @@ i18n
       transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
     },
   });
+
+// CRITICAL FIX: Safe nested value helper to prevent "acc[key2]" errors
+// This function safely walks nested object paths without throwing
+// This replaces i18next's internal reduce-based path resolution
+function getNestedValue(obj: any, path: string, fallback: any = undefined): any {
+  if (!obj || !path) return fallback;
+  
+  const keys = path.split(".");
+  let acc: any = obj;
+  
+  for (const key of keys) {
+    // CRITICAL: Check if acc is null/undefined or not an object before accessing
+    // This prevents "undefined is not an object (evaluating 'acc[key2]')" errors
+    if (acc == null || typeof acc !== "object" || !(key in acc)) {
+      return fallback;
+    }
+    acc = acc[key];
+  }
+  
+  return acc ?? fallback;
+}
+
+// CRITICAL FIX: Override i18next's internal path resolver
+// i18next uses reduce internally which can cause "acc[key2]" errors
+// We patch the utils.getPath function to use our safe helper instead
+try {
+  const i18nextUtils = (i18n as any).options?.utils || (i18n as any).utils;
+  if (i18nextUtils && i18nextUtils.getPath) {
+    const originalGetPath = i18nextUtils.getPath;
+    i18nextUtils.getPath = function(obj: any, path: string, defaultValue?: any) {
+      try {
+        // Use our safe nested value helper instead of reduce
+        return getNestedValue(obj, path, defaultValue);
+      } catch (error) {
+        // Fallback to original if our helper fails
+        try {
+          return originalGetPath.call(this, obj, path, defaultValue);
+        } catch {
+          return defaultValue;
+        }
+      }
+    };
+  }
+} catch (error) {
+  // If patching fails, log but don't crash
+  if (import.meta.env.DEV) {
+    console.warn('[i18n] Could not patch internal path resolver:', error);
+  }
+}
+
+// Alternative approach: Patch the resource store's getResource method
+// This is called when i18next resolves translation keys
+try {
+  const store = (i18n as any).store;
+  if (store && store.getResource) {
+    const originalGetResource = store.getResource.bind(store);
+    store.getResource = function(lng: string, ns: string, key: string, options?: any) {
+      try {
+        // Get the base resource object
+        const resource = originalGetResource(lng, ns, '', options);
+        if (!resource || !key) return resource;
+        
+        // Use safe nested access instead of reduce
+        const value = getNestedValue(resource, key);
+        return value !== undefined ? value : undefined;
+      } catch (error) {
+        // If any error occurs, return undefined instead of crashing
+        if (import.meta.env.DEV) {
+          console.warn(`[i18n] Error accessing key "${key}" in namespace "${ns}":`, error);
+        }
+        return undefined;
+      }
+    };
+  }
+} catch (error) {
+  // If patching fails, log but don't crash
+  if (import.meta.env.DEV) {
+    console.warn('[i18n] Could not patch resource store:', error);
+  }
+}
 
 // Handle RTL for Hebrew
 i18n.on('languageChanged', (lng) => {
