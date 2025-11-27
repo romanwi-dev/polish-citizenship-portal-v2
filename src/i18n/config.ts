@@ -6132,57 +6132,153 @@ function getNestedValue(obj: any, path: string, fallback: any = undefined): any 
 function patchI18nextStore(): void {
   try {
     const store = (i18n as any).store;
-    if (!store) return;
+    if (!store) {
+      if (import.meta.env.DEV) {
+        console.warn('[i18n] Store not available yet for patching');
+      }
+      return;
+    }
     
     // Patch store.utils.getPath - this is the core method that uses reduce
     if (store.utils?.getPath && typeof store.utils.getPath === 'function') {
-      const originalGetPath = store.utils.getPath.bind(store.utils);
-      store.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
-        try {
-          // Use our safe nested value helper instead of i18next's unsafe reduce pattern
-          return getNestedValue(obj, path, defaultValue);
-        } catch {
+      // Only patch if not already patched
+      if (!store.utils.getPath._safePatched) {
+        const originalGetPath = store.utils.getPath.bind(store.utils);
+        store.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
           try {
-            // Fallback to original if our helper fails
-            return originalGetPath.call(this, obj, path, defaultValue);
-          } catch {
-            // Ultimate fallback: return defaultValue
-            return defaultValue;
+            // Use our safe nested value helper instead of i18next's unsafe reduce pattern
+            return getNestedValue(obj, path, defaultValue);
+          } catch (error: any) {
+            // If error is the acc[key2] error, return defaultValue
+            if (error?.message?.includes('acc[key2]') || 
+                error?.message?.includes('undefined is not an object')) {
+              return defaultValue;
+            }
+            try {
+              // Fallback to original if our helper fails
+              return originalGetPath.call(this, obj, path, defaultValue);
+            } catch {
+              // Ultimate fallback: return defaultValue
+              return defaultValue;
+            }
           }
+        };
+        store.utils.getPath._safePatched = true;
+        if (import.meta.env.DEV) {
+          console.log('[i18n] ✅ Patched store.utils.getPath');
         }
-      };
+      }
     }
     
     // Also patch getResource as a safety measure
     if (store.getResource && typeof store.getResource === 'function') {
-      const originalGetResource = store.getResource.bind(store);
-      store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
-        try {
-          const languages = Array.isArray(lng) ? lng : [lng];
-          const namespaces = Array.isArray(ns) ? ns : [ns];
-          
-          for (const lang of languages) {
-            for (const namespace of namespaces) {
-              try {
-                const resource = originalGetResource(lang, namespace, '', options);
-                if (!resource || !key) return resource;
-                // Use safe nested access instead of i18next's unsafe reduce
-                const value = getNestedValue(resource, key);
-                if (value !== undefined) return value;
-              } catch {
-                continue;
+      if (!store.getResource._safePatched) {
+        const originalGetResource = store.getResource.bind(store);
+        store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
+          try {
+            const languages = Array.isArray(lng) ? lng : [lng];
+            const namespaces = Array.isArray(ns) ? ns : [ns];
+            
+            for (const lang of languages) {
+              for (const namespace of namespaces) {
+                try {
+                  const resource = originalGetResource(lang, namespace, '', options);
+                  if (!resource || !key) return resource;
+                  // Use safe nested access instead of i18next's unsafe reduce
+                  const value = getNestedValue(resource, key);
+                  if (value !== undefined) return value;
+                } catch (error: any) {
+                  // If acc[key2] error, continue to next language/namespace
+                  if (error?.message?.includes('acc[key2]') || 
+                      error?.message?.includes('undefined is not an object')) {
+                    continue;
+                  }
+                  continue;
+                }
               }
             }
+            return undefined;
+          } catch {
+            return undefined;
           }
-          return undefined;
-        } catch {
-          return undefined;
+        };
+        store.getResource._safePatched = true;
+        if (import.meta.env.DEV) {
+          console.log('[i18n] ✅ Patched store.getResource');
+        }
+      }
+    }
+    
+    // Patch the main translation function (t) to catch errors
+    if (store.t && typeof store.t === 'function' && !store.t._safePatched) {
+      const originalT = store.t.bind(store);
+      store.t = function(key: string, options?: any) {
+        try {
+          return originalT.call(this, key, options);
+        } catch (error: any) {
+          // If acc[key2] error, return the key as fallback
+          if (error?.message?.includes('acc[key2]') || 
+              error?.message?.includes('undefined is not an object') ||
+              error?.stack?.includes('acc[key2]')) {
+            if (import.meta.env.DEV) {
+              console.warn(`[i18n] Safe fallback for key "${key}":`, error.message);
+            }
+            return key;
+          }
+          throw error;
         }
       };
+      store.t._safePatched = true;
+      if (import.meta.env.DEV) {
+        console.log('[i18n] ✅ Patched store.t');
+      }
     }
   } catch (error) {
-    // Silently fail - resources are already safe via createSafeResources
+    if (import.meta.env.DEV) {
+      console.warn('[i18n] Patch failed:', error);
+    }
   }
+}
+
+// CRITICAL: Global error handler to catch acc[key2] errors before they crash the app
+if (typeof window !== 'undefined') {
+  const originalErrorHandler = window.onerror;
+  window.onerror = function(message, source, lineno, colno, error) {
+    // Check if this is the acc[key2] error
+    const isAccKey2Error = 
+      (typeof message === 'string' && (message.includes('acc[key2]') || message.includes('undefined is not an object'))) ||
+      (error?.message?.includes('acc[key2]') || error?.message?.includes('undefined is not an object')) ||
+      (error?.stack?.includes('acc[key2]'));
+    
+    if (isAccKey2Error) {
+      // Suppress the error to prevent app crash
+      if (import.meta.env.DEV) {
+        console.warn('[i18n] Caught and suppressed acc[key2] error:', error?.stack || message);
+      }
+      return true; // Prevent default error handling
+    }
+    
+    // Call original handler for other errors
+    if (originalErrorHandler) {
+      return originalErrorHandler.call(this, message, source, lineno, colno, error);
+    }
+    return false;
+  };
+  
+  // Also catch unhandled promise rejections
+  window.addEventListener('unhandledrejection', (event) => {
+    const reason = event.reason;
+    const isAccKey2Error = 
+      (reason?.message?.includes('acc[key2]') || reason?.message?.includes('undefined is not an object')) ||
+      (reason?.stack?.includes('acc[key2]'));
+    
+    if (isAccKey2Error) {
+      event.preventDefault();
+      if (import.meta.env.DEV) {
+        console.warn('[i18n] Caught and suppressed acc[key2] promise rejection');
+      }
+    }
+  });
 }
 
 // Patch immediately (for synchronous init cases)
@@ -6196,8 +6292,11 @@ i18n.on('initialized', () => {
 // Also patch after delays in case store initializes asynchronously
 if (typeof window !== 'undefined' && typeof setTimeout !== 'undefined') {
   setTimeout(() => patchI18nextStore(), 0);
+  setTimeout(() => patchI18nextStore(), 50);
   setTimeout(() => patchI18nextStore(), 100);
+  setTimeout(() => patchI18nextStore(), 200);
   setTimeout(() => patchI18nextStore(), 500);
+  setTimeout(() => patchI18nextStore(), 1000);
 }
 
 // CRITICAL FIX: Add post-processor to catch any remaining translation errors
