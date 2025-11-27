@@ -239,7 +239,7 @@ const createEarthTexture = () => {
 };
 
 // --- Ultra High Quality Earth Globe ---
-const EarthGlobe = () => {
+const EarthGlobe = ({ targetCountry }: { targetCountry?: string }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   
   // Create ultra-high quality textures
@@ -302,10 +302,33 @@ const EarthGlobe = () => {
     return texture;
   }, []);
   
+  // Calculate base rotation offset for target country
+  const baseRotationOffset = useMemo(() => {
+    if (targetCountry === 'PL') {
+      // Poland is at 20°E longitude
+      // In equirectangular projection, 0° longitude is typically at the center (50% of texture width)
+      // The texture shows Europe at ~48% width, which suggests:
+      // - Greenwich (0°) is at approximately 42-43% of texture width
+      // - Poland (20°E) would be at approximately 48% + (20/360)*100% = 53.56%
+      // To show Poland, we need to rotate the globe so that 20°E faces the camera
+      // Since the texture wraps, we can rotate either direction
+      // Using -1.4 radians (~-80°) to rotate the globe to show Europe/Poland
+      // This accounts for the texture offset and ensures Poland is visible
+      return -1.4;
+    }
+    return 0;
+  }, [targetCountry]);
+  
   useFrame((state) => {
     if (meshRef.current) {
-      // Very slow, smooth rotation
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.05;
+      if (targetCountry === 'PL') {
+        // For Poland, keep it static with just the base offset (no continuous rotation)
+        // This ensures Poland stays visible
+        meshRef.current.rotation.y = baseRotationOffset;
+      } else {
+        // For other cases, use slow continuous rotation
+        meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.05 + baseRotationOffset;
+      }
     }
   });
   
@@ -597,19 +620,6 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
   const groupRef = useRef<THREE.Group>(null);
   const innerGroupRef = useRef<THREE.Group>(null);
   
-  // Calculate base rotation to show target country (Poland at 20°E)
-  const baseRotationY = useMemo(() => {
-    if (targetCountry === 'PL') {
-      // Poland is at 20°E longitude. The globe texture typically has 0° at the front.
-      // To show Poland (20°E), we need to rotate the globe counter-clockwise (negative Y rotation).
-      // However, if the texture is oriented with 0° at a different position, we may need to adjust.
-      // Trying a significant rotation: -2.0 radians ≈ -115° to ensure Poland's side is visible
-      // This should rotate the globe enough to show Europe/Poland instead of the Pacific/dark side
-      return -2.0;
-    }
-    return 0;
-  }, [targetCountry]);
-  
   useFrame((state) => {
     if (!groupRef.current || !innerGroupRef.current) return;
     const time = state.clock.getElapsedTime();
@@ -619,12 +629,13 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
     
     // Smooth floating motion - keep target country visible
     groupRef.current.rotation.x = 0.15 + Math.sin(time * waveSpeed) * 0.05;
-    // Keep Poland visible - minimal Y rotation animation when target is PL
-    if (targetCountry === 'PL') {
-      // Keep Poland in view with very minimal oscillation
-      groupRef.current.rotation.y = baseRotationY + Math.sin(time * waveSpeed * 0.2) * 0.01;
-    } else {
+    // Y rotation is now handled by EarthGlobe component when targetCountry is set
+    // Only apply group rotation when no target country (for general rotation)
+    if (targetCountry !== 'PL') {
       groupRef.current.rotation.y = time * 0.06 + Math.sin(time * waveSpeed * 0.6) * 0.05;
+    } else {
+      // For Poland, keep Y rotation minimal to avoid conflicting with EarthGlobe rotation
+      groupRef.current.rotation.y = Math.sin(time * waveSpeed * 0.2) * 0.01;
     }
     groupRef.current.rotation.z = Math.sin(time * waveSpeed * 0.7) * 0.02;
     
@@ -716,7 +727,7 @@ const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, c
             <group rotation={initialRotation || [0, 0, 0]}>
               <WavingGlobeGroup targetCountry={country}>
                 <Atmosphere />
-                <EarthGlobe />
+                <EarthGlobe targetCountry={country} />
                 <MigrationLines targetCountry={country} />
               </WavingGlobeGroup>
             </group>
@@ -768,7 +779,7 @@ const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, c
             
             <group rotation={[0.3, 0, 0]}> 
               <Atmosphere />
-              <EarthGlobe />
+              <EarthGlobe targetCountry={country} />
               <MigrationLines targetCountry={country} />
             </group>
             
