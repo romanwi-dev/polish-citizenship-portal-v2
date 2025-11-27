@@ -98,7 +98,7 @@ const Login = () => {
   return (
     <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
       {/* Heritage Globe as Background - Positioned to show Poland (20°E, 52°N) */}
-      <HeritageGlobe asBackground={true} country="PL" initialRotation={[0.15, -0.6, 0]} />
+      <HeritageGlobe asBackground={true} country="PL" />
       
       {/* Gradient overlay for better text readability - Same as homepage */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
@@ -269,7 +269,7 @@ const Login = () => {
         <div className="mt-12 md:mt-16 text-center">
           <a
             href="/"
-            className="text-sm md:text-base text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
+            className="text-sm md:text-base text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors no-underline"
             onClick={(e) => {
               e.preventDefault();
               navigate('/');

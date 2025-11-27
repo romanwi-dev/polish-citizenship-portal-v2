@@ -600,8 +600,12 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
   // Calculate base rotation to show target country (Poland at 20°E)
   const baseRotationY = useMemo(() => {
     if (targetCountry === 'PL') {
-      // Poland is at 20°E, rotate to show it: -20° in radians ≈ -0.35
-      return -0.35;
+      // Poland is at 20°E longitude. The globe texture typically has 0° at the front.
+      // To show Poland (20°E), we need to rotate the globe counter-clockwise (negative Y rotation).
+      // However, if the texture is oriented with 0° at a different position, we may need to adjust.
+      // Trying a significant rotation: -2.0 radians ≈ -115° to ensure Poland's side is visible
+      // This should rotate the globe enough to show Europe/Poland instead of the Pacific/dark side
+      return -2.0;
     }
     return 0;
   }, [targetCountry]);
@@ -614,9 +618,14 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
     const floatSpeed = 0.35;
     
     // Smooth floating motion - keep target country visible
-    groupRef.current.rotation.x = 0.2 + Math.sin(time * waveSpeed) * 0.08;
-    // Add base rotation for target country, then add subtle animation
-    groupRef.current.rotation.y = baseRotationY + Math.sin(time * waveSpeed * 0.6) * 0.05;
+    groupRef.current.rotation.x = 0.15 + Math.sin(time * waveSpeed) * 0.05;
+    // Keep Poland visible - minimal Y rotation animation when target is PL
+    if (targetCountry === 'PL') {
+      // Keep Poland in view with very minimal oscillation
+      groupRef.current.rotation.y = baseRotationY + Math.sin(time * waveSpeed * 0.2) * 0.01;
+    } else {
+      groupRef.current.rotation.y = time * 0.06 + Math.sin(time * waveSpeed * 0.6) * 0.05;
+    }
     groupRef.current.rotation.z = Math.sin(time * waveSpeed * 0.7) * 0.02;
     
     // Gentle floating
