@@ -58,7 +58,7 @@ export default function ClientOnboardingSection() {
       link: "#contact",
       detailedInfo: t('onboarding.step1DetailedInfo'),
       keyPoints: t('onboarding.step1KeyPoints', { returnObjects: true }) as string[],
-      image: "/steps/step1-contact-v2.png"
+      image: "/steps/step1-first-contact.png"
     },
     {
       number: t('onboarding.step2Number'),
@@ -70,7 +70,7 @@ export default function ClientOnboardingSection() {
       link: "https://polishcitizenship.typeform.com/to/PS5ecU",
       detailedInfo: t('onboarding.step2DetailedInfo'),
       keyPoints: t('onboarding.step2KeyPoints', { returnObjects: true }) as string[],
-      image: "/steps/step2-eligibility-v2.png"
+      image: "/steps/step2-eligibility-check.png"
     },
     {
       number: t('onboarding.step3Number'),
@@ -82,7 +82,7 @@ export default function ClientOnboardingSection() {
       link: "#",
       detailedInfo: t('onboarding.step3DetailedInfo'),
       keyPoints: t('onboarding.step3KeyPoints', { returnObjects: true }) as string[],
-      image: "/steps/step3-documents-v2.png"
+      image: "/steps/step3-document-examination.png"
     },
     {
       number: t('onboarding.step4Number'),
@@ -94,7 +94,7 @@ export default function ClientOnboardingSection() {
       link: "#contact",
       detailedInfo: t('onboarding.step4DetailedInfo'),
       keyPoints: t('onboarding.step4KeyPoints', { returnObjects: true }) as string[],
-      image: "/steps/step4-assessment-v2.png"
+      image: "/steps/step4-case-assessment.png"
     },
     {
       number: t('onboarding.step5Number'),
@@ -106,7 +106,7 @@ export default function ClientOnboardingSection() {
       link: "#",
       detailedInfo: t('onboarding.step5DetailedInfo'),
       keyPoints: t('onboarding.step5KeyPoints', { returnObjects: true }) as string[],
-      image: "/steps/step5-send-v2.png"
+      image: "/steps/step5-send-documents.png"
     }
   ];
 
