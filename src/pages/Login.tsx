@@ -98,8 +98,8 @@ const Login = () => {
   return (
     <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
       <GlobalBackground />
-      {/* Heritage Globe as Background - Wider view showing Poland */}
-      <HeritageGlobe asBackground={true} country="PL" cameraFov={70} initialRotation={[0.2, -0.5, 0]} />
+      {/* Heritage Globe as Background - Bigger view showing Poland */}
+      <HeritageGlobe asBackground={true} country="PL" cameraFov={40} cameraPosition={[0, 0, 4.5]} initialRotation={[0.2, -0.5, 0]} />
       
       {/* Gradient overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
@@ -219,6 +219,14 @@ const Login = () => {
                 <Button 
                   type="submit" 
                   className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30"
+                  style={{ 
+                    height: '64px',
+                    minHeight: '64px',
+                    maxHeight: '64px',
+                    paddingTop: '0',
+                    paddingBottom: '0',
+                    lineHeight: '64px'
+                  }}
                   disabled={loading}
                 >
                   {loading ? (
@@ -242,6 +250,14 @@ const Login = () => {
                   type="button"
                   variant="outline"
                   className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30"
+                  style={{ 
+                    height: '64px',
+                    minHeight: '64px',
+                    maxHeight: '64px',
+                    paddingTop: '0',
+                    paddingBottom: '0',
+                    lineHeight: '64px'
+                  }}
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">

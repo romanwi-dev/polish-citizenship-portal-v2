@@ -634,10 +634,11 @@ interface GlobeProps {
   title?: string;
   asBackground?: boolean;
   cameraFov?: number;
+  cameraPosition?: [number, number, number];
   initialRotation?: [number, number, number];
 }
 
-const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, initialRotation }: GlobeProps) => {
+const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, cameraPosition = [0, 0, 6], initialRotation }: GlobeProps) => {
   const displayTitle = title || (country && COORDINATES[country] ? `${COORDINATES[country].name} to Poland` : "Global Reach");
 
   // Background version - no text, full height, behind content
@@ -650,7 +651,7 @@ const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, i
           </div>
         }>
           <Canvas 
-            camera={{ position: [0, 0, 6], fov: cameraFov }}
+            camera={{ position: cameraPosition, fov: cameraFov }}
             gl={{ 
               antialias: true, 
               alpha: true,
