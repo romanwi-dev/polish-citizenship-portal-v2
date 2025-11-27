@@ -96,10 +96,16 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-between px-4 lg:px-16 pt-16 lg:pt-20 pb-8 gap-8">
+    <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
       <GlobalBackground />
-      {/* Left Column: Login Content */}
-      <div className="w-full lg:w-1/2 max-w-lg mx-auto lg:mx-0 relative z-10">
+      {/* Heritage Globe as Background */}
+      <HeritageGlobe asBackground={true} />
+      
+      {/* Gradient overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
+      
+      {/* Login Content */}
+      <div className="w-full max-w-lg mx-auto relative z-10">
         {/* Header + Subtitle */}
         <div className="space-y-2 mb-6 text-center">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text leading-tight whitespace-nowrap">
@@ -244,13 +250,6 @@ const Login = () => {
                 </Button>
               </div>
             </form>
-        </div>
-      </div>
-      
-      {/* Right Column: 3D Globe (Desktop Only) */}
-      <div className="hidden lg:flex lg:w-1/2 items-center justify-center relative z-10">
-        <div className="w-full h-[600px]">
-          <HeritageGlobe />
         </div>
       </div>
     </div>
