@@ -98,8 +98,8 @@ const Login = () => {
   return (
     <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
       <GlobalBackground />
-      {/* Heritage Globe as Background - Showing Poland */}
-      <HeritageGlobe asBackground={true} country="PL" cameraFov={55} cameraPosition={[0, 0, 5.5]} initialRotation={[0.15, -0.3, 0]} />
+      {/* Heritage Globe as Background - Same as homepage hero */}
+      <HeritageGlobe asBackground={true} />
       
       {/* Gradient overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
