@@ -633,9 +633,11 @@ interface GlobeProps {
   country?: string;
   title?: string;
   asBackground?: boolean;
+  cameraFov?: number;
+  initialRotation?: [number, number, number];
 }
 
-const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => {
+const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, initialRotation }: GlobeProps) => {
   const displayTitle = title || (country && COORDINATES[country] ? `${COORDINATES[country].name} to Poland` : "Global Reach");
 
   // Background version - no text, full height, behind content
@@ -648,7 +650,7 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
           </div>
         }>
           <Canvas 
-            camera={{ position: [0, 0, 6], fov: 50 }}
+            camera={{ position: [0, 0, 6], fov: cameraFov }}
             gl={{ 
               antialias: true, 
               alpha: true,
@@ -691,11 +693,13 @@ const HeritageGlobe = ({ country, title, asBackground = false }: GlobeProps) => 
             {/* Starfield background */}
             <Stars radius={100} depth={60} count={2000} factor={6} fade speed={0.5} />
             
-            <WavingGlobeGroup targetCountry={country}>
-              <Atmosphere />
-              <EarthGlobe />
-              <MigrationLines targetCountry={country} />
-            </WavingGlobeGroup>
+            <group rotation={initialRotation || [0, 0, 0]}>
+              <WavingGlobeGroup targetCountry={country}>
+                <Atmosphere />
+                <EarthGlobe />
+                <MigrationLines targetCountry={country} />
+              </WavingGlobeGroup>
+            </group>
             
             <OrbitControls 
               enableZoom={false} 

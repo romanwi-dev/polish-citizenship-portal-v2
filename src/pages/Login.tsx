@@ -98,8 +98,8 @@ const Login = () => {
   return (
     <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
       <GlobalBackground />
-      {/* Heritage Globe as Background */}
-      <HeritageGlobe asBackground={true} />
+      {/* Heritage Globe as Background - Wider view showing Poland */}
+      <HeritageGlobe asBackground={true} country="PL" cameraFov={70} initialRotation={[0.2, -0.5, 0]} />
       
       {/* Gradient overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
@@ -218,7 +218,7 @@ const Login = () => {
               <div className="space-y-4">
                 <Button 
                   type="submit" 
-                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30"
                   disabled={loading}
                 >
                   {loading ? (
@@ -241,7 +241,7 @@ const Login = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30"
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
