@@ -95,15 +95,15 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative">
+    <div className="min-h-screen overflow-x-hidden relative flex items-start justify-center pt-12 md:pt-16 lg:pt-24">
       <GlobalBackground />
-      <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
+      <div className="w-full max-w-md px-4 md:px-6 lg:px-8 relative z-10 flex flex-col items-center">
         {/* Header */}
-        <div className="animate-fade-in-up mb-6">
-          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight break-words mb-4">
+        <div className="animate-fade-in-up mb-6 w-full">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight break-words mb-3">
             {isSignUp ? "Create Account" : "Welcome Back"}
           </h2>
-          <div className="flex justify-center">
+          <div className="flex justify-center mb-4">
             <Button
               onClick={toggleFontSize}
               variant="ghost"
@@ -117,13 +117,13 @@ const Login = () => {
         </div>
 
         {/* Form */}
-        <div className="animate-scale-in w-full max-w-3xl">
-          <div className="p-8 md:p-12">
-            <p className="text-center text-lg text-muted-foreground mb-8">
+        <div className="animate-scale-in w-full">
+          <div className="p-8 lg:p-10 space-y-6">
+            <p className="text-center text-base md:text-lg text-muted-foreground mb-6">
               {isSignUp ? "Create a new account to access the case management system" : "Sign in to access your case management system"}
             </p>
             
-            <form onSubmit={handleAuth} className="space-y-6">
+            <form onSubmit={handleAuth} className="space-y-5">
               <div className="space-y-4">
                 <Label 
                   htmlFor="email" 
