@@ -31,11 +31,17 @@ export class RouteErrorBoundary extends Component<Props, State> {
       error?.stack?.includes('acc[key2]') ||
       error?.stack?.includes('currentInstance');
     
-    if (isI18nError) {
+    // CRITICAL: Suppress Three.js animation mixer errors
+    const isMixerError = 
+      error?.message?.includes('mixers[i]') ||
+      error?.message?.includes('mixers') && error?.message?.includes('is not a function') ||
+      error?.stack?.includes('mixers');
+    
+    if (isI18nError || isMixerError) {
       if (import.meta.env.DEV) {
-        console.warn('[RouteErrorBoundary] Suppressed i18next error:', error.message);
+        console.warn('[RouteErrorBoundary] Suppressed error:', error.message);
       }
-      // Don't set hasError for i18next errors - route continues normally
+      // Don't set hasError for these errors - route continues normally
       return { hasError: false, error: null };
     }
     
@@ -51,11 +57,17 @@ export class RouteErrorBoundary extends Component<Props, State> {
       error?.stack?.includes('acc[key2]') ||
       error?.stack?.includes('currentInstance');
     
-    if (isI18nError) {
+    // CRITICAL: Suppress Three.js animation mixer errors
+    const isMixerError = 
+      error?.message?.includes('mixers[i]') ||
+      error?.message?.includes('mixers') && error?.message?.includes('is not a function') ||
+      error?.stack?.includes('mixers');
+    
+    if (isI18nError || isMixerError) {
       if (import.meta.env.DEV) {
-        console.warn('[RouteErrorBoundary] Suppressed i18next error:', error.message);
+        console.warn('[RouteErrorBoundary] Suppressed error:', error.message);
       }
-      // Don't process i18next errors - just return
+      // Don't process these errors - just return
       return;
     }
     

@@ -2,6 +2,7 @@
 import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
 import { StaticHeritageLightTheme } from "@/components/heroes/StaticHeritageLightTheme";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 
@@ -75,7 +76,9 @@ export const GlobalBackground = () => {
     <div className="fixed inset-0 z-0">
       {show3D ? (
         <Suspense fallback={<StaticHeritagePlaceholder />}>
-          <StaticHeritage />
+          <ErrorBoundary fallback={<StaticHeritagePlaceholder />}>
+            <StaticHeritage />
+          </ErrorBoundary>
         </Suspense>
       ) : (
         <StaticHeritagePlaceholder />

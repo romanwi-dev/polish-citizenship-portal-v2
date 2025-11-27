@@ -6391,7 +6391,7 @@ if (typeof window !== 'undefined') {
 if (typeof window !== 'undefined') {
   const originalErrorHandler = window.onerror;
   window.onerror = function(message, source, lineno, colno, error) {
-    // Check if this is an i18next-related error that we should suppress
+    // Check if this is an error that we should suppress
     const isI18nError = 
       (typeof message === 'string' && (
         message.includes('acc[key2]') || 
@@ -6408,10 +6408,20 @@ if (typeof window !== 'undefined') {
       (error?.stack?.includes('acc[key2]') || 
        error?.stack?.includes('currentInstance'));
     
-    if (isI18nError) {
+    // CRITICAL: Suppress Three.js animation mixer errors
+    const isMixerError = 
+      (typeof message === 'string' && (
+        message.includes('mixers[i]') ||
+        message.includes('mixers') && message.includes('is not a function')
+      )) ||
+      (error?.message?.includes('mixers[i]') ||
+       (error?.message?.includes('mixers') && error?.message?.includes('is not a function'))) ||
+      error?.stack?.includes('mixers');
+    
+    if (isI18nError || isMixerError) {
       // Suppress the error to prevent app crash
       if (import.meta.env.DEV) {
-        console.warn('[i18n] Caught and suppressed i18next error:', error?.message || message);
+        console.warn('[i18n] Caught and suppressed error:', error?.message || message);
       }
       return true; // Prevent default error handling - app continues
     }
@@ -6436,10 +6446,16 @@ if (typeof window !== 'undefined') {
       (reason?.stack?.includes('acc[key2]') || 
        reason?.stack?.includes('currentInstance'));
     
-    if (isI18nError) {
+    // CRITICAL: Suppress Three.js animation mixer errors
+    const isMixerError = 
+      (reason?.message?.includes('mixers[i]') ||
+       (reason?.message?.includes('mixers') && reason?.message?.includes('is not a function'))) ||
+      reason?.stack?.includes('mixers');
+    
+    if (isI18nError || isMixerError) {
       event.preventDefault(); // Suppress the rejection
       if (import.meta.env.DEV) {
-        console.warn('[i18n] Caught and suppressed i18next promise rejection:', reason?.message);
+        console.warn('[i18n] Caught and suppressed promise rejection:', reason?.message);
       }
       return;
     }
