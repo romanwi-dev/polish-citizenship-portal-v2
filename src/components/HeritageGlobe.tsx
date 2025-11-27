@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere, Stars } from '@react-three/drei';
+import { OrbitControls, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Settings ---
@@ -55,17 +55,17 @@ const createEarthTexture = () => {
       return null;
     }
   
-  // Deep space ocean gradient with realistic color variation
+  // Realistic ocean gradient with depth variation
   const oceanGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  oceanGradient.addColorStop(0, '#050814'); // Polar darkness
-  oceanGradient.addColorStop(0.15, '#0a1220'); 
-  oceanGradient.addColorStop(0.3, '#0f1a2c');
-  oceanGradient.addColorStop(0.4, '#162438'); // Deep ocean
-  oceanGradient.addColorStop(0.5, '#1a2d44');
-  oceanGradient.addColorStop(0.6, '#1a2d44');
-  oceanGradient.addColorStop(0.7, '#162438');
-  oceanGradient.addColorStop(0.85, '#0f1a2c');
-  oceanGradient.addColorStop(1, '#050814');
+  oceanGradient.addColorStop(0, '#1a4d7a'); // Polar ocean (lighter)
+  oceanGradient.addColorStop(0.15, '#2d6a9f'); 
+  oceanGradient.addColorStop(0.3, '#3d7ab8');
+  oceanGradient.addColorStop(0.4, '#2d5a8f'); // Mid-depth ocean
+  oceanGradient.addColorStop(0.5, '#1e4a7a'); // Deep ocean
+  oceanGradient.addColorStop(0.6, '#1e4a7a');
+  oceanGradient.addColorStop(0.7, '#2d5a8f');
+  oceanGradient.addColorStop(0.85, '#3d7ab8');
+  oceanGradient.addColorStop(1, '#1a4d7a'); // Polar ocean
   
   ctx.fillStyle = oceanGradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -88,67 +88,109 @@ const createEarthTexture = () => {
     { x: 0.30, y: 0.18, w: 0.06, h: 0.12, detail: 'low' },
   ];
   
-  // Draw continents with realistic shapes
-  ctx.fillStyle = '#0a1515';
-  ctx.globalAlpha = 0.95;
-  
+  // Draw continents with realistic shapes and terrain colors
   continents.forEach(cont => {
-    // Create more organic shapes with bezier curves
-    ctx.beginPath();
     const x = cont.x * canvas.width;
     const y = cont.y * canvas.height;
     const w = cont.w * canvas.width;
     const h = cont.h * canvas.height;
     
-    // Create irregular continent shape
-    ctx.ellipse(x, y, w * 0.5, h * 0.5, Math.random() * 0.3, 0, Math.PI * 2);
+    // Determine terrain color based on latitude (y position)
+    let baseColor = '#2d5016'; // Default green (temperate)
+    if (y < canvas.height * 0.25 || y > canvas.height * 0.75) {
+      // Polar regions - white/light gray
+      baseColor = '#e8f0f0';
+    } else if (y > canvas.height * 0.55 && y < canvas.height * 0.65) {
+      // Desert regions - tan/brown
+      baseColor = '#8b6f47';
+    } else if (y < canvas.height * 0.35) {
+      // Northern temperate - darker green
+      baseColor = '#1e3d0f';
+    } else if (y > canvas.height * 0.45) {
+      // Tropical/southern - vibrant green
+      baseColor = '#3d6b1f';
+    }
+    
+    // Create more organic continent shape using bezier curves
+    ctx.beginPath();
+    const centerX = x;
+    const centerY = y;
+    const radiusX = w * 0.5;
+    const radiusY = h * 0.5;
+    
+    // Create irregular shape with bezier curves
+    ctx.moveTo(centerX + radiusX * 0.8, centerY);
+    ctx.bezierCurveTo(
+      centerX + radiusX, centerY - radiusY * 0.3,
+      centerX + radiusX * 0.6, centerY - radiusY * 0.8,
+      centerX, centerY - radiusY * 0.9
+    );
+    ctx.bezierCurveTo(
+      centerX - radiusX * 0.6, centerY - radiusY * 0.8,
+      centerX - radiusX, centerY - radiusY * 0.3,
+      centerX - radiusX * 0.8, centerY
+    );
+    ctx.bezierCurveTo(
+      centerX - radiusX, centerY + radiusY * 0.3,
+      centerX - radiusX * 0.6, centerY + radiusY * 0.8,
+      centerX, centerY + radiusY * 0.9
+    );
+    ctx.bezierCurveTo(
+      centerX + radiusX * 0.6, centerY + radiusY * 0.8,
+      centerX + radiusX, centerY + radiusY * 0.3,
+      centerX + radiusX * 0.8, centerY
+    );
+    ctx.closePath();
+    
+    // Fill with base terrain color
+    ctx.fillStyle = baseColor;
+    ctx.globalAlpha = 0.95;
     ctx.fill();
     
-    // Add texture variation within continents
+    // Add terrain variation (mountains, forests, etc.)
     if (cont.detail === 'high') {
-      for (let i = 0; i < 15; i++) {
-        ctx.fillStyle = `rgba(15, 25, 25, ${0.3 + Math.random() * 0.4})`;
+      for (let i = 0; i < 20; i++) {
+        const variationX = x + (Math.random() - 0.5) * w;
+        const variationY = y + (Math.random() - 0.5) * h;
+        const variationSize = Math.random() * 40 + 15;
+        
+        // Mountains (darker)
+        if (Math.random() > 0.7) {
+          ctx.fillStyle = `rgba(60, 50, 40, ${0.4 + Math.random() * 0.3})`;
+        } else {
+          // Vegetation variation
+          ctx.fillStyle = `rgba(45, 80, 30, ${0.2 + Math.random() * 0.3})`;
+        }
+        
         ctx.beginPath();
-        ctx.arc(
-          x + (Math.random() - 0.5) * w,
-          y + (Math.random() - 0.5) * h,
-          Math.random() * 30 + 10,
-          0, Math.PI * 2
-        );
+        ctx.arc(variationX, variationY, variationSize, 0, Math.PI * 2);
         ctx.fill();
       }
     }
   });
   
-  // Ultra-realistic city lights with glow effects
-  ctx.globalAlpha = 1;
+  // Subtle city lights (much reduced for natural terrain focus)
+  ctx.globalAlpha = 0.3; // Reduced opacity for subtlety
   
-  // Major metropolitan areas with dense lighting
-  const megaCities = [
-    { x: 0.74, y: 0.34, intensity: 1.0, size: 25, color: '#ffffff' }, // NYC
-    { x: 0.50, y: 0.40, intensity: 1.0, size: 22, color: '#ffffff' }, // London
-    { x: 0.51, y: 0.39, intensity: 0.9, size: 20, color: '#ffffff' }, // Paris
-    { x: 0.68, y: 0.31, intensity: 1.0, size: 28, color: '#fffbeb' }, // Beijing
-    { x: 0.64, y: 0.29, intensity: 0.95, size: 26, color: '#fffbeb' }, // India
-    { x: 0.14, y: 0.34, intensity: 0.85, size: 18, color: '#ffffff' }, // LA
-    { x: 0.80, y: 0.61, intensity: 0.7, size: 15, color: '#ffffff' }, // Sydney
-    { x: 0.55, y: 0.38, intensity: 0.8, size: 16, color: '#ffffff' }, // Berlin
-    { x: 0.29, y: 0.45, intensity: 0.75, size: 14, color: '#ffffff' }, // São Paulo
-    { x: 0.57, y: 0.14, intensity: 0.9, size: 20, color: '#ffffff' }, // Moscow
-    { x: 0.52, y: 0.51, intensity: 0.8, size: 12, color: '#ffffff' }, // Dubai
+  // Only major cities with very subtle lighting
+  const majorCities = [
+    { x: 0.74, y: 0.34, size: 8 }, // NYC
+    { x: 0.50, y: 0.40, size: 7 }, // London
+    { x: 0.51, y: 0.39, size: 6 }, // Paris
+    { x: 0.68, y: 0.31, size: 9 }, // Beijing
+    { x: 0.48, y: 0.33, size: 5 }, // Warsaw/Poland
   ];
   
-  megaCities.forEach(city => {
-    // Core bright center
+  majorCities.forEach(city => {
+    // Very subtle glow
     const gradient = ctx.createRadialGradient(
       city.x * canvas.width, city.y * canvas.height,
       0,
       city.x * canvas.width, city.y * canvas.height,
       city.size
     );
-    gradient.addColorStop(0, city.color);
-    gradient.addColorStop(0.3, `rgba(255, 255, 255, ${city.intensity * 0.7})`);
-    gradient.addColorStop(0.6, `rgba(255, 255, 200, ${city.intensity * 0.4})`);
+    gradient.addColorStop(0, 'rgba(255, 255, 200, 0.4)');
+    gradient.addColorStop(0.5, 'rgba(255, 255, 200, 0.2)');
     gradient.addColorStop(1, 'transparent');
     
     ctx.fillStyle = gradient;
@@ -159,59 +201,20 @@ const createEarthTexture = () => {
       city.size * 2
     );
     
-    // Dense city lights around center
-    for (let i = 0; i < city.intensity * 200; i++) {
+    // Fewer, smaller city lights
+    for (let i = 0; i < 15; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const distance = Math.random() * city.size * 1.5;
+      const distance = Math.random() * city.size;
       const x = city.x * canvas.width + Math.cos(angle) * distance;
       const y = city.y * canvas.height + Math.sin(angle) * distance;
-      const size = 0.8 + Math.random() * 2.5;
+      const size = 0.5 + Math.random() * 1;
       
-      ctx.fillStyle = `rgba(255, 255, 255, ${0.6 + Math.random() * 0.4})`;
-      ctx.fillRect(x, y, size, size);
-      
-      // Add glow around individual lights
-      if (Math.random() > 0.7) {
-        ctx.fillStyle = `rgba(255, 255, 200, 0.3)`;
-        ctx.beginPath();
-        ctx.arc(x, y, size * 2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-  });
-  
-  // Secondary cities with medium intensity
-  const secondaryCities = [
-    { x: 0.47, y: 0.41, count: 80 }, // Central Europe
-    { x: 0.33, y: 0.46, count: 60 }, // South America
-    { x: 0.58, y: 0.25, count: 90 }, // Eastern Asia
-    { x: 0.43, y: 0.52, count: 50 }, // Middle East
-    { x: 0.53, y: 0.35, count: 70 }, // Eastern Europe
-  ];
-  
-  secondaryCities.forEach(region => {
-    ctx.fillStyle = '#ffffff';
-    ctx.globalAlpha = 0.7;
-    for (let i = 0; i < region.count; i++) {
-      const spread = 0.12;
-      const x = (region.x + (Math.random() - 0.5) * spread) * canvas.width;
-      const y = (region.y + (Math.random() - 0.5) * spread) * canvas.height;
-      const size = 1 + Math.random() * 2;
+      ctx.fillStyle = `rgba(255, 255, 200, ${0.3 + Math.random() * 0.2})`;
       ctx.fillRect(x, y, size, size);
     }
   });
   
-  // Minor city lights scattered across continents
-  ctx.globalAlpha = 0.5;
-  for (let i = 0; i < 800; i++) {
-    const x = Math.random() * canvas.width;
-    const y = Math.random() * canvas.height;
-    const size = 0.5 + Math.random() * 1.5;
-    ctx.fillStyle = `rgba(255, 255, 255, ${0.4 + Math.random() * 0.4})`;
-    ctx.fillRect(x, y, size, size);
-  }
-  
-  // Atmospheric terminator line glow (day/night boundary)
+  // Subtle atmospheric terminator line (day/night boundary) - more realistic
   const terminatorGradient = ctx.createRadialGradient(
     canvas.width * 0.4, canvas.height * 0.5,
     0,
@@ -219,9 +222,9 @@ const createEarthTexture = () => {
     canvas.width * 0.8
   );
   terminatorGradient.addColorStop(0, 'transparent');
-  terminatorGradient.addColorStop(0.5, 'transparent');
-  terminatorGradient.addColorStop(0.7, 'rgba(100, 150, 255, 0.15)');
-  terminatorGradient.addColorStop(1, 'rgba(50, 100, 200, 0.25)');
+  terminatorGradient.addColorStop(0.6, 'transparent');
+  terminatorGradient.addColorStop(0.8, 'rgba(100, 150, 200, 0.08)');
+  terminatorGradient.addColorStop(1, 'rgba(50, 100, 150, 0.12)');
   ctx.globalAlpha = 1;
   ctx.fillStyle = terminatorGradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -312,9 +315,9 @@ const EarthGlobe = ({ targetCountry }: { targetCountry?: string }) => {
       // - Poland (20°E) would be at approximately 48% + (20/360)*100% = 53.56%
       // To show Poland, we need to rotate the globe so that 20°E faces the camera
       // Since the texture wraps, we can rotate either direction
-      // Using -1.4 radians (~-80°) to rotate the globe to show Europe/Poland
-      // This accounts for the texture offset and ensures Poland is visible
-      return -1.4;
+      // Using -1.3 radians (~-74°) to rotate the globe to show Europe/Poland more prominently
+      // Adjusted to better center Poland in view
+      return -1.3;
     }
     return 0;
   }, [targetCountry]);
@@ -352,11 +355,11 @@ const EarthGlobe = ({ targetCountry }: { targetCountry?: string }) => {
       <meshStandardMaterial
         map={earthTexture}
         normalMap={normalMap || undefined}
-        normalScale={new THREE.Vector2(0.5, 0.5)}
-        metalness={0.1}
-        roughness={0.9}
-        emissive={new THREE.Color(0x001122)}
-        emissiveIntensity={0.3}
+        normalScale={new THREE.Vector2(0.8, 0.8)}
+        metalness={0.05}
+        roughness={0.85}
+        emissive={new THREE.Color(0x001a33)}
+        emissiveIntensity={0.15}
         emissiveMap={earthTexture}
       />
     </Sphere>
@@ -499,10 +502,10 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
       const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + (dist * archHeight));
       const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
       
-      // Color variation based on distance
-      const hue = (index * 10) % 20;
-      const saturation = 75 + (index % 3) * 10;
-      const lightness = 55 + (index % 2) * 5;
+      // Brighter, more visible colors for better contrast
+      const hue = (index * 15) % 60; // Wider hue range
+      const saturation = 85 + (index % 3) * 10; // Higher saturation
+      const lightness = 65 + (index % 2) * 10; // Brighter
       const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       
       return { 
@@ -521,10 +524,10 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
     if (!groupRef.current) return;
     const time = state.clock.getElapsedTime();
     
-    // Animate line opacity with flowing effect
+    // Animate line opacity with flowing effect - brighter and more visible
     lineMaterialsRef.current.forEach((material, i) => {
       if (!material) return;
-      material.opacity = 0.8 + Math.sin(time * 0.6 + i * 0.5) * 0.2;
+      material.opacity = 0.95 + Math.sin(time * 0.6 + i * 0.5) * 0.05; // Higher base opacity
     });
     
     // Animate particles along lines
@@ -566,9 +569,9 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
               if (mat) lineMaterialsRef.current[i] = mat;
             }}
             color={color}
-            opacity={0.85} 
+            opacity={0.95} 
             transparent
-            linewidth={3}
+            linewidth={5}
           />
         </line>
       ))}
@@ -583,11 +586,13 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
               if (el) particleRefs.current[particleIndex + i] = el;
             }}
           >
-            <sphereGeometry args={[0.04, 8, 8]} />
-            <meshBasicMaterial
+            <sphereGeometry args={[0.06, 8, 8]} />
+            <meshStandardMaterial
               color={line.color}
               transparent
-              opacity={0.9}
+              opacity={1.0}
+              emissive={line.color}
+              emissiveIntensity={0.5}
             />
           </mesh>
         ));
@@ -721,9 +726,6 @@ const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, c
               distance={30}
             />
             
-            {/* Starfield background */}
-            <Stars radius={100} depth={60} count={2000} factor={6} fade speed={0.5} />
-            
             <group rotation={initialRotation || [0, 0, 0]}>
               <WavingGlobeGroup targetCountry={country}>
                 <Atmosphere />
@@ -774,8 +776,6 @@ const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, c
             <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#ffffff" />
             <pointLight position={[10, 10, 10]} intensity={0.8} color="#ffffff" distance={30} decay={2} />
             <pointLight position={[-10, -10, -10]} intensity={0.4} color="#ffffff" distance={30} />
-            
-            <Stars radius={80} depth={50} count={2000} factor={5} fade speed={0.5} />
             
             <group rotation={[0.3, 0, 0]}> 
               <Atmosphere />
