@@ -97,8 +97,8 @@ const Login = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
-      {/* Heritage Globe as Background - Exact same as homepage hero */}
-      <HeritageGlobe asBackground={true} />
+      {/* Heritage Globe as Background - Positioned to show Poland (20°E, 52°N) */}
+      <HeritageGlobe asBackground={true} country="PL" initialRotation={[0.15, -0.6, 0]} />
       
       {/* Gradient overlay for better text readability - Same as homepage */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
@@ -214,7 +214,7 @@ const Login = () => {
                 )}
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 pt-8 md:pt-12">
                 <Button 
                   type="submit" 
                   className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30 flex items-center justify-center"

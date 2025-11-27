@@ -597,6 +597,15 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
   const groupRef = useRef<THREE.Group>(null);
   const innerGroupRef = useRef<THREE.Group>(null);
   
+  // Calculate base rotation to show target country (Poland at 20°E)
+  const baseRotationY = useMemo(() => {
+    if (targetCountry === 'PL') {
+      // Poland is at 20°E, rotate to show it: -20° in radians ≈ -0.35
+      return -0.35;
+    }
+    return 0;
+  }, [targetCountry]);
+  
   useFrame((state) => {
     if (!groupRef.current || !innerGroupRef.current) return;
     const time = state.clock.getElapsedTime();
@@ -604,9 +613,10 @@ const WavingGlobeGroup = ({ children, targetCountry }: { children: React.ReactNo
     const waveSpeed = 0.25;
     const floatSpeed = 0.35;
     
-    // Smooth floating motion
+    // Smooth floating motion - keep target country visible
     groupRef.current.rotation.x = 0.2 + Math.sin(time * waveSpeed) * 0.08;
-    groupRef.current.rotation.y = time * 0.06 + Math.sin(time * waveSpeed * 0.6) * 0.05;
+    // Add base rotation for target country, then add subtle animation
+    groupRef.current.rotation.y = baseRotationY + Math.sin(time * waveSpeed * 0.6) * 0.05;
     groupRef.current.rotation.z = Math.sin(time * waveSpeed * 0.7) * 0.02;
     
     // Gentle floating
