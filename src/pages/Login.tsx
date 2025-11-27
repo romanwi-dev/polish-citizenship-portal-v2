@@ -97,11 +97,10 @@ const Login = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
-      <GlobalBackground />
-      {/* Heritage Globe as Background - Same as homepage hero */}
+      {/* Heritage Globe as Background - Exact same as homepage hero */}
       <HeritageGlobe asBackground={true} />
       
-      {/* Gradient overlay for better text readability */}
+      {/* Gradient overlay for better text readability - Same as homepage */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
       
       {/* Login Content */}
