@@ -6161,16 +6161,40 @@ function createSafeProxy(obj: any): any {
       return value;
     },
     set(target: any, prop: string | symbol, value: any): boolean {
-      // CRITICAL: If trying to set on undefined/null, prevent the assignment
-      // This is the core fix for "currentInstance[key] = value" when currentInstance is undefined
-      if (target == null || typeof target !== 'object' || Array.isArray(target)) {
+      // CRITICAL: Only block if target is truly null/undefined (would crash)
+      // Don't block if target is a valid object - i18next needs to write to it
+      if (target == null) {
         if (import.meta.env.DEV) {
-          console.warn(`[i18n] Blocked assignment to ${String(prop)} on ${typeof target} - preventing "currentInstance[key] = value" crash`);
+          console.warn(`[i18n] Blocked assignment to ${String(prop)} on null/undefined - preventing crash`);
         }
-        // Return false to prevent the assignment and avoid the crash
-        return false;
+        return false; // Only block null/undefined targets
       }
       
+      // If target is not an object, allow the assignment but log a warning
+      // i18next might be trying to initialize something, so we should allow it
+      if (typeof target !== 'object' || Array.isArray(target)) {
+        // Allow the assignment - i18next might handle it
+        // Just ensure we don't crash by trying to assign to a primitive
+        try {
+          // Try to create a new object if needed
+          if (typeof target === 'undefined') {
+            // Can't assign to undefined, so skip
+            if (import.meta.env.DEV) {
+              console.warn(`[i18n] Skipping assignment to ${String(prop)} on undefined`);
+            }
+            return false;
+          }
+          // For other non-object types, allow but log
+          if (import.meta.env.DEV) {
+            console.warn(`[i18n] Assignment to ${String(prop)} on ${typeof target} - allowing`);
+          }
+          return true; // Allow i18next to handle it
+        } catch {
+          return false; // If anything fails, block it
+        }
+      }
+      
+      // Normal assignment path - target is a valid object
       // If assigning an object, ensure nested objects are initialized
       if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
         // Ensure the target property exists as an object before assigning
@@ -6184,13 +6208,16 @@ function createSafeProxy(obj: any): any {
         target[prop as string] = value;
       }
       
-      return true;
+      return true; // Always allow valid assignments
     }
   });
 }
 
 // Apply Proxy wrapper to resources
-const safeResourcesProxy = createSafeProxy(resources);
+// CRITICAL: If Proxy causes issues, set USE_PROXY to false to disable it
+// TEMPORARILY DISABLED to fix blank screen - Proxy was blocking i18next initialization
+const USE_PROXY = false; // Set to false to disable Proxy and use resources directly
+const safeResourcesProxy = USE_PROXY ? createSafeProxy(resources) : resources;
 
 // CRITICAL: Define patch function BEFORE init so it's available immediately
 function patchI18nextStore(): void {
@@ -6366,12 +6393,20 @@ i18n
   })
   .then(() => {
     // CRITICAL: Patch AFTER initialization completes (i18n.init() is async)
+    if (import.meta.env.DEV) {
+      console.log('[i18n] ✅ Initialization successful');
+    }
     patchI18nextStore();
   })
   .catch((error) => {
-    console.error('[i18n] Initialization failed:', error);
+    console.error('[i18n] ❌ Initialization failed:', error);
+    console.error('[i18n] Error details:', error?.stack || error?.message);
     // Still try to patch even if init fails
     patchI18nextStore();
+    // If Proxy is enabled and init fails, suggest disabling it
+    if (USE_PROXY && import.meta.env.DEV) {
+      console.warn('[i18n] 💡 TIP: If initialization keeps failing, try setting USE_PROXY = false in config.ts');
+    }
   });
 
 // CRITICAL: Try to patch immediately (store might be available synchronously)
