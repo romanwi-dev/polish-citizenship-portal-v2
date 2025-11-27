@@ -352,13 +352,12 @@ const EarthGlobe = ({ targetCountry }: { targetCountry?: string }) => {
       <meshStandardMaterial
         map={earthTexture}
         normalMap={normalMap || undefined}
-        normalScale={new THREE.Vector2(0.6, 0.6)}
-        metalness={0.08}
-        roughness={0.88}
+        normalScale={new THREE.Vector2(0.5, 0.5)}
+        metalness={0.1}
+        roughness={0.9}
         emissive={new THREE.Color(0x001122)}
-        emissiveIntensity={0.35}
+        emissiveIntensity={0.3}
         emissiveMap={earthTexture}
-        envMapIntensity={1.2}
       />
     </Sphere>
   );
@@ -500,10 +499,10 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
       const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(GLOBE_RADIUS + (dist * archHeight));
       const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
       
-      // Enhanced colors for better visibility - bright and vibrant
-      const hue = (index * 20) % 360; // Full hue range
-      const saturation = 90 + (index % 2) * 8; // Very high saturation
-      const lightness = 70 + (index % 3) * 8; // Bright
+      // Color variation based on distance
+      const hue = (index * 10) % 20;
+      const saturation = 75 + (index % 3) * 10;
+      const lightness = 55 + (index % 2) * 5;
       const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       
       return { 
@@ -522,13 +521,10 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
     if (!groupRef.current) return;
     const time = state.clock.getElapsedTime();
     
-    // Animate line opacity with flowing effect - very bright and visible
+    // Animate line opacity with flowing effect
     lineMaterialsRef.current.forEach((material, i) => {
       if (!material) return;
-      material.opacity = 1.0; // Maximum opacity for best visibility
-      // Add subtle pulsing glow effect
-      const pulse = 0.98 + Math.sin(time * 0.8 + i * 0.5) * 0.02;
-      material.opacity = pulse;
+      material.opacity = 0.8 + Math.sin(time * 0.6 + i * 0.5) * 0.2;
     });
     
     // Animate particles along lines
@@ -554,47 +550,27 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
 
   return (
     <group ref={groupRef}>
-      {/* Connection Lines - Enhanced with glow effect */}
+      {/* Connection Lines */}
       {lines.map(({ points, countryCode, color }, i) => (
-        <group key={`line-group-${i}-${countryCode}`}>
-          {/* Glow layer - slightly larger and more transparent */}
-          <line>
-            <bufferGeometry>
-              <bufferAttribute 
-                attach="attributes-position" 
-                count={points.length} 
-                array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} 
-                itemSize={3} 
-              />
-            </bufferGeometry>
-            <lineBasicMaterial 
-              color={color}
-              opacity={0.3} 
-              transparent
-              linewidth={10}
+        <line key={`line-${i}-${countryCode}`}>
+          <bufferGeometry>
+            <bufferAttribute 
+              attach="attributes-position" 
+              count={points.length} 
+              array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} 
+              itemSize={3} 
             />
-          </line>
-          {/* Main line */}
-          <line>
-            <bufferGeometry>
-              <bufferAttribute 
-                attach="attributes-position" 
-                count={points.length} 
-                array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))} 
-                itemSize={3} 
-              />
-            </bufferGeometry>
-            <lineBasicMaterial 
-              ref={(mat: THREE.LineBasicMaterial | null) => {
-                if (mat) lineMaterialsRef.current[i] = mat;
-              }}
-              color={color}
-              opacity={1.0} 
-              transparent
-              linewidth={6}
-            />
-          </line>
-        </group>
+          </bufferGeometry>
+          <lineBasicMaterial 
+            ref={(mat: THREE.LineBasicMaterial | null) => {
+              if (mat) lineMaterialsRef.current[i] = mat;
+            }}
+            color={color}
+            opacity={0.85} 
+            transparent
+            linewidth={3}
+          />
+        </line>
       ))}
       
       {/* Animated particles along lines */}
@@ -607,14 +583,11 @@ const MigrationLines = ({ targetCountry }: { targetCountry?: string }) => {
               if (el) particleRefs.current[particleIndex + i] = el;
             }}
           >
-            <sphereGeometry args={[0.08, 12, 12]} />
-            <meshStandardMaterial
+            <sphereGeometry args={[0.04, 8, 8]} />
+            <meshBasicMaterial
               color={line.color}
               transparent
-              opacity={1.0}
-              emissive={line.color}
-              emissiveIntensity={1.2}
-              toneMapped={false}
+              opacity={0.9}
             />
           </mesh>
         ));
@@ -722,38 +695,34 @@ const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, c
               console.error('Canvas error:', error);
             }}
           >
-            {/* Enhanced lighting setup for better visual quality */}
-            <ambientLight intensity={0.6} color="#ffffff" />
+            {/* Consistent lighting setup - uniform illumination */}
+            <ambientLight intensity={0.5} color="#ffffff" />
             <directionalLight 
               position={[5, 5, 5]} 
-              intensity={1.4} 
+              intensity={1.2} 
               color="#ffffff"
-              castShadow
             />
             <directionalLight 
               position={[-5, -5, -5]} 
-              intensity={0.6} 
+              intensity={0.5} 
               color="#ffffff"
             />
             <pointLight 
               position={[10, 10, 10]} 
-              intensity={1.0} 
+              intensity={0.8} 
               color="#ffffff" 
               distance={30} 
               decay={2}
             />
             <pointLight 
               position={[-10, -10, -10]} 
-              intensity={0.5} 
+              intensity={0.4} 
               color="#ffffff"
               distance={30}
             />
-            <pointLight 
-              position={[0, 8, 0]} 
-              intensity={0.4} 
-              color="#ffffff"
-              distance={25}
-            />
+            
+            {/* Starfield background */}
+            <Stars radius={100} depth={60} count={2000} factor={6} fade speed={0.5} />
             
             <group rotation={initialRotation || [0, 0, 0]}>
               <WavingGlobeGroup targetCountry={country}>
@@ -799,13 +768,14 @@ const HeritageGlobe = ({ country, title, asBackground = false, cameraFov = 50, c
             }}
             dpr={[1, 2]}
           >
-            {/* Enhanced lighting - uniform shades */}
-            <ambientLight intensity={0.6} color="#ffffff" />
-            <directionalLight position={[5, 5, 5]} intensity={1.4} color="#ffffff" />
-            <directionalLight position={[-5, -5, -5]} intensity={0.6} color="#ffffff" />
-            <pointLight position={[10, 10, 10]} intensity={1.0} color="#ffffff" distance={30} decay={2} />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ffffff" distance={30} />
-            <pointLight position={[0, 8, 0]} intensity={0.4} color="#ffffff" distance={25} />
+            {/* Consistent lighting - uniform shades */}
+            <ambientLight intensity={0.5} color="#ffffff" />
+            <directionalLight position={[5, 5, 5]} intensity={1.2} color="#ffffff" />
+            <directionalLight position={[-5, -5, -5]} intensity={0.5} color="#ffffff" />
+            <pointLight position={[10, 10, 10]} intensity={0.8} color="#ffffff" distance={30} decay={2} />
+            <pointLight position={[-10, -10, -10]} intensity={0.4} color="#ffffff" distance={30} />
+            
+            <Stars radius={80} depth={50} count={2000} factor={5} fade speed={0.5} />
             
             <group rotation={[0.3, 0, 0]}> 
               <Atmosphere />
