@@ -6140,6 +6140,58 @@ const rawResources = {
 // This ensures all nested objects exist before i18next processes them
 const resources = createSafeResources(rawResources);
 
+// CRITICAL: Wrap resources in Proxy to intercept direct property assignments
+// This catches "currentInstance[key] = value" when currentInstance is undefined
+// i18next internally does direct assignments like: currentInstance[key] = value
+// If currentInstance is undefined, this crashes. The Proxy intercepts and prevents it.
+function createSafeProxy(obj: any): any {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+    return obj;
+  }
+  
+  return new Proxy(obj, {
+    get(target: any, prop: string | symbol): any {
+      const value = target[prop];
+      
+      // Recursively wrap nested objects in Proxy
+      if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
+        return createSafeProxy(value);
+      }
+      
+      return value;
+    },
+    set(target: any, prop: string | symbol, value: any): boolean {
+      // CRITICAL: If trying to set on undefined/null, prevent the assignment
+      // This is the core fix for "currentInstance[key] = value" when currentInstance is undefined
+      if (target == null || typeof target !== 'object' || Array.isArray(target)) {
+        if (import.meta.env.DEV) {
+          console.warn(`[i18n] Blocked assignment to ${String(prop)} on ${typeof target} - preventing "currentInstance[key] = value" crash`);
+        }
+        // Return false to prevent the assignment and avoid the crash
+        return false;
+      }
+      
+      // If assigning an object, ensure nested objects are initialized
+      if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
+        // Ensure the target property exists as an object before assigning
+        if (!target[prop] || typeof target[prop] !== 'object' || Array.isArray(target[prop])) {
+          target[prop] = {};
+        }
+        // Merge the value into the existing object
+        Object.assign(target[prop], value);
+      } else {
+        // For primitives, assign directly
+        target[prop as string] = value;
+      }
+      
+      return true;
+    }
+  });
+}
+
+// Apply Proxy wrapper to resources
+const safeResourcesProxy = createSafeProxy(resources);
+
 // CRITICAL: Define patch function BEFORE init so it's available immediately
 function patchI18nextStore(): void {
   try {
@@ -6276,7 +6328,7 @@ function getNestedValue(obj: any, path: string, fallback: any = undefined): any 
 i18n
   .use(initReactI18next)
   .init({
-    resources,
+    resources: safeResourcesProxy,
     lng: 'en', // default language
     fallbackLng: 'en',
     // CRITICAL FIX: Safe handling of missing nested keys
