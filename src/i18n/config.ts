@@ -6134,46 +6134,19 @@ try {
   }
 }
 
-// CRITICAL FIX: Wrap i18n.t() function with safe error handling
+// CRITICAL FIX: Add post-processor to catch any remaining translation errors
 // This is a final safety net to prevent any translation errors from crashing the app
-const originalT = i18n.t.bind(i18n);
-i18n.t = function(key: string | string[], options?: any): string {
-  try {
-    // If key is an array, try each key until one works
-    if (Array.isArray(key)) {
-      for (const k of key) {
-        try {
-          const result = originalT(k, options);
-          // If result is not the key itself (meaning it was found), return it
-          if (result && result !== k) {
-            return result;
-          }
-        } catch {
-          continue;
-        }
-      }
-      // If none worked, return the first key as fallback
-      return typeof key[0] === 'string' ? key[0] : '';
-    }
-    
-    // Single key - use original function with try-catch
-    try {
-      return originalT(key, options);
-    } catch (error) {
-      // If translation fails, return the key as fallback
-      if (import.meta.env.DEV) {
-        console.warn(`[i18n] Translation failed for key "${key}":`, error);
-      }
-      return typeof key === 'string' ? key : '';
-    }
-  } catch (error) {
-    // Ultimate fallback - return key or empty string
-    if (import.meta.env.DEV) {
-      console.error('[i18n] Critical translation error:', error);
-    }
-    return typeof key === 'string' ? key : (Array.isArray(key) ? key[0] || '' : '');
+i18n.on('failedLoading', (lng: string, ns: string, msg: string) => {
+  if (import.meta.env.DEV) {
+    console.warn(`[i18n] Failed loading language "${lng}" namespace "${ns}":`, msg);
   }
-};
+});
+
+i18n.on('missingKey', (lng: string[], ns: string, key: string, fallbackValue: string) => {
+  if (import.meta.env.DEV) {
+    console.warn(`[i18n] Missing key "${key}" in namespace "${ns}" for language "${lng.join(', ')}"`);
+  }
+});
 
 // Handle RTL for Hebrew
 i18n.on('languageChanged', (lng) => {
