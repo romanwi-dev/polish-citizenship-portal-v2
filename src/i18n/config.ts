@@ -6078,6 +6078,15 @@ i18n
       transSupportBasicHtmlNodes: true,
       transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
     },
+  })
+  .then(() => {
+    // CRITICAL: Patch AFTER initialization completes (i18n.init() is async)
+    patchI18nextStore();
+  })
+  .catch((error) => {
+    console.error('[i18n] Initialization failed:', error);
+    // Still try to patch even if init fails
+    patchI18nextStore();
   });
 
 /**
@@ -6176,19 +6185,19 @@ function patchI18nextStore(): void {
   }
 }
 
-// Patch immediately after initialization
+// Patch immediately (for synchronous init cases)
 patchI18nextStore();
 
-// Also patch after a short delay in case store initializes asynchronously
+// Also patch on initialized event
+i18n.on('initialized', () => {
+  patchI18nextStore();
+});
+
+// Also patch after delays in case store initializes asynchronously
 if (typeof window !== 'undefined' && typeof setTimeout !== 'undefined') {
-  setTimeout(() => {
-    patchI18nextStore();
-  }, 0);
-  
-  // Additional delayed patch for edge cases
-  setTimeout(() => {
-    patchI18nextStore();
-  }, 100);
+  setTimeout(() => patchI18nextStore(), 0);
+  setTimeout(() => patchI18nextStore(), 100);
+  setTimeout(() => patchI18nextStore(), 500);
 }
 
 // CRITICAL FIX: Add post-processor to catch any remaining translation errors
