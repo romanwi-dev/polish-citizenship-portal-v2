@@ -1,93 +1,103 @@
 /**
- * Image Optimization Utilities
- * Handles responsive image sizing and format detection
+ * Image optimization utilities for lazy loading and performance
  */
 
-export interface ImageSizeConfig {
-  mobile: number;
-  tablet: number;
-  desktop: number;
+/**
+ * Lazy load images with intersection observer
+ */
+export function createLazyImageLoader(
+  img: HTMLImageElement,
+  src: string,
+  options?: { root?: Element | null; rootMargin?: string; threshold?: number }
+): () => void {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          img.src = src;
+          observer.unobserve(img);
+        }
+      });
+    },
+    {
+      root: options?.root || null,
+      rootMargin: options?.rootMargin || '50px',
+      threshold: options?.threshold || 0.01,
+    }
+  );
+
+  observer.observe(img);
+
+  return () => observer.disconnect();
 }
 
-export const defaultImageSizes: ImageSizeConfig = {
-  mobile: 640,
-  tablet: 1024,
-  desktop: 1920,
-};
+/**
+ * Preload critical images
+ */
+export function preloadImage(src: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = src;
+    link.onload = () => resolve();
+    link.onerror = reject;
+    document.head.appendChild(link);
+  });
+}
 
 /**
- * Generate responsive image srcset
+ * Get optimized image URL with WebP support
  */
-export const generateSrcSet = (
-  baseSrc: string,
-  sizes: ImageSizeConfig = defaultImageSizes
-): string => {
-  const extension = baseSrc.split('.').pop();
-  const basePath = baseSrc.replace(`.${extension}`, '');
-
-  return `
-    ${basePath}-${sizes.mobile}w.webp ${sizes.mobile}w,
-    ${basePath}-${sizes.tablet}w.webp ${sizes.tablet}w,
-    ${basePath}-${sizes.desktop}w.webp ${sizes.desktop}w
-  `.trim();
-};
+export function getOptimizedImageUrl(
+  src: string,
+  options?: { width?: number; quality?: number; format?: 'webp' | 'avif' | 'jpg' }
+): string {
+  // If using an image CDN, add optimization parameters
+  // For now, return original src
+  // In production, you might want to use a service like Cloudinary, Imgix, etc.
+  return src;
+}
 
 /**
- * Generate sizes attribute for responsive images
+ * Lazy load component for React
+ * Note: Import React in your component file when using this hook
  */
-export const generateSizesAttr = (): string => {
-  return '(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1920px';
-};
+import { useState, useEffect, useRef } from 'react';
 
-/**
- * Check if browser supports WebP
- */
-export const supportsWebP = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  
-  const elem = document.createElement('canvas');
-  if (elem.getContext && elem.getContext('2d')) {
-    return elem.toDataURL('image/webp').indexOf('data:image/webp') === 0;
-  }
-  return false;
-};
+export function useLazyImage(src: string | null | undefined) {
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
-/**
- * Get optimized image source based on browser support
- */
-export const getOptimizedSrc = (src: string): string => {
-  if (!supportsWebP()) return src;
-  
-  // Convert to WebP if supported
-  return src.replace(/\.(png|jpg|jpeg)$/i, '.webp');
-};
+  useEffect(() => {
+    if (!src) {
+      setImageSrc(null);
+      setIsLoading(false);
+      return;
+    }
 
-/**
- * Calculate image dimensions maintaining aspect ratio
- */
-export const calculateDimensions = (
-  originalWidth: number,
-  originalHeight: number,
-  maxWidth: number,
-  maxHeight?: number
-): { width: number; height: number } => {
-  const aspectRatio = originalWidth / originalHeight;
+    const img = imgRef.current || document.createElement('img');
+    if (!imgRef.current) {
+      imgRef.current = img;
+    }
 
-  let width = originalWidth;
-  let height = originalHeight;
+    const cleanup = createLazyImageLoader(img, src);
 
-  if (width > maxWidth) {
-    width = maxWidth;
-    height = width / aspectRatio;
-  }
+    img.onload = () => {
+      setImageSrc(src);
+      setIsLoading(false);
+      setError(null);
+    };
 
-  if (maxHeight && height > maxHeight) {
-    height = maxHeight;
-    width = height * aspectRatio;
-  }
+    img.onerror = () => {
+      setError(new Error('Failed to load image'));
+      setIsLoading(false);
+    };
 
-  return {
-    width: Math.round(width),
-    height: Math.round(height),
-  };
-};
+    return cleanup;
+  }, [src]);
+
+  return { imageSrc, isLoading, error, imgRef };
+}
