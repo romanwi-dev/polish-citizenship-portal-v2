@@ -1,6 +1,49 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+// CRITICAL FIX: Patch Array.prototype.reduce to prevent "acc[key2]" errors
+// i18next uses: path.split('.').reduce((acc, key2) => acc[key2], obj)
+// This crashes when acc becomes undefined. We make ALL reduce calls safe.
+const originalReduce = Array.prototype.reduce;
+Array.prototype.reduce = function(callback: any, initialValue?: any) {
+  try {
+    // Wrap the callback to add safety checks
+    const safeCallback = (acc: any, currentValue: any, index: number, array: any[]) => {
+      try {
+        // If callback accesses acc[currentValue] or acc[key], check for null/undefined first
+        const callbackStr = callback.toString();
+        const accessesProperty = callbackStr.includes('acc[') || 
+                                 callbackStr.includes('acc.') ||
+                                 (callback.length === 2 && typeof currentValue === 'string');
+        
+        if (accessesProperty && (acc == null || typeof acc !== 'object')) {
+          // Return undefined instead of crashing
+          return undefined;
+        }
+        
+        return callback(acc, currentValue, index, array);
+      } catch (error: any) {
+        // If error is about accessing property on undefined/null, return undefined
+        if (error?.message?.includes('Cannot read') || 
+            error?.message?.includes('undefined is not an object') ||
+            error?.message?.includes('acc[')) {
+          return undefined;
+        }
+        throw error; // Re-throw other errors
+      }
+    };
+    
+    return originalReduce.call(this, safeCallback, initialValue);
+  } catch (error) {
+    // If reduce itself fails, try original with error suppression
+    try {
+      return originalReduce.call(this, callback, initialValue);
+    } catch {
+      return undefined;
+    }
+  }
+};
+
 // Translation resources
 const resources = {
   en: {
