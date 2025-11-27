@@ -5984,6 +5984,9 @@ i18n
     // CRITICAL FIX: Safe handling of missing nested keys
     returnNull: false, // Don't return null for missing keys
     returnEmptyString: true, // Return empty string instead
+    // Keep keySeparator enabled (default '.') but we'll patch the internal resolver
+    keySeparator: '.',
+    nsSeparator: ':',
     // Safe nested key resolution - prevents "acc[key2]" errors
     parseMissingKeyHandler: (key: string) => {
       // Return the key path as fallback instead of crashing
@@ -6033,108 +6036,124 @@ function getNestedValue(obj: any, path: string, fallback: any = undefined): any 
   return acc ?? fallback;
 }
 
-// CRITICAL FIX: Override i18next's internal path resolver
-// i18next uses reduce internally which can cause "acc[key2]" errors
-// We patch the resource store's getResource method which is the actual entry point
+// CRITICAL FIX: Patch i18next's internal path resolution at multiple levels
+// i18next uses: path.split('.').reduce((acc, key2) => acc[key2], obj)
+// This crashes when acc becomes undefined. We intercept at multiple points.
+
+// Level 1: Patch store.utils.getPath if it exists
 try {
-  // Wait for i18n to be fully initialized
   const store = (i18n as any).store;
-  if (store && typeof store.getResource === 'function') {
-    const originalGetResource = store.getResource.bind(store);
-    
-    // Override getResource to use safe nested access
-    store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
-      try {
-        // Handle array inputs (fallback languages)
-        const languages = Array.isArray(lng) ? lng : [lng];
-        const namespaces = Array.isArray(ns) ? ns : [ns];
-        
-        // Try each language and namespace combination
-        for (const lang of languages) {
-          for (const namespace of namespaces) {
-            try {
-              // Get the base resource object for this language/namespace
-              const resource = originalGetResource(lang, namespace, '', options);
-              if (!resource) continue;
-              
-              // If no key provided, return the resource object
-              if (!key) return resource;
-              
-              // Use safe nested access instead of reduce
-              const value = getNestedValue(resource, key);
-              if (value !== undefined) {
-                return value;
-              }
-            } catch (err) {
-              // Continue to next language/namespace
-              continue;
-            }
-          }
-        }
-        
-        // No value found, return undefined
-        return undefined;
-      } catch (error) {
-        // If any error occurs, return undefined instead of crashing
-        if (import.meta.env.DEV) {
-          console.warn(`[i18n] Error accessing key "${key}" in namespace "${ns}":`, error);
-        }
-        return undefined;
-      }
-    };
-    
-    if (import.meta.env.DEV) {
-      console.log('[i18n] ✅ Successfully patched getResource with safe nested access');
-    }
-  } else {
-    // If store is not available yet, try again after a short delay
-    // SSR-SAFE: Only use setTimeout in browser environment
-    if (typeof window !== 'undefined' && typeof setTimeout !== 'undefined') {
-      setTimeout(() => {
+  if (store) {
+    // Patch utils.getPath - this is the core method that uses reduce
+    if (store.utils && typeof store.utils.getPath === 'function') {
+      const originalGetPath = store.utils.getPath.bind(store.utils);
+      store.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
         try {
-          const delayedStore = (i18n as any).store;
-          if (delayedStore && typeof delayedStore.getResource === 'function') {
-            const originalGetResource = delayedStore.getResource.bind(delayedStore);
-            delayedStore.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
-              try {
-                const languages = Array.isArray(lng) ? lng : [lng];
-                const namespaces = Array.isArray(ns) ? ns : [ns];
-                
-                for (const lang of languages) {
-                  for (const namespace of namespaces) {
-                    try {
-                      const resource = originalGetResource(lang, namespace, '', options);
-                      if (!resource) continue;
-                      if (!key) return resource;
-                      const value = getNestedValue(resource, key);
-                      if (value !== undefined) return value;
-                    } catch {
-                      continue;
-                    }
-                  }
-                }
-                return undefined;
-              } catch {
-                return undefined;
-              }
-            };
-            if (import.meta.env.DEV) {
-              console.log('[i18n] ✅ Successfully patched getResource (delayed)');
-            }
-          }
-        } catch (err) {
-          if (import.meta.env.DEV) {
-            console.warn('[i18n] Delayed patch failed:', err);
+          return getNestedValue(obj, path, defaultValue);
+        } catch (error) {
+          try {
+            return originalGetPath.call(this, obj, path, defaultValue);
+          } catch {
+            return defaultValue;
           }
         }
-      }, 100);
+      };
+      if (import.meta.env.DEV) {
+        console.log('[i18n] ✅ Patched store.utils.getPath');
+      }
+    }
+    
+    // Level 2: Patch store.getResource as fallback
+    if (typeof store.getResource === 'function') {
+      const originalGetResource = store.getResource.bind(store);
+      store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
+        try {
+          const languages = Array.isArray(lng) ? lng : [lng];
+          const namespaces = Array.isArray(ns) ? ns : [ns];
+          
+          for (const lang of languages) {
+            for (const namespace of namespaces) {
+              try {
+                const resource = originalGetResource(lang, namespace, '', options);
+                if (!resource) continue;
+                if (!key) return resource;
+                const value = getNestedValue(resource, key);
+                if (value !== undefined) return value;
+              } catch {
+                continue;
+              }
+            }
+          }
+          return undefined;
+        } catch {
+          return undefined;
+        }
+      };
+      if (import.meta.env.DEV) {
+        console.log('[i18n] ✅ Patched store.getResource');
+      }
     }
   }
 } catch (error) {
-  // If patching fails, log but don't crash
   if (import.meta.env.DEV) {
-    console.warn('[i18n] Could not patch resource store:', error);
+    console.warn('[i18n] Initial patch failed:', error);
   }
+}
+
+// Level 3: Delayed patch for store that might initialize later
+if (typeof window !== 'undefined' && typeof setTimeout !== 'undefined') {
+  setTimeout(() => {
+    try {
+      const delayedStore = (i18n as any).store;
+      if (delayedStore?.utils?.getPath && !delayedStore.utils.getPath._patched) {
+        const originalGetPath = delayedStore.utils.getPath.bind(delayedStore.utils);
+        delayedStore.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
+          try {
+            return getNestedValue(obj, path, defaultValue);
+          } catch {
+            try {
+              return originalGetPath.call(this, obj, path, defaultValue);
+            } catch {
+              return defaultValue;
+            }
+          }
+        };
+        delayedStore.utils.getPath._patched = true;
+        if (import.meta.env.DEV) {
+          console.log('[i18n] ✅ Patched utils.getPath (delayed)');
+        }
+      }
+    } catch (err) {
+      // Ignore delayed patch errors
+    }
+  }, 50);
+  
+  // Also try after a longer delay
+  setTimeout(() => {
+    try {
+      const delayedStore = (i18n as any).store;
+      if (delayedStore?.utils?.getPath && !delayedStore.utils.getPath._patched) {
+        const originalGetPath = delayedStore.utils.getPath.bind(delayedStore.utils);
+        delayedStore.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
+          try {
+            return getNestedValue(obj, path, defaultValue);
+          } catch {
+            try {
+              return originalGetPath.call(this, obj, path, defaultValue);
+            } catch {
+              return defaultValue;
+            }
+          }
+        };
+        delayedStore.utils.getPath._patched = true;
+        if (import.meta.env.DEV) {
+          console.log('[i18n] ✅ Patched utils.getPath (delayed 2)');
+        }
+      }
+    } catch (err) {
+      // Ignore
+    }
+  }, 200);
 }
 
 // CRITICAL FIX: Add post-processor to catch any remaining translation errors
