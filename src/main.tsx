@@ -39,46 +39,17 @@ if (!import.meta.env.DEV) {
   });
 }
 
-// CRITICAL FIX: Global error handler to catch and suppress "acc[key2]" errors
-// This prevents the app from crashing when i18next tries to access nested keys
-window.addEventListener('error', (event) => {
-  // Check if this is the acc[key2] error from i18next
-  const isAccKey2Error = event.message?.includes('acc[key2]') || 
-                         event.message?.includes('acc[key') ||
-                         event.error?.message?.includes('acc[key2]') ||
-                         event.error?.message?.includes('acc[key') ||
-                         event.error?.stack?.includes('acc[key2]') ||
-                         event.error?.stack?.includes('acc[key');
-  
-  if (isAccKey2Error) {
-    // Suppress the error to prevent app crash
-    event.preventDefault();
-    event.stopPropagation();
-    console.warn('[i18n] Suppressed acc[key2] error - missing translation key:', event.error?.stack);
-    // Return a safe fallback instead of crashing
-    return false;
-  }
-  
-  // Log other errors normally
-  console.error('Global error:', event.error);
-  console.error('Error message:', event.message);
-  console.error('Error stack:', event.error?.stack);
-});
+// Global error handler for development debugging
+if (import.meta.env.DEV) {
+  window.addEventListener('error', (event) => {
+    console.error('Global error:', event.error);
+    console.error('Error message:', event.message);
+    console.error('Error stack:', event.error?.stack);
+  });
 
-window.addEventListener('unhandledrejection', (event) => {
-  const isAccKey2Error = event.reason?.message?.includes('acc[key2]') || 
-                         event.reason?.message?.includes('acc[key') ||
-                         event.reason?.stack?.includes('acc[key2]') ||
-                         event.reason?.stack?.includes('acc[key');
-  
-  if (isAccKey2Error) {
-    // Suppress the promise rejection
-    event.preventDefault();
-    console.warn('[i18n] Suppressed acc[key2] promise rejection');
-    return;
-  }
-  
-  console.error('Unhandled promise rejection:', event.reason);
-});
+  window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason);
+  });
+}
 
 createRoot(document.getElementById("root")!).render(<App />);

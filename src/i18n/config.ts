@@ -1,115 +1,47 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-// CRITICAL FIX: Patch Array.prototype.reduce AND Object property assignment
-// i18next uses: path.split('.').reduce((acc, key2) => acc[key2], obj) 
-// AND also: currentInstance[key] = value (when building resources)
-// We need to make both patterns safe.
-
-// 1. Patch Array.prototype.reduce
-const originalReduce = Array.prototype.reduce;
-Array.prototype.reduce = function(callback: any, initialValue?: any) {
-  try {
-    const safeCallback = (acc: any, currentValue: any, index: number, array: any[]) => {
-      try {
-        const callbackStr = callback.toString();
-        const accessesProperty = callbackStr.includes('acc[') || 
-                                 callbackStr.includes('acc.') ||
-                                 callbackStr.includes('currentInstance[') ||
-                                 (callback.length === 2 && typeof currentValue === 'string');
-        
-        if (accessesProperty && (acc == null || typeof acc !== 'object')) {
-          return undefined;
-        }
-        
-        return callback(acc, currentValue, index, array);
-      } catch (error: any) {
-        if (error?.message?.includes('Cannot read') || 
-            error?.message?.includes('undefined is not an object') ||
-            error?.message?.includes('acc[') ||
-            error?.message?.includes('currentInstance[')) {
-          return undefined;
-        }
-        throw error;
-      }
-    };
-    
-    return originalReduce.call(this, safeCallback, initialValue);
-  } catch (error) {
-    try {
-      return originalReduce.call(this, callback, initialValue);
-    } catch {
-      return undefined;
-    }
-  }
-};
-
-// 2. Patch Object.defineProperty to catch assignments to undefined objects
-// This catches patterns like: currentInstance[key] = value when currentInstance is undefined
-const originalDefineProperty = Object.defineProperty;
-Object.defineProperty = function(obj: any, prop: string | symbol, descriptor: PropertyDescriptor) {
-  try {
-    if (obj == null || typeof obj !== 'object') {
-      // If trying to define property on null/undefined, create a new object
-      console.warn(`[i18n] Attempted to define property on ${typeof obj}, creating new object`);
-      return originalDefineProperty.call(this, {}, prop, descriptor);
-    }
-    return originalDefineProperty.call(this, obj, prop, descriptor);
-  } catch (error: any) {
-    if (error?.message?.includes('Cannot set property') || 
-        error?.message?.includes('undefined is not an object')) {
-      console.warn(`[i18n] Suppressed property assignment error:`, error);
-      return obj; // Return the object (or undefined) instead of crashing
-    }
-    throw error;
-  }
-};
-
-// CRITICAL FIX: Create a safe resources wrapper that ensures all nested objects exist
-// This prevents "currentInstance[key] = value" errors when i18next builds resource structures
-// The errors "acc[key2]" and "currentInstance[key] = value" come from i18next's internal code
-// when it processes nested translation keys. We pre-initialize ALL nested objects to prevent this.
-function createSafeResources(rawResources: any): any {
-  // Deep clone and ensure all nested objects are initialized
-  const safeResources: any = {};
+/**
+ * Safely initializes all nested objects in translation resources.
+ * Prevents i18next errors when it processes nested keys like "home.hero.title".
+ * 
+ * The issue: i18next internally uses patterns that can fail if nested objects don't exist:
+ * - path.split('.').reduce((acc, key2) => acc[key2], obj) → fails if acc becomes undefined
+ * - currentInstance[key] = value → fails if currentInstance is undefined
+ * 
+ * Solution: Pre-initialize ALL nested objects so i18next never encounters undefined.
+ */
+function createSafeResources(rawResources: any): Record<string, Record<string, any>> {
+  const safeResources: Record<string, Record<string, any>> = {};
   
   for (const [lang, namespaces] of Object.entries(rawResources)) {
-    // CRITICAL: Always initialize language object - never undefined
-    if (!safeResources[lang]) {
-      safeResources[lang] = {};
+    if (!lang || typeof namespaces !== 'object' || Array.isArray(namespaces)) {
+      continue;
     }
     
-    if (!namespaces || typeof namespaces !== 'object') {
-      continue; // Skip invalid namespaces
-    }
+    safeResources[lang] = {};
     
-    for (const [ns, translations] of Object.entries(namespaces as any)) {
-      // CRITICAL: Always initialize namespace object - never undefined
-      if (!safeResources[lang][ns]) {
-        safeResources[lang][ns] = {};
+    for (const [ns, translations] of Object.entries(namespaces as Record<string, any>)) {
+      if (!ns || !translations || typeof translations !== 'object' || Array.isArray(translations)) {
+        continue;
       }
       
-      if (!translations || typeof translations !== 'object' || Array.isArray(translations)) {
-        continue; // Skip invalid translations
-      }
+      safeResources[lang][ns] = {};
       
-      // Recursively ensure all nested objects exist BEFORE i18next accesses them
-      // This prevents "currentInstance[key] = value" when currentInstance is undefined
-      function ensureNestedObjects(obj: any, target: any): void {
-        if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+      // Recursively ensure all nested objects exist
+      function ensureNestedObjects(source: any, target: Record<string, any>): void {
+        if (!source || typeof source !== 'object' || Array.isArray(source)) {
           return;
         }
         
-        for (const [key, value] of Object.entries(obj)) {
+        for (const [key, value] of Object.entries(source)) {
           if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
-            // CRITICAL: Initialize nested object BEFORE recursing
-            // This ensures currentInstance[key] = value never fails because currentInstance always exists
+            // Initialize nested object if it doesn't exist
             if (!target[key] || typeof target[key] !== 'object' || Array.isArray(target[key])) {
               target[key] = {};
             }
-            ensureNestedObjects(value, target[key]);
+            ensureNestedObjects(value, target[key] as Record<string, any>);
           } else {
-            // Safe to assign primitive values, arrays, or null
             target[key] = value;
           }
         }
@@ -6140,145 +6072,70 @@ i18n
     },
   });
 
-// CRITICAL FIX: Safe nested value helper to prevent "acc[key2]" errors
-// This function safely walks nested object paths without throwing
-// This replaces i18next's internal reduce-based path resolution
+// Safe nested value helper - used only for our internal patching of i18next's store
 function getNestedValue(obj: any, path: string, fallback: any = undefined): any {
   if (!obj || !path) return fallback;
   
   const keys = path.split(".");
-  let acc: any = obj;
+  let current: any = obj;
   
   for (const key of keys) {
-    // CRITICAL: Check if acc is null/undefined or not an object before accessing
-    // This prevents "undefined is not an object (evaluating 'acc[key2]')" errors
-    if (acc == null || typeof acc !== "object" || !(key in acc)) {
+    if (current == null || typeof current !== "object" || !(key in current)) {
       return fallback;
     }
-    acc = acc[key];
+    current = current[key];
   }
   
-  return acc ?? fallback;
+  return current ?? fallback;
 }
 
-// CRITICAL FIX: Patch i18next's internal path resolution at multiple levels
-// i18next uses: path.split('.').reduce((acc, key2) => acc[key2], obj)
-// This crashes when acc becomes undefined. We intercept at multiple points.
-
-// Level 1: Patch store.utils.getPath if it exists
+// Patch i18next's store.utils.getPath to use safe nested access
+// This is the ONLY place where we intercept i18next's internal code
 try {
   const store = (i18n as any).store;
-  if (store) {
-    // Patch utils.getPath - this is the core method that uses reduce
-    if (store.utils && typeof store.utils.getPath === 'function') {
-      const originalGetPath = store.utils.getPath.bind(store.utils);
-      store.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
+  if (store?.utils?.getPath) {
+    const originalGetPath = store.utils.getPath.bind(store.utils);
+    store.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
+      try {
+        return getNestedValue(obj, path, defaultValue);
+      } catch {
         try {
-          return getNestedValue(obj, path, defaultValue);
-        } catch (error) {
-          try {
-            return originalGetPath.call(this, obj, path, defaultValue);
-          } catch {
-            return defaultValue;
-          }
+          return originalGetPath.call(this, obj, path, defaultValue);
+        } catch {
+          return defaultValue;
         }
-      };
-      if (import.meta.env.DEV) {
-        console.log('[i18n] ✅ Patched store.utils.getPath');
       }
-    }
-    
-    // Level 2: Patch store.getResource as fallback
-    if (typeof store.getResource === 'function') {
-      const originalGetResource = store.getResource.bind(store);
-      store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
-        try {
-          const languages = Array.isArray(lng) ? lng : [lng];
-          const namespaces = Array.isArray(ns) ? ns : [ns];
-          
-          for (const lang of languages) {
-            for (const namespace of namespaces) {
-              try {
-                const resource = originalGetResource(lang, namespace, '', options);
-                if (!resource) continue;
-                if (!key) return resource;
-                const value = getNestedValue(resource, key);
-                if (value !== undefined) return value;
-              } catch {
-                continue;
-              }
+    };
+  }
+  
+  // Also patch getResource as a safety measure
+  if (store?.getResource) {
+    const originalGetResource = store.getResource.bind(store);
+    store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
+      try {
+        const languages = Array.isArray(lng) ? lng : [lng];
+        const namespaces = Array.isArray(ns) ? ns : [ns];
+        
+        for (const lang of languages) {
+          for (const namespace of namespaces) {
+            try {
+              const resource = originalGetResource(lang, namespace, '', options);
+              if (!resource || !key) return resource;
+              const value = getNestedValue(resource, key);
+              if (value !== undefined) return value;
+            } catch {
+              continue;
             }
           }
-          return undefined;
-        } catch {
-          return undefined;
         }
-      };
-      if (import.meta.env.DEV) {
-        console.log('[i18n] ✅ Patched store.getResource');
+        return undefined;
+      } catch {
+        return undefined;
       }
-    }
+    };
   }
 } catch (error) {
-  if (import.meta.env.DEV) {
-    console.warn('[i18n] Initial patch failed:', error);
-  }
-}
-
-// Level 3: Delayed patch for store that might initialize later
-if (typeof window !== 'undefined' && typeof setTimeout !== 'undefined') {
-  setTimeout(() => {
-    try {
-      const delayedStore = (i18n as any).store;
-      if (delayedStore?.utils?.getPath && !delayedStore.utils.getPath._patched) {
-        const originalGetPath = delayedStore.utils.getPath.bind(delayedStore.utils);
-        delayedStore.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
-          try {
-            return getNestedValue(obj, path, defaultValue);
-          } catch {
-            try {
-              return originalGetPath.call(this, obj, path, defaultValue);
-            } catch {
-              return defaultValue;
-            }
-          }
-        };
-        delayedStore.utils.getPath._patched = true;
-        if (import.meta.env.DEV) {
-          console.log('[i18n] ✅ Patched utils.getPath (delayed)');
-        }
-      }
-    } catch (err) {
-      // Ignore delayed patch errors
-    }
-  }, 50);
-  
-  // Also try after a longer delay
-  setTimeout(() => {
-    try {
-      const delayedStore = (i18n as any).store;
-      if (delayedStore?.utils?.getPath && !delayedStore.utils.getPath._patched) {
-        const originalGetPath = delayedStore.utils.getPath.bind(delayedStore.utils);
-        delayedStore.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
-          try {
-            return getNestedValue(obj, path, defaultValue);
-          } catch {
-            try {
-              return originalGetPath.call(this, obj, path, defaultValue);
-            } catch {
-              return defaultValue;
-            }
-          }
-        };
-        delayedStore.utils.getPath._patched = true;
-        if (import.meta.env.DEV) {
-          console.log('[i18n] ✅ Patched utils.getPath (delayed 2)');
-        }
-      }
-    } catch (err) {
-      // Ignore
-    }
-  }, 200);
+  // Silently fail - resources are already safe
 }
 
 // CRITICAL FIX: Add post-processor to catch any remaining translation errors
@@ -6306,3 +6163,4 @@ i18n.on('languageChanged', (lng) => {
 });
 
 export default i18n;
+
