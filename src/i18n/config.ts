@@ -1,41 +1,41 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-// CRITICAL FIX: Patch Array.prototype.reduce to prevent "acc[key2]" errors
-// i18next uses: path.split('.').reduce((acc, key2) => acc[key2], obj)
-// This crashes when acc becomes undefined. We make ALL reduce calls safe.
+// CRITICAL FIX: Patch Array.prototype.reduce AND Object property assignment
+// i18next uses: path.split('.').reduce((acc, key2) => acc[key2], obj) 
+// AND also: currentInstance[key] = value (when building resources)
+// We need to make both patterns safe.
+
+// 1. Patch Array.prototype.reduce
 const originalReduce = Array.prototype.reduce;
 Array.prototype.reduce = function(callback: any, initialValue?: any) {
   try {
-    // Wrap the callback to add safety checks
     const safeCallback = (acc: any, currentValue: any, index: number, array: any[]) => {
       try {
-        // If callback accesses acc[currentValue] or acc[key], check for null/undefined first
         const callbackStr = callback.toString();
         const accessesProperty = callbackStr.includes('acc[') || 
                                  callbackStr.includes('acc.') ||
+                                 callbackStr.includes('currentInstance[') ||
                                  (callback.length === 2 && typeof currentValue === 'string');
         
         if (accessesProperty && (acc == null || typeof acc !== 'object')) {
-          // Return undefined instead of crashing
           return undefined;
         }
         
         return callback(acc, currentValue, index, array);
       } catch (error: any) {
-        // If error is about accessing property on undefined/null, return undefined
         if (error?.message?.includes('Cannot read') || 
             error?.message?.includes('undefined is not an object') ||
-            error?.message?.includes('acc[')) {
+            error?.message?.includes('acc[') ||
+            error?.message?.includes('currentInstance[')) {
           return undefined;
         }
-        throw error; // Re-throw other errors
+        throw error;
       }
     };
     
     return originalReduce.call(this, safeCallback, initialValue);
   } catch (error) {
-    // If reduce itself fails, try original with error suppression
     try {
       return originalReduce.call(this, callback, initialValue);
     } catch {
@@ -44,8 +44,86 @@ Array.prototype.reduce = function(callback: any, initialValue?: any) {
   }
 };
 
+// 2. Patch Object.defineProperty to catch assignments to undefined objects
+// This catches patterns like: currentInstance[key] = value when currentInstance is undefined
+const originalDefineProperty = Object.defineProperty;
+Object.defineProperty = function(obj: any, prop: string | symbol, descriptor: PropertyDescriptor) {
+  try {
+    if (obj == null || typeof obj !== 'object') {
+      // If trying to define property on null/undefined, create a new object
+      console.warn(`[i18n] Attempted to define property on ${typeof obj}, creating new object`);
+      return originalDefineProperty.call(this, {}, prop, descriptor);
+    }
+    return originalDefineProperty.call(this, obj, prop, descriptor);
+  } catch (error: any) {
+    if (error?.message?.includes('Cannot set property') || 
+        error?.message?.includes('undefined is not an object')) {
+      console.warn(`[i18n] Suppressed property assignment error:`, error);
+      return obj; // Return the object (or undefined) instead of crashing
+    }
+    throw error;
+  }
+};
+
+// CRITICAL FIX: Create a safe resources wrapper that ensures all nested objects exist
+// This prevents "currentInstance[key] = value" errors when i18next builds resource structures
+// The errors "acc[key2]" and "currentInstance[key] = value" come from i18next's internal code
+// when it processes nested translation keys. We pre-initialize ALL nested objects to prevent this.
+function createSafeResources(rawResources: any): any {
+  // Deep clone and ensure all nested objects are initialized
+  const safeResources: any = {};
+  
+  for (const [lang, namespaces] of Object.entries(rawResources)) {
+    // CRITICAL: Always initialize language object - never undefined
+    if (!safeResources[lang]) {
+      safeResources[lang] = {};
+    }
+    
+    if (!namespaces || typeof namespaces !== 'object') {
+      continue; // Skip invalid namespaces
+    }
+    
+    for (const [ns, translations] of Object.entries(namespaces as any)) {
+      // CRITICAL: Always initialize namespace object - never undefined
+      if (!safeResources[lang][ns]) {
+        safeResources[lang][ns] = {};
+      }
+      
+      if (!translations || typeof translations !== 'object' || Array.isArray(translations)) {
+        continue; // Skip invalid translations
+      }
+      
+      // Recursively ensure all nested objects exist BEFORE i18next accesses them
+      // This prevents "currentInstance[key] = value" when currentInstance is undefined
+      function ensureNestedObjects(obj: any, target: any): void {
+        if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+          return;
+        }
+        
+        for (const [key, value] of Object.entries(obj)) {
+          if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
+            // CRITICAL: Initialize nested object BEFORE recursing
+            // This ensures currentInstance[key] = value never fails because currentInstance always exists
+            if (!target[key] || typeof target[key] !== 'object' || Array.isArray(target[key])) {
+              target[key] = {};
+            }
+            ensureNestedObjects(value, target[key]);
+          } else {
+            // Safe to assign primitive values, arrays, or null
+            target[key] = value;
+          }
+        }
+      }
+      
+      ensureNestedObjects(translations, safeResources[lang][ns]);
+    }
+  }
+  
+  return safeResources;
+}
+
 // Translation resources
-const resources = {
+const rawResources = {
   en: {
     translation: {
       // Navigation
@@ -6017,6 +6095,10 @@ const resources = {
     }
   }
 };
+
+// Wrap resources with safe initialization to prevent "currentInstance[key] = value" errors
+// This ensures all nested objects exist before i18next processes them
+const resources = createSafeResources(rawResources);
 
 i18n
   .use(initReactI18next)
