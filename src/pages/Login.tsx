@@ -13,7 +13,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { GlobalBackground } from "@/components/GlobalBackground";
-import RealisticGlobe from "@/components/visuals/RealisticGlobe";
+import HeritageGlobe from "@/components/HeritageGlobe";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -96,9 +96,15 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative flex flex-col lg:flex-row items-start lg:items-center justify-center lg:justify-between px-4 lg:px-16 pt-16 lg:pt-0 pb-8">
-      {/* Left Column: Login Content */}
-      <div className="w-full lg:w-[480px] max-w-lg mx-auto lg:mx-0 relative z-10 lg:pt-20">
+    <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
+      {/* Heritage Globe as Background - Positioned to show Poland (20°E, 52°N) */}
+      <HeritageGlobe asBackground={true} country="PL" />
+      
+      {/* Gradient overlay for better text readability - Same as homepage */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
+      
+      {/* Login Content */}
+      <div className="w-full max-w-lg mx-auto relative z-10">
         {/* Header + Subtitle */}
         <div className="space-y-2 mb-6 text-center">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text leading-tight whitespace-nowrap">
@@ -272,11 +278,6 @@ const Login = () => {
             ← Back to Homepage
           </a>
         </div>
-      </div>
-
-      {/* Right Column: Full-Screen Globe */}
-      <div className="hidden lg:flex relative lg:flex-1 h-screen items-center justify-center">
-        <RealisticGlobe />
       </div>
     </div>
   );
