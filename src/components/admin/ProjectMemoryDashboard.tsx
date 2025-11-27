@@ -68,21 +68,34 @@ export function ProjectMemoryDashboard() {
   const memory = Array.isArray(memoryData) ? memoryData : [];
   const agentActivity = Array.isArray(activityData) ? activityData : [];
 
-  const memoryMap = memory.reduce((acc: any, item: any) => {
-    if (item?.memory_key) {
-      try {
-        // Try to parse if it's a JSON string, otherwise use as-is
-        const value = typeof item.memory_value === 'string' 
-          ? JSON.parse(item.memory_value) 
-          : item.memory_value;
-        acc[item.memory_key] = value;
-      } catch {
-        // If parsing fails, use the value as-is
-        acc[item.memory_key] = item.memory_value;
-      }
+  const memoryMap = (() => {
+    try {
+      return memory.reduce((acc: any, item: any) => {
+        if (!item || typeof item !== 'object' || !item.memory_key) return acc;
+        try {
+          // Try to parse if it's a JSON string, otherwise use as-is
+          let value = item.memory_value;
+          if (typeof item.memory_value === 'string') {
+            try {
+              value = JSON.parse(item.memory_value);
+            } catch {
+              value = item.memory_value;
+            }
+          }
+          if (item.memory_key && value !== undefined && value !== null) {
+            acc[item.memory_key] = value;
+          }
+        } catch (error) {
+          // Silently skip invalid items
+          console.warn('Failed to process memory item:', item, error);
+        }
+        return acc;
+      }, {} as Record<string, any>);
+    } catch (error) {
+      console.error('Failed to build memory map:', error);
+      return {};
     }
-    return acc;
-  }, {} as Record<string, any>);
+  })();
 
   const systemConfig = (memoryMap.system_configuration && typeof memoryMap.system_configuration === 'object') 
     ? memoryMap.system_configuration 
@@ -307,7 +320,7 @@ export function ProjectMemoryDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
-            {systemConfig.integration_status && Object.entries(systemConfig.integration_status).map(([service, status]: [string, any]) => (
+            {systemConfig.integration_status && typeof systemConfig.integration_status === 'object' && Object.entries(systemConfig.integration_status).map(([service, status]: [string, any]) => (
               <div key={service} className="text-center p-4 rounded-lg border">
                 <div className="flex items-center justify-center mb-2">
                   {status === 'healthy' ? (
@@ -339,7 +352,7 @@ export function ProjectMemoryDashboard() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2 flex-wrap">
-            {systemConfig.peak_usage_hours?.map((hour: number) => (
+            {Array.isArray(systemConfig.peak_usage_hours) && systemConfig.peak_usage_hours.map((hour: number) => (
               <Badge key={hour} variant="outline" className="text-primary">
                 {hour}:00 - {hour + 1}:00
               </Badge>
