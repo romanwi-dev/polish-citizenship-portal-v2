@@ -6088,44 +6088,47 @@ try {
     }
   } else {
     // If store is not available yet, try again after a short delay
-    setTimeout(() => {
-      try {
-        const delayedStore = (i18n as any).store;
-        if (delayedStore && typeof delayedStore.getResource === 'function') {
-          const originalGetResource = delayedStore.getResource.bind(delayedStore);
-          delayedStore.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
-            try {
-              const languages = Array.isArray(lng) ? lng : [lng];
-              const namespaces = Array.isArray(ns) ? ns : [ns];
-              
-              for (const lang of languages) {
-                for (const namespace of namespaces) {
-                  try {
-                    const resource = originalGetResource(lang, namespace, '', options);
-                    if (!resource) continue;
-                    if (!key) return resource;
-                    const value = getNestedValue(resource, key);
-                    if (value !== undefined) return value;
-                  } catch {
-                    continue;
+    // SSR-SAFE: Only use setTimeout in browser environment
+    if (typeof window !== 'undefined' && typeof setTimeout !== 'undefined') {
+      setTimeout(() => {
+        try {
+          const delayedStore = (i18n as any).store;
+          if (delayedStore && typeof delayedStore.getResource === 'function') {
+            const originalGetResource = delayedStore.getResource.bind(delayedStore);
+            delayedStore.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
+              try {
+                const languages = Array.isArray(lng) ? lng : [lng];
+                const namespaces = Array.isArray(ns) ? ns : [ns];
+                
+                for (const lang of languages) {
+                  for (const namespace of namespaces) {
+                    try {
+                      const resource = originalGetResource(lang, namespace, '', options);
+                      if (!resource) continue;
+                      if (!key) return resource;
+                      const value = getNestedValue(resource, key);
+                      if (value !== undefined) return value;
+                    } catch {
+                      continue;
+                    }
                   }
                 }
+                return undefined;
+              } catch {
+                return undefined;
               }
-              return undefined;
-            } catch {
-              return undefined;
+            };
+            if (import.meta.env.DEV) {
+              console.log('[i18n] ✅ Successfully patched getResource (delayed)');
             }
-          };
+          }
+        } catch (err) {
           if (import.meta.env.DEV) {
-            console.log('[i18n] ✅ Successfully patched getResource (delayed)');
+            console.warn('[i18n] Delayed patch failed:', err);
           }
         }
-      } catch (err) {
-        if (import.meta.env.DEV) {
-          console.warn('[i18n] Delayed patch failed:', err);
-        }
-      }
-    }, 100);
+      }, 100);
+    }
   }
 } catch (error) {
   // If patching fails, log but don't crash
@@ -6149,10 +6152,13 @@ i18n.on('missingKey', (lng: string[], ns: string, key: string, fallbackValue: st
 });
 
 // Handle RTL for Hebrew
+// SSR-SAFE: Only access document in browser environment
 i18n.on('languageChanged', (lng) => {
-  const dir = lng === 'he' ? 'rtl' : 'ltr';
-  document.documentElement.dir = dir;
-  document.documentElement.lang = lng;
+  if (typeof window !== 'undefined' && document?.documentElement) {
+    const dir = lng === 'he' ? 'rtl' : 'ltr';
+    document.documentElement.dir = dir;
+    document.documentElement.lang = lng;
+  }
 });
 
 export default i18n;
