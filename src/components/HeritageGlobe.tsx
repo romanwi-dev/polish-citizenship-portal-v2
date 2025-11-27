@@ -1,6 +1,6 @@
 import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere } from '@react-three/drei';
+import { OrbitControls, Sphere, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Settings ---
@@ -312,9 +312,9 @@ const EarthGlobe = ({ targetCountry }: { targetCountry?: string }) => {
       // - Poland (20°E) would be at approximately 48% + (20/360)*100% = 53.56%
       // To show Poland, we need to rotate the globe so that 20°E faces the camera
       // Since the texture wraps, we can rotate either direction
-      // Using -1.25 radians (~-72°) to rotate the globe to show Europe/Poland more prominently
-      // Adjusted to better center Poland in view
-      return -1.25;
+      // Using -1.4 radians (~-80°) to rotate the globe to show Europe/Poland
+      // This accounts for the texture offset and ensures Poland is visible
+      return -1.4;
     }
     return 0;
   }, [targetCountry]);
