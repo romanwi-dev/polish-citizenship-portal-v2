@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/98b4e1c7-7682-4f23-9f68-2a61bbec99a9
+**URL**: https://polish-citizenship-portal.com
 
 ## How can I edit this code?
 
