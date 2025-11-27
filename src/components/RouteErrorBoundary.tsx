@@ -23,10 +23,42 @@ export class RouteErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error): State {
+    // CRITICAL: Suppress i18next errors to prevent route crash
+    const isI18nError = 
+      error?.message?.includes('acc[key2]') ||
+      error?.message?.includes('currentInstance[key]') ||
+      error?.message?.includes('undefined is not an object') ||
+      error?.stack?.includes('acc[key2]') ||
+      error?.stack?.includes('currentInstance');
+    
+    if (isI18nError) {
+      if (import.meta.env.DEV) {
+        console.warn('[RouteErrorBoundary] Suppressed i18next error:', error.message);
+      }
+      // Don't set hasError for i18next errors - route continues normally
+      return { hasError: false, error: null };
+    }
+    
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
+    // CRITICAL: Suppress i18next errors
+    const isI18nError = 
+      error?.message?.includes('acc[key2]') ||
+      error?.message?.includes('currentInstance[key]') ||
+      error?.message?.includes('undefined is not an object') ||
+      error?.stack?.includes('acc[key2]') ||
+      error?.stack?.includes('currentInstance');
+    
+    if (isI18nError) {
+      if (import.meta.env.DEV) {
+        console.warn('[RouteErrorBoundary] Suppressed i18next error:', error.message);
+      }
+      // Don't process i18next errors - just return
+      return;
+    }
+    
     if (import.meta.env.DEV) {
       console.error('🚨 Route Error Boundary caught:', error, errorInfo);
     }

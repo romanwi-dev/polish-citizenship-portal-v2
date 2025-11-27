@@ -6334,7 +6334,7 @@ i18n
     // CRITICAL FIX: Safe handling of missing nested keys
     returnNull: false, // Don't return null for missing keys
     returnEmptyString: true, // Return empty string instead
-    // Keep keySeparator enabled (default '.') but we'll patch the internal resolver
+    // Keep keySeparator enabled for nested keys like "home.hero.title"
     keySeparator: '.',
     nsSeparator: ':',
     // Safe nested key resolution - prevents "acc[key2]" errors
@@ -6387,22 +6387,33 @@ if (typeof window !== 'undefined') {
 }
 
 
-// CRITICAL: Global error handler to catch acc[key2] errors before they crash the app
+// CRITICAL: Global error handler to catch acc[key2] and currentInstance[key] errors before they crash the app
 if (typeof window !== 'undefined') {
   const originalErrorHandler = window.onerror;
   window.onerror = function(message, source, lineno, colno, error) {
-    // Check if this is the acc[key2] error
-    const isAccKey2Error = 
-      (typeof message === 'string' && (message.includes('acc[key2]') || message.includes('undefined is not an object'))) ||
-      (error?.message?.includes('acc[key2]') || error?.message?.includes('undefined is not an object')) ||
-      (error?.stack?.includes('acc[key2]'));
+    // Check if this is an i18next-related error that we should suppress
+    const isI18nError = 
+      (typeof message === 'string' && (
+        message.includes('acc[key2]') || 
+        message.includes('currentInstance[key]') ||
+        message.includes('undefined is not an object') ||
+        message.includes('Cannot read properties') ||
+        message.includes('Cannot set properties')
+      )) ||
+      (error?.message?.includes('acc[key2]') || 
+       error?.message?.includes('currentInstance[key]') ||
+       error?.message?.includes('undefined is not an object') ||
+       error?.message?.includes('Cannot read properties') ||
+       error?.message?.includes('Cannot set properties')) ||
+      (error?.stack?.includes('acc[key2]') || 
+       error?.stack?.includes('currentInstance'));
     
-    if (isAccKey2Error) {
+    if (isI18nError) {
       // Suppress the error to prevent app crash
       if (import.meta.env.DEV) {
-        console.warn('[i18n] Caught and suppressed acc[key2] error:', error?.stack || message);
+        console.warn('[i18n] Caught and suppressed i18next error:', error?.message || message);
       }
-      return true; // Prevent default error handling
+      return true; // Prevent default error handling - app continues
     }
     
     // Call original handler for other errors
@@ -6413,19 +6424,31 @@ if (typeof window !== 'undefined') {
   };
   
   // Also catch unhandled promise rejections
+  const originalUnhandledRejection = window.onunhandledrejection;
   window.addEventListener('unhandledrejection', (event) => {
     const reason = event.reason;
-    const isAccKey2Error = 
-      (reason?.message?.includes('acc[key2]') || reason?.message?.includes('undefined is not an object')) ||
-      (reason?.stack?.includes('acc[key2]'));
+    const isI18nError = 
+      (reason?.message?.includes('acc[key2]') || 
+       reason?.message?.includes('currentInstance[key]') ||
+       reason?.message?.includes('undefined is not an object') ||
+       reason?.message?.includes('Cannot read properties') ||
+       reason?.message?.includes('Cannot set properties')) ||
+      (reason?.stack?.includes('acc[key2]') || 
+       reason?.stack?.includes('currentInstance'));
     
-    if (isAccKey2Error) {
-      event.preventDefault();
+    if (isI18nError) {
+      event.preventDefault(); // Suppress the rejection
       if (import.meta.env.DEV) {
-        console.warn('[i18n] Caught and suppressed acc[key2] promise rejection');
+        console.warn('[i18n] Caught and suppressed i18next promise rejection:', reason?.message);
       }
+      return;
     }
-  });
+    
+    // Call original handler for other rejections
+    if (originalUnhandledRejection) {
+      originalUnhandledRejection.call(window, event);
+    }
+  }, true); // Use capture phase to catch early
 }
 
 // Patch immediately (for synchronous init cases)

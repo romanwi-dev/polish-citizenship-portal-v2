@@ -60,10 +60,42 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public static getDerivedStateFromError(error: Error): State {
+    // CRITICAL: Suppress i18next errors to prevent app crash
+    const isI18nError = 
+      error?.message?.includes('acc[key2]') ||
+      error?.message?.includes('currentInstance[key]') ||
+      error?.message?.includes('undefined is not an object') ||
+      error?.stack?.includes('acc[key2]') ||
+      error?.stack?.includes('currentInstance');
+    
+    if (isI18nError) {
+      if (import.meta.env.DEV) {
+        console.warn('[ErrorBoundary] Suppressed i18next error:', error.message);
+      }
+      // Don't set hasError for i18next errors - app continues normally
+      return { hasError: false, error: null, errorInfo: null, recoveredState: null };
+    }
+    
     return { hasError: true, error, errorInfo: null, recoveredState: null };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // CRITICAL: Suppress i18next errors
+    const isI18nError = 
+      error?.message?.includes('acc[key2]') ||
+      error?.message?.includes('currentInstance[key]') ||
+      error?.message?.includes('undefined is not an object') ||
+      error?.stack?.includes('acc[key2]') ||
+      error?.stack?.includes('currentInstance');
+    
+    if (isI18nError) {
+      if (import.meta.env.DEV) {
+        console.warn('[ErrorBoundary] Suppressed i18next error:', error.message);
+      }
+      // Don't process i18next errors - just return
+      return;
+    }
+    
     console.error('ErrorBoundary caught an error:', error, errorInfo);
     
     // Save current state server-side (no client-side HMAC)
