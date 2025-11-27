@@ -29,6 +29,10 @@ function createSafeResources(rawResources: any): Record<string, Record<string, a
       safeResources[lang][ns] = {};
       
       // Recursively ensure all nested objects exist
+      // CRITICAL: Initialize target[key] BEFORE accessing it to prevent "currentInstance[key] = value" errors
+      // The bug: i18next internally does "currentInstance[key] = value" when building nested resource structures.
+      // If currentInstance (which is target[key]) is undefined, this crashes.
+      // Fix: Always initialize target[key] as an object BEFORE recursing or assigning nested values.
       function ensureNestedObjects(source: any, target: Record<string, any>): void {
         if (!source || typeof source !== 'object' || Array.isArray(source)) {
           return;
@@ -36,12 +40,16 @@ function createSafeResources(rawResources: any): Record<string, Record<string, a
         
         for (const [key, value] of Object.entries(source)) {
           if (value && typeof value === 'object' && !Array.isArray(value) && value !== null) {
-            // Initialize nested object if it doesn't exist
+            // CRITICAL FIX: For nested objects, ALWAYS initialize target[key] as {} BEFORE recursing
+            // This ensures that when i18next does "currentInstance[key] = value", currentInstance (target[key]) is never undefined
             if (!target[key] || typeof target[key] !== 'object' || Array.isArray(target[key])) {
               target[key] = {};
             }
+            // Now safely recurse - target[key] is guaranteed to be an object
             ensureNestedObjects(value, target[key] as Record<string, any>);
           } else {
+            // For primitive values, arrays, or null, directly assign
+            // No need to initialize as object first since we're assigning a primitive
             target[key] = value;
           }
         }
