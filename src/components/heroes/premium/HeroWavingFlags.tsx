@@ -174,7 +174,6 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
         </div>
-      </div>
 
         {/* Stats Cards - Full width below form bottom edge on desktop, same size as BenefitCard on mobile */}
         <div className="mt-12 md:mt-16 lg:mt-32 order-3 lg:order-none">
@@ -205,6 +204,7 @@ export const HeroWavingFlags = () => {
             description={t('hero.subtitle1')}
             variant="minimal"
           />
+        </div>
         </div>
       </div>
     </section>
