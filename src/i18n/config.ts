@@ -6035,47 +6035,45 @@ function getNestedValue(obj: any, path: string, fallback: any = undefined): any 
 
 // CRITICAL FIX: Override i18next's internal path resolver
 // i18next uses reduce internally which can cause "acc[key2]" errors
-// We patch the utils.getPath function to use our safe helper instead
+// We patch the resource store's getResource method which is the actual entry point
 try {
-  const i18nextUtils = (i18n as any).options?.utils || (i18n as any).utils;
-  if (i18nextUtils && i18nextUtils.getPath) {
-    const originalGetPath = i18nextUtils.getPath;
-    i18nextUtils.getPath = function(obj: any, path: string, defaultValue?: any) {
-      try {
-        // Use our safe nested value helper instead of reduce
-        return getNestedValue(obj, path, defaultValue);
-      } catch (error) {
-        // Fallback to original if our helper fails
-        try {
-          return originalGetPath.call(this, obj, path, defaultValue);
-        } catch {
-          return defaultValue;
-        }
-      }
-    };
-  }
-} catch (error) {
-  // If patching fails, log but don't crash
-  if (import.meta.env.DEV) {
-    console.warn('[i18n] Could not patch internal path resolver:', error);
-  }
-}
-
-// Alternative approach: Patch the resource store's getResource method
-// This is called when i18next resolves translation keys
-try {
+  // Wait for i18n to be fully initialized
   const store = (i18n as any).store;
-  if (store && store.getResource) {
+  if (store && typeof store.getResource === 'function') {
     const originalGetResource = store.getResource.bind(store);
-    store.getResource = function(lng: string, ns: string, key: string, options?: any) {
+    
+    // Override getResource to use safe nested access
+    store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
       try {
-        // Get the base resource object
-        const resource = originalGetResource(lng, ns, '', options);
-        if (!resource || !key) return resource;
+        // Handle array inputs (fallback languages)
+        const languages = Array.isArray(lng) ? lng : [lng];
+        const namespaces = Array.isArray(ns) ? ns : [ns];
         
-        // Use safe nested access instead of reduce
-        const value = getNestedValue(resource, key);
-        return value !== undefined ? value : undefined;
+        // Try each language and namespace combination
+        for (const lang of languages) {
+          for (const namespace of namespaces) {
+            try {
+              // Get the base resource object for this language/namespace
+              const resource = originalGetResource(lang, namespace, '', options);
+              if (!resource) continue;
+              
+              // If no key provided, return the resource object
+              if (!key) return resource;
+              
+              // Use safe nested access instead of reduce
+              const value = getNestedValue(resource, key);
+              if (value !== undefined) {
+                return value;
+              }
+            } catch (err) {
+              // Continue to next language/namespace
+              continue;
+            }
+          }
+        }
+        
+        // No value found, return undefined
+        return undefined;
       } catch (error) {
         // If any error occurs, return undefined instead of crashing
         if (import.meta.env.DEV) {
@@ -6084,6 +6082,50 @@ try {
         return undefined;
       }
     };
+    
+    if (import.meta.env.DEV) {
+      console.log('[i18n] ✅ Successfully patched getResource with safe nested access');
+    }
+  } else {
+    // If store is not available yet, try again after a short delay
+    setTimeout(() => {
+      try {
+        const delayedStore = (i18n as any).store;
+        if (delayedStore && typeof delayedStore.getResource === 'function') {
+          const originalGetResource = delayedStore.getResource.bind(delayedStore);
+          delayedStore.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
+            try {
+              const languages = Array.isArray(lng) ? lng : [lng];
+              const namespaces = Array.isArray(ns) ? ns : [ns];
+              
+              for (const lang of languages) {
+                for (const namespace of namespaces) {
+                  try {
+                    const resource = originalGetResource(lang, namespace, '', options);
+                    if (!resource) continue;
+                    if (!key) return resource;
+                    const value = getNestedValue(resource, key);
+                    if (value !== undefined) return value;
+                  } catch {
+                    continue;
+                  }
+                }
+              }
+              return undefined;
+            } catch {
+              return undefined;
+            }
+          };
+          if (import.meta.env.DEV) {
+            console.log('[i18n] ✅ Successfully patched getResource (delayed)');
+          }
+        }
+      } catch (err) {
+        if (import.meta.env.DEV) {
+          console.warn('[i18n] Delayed patch failed:', err);
+        }
+      }
+    }, 100);
   }
 } catch (error) {
   // If patching fails, log but don't crash
@@ -6091,6 +6133,47 @@ try {
     console.warn('[i18n] Could not patch resource store:', error);
   }
 }
+
+// CRITICAL FIX: Wrap i18n.t() function with safe error handling
+// This is a final safety net to prevent any translation errors from crashing the app
+const originalT = i18n.t.bind(i18n);
+i18n.t = function(key: string | string[], options?: any): string {
+  try {
+    // If key is an array, try each key until one works
+    if (Array.isArray(key)) {
+      for (const k of key) {
+        try {
+          const result = originalT(k, options);
+          // If result is not the key itself (meaning it was found), return it
+          if (result && result !== k) {
+            return result;
+          }
+        } catch {
+          continue;
+        }
+      }
+      // If none worked, return the first key as fallback
+      return typeof key[0] === 'string' ? key[0] : '';
+    }
+    
+    // Single key - use original function with try-catch
+    try {
+      return originalT(key, options);
+    } catch (error) {
+      // If translation fails, return the key as fallback
+      if (import.meta.env.DEV) {
+        console.warn(`[i18n] Translation failed for key "${key}":`, error);
+      }
+      return typeof key === 'string' ? key : '';
+    }
+  } catch (error) {
+    // Ultimate fallback - return key or empty string
+    if (import.meta.env.DEV) {
+      console.error('[i18n] Critical translation error:', error);
+    }
+    return typeof key === 'string' ? key : (Array.isArray(key) ? key[0] || '' : '');
+  }
+};
 
 // Handle RTL for Hebrew
 i18n.on('languageChanged', (lng) => {
