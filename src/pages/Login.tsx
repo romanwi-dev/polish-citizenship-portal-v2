@@ -98,8 +98,8 @@ const Login = () => {
   return (
     <div className="min-h-screen overflow-x-hidden relative flex flex-col items-start justify-start px-4 lg:px-16 pt-16 lg:pt-20 pb-8">
       <GlobalBackground />
-      {/* Heritage Globe as Background - Bigger view showing Poland */}
-      <HeritageGlobe asBackground={true} country="PL" cameraFov={40} cameraPosition={[0, 0, 4.5]} initialRotation={[0.2, -0.5, 0]} />
+      {/* Heritage Globe as Background - Showing Poland */}
+      <HeritageGlobe asBackground={true} country="PL" cameraFov={55} cameraPosition={[0, 0, 5.5]} initialRotation={[0.15, -0.3, 0]} />
       
       {/* Gradient overlay for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
@@ -218,15 +218,7 @@ const Login = () => {
               <div className="space-y-4">
                 <Button 
                   type="submit" 
-                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30"
-                  style={{ 
-                    height: '64px',
-                    minHeight: '64px',
-                    maxHeight: '64px',
-                    paddingTop: '0',
-                    paddingBottom: '0',
-                    lineHeight: '64px'
-                  }}
+                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30 flex items-center justify-center"
                   disabled={loading}
                 >
                   {loading ? (
@@ -249,14 +241,9 @@ const Login = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30"
+                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30 flex items-center justify-center"
                   style={{ 
-                    height: '64px',
-                    minHeight: '64px',
-                    maxHeight: '64px',
-                    paddingTop: '0',
-                    paddingBottom: '0',
-                    lineHeight: '64px'
+                    minHeight: '64px'
                   }}
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
@@ -266,6 +253,18 @@ const Login = () => {
                 </Button>
               </div>
             </form>
+            
+            {/* Back to Homepage Button */}
+            <div className="mt-6">
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full h-16 md:h-20 text-base md:text-lg font-medium bg-white/3 hover:bg-white/8 shadow-sm hover:shadow-md backdrop-blur-sm border border-white/20 text-muted-foreground hover:text-foreground transition-all"
+                onClick={() => navigate('/')}
+              >
+                ← Back to Homepage
+              </Button>
+            </div>
         </div>
       </div>
     </div>
