@@ -6080,14 +6080,28 @@ i18n
     },
   });
 
-// Safe nested value helper - used only for our internal patching of i18next's store
+/**
+ * Safe nested value helper that prevents "acc[key2]" errors.
+ * This function safely walks nested object paths without throwing errors.
+ * 
+ * The bug: i18next internally uses patterns like:
+ *   path.split('.').reduce((acc, key2) => acc[key2], obj)
+ * 
+ * When a nested key doesn't exist, `acc` becomes undefined, and `acc[key2]` throws.
+ * 
+ * Fix: Check at each step that `current` is a valid object before accessing properties.
+ */
 function getNestedValue(obj: any, path: string, fallback: any = undefined): any {
+  // Early return for invalid inputs
   if (!obj || !path) return fallback;
   
   const keys = path.split(".");
   let current: any = obj;
   
+  // CRITICAL: Check at each step that current is a valid object before accessing properties
+  // This prevents "undefined is not an object (evaluating 'acc[key2]')" errors
   for (const key of keys) {
+    // Guard: If current is null/undefined, not an object, or key doesn't exist, return fallback
     if (current == null || typeof current !== "object" || !(key in current)) {
       return fallback;
     }
@@ -6097,53 +6111,84 @@ function getNestedValue(obj: any, path: string, fallback: any = undefined): any 
   return current ?? fallback;
 }
 
-// Patch i18next's store.utils.getPath to use safe nested access
-// This is the ONLY place where we intercept i18next's internal code
-try {
-  const store = (i18n as any).store;
-  if (store?.utils?.getPath) {
-    const originalGetPath = store.utils.getPath.bind(store.utils);
-    store.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
-      try {
-        return getNestedValue(obj, path, defaultValue);
-      } catch {
+/**
+ * Patch i18next's store.utils.getPath to use safe nested access.
+ * This prevents "acc[key2]" errors when i18next processes nested translation keys.
+ * 
+ * The error occurs because i18next's internal code uses:
+ *   path.split('.').reduce((acc, key2) => acc[key2], obj)
+ * 
+ * When a nested key is missing, `acc` becomes undefined and `acc[key2]` throws.
+ */
+function patchI18nextStore(): void {
+  try {
+    const store = (i18n as any).store;
+    if (!store) return;
+    
+    // Patch store.utils.getPath - this is the core method that uses reduce
+    if (store.utils?.getPath && typeof store.utils.getPath === 'function') {
+      const originalGetPath = store.utils.getPath.bind(store.utils);
+      store.utils.getPath = function(obj: any, path: string, defaultValue?: any) {
         try {
-          return originalGetPath.call(this, obj, path, defaultValue);
+          // Use our safe nested value helper instead of i18next's unsafe reduce pattern
+          return getNestedValue(obj, path, defaultValue);
         } catch {
-          return defaultValue;
-        }
-      }
-    };
-  }
-  
-  // Also patch getResource as a safety measure
-  if (store?.getResource) {
-    const originalGetResource = store.getResource.bind(store);
-    store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
-      try {
-        const languages = Array.isArray(lng) ? lng : [lng];
-        const namespaces = Array.isArray(ns) ? ns : [ns];
-        
-        for (const lang of languages) {
-          for (const namespace of namespaces) {
-            try {
-              const resource = originalGetResource(lang, namespace, '', options);
-              if (!resource || !key) return resource;
-              const value = getNestedValue(resource, key);
-              if (value !== undefined) return value;
-            } catch {
-              continue;
-            }
+          try {
+            // Fallback to original if our helper fails
+            return originalGetPath.call(this, obj, path, defaultValue);
+          } catch {
+            // Ultimate fallback: return defaultValue
+            return defaultValue;
           }
         }
-        return undefined;
-      } catch {
-        return undefined;
-      }
-    };
+      };
+    }
+    
+    // Also patch getResource as a safety measure
+    if (store.getResource && typeof store.getResource === 'function') {
+      const originalGetResource = store.getResource.bind(store);
+      store.getResource = function(lng: string | string[], ns: string | string[], key: string, options?: any) {
+        try {
+          const languages = Array.isArray(lng) ? lng : [lng];
+          const namespaces = Array.isArray(ns) ? ns : [ns];
+          
+          for (const lang of languages) {
+            for (const namespace of namespaces) {
+              try {
+                const resource = originalGetResource(lang, namespace, '', options);
+                if (!resource || !key) return resource;
+                // Use safe nested access instead of i18next's unsafe reduce
+                const value = getNestedValue(resource, key);
+                if (value !== undefined) return value;
+              } catch {
+                continue;
+              }
+            }
+          }
+          return undefined;
+        } catch {
+          return undefined;
+        }
+      };
+    }
+  } catch (error) {
+    // Silently fail - resources are already safe via createSafeResources
   }
-} catch (error) {
-  // Silently fail - resources are already safe
+}
+
+// Patch immediately after initialization
+patchI18nextStore();
+
+// Also patch after a short delay in case store initializes asynchronously
+if (typeof window !== 'undefined' && typeof setTimeout !== 'undefined') {
+  setTimeout(() => {
+    patchI18nextStore();
+  }, 0);
+  
+  // Additional delayed patch for edge cases
+  setTimeout(() => {
+    patchI18nextStore();
+  }, 100);
 }
 
 // CRITICAL FIX: Add post-processor to catch any remaining translation errors
