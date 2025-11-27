@@ -95,11 +95,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative flex items-start justify-center pt-12 md:pt-16 lg:pt-24">
+    <div className="min-h-screen overflow-x-hidden relative flex items-start justify-center pt-24 lg:pt-32">
       <GlobalBackground />
-      <div className="w-full max-w-md px-4 md:px-6 lg:px-8 relative z-10 flex flex-col items-center">
+      <div className="w-full max-w-md px-4 md:px-6 lg:px-8 relative z-10 flex flex-col">
         {/* Header */}
-        <div className="animate-fade-in-up mb-6 w-full">
+        <div className="animate-fade-in-up mb-6">
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight break-words mb-3">
             {isSignUp ? "Create Account" : "Welcome Back"}
           </h2>
@@ -123,7 +123,7 @@ const Login = () => {
               {isSignUp ? "Create a new account to access the case management system" : "Sign in to access your case management system"}
             </p>
             
-            <form onSubmit={handleAuth} className="space-y-5">
+            <form onSubmit={handleAuth} className="space-y-6">
               <div className="space-y-4">
                 <Label 
                   htmlFor="email" 
