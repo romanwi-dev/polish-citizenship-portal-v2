@@ -95,14 +95,11 @@ const Login = () => {
   };
 
   return (
-    <div 
-      className="min-h-screen overflow-x-hidden relative flex items-start justify-center pt-24 lg:pt-32"
-      style={{ minHeight: '100vh' }}
-    >
+    <div className="min-h-screen overflow-x-hidden relative flex items-center justify-center">
       <GlobalBackground />
-      <div className="w-full max-w-md px-4 relative z-10" style={{ maxWidth: '28rem' }}>
+      <div className="w-full max-w-md px-4 md:px-6 lg:px-8 relative z-10 flex flex-col items-center">
         {/* Header */}
-        <div className="animate-fade-in-up mb-6">
+        <div className="animate-fade-in-up mb-6 w-full">
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight break-words mb-3">
             {isSignUp ? "Create Account" : "Welcome Back"}
           </h2>
@@ -119,14 +116,14 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Form Card */}
-        <Card className="animate-scale-in w-full" style={{ width: '100%' }}>
-          <CardContent className="p-8 lg:p-10 space-y-6" style={{ padding: '2rem' }}>
+        {/* Form */}
+        <div className="animate-scale-in w-full">
+          <div className="p-8 lg:p-10 space-y-6">
             <p className="text-center text-base md:text-lg text-muted-foreground mb-6">
               {isSignUp ? "Create a new account to access the case management system" : "Sign in to access your case management system"}
             </p>
             
-            <form onSubmit={handleAuth} className="space-y-6">
+            <form onSubmit={handleAuth} className="space-y-5">
               <div className="space-y-4">
                 <Label 
                   htmlFor="email" 
@@ -258,8 +255,8 @@ const Login = () => {
                 </Button>
               </div>
             </form>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
