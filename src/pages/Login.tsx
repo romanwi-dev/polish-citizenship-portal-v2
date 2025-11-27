@@ -95,7 +95,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative flex items-center justify-center">
+    <div className="min-h-screen overflow-x-hidden relative flex items-start justify-center pt-24 lg:pt-32">
       <GlobalBackground />
       <div className="w-full max-w-md px-4 md:px-6 lg:px-8 relative z-10 flex flex-col items-center">
         {/* Header */}
