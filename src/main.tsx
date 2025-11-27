@@ -1,7 +1,9 @@
+// CRITICAL: Import i18n config FIRST to ensure patches are applied before any other code runs
+import "./i18n/config"; // Initialize i18n and apply patches
+
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import "./i18n/config"; // Initialize i18n
 
 // Initialize default theme (dark-red)
 // SSR-SAFE: Only access browser APIs when window is available

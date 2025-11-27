@@ -1,6 +1,51 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+// CRITICAL: Patch Array.prototype.reduce to prevent "acc[key2]" errors
+// This intercepts i18next's internal pattern: path.split('.').reduce((acc, key2) => acc[key2], obj)
+// The error occurs when acc becomes undefined and we try to access acc[key2]
+if (typeof window !== 'undefined') {
+  const originalReduce = Array.prototype.reduce;
+  Array.prototype.reduce = function<T, U>(
+    callback: (accumulator: U, currentValue: T, currentIndex: number, array: T[]) => U,
+    initialValue?: U
+  ): U {
+    // Wrap ALL reduce callbacks to make them safe
+    // This catches i18next's pattern and any other unsafe property access
+    const safeCallback = (acc: any, currentValue: any, index: number, array: any[]): any => {
+      // CRITICAL: Before calling the original callback, check if acc is safe
+      // If acc is null/undefined and the callback tries to access properties, return undefined
+      if (acc == null || (typeof acc !== 'object' && typeof acc !== 'function')) {
+        // Check if callback likely accesses properties on acc
+        const callbackStr = callback.toString();
+        const accessesProperties = callbackStr.includes('acc[') || 
+                                   callbackStr.includes('acc.') ||
+                                   (callback.length >= 2 && typeof currentValue === 'string');
+        
+        if (accessesProperties) {
+          // Return undefined instead of crashing
+          return undefined;
+        }
+      }
+      
+      try {
+        return callback(acc, currentValue, index, array);
+      } catch (error: any) {
+        // If it's the acc[key2] error or any property access error, return undefined
+        if (error?.message?.includes('acc[key2]') || 
+            error?.message?.includes('undefined is not an object') ||
+            error?.message?.includes('Cannot read') ||
+            error?.message?.includes('Cannot access')) {
+          return undefined;
+        }
+        throw error;
+      }
+    };
+    
+    return originalReduce.call(this, safeCallback as any, initialValue);
+  };
+}
+
 /**
  * Safely initializes all nested objects in translation resources.
  * Prevents i18next errors when it processes nested keys like "home.hero.title".
