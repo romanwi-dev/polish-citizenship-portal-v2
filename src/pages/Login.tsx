@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { PasswordStrengthMeter } from "@/components/PasswordStrengthMeter";
-import { AlertCircle, Sparkles, LogIn, UserPlus, Type } from "lucide-react";
+import { AlertCircle, Sparkles, LogIn, UserPlus } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
@@ -23,7 +23,7 @@ const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [isPasswordStrong, setIsPasswordStrong] = useState(false);
   const [breachWarning, setBreachWarning] = useState("");
-  const { isLargeFonts, toggleFontSize } = useAccessibility();
+  const { isLargeFonts } = useAccessibility();
 
   const checkPasswordBreach = async (pwd: string): Promise<boolean> => {
     try {
@@ -101,23 +101,12 @@ const Login = () => {
       {/* Left Column: Login Content */}
       <div className="w-full lg:w-1/2 max-w-lg mx-auto lg:mx-0 relative z-10">
         {/* Header + Subtitle */}
-        <div className="space-y-2 mb-6 text-center lg:text-left">
+        <div className="space-y-2 mb-6 text-center">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text leading-tight whitespace-nowrap">
             {isSignUp ? "Create Account" : "Welcome Back"}
           </h2>
-          <div className="flex justify-center lg:justify-start mb-2">
-            <Button
-              onClick={toggleFontSize}
-              variant="ghost"
-              size="icon"
-              className="h-10 w-10 md:h-12 md:w-12"
-              title="Toggle font size"
-            >
-              <Type className="h-6 w-6 md:h-8 md:w-8" />
-            </Button>
-          </div>
           <p className="text-sm md:text-base text-muted-foreground">
-            {isSignUp ? "Create a new account to access the case management system" : "Sign in to access your case management system"}
+            {isSignUp ? "Create a new account to access your case management system" : "Sign in to access your case management system"}
           </p>
         </div>
 
@@ -223,7 +212,7 @@ const Login = () => {
               <div className="space-y-4">
                 <Button 
                   type="submit" 
-                  className="w-full h-16 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
                   disabled={loading}
                 >
                   {loading ? (
@@ -246,7 +235,7 @@ const Login = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full h-16 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
