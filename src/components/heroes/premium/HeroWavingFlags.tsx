@@ -34,7 +34,7 @@ export const HeroWavingFlags = () => {
 
   return (
     // CLS FIX: min-h-screen ensures stable height, no layout shift
-    <section className="relative min-h-screen flex flex-col lg:flex-row items-center justify-center lg:justify-between overflow-hidden bg-background px-4 lg:px-16 pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-0 lg:pb-0">
+    <section className="relative min-h-screen flex flex-col lg:flex-row items-center justify-center lg:justify-between bg-background px-4 lg:px-16 pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-0 lg:pb-0">
       {/* LEFT: Text + CTA */}
       <div className={`relative z-10 w-full lg:w-1/2 max-w-3xl mx-auto lg:mx-0 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
         <div className="container px-4 mx-auto lg:px-0">
@@ -199,7 +199,7 @@ export const HeroWavingFlags = () => {
       </div>
 
       {/* RIGHT: Full-Height Globe */}
-      <div className="relative hidden lg:flex lg:w-1/2 h-screen items-center justify-center">
+      <div className="relative w-full lg:w-1/2 h-[40vh] lg:h-screen flex items-center justify-center z-[1]">
         <GlobeWidget className="w-full h-full" country="PL" />
       </div>
     </section>
