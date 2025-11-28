@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
 import { SocialShare } from '@/components/social/SocialShare';
-import HeritageGlobe from '@/components/HeritageGlobe';
 export const HeroWavingFlags = () => {
   const { t, i18n } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -35,20 +34,14 @@ export const HeroWavingFlags = () => {
   return (
     // CLS FIX: min-h-screen ensures stable height, no layout shift
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-48 lg:pb-24">
-      {/* Heritage Globe as Background */}
-      <HeritageGlobe asBackground={true} />
-      
-      {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/80 z-[1]" />
+      {/* Removed duplicate 3D Canvas - now using unified background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
 
       <div className="container relative z-10 px-4 mx-auto">
-        {/* Desktop: Two column layout, Mobile: Stacked */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr,380px] gap-8 lg:gap-8 xl:gap-10 items-start max-w-7xl mx-auto">
-          {/* Left Column: Badge + Title + Text + Stats Cards */}
-          <div className={`space-y-6 md:space-y-8 flex flex-col justify-start w-full order-1 lg:-mt-4 ${isRTL ? 'lg:text-right lg:order-2' : 'lg:text-left'}`}>
-            {/* Badge + Title Section */}
-            <div className="space-y-5 md:space-y-6 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm">
+        <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
+            <div className={`space-y-8 md:pt-8 lg:pt-0 lg:-mt-20 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
+              <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mb-6">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {t('hero.badge')}
@@ -75,8 +68,8 @@ export const HeroWavingFlags = () => {
               </div>
             </div>
             
-          {/* Right Column: Photo + Form Card - Separate card with lighter background, positioned above badge on desktop */}
-          <div className={`w-full max-w-[380px] mx-auto lg:mx-0 relative order-2 lg:order-2 lg:-mt-20 ${isRTL ? 'lg:order-1' : ''}`} style={{ perspective: '1000px' }}>
+          {/* Right Column: Photo + Form Card */}
+          <div className={`w-full max-w-[400px] mx-auto lg:mx-0 relative ${isRTL ? 'lg:order-1' : ''}`} style={{ perspective: '1000px' }}>
             <div className="glass-card rounded-2xl border border-primary/10 backdrop-blur-sm shadow-lg overflow-hidden">
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
                 {/* Front - Photo + Form */}
@@ -175,21 +168,21 @@ export const HeroWavingFlags = () => {
           </div>
         </div>
 
-        {/* Stats Cards - Full width below form bottom edge on desktop, same size as BenefitCard on mobile */}
-        <div className="mt-12 md:mt-16 lg:mt-32 order-3 lg:order-none">
-          <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-[280px] sm:max-w-7xl mx-auto px-4 sm:px-0 items-center sm:items-stretch">
+        {/* Stats Cards */}
+        <div className="mt-12 md:mt-16 lg:mt-20">
+          <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-7xl mx-auto">
           {features.map((feature, index) => {
             const FeatureIcon = feature.icon;
             return (
               <div 
                 key={index}
-                  className="glass-card hover-glow rounded-lg text-center p-6 backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-transform transition-shadow duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-primary/20 light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background w-full max-w-[280px] sm:max-w-none h-[180px] md:h-[200px] sm:h-auto flex items-center justify-center"
-                  tabIndex={0}
+                // CLS FIX: min-h ensures stable card height across breakpoints 
+                className="glass-card hover-glow p-4 md:p-6 lg:p-6 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] lg:min-h-[140px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
               >
                 <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-                    <FeatureIcon className="w-6 h-6 md:w-7 md:h-7 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
-                    <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:bg-clip-text light:text-transparent light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
-                    <p className="text-sm md:text-base font-normal bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
+                  <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
+                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
+                  <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
                 </div>
               </div>
             );
@@ -198,7 +191,7 @@ export const HeroWavingFlags = () => {
         </div>
         
         {/* Social Share Buttons */}
-        <div className="mt-32 md:mt-40 lg:mt-48 flex justify-center">
+        <div className="mt-32 flex justify-center">
           <SocialShare 
             title={t('hero.title')}
             description={t('hero.subtitle1')}
