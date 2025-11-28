@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
 import { SocialShare } from '@/components/social/SocialShare';
+import GlobeWidget from '@/components/globe/GlobeWidget';
 export const HeroWavingFlags = () => {
   const { t, i18n } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -33,14 +34,12 @@ export const HeroWavingFlags = () => {
 
   return (
     // CLS FIX: min-h-screen ensures stable height, no layout shift
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-background pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-48 lg:pb-24">
-      {/* Removed duplicate 3D Canvas - now using unified background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/60 to-background/95 z-[1]" />
-
-      <div className="container relative z-10 px-4 mx-auto">
-        <div className="grid lg:grid-cols-[1.2fr,400px] gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
-            <div className={`space-y-8 md:pt-8 lg:pt-0 lg:-mt-20 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
-              <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
+    <section className="relative min-h-screen flex flex-col lg:flex-row items-center justify-center lg:justify-between overflow-hidden bg-background px-4 lg:px-16 pt-28 pb-16 md:pt-40 md:pb-20 lg:pt-0 lg:pb-0">
+      {/* LEFT: Text + CTA */}
+      <div className={`relative z-10 w-full lg:w-1/2 max-w-3xl mx-auto lg:mx-0 ${isRTL ? 'lg:text-right' : 'lg:text-left'}`}>
+        <div className="container px-4 mx-auto lg:px-0">
+          <div className="space-y-8 md:pt-8 lg:pt-0">
+            <div className="space-y-10 text-center lg:text-left lg:[.lg\:text-right_&]:text-right">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mb-6">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -65,11 +64,10 @@ export const HeroWavingFlags = () => {
                   {t('hero.subtitle2')}
                 </p>
               </div>
-              </div>
             </div>
             
-          {/* Right Column: Photo + Form Card */}
-          <div className={`w-full max-w-[400px] mx-auto lg:mx-0 relative ${isRTL ? 'lg:order-1' : ''}`} style={{ perspective: '1000px' }}>
+            {/* Photo + Form Card */}
+            <div className={`w-full max-w-[400px] mx-auto lg:mx-0 relative ${isRTL ? 'lg:order-1' : ''}`} style={{ perspective: '1000px' }}>
             <div className="glass-card rounded-2xl border border-primary/10 backdrop-blur-sm shadow-lg overflow-hidden">
               <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
                 {/* Front - Photo + Form */}
@@ -166,39 +164,43 @@ export const HeroWavingFlags = () => {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Stats Cards */}
-        <div className="mt-12 md:mt-16 lg:mt-20">
-          <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-7xl mx-auto">
-          {features.map((feature, index) => {
-            const FeatureIcon = feature.icon;
-            return (
-              <div 
-                key={index}
-                // CLS FIX: min-h ensures stable card height across breakpoints 
-                className="glass-card hover-glow p-4 md:p-6 lg:p-6 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] lg:min-h-[140px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
-              >
-                <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-                  <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
-                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
-                  <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
+          {/* Stats Cards */}
+          <div className="mt-12 md:mt-16 lg:mt-20">
+            <div className="flex flex-col sm:grid sm:grid-cols-3 gap-4 md:gap-5 lg:gap-6 w-full max-w-7xl mx-auto">
+            {features.map((feature, index) => {
+              const FeatureIcon = feature.icon;
+              return (
+                <div 
+                  key={index}
+                  // CLS FIX: min-h ensures stable card height across breakpoints 
+                  className="glass-card hover-glow p-4 md:p-6 lg:p-6 rounded-lg text-center relative min-h-[140px] md:min-h-[160px] lg:min-h-[140px] flex items-center justify-center w-full max-w-[240px] mx-auto md:max-w-none backdrop-blur-md border dark:border-primary/20 light:border-primary/30 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] transition-all duration-300 hover:scale-105 hover:shadow-2xl light:hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                >
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-3">
+                    <FeatureIcon className="w-5 h-5 md:w-6 md:h-6 dark:text-primary light:text-white/90 dark:drop-shadow-[0_0_8px] dark:drop-shadow-primary/50 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" strokeWidth={1.5} />
+                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold dark:text-primary light:text-white dark:drop-shadow-[0_0_10px] dark:drop-shadow-primary/60 light:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" dir="ltr">{feature.stat}</h3>
+                    <p className="text-xs sm:text-sm md:text-base font-semibold dark:bg-gradient-to-r dark:from-primary dark:to-secondary dark:bg-clip-text dark:text-transparent light:from-gray-100 light:to-white light:text-gray-100 light:drop-shadow-[0_0_4px_rgba(255,255,255,0.5)] leading-tight break-words px-2" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{feature.text}</p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+            </div>
+          </div>
+          
+          {/* Social Share Buttons */}
+          <div className="mt-32 flex justify-center">
+            <SocialShare 
+              title={t('hero.title')}
+              description={t('hero.subtitle1')}
+              variant="minimal"
+            />
           </div>
         </div>
-        
-        {/* Social Share Buttons */}
-        <div className="mt-32 flex justify-center">
-          <SocialShare 
-            title={t('hero.title')}
-            description={t('hero.subtitle1')}
-            variant="minimal"
-          />
-        </div>
-        </div>
+      </div>
+
+      {/* RIGHT: Full-Height Globe */}
+      <div className="relative hidden lg:flex lg:w-1/2 h-screen items-center justify-center">
+        <GlobeWidget className="w-full h-full" country="PL" />
       </div>
     </section>
   );
