@@ -160,6 +160,7 @@ export const HeroWavingFlags = () => {
                   >
                     {t('contact.submitAnother')}
                   </button>
+                </div>
               </div>
               </div>
             </div>
@@ -194,6 +195,7 @@ export const HeroWavingFlags = () => {
               description={t('hero.subtitle1')}
               variant="minimal"
             />
+          </div>
           </div>
         </div>
       </div>

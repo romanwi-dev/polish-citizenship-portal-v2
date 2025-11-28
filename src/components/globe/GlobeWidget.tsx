@@ -721,6 +721,17 @@ const GlobeWidget: React.FC<GlobeWidgetProps> = ({
   cameraPosition = [0, 0, 6],
   initialRotation
 }) => {
+  // SSR guard: Canvas requires browser APIs
+  if (typeof window === 'undefined') {
+    return (
+      <div className={cn("relative w-full h-full overflow-hidden", className)}>
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="text-slate-400 text-sm">Loading globe...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={cn("relative w-full h-full overflow-hidden", className)}>
       <Suspense fallback={
