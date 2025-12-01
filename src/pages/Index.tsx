@@ -91,6 +91,10 @@ const Index = () => {
           <ClientOnboardingSection />
         </Suspense>
 
+        <Suspense fallback={<SectionLoader />}>
+          <TimelineProcessEnhanced />
+        </Suspense>
+
         <div className="my-16 md:my-24">
           <WarsawSkyline />
         </div>
