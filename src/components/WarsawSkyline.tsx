@@ -1,8 +1,6 @@
-import { memo } from "react";
 import warsawSkyline from "@/assets/warsaw-skyline.png";
 
-// PERF: Memoized to prevent unnecessary re-renders when used multiple times on page
-export const WarsawSkyline = memo(() => {
+export const WarsawSkyline = () => {
   return (
     // CLS FIX: Container with explicit aspect ratio to prevent layout shift
     <div className="relative z-10 w-full flex justify-center" style={{ minHeight: '200px' }}>
@@ -23,6 +21,4 @@ export const WarsawSkyline = memo(() => {
       </div>
     </div>
   );
-});
-
-WarsawSkyline.displayName = 'WarsawSkyline';
+};
