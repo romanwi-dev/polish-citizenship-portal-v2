@@ -1,28 +1,46 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainCTA } from '@/components/ui/main-cta';
 import { Button } from '@/components/ui/button';
-import { Award, Users, Trophy, Sparkles } from 'lucide-react';
+import { Award, Users, Trophy, Sparkles, Loader2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import professionalWoman from '@/assets/professional-woman.jpeg';
 import { SocialShare } from '@/components/social/SocialShare';
-import GlobeWidget from '@/components/globe/GlobeWidget';
+import DOMPurify from 'dompurify';
+
+// Lazy load GlobeWidget only on desktop for performance
+const GlobeWidget = lazy(() => import('@/components/globe/GlobeWidget'));
+
+// Static placeholder for mobile/loading
+const GlobePlaceholder = () => (
+  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 rounded-full">
+    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 animate-pulse" />
+  </div>
+);
 export const HeroWavingFlags = () => {
   const { t, i18n } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     country: ''
   });
   const isRTL = i18n.language === 'he';
+  
+  // Check if on mobile for conditional globe loading
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.email.trim() && formData.name.trim()) {
+      setIsSubmitting(true);
+      // Simulate API call delay for UX feedback
+      await new Promise(resolve => setTimeout(resolve, 500));
       setIsFlipped(true);
       setFormData({ name: '', email: '', country: '' });
+      setIsSubmitting(false);
     }
   };
 
@@ -53,7 +71,7 @@ export const HeroWavingFlags = () => {
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   color: 'transparent'
-                }} dangerouslySetInnerHTML={{ __html: t('hero.title') }}>
+                }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(t('hero.title')) }}>
                 </span>
               </h1>
               <div className="space-y-3" key={t('hero.subtitle1')}>
@@ -137,9 +155,14 @@ export const HeroWavingFlags = () => {
                   </div>
                   <button
                     type="submit"
-                      className="w-full h-auto min-h-[56px] md:min-h-[56px] lg:min-h-[64px] py-3.5 md:py-3.5 lg:py-4 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-6 break-words hyphens-auto [&_span]:text-base md:[&_span]:text-lg [&_span]:leading-tight"
+                    disabled={isSubmitting}
+                      className="w-full h-auto min-h-[56px] md:min-h-[56px] lg:min-h-[64px] py-3.5 md:py-3.5 lg:py-4 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-6 break-words hyphens-auto [&_span]:text-base md:[&_span]:text-lg [&_span]:leading-tight disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
-                    <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
+                    {isSubmitting ? (
+                      <Loader2 className="w-5 h-5 animate-spin mx-auto text-primary" />
+                    ) : (
+                      <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
+                    )}
                   </button>
                 </form>
               </div>
@@ -200,9 +223,15 @@ export const HeroWavingFlags = () => {
         </div>
       </div>
 
-      {/* RIGHT: Full-Height Globe */}
+      {/* RIGHT: Full-Height Globe - Lazy loaded on desktop only */}
       <div className="relative w-full lg:w-1/2 h-[40vh] lg:h-screen flex items-center justify-center z-[1]">
-        <GlobeWidget className="w-full h-full" country="PL" />
+        {isMobile ? (
+          <GlobePlaceholder />
+        ) : (
+          <Suspense fallback={<GlobePlaceholder />}>
+            <GlobeWidget className="w-full h-full" country="PL" />
+          </Suspense>
+        )}
       </div>
     </section>
   );

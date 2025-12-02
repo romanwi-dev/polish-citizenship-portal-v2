@@ -76,7 +76,7 @@ export function SEOHead({ page = 'home' }: SEOHeadProps) {
       
       {/* Pinterest Rich Pins */}
       <meta name="pinterest-rich-pin" content="true" />
-      <meta property="og:type" content="article" />
+      {/* Note: og:type is already set to "website" above - keeping article meta for rich pins */}
       <meta property="article:author" content="Polish Citizenship Portal" />
       <meta property="article:published_time" content="2024-01-01T00:00:00Z" />
       

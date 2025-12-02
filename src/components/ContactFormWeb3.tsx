@@ -1,5 +1,5 @@
 import { useState, useCallback, memo } from "react";
-import { Mail, Zap, Clock, Gift } from "lucide-react";
+import { Mail, Zap, Clock, Gift, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MainCTA } from "@/components/ui/main-cta";
 import { Input } from "@/components/ui/input";
@@ -38,6 +38,7 @@ const ContactFormWeb3 = memo(() => {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const isRTL = i18n.language === 'he';
   
   // Debug logging removed for production
@@ -51,11 +52,15 @@ const ContactFormWeb3 = memo(() => {
     polishDocuments: "",
   });
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
       contactSchema.parse(formData);
+      
+      setIsSubmitting(true);
+      // Simulate API call delay for UX feedback
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       setIsFlipped(true);
       
@@ -68,6 +73,8 @@ const ContactFormWeb3 = memo(() => {
           variant: "destructive",
         });
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }, [formData, toast]);
 
@@ -301,11 +308,16 @@ const ContactFormWeb3 = memo(() => {
                     <Button 
                       type="submit" 
                       size="lg"
-                      className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 h-24 md:h-20 rounded-lg !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/40 dark:hover:!bg-blue-950/40 !border-2 !border-blue-900/30 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur w-full"
+                      disabled={isSubmitting}
+                      className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 h-24 md:h-20 rounded-lg !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/40 dark:hover:!bg-blue-950/40 !border-2 !border-blue-900/30 transition-all duration-300 hover:scale-105 hover:shadow-xl backdrop-blur w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
-                      <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
-                        {t('contact.submitButton')}
-                      </span>
+                      {isSubmitting ? (
+                        <Loader2 className="w-6 h-6 animate-spin mx-auto text-primary" />
+                      ) : (
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
+                          {t('contact.submitButton')}
+                        </span>
+                      )}
                     </Button>
                   </form>
                 </div>

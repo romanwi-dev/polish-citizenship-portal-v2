@@ -49,12 +49,12 @@ export const GlobalBackground = () => {
     };
   }, []);
 
-  // PERF-MICRO-V2: Delay 3D background loading for dark themes only
+  // PERF-MICRO-V3: Reduced delay from 2000ms to 800ms for faster 3D loading
   useEffect(() => {
     if (isDark) {
       const timer = setTimeout(() => {
         setShow3D(true);
-      }, 2000);
+      }, 800);
       return () => clearTimeout(timer);
     } else {
       setShow3D(false); // No 3D in light mode
