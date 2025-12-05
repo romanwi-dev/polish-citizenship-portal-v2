@@ -212,7 +212,7 @@ export default function ClientOnboardingSection() {
                       </p>
                       <div className="space-y-1.5 sm:space-y-2"> {/* ONBOARDING-UX-SAFE: Tighter spacing on mobile */}
                         <ul className="text-[11px] sm:text-xs text-muted-foreground space-y-1.5 sm:space-y-2"> {/* ONBOARDING-UX-SAFE: Smaller text + tighter spacing */}
-                          {step.keyPoints.map((point: string, idx: number) => (
+                          {Array.isArray(step.keyPoints) && step.keyPoints.map((point: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2">
                               <span className="text-primary mt-0.5 flex-shrink-0">✓</span> {/* ONBOARDING-UX-SAFE: Prevent checkmark from shrinking */}
                               <span className="break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{point}</span>
