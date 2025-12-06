@@ -8,14 +8,15 @@ import { memo, useCallback } from 'react';
 
 export default memo(function TestimonialsSection() {
   const { t } = useTranslation();
-  const testimonials = t('testimonials.reviews', { returnObjects: true }) as Array<{
+  const rawTestimonials = t('testimonials.reviews', { returnObjects: true });
+  const testimonials = Array.isArray(rawTestimonials) ? rawTestimonials as Array<{
     name: string;
     location: string;
     heritage: string;
     text: string;
     timeline: string;
     year: string;
-  }>;
+  }> : [];
   
   const handleContactClick = useCallback(() => {
     window.location.hash = 'contact';
