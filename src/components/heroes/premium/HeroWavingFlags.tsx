@@ -73,14 +73,14 @@ export const HeroWavingFlags = () => {
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
                 {/* CLS FIX: Container with explicit aspect ratio to prevent image layout shift */}
-                <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100" style={{ aspectRatio: '4/3' }}>
+                <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100" style={{ aspectRatio: '16/10' }}>
                   <img 
                     src={professionalWoman} 
                     alt="Professional consultation"
                     // CLS FIX: Added explicit dimensions to prevent layout shift
                     width="400"
-                    height="300"
-                    className="w-full h-full object-cover"
+                    height="250"
+                    className="w-full h-full object-cover object-top"
                     loading="eager"
                     decoding="async"
                   />

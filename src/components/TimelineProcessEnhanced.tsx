@@ -126,8 +126,8 @@ export default function TimelineProcessEnhanced() {
               initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ 
-                duration: 0.8, 
-                delay: index * 0.08, 
+                duration: 0.4, 
+                delay: index * 0.04, 
                 ease: [0.25, 0.46, 0.45, 0.94]
               }}
               viewport={{ once: true, margin: "-150px" }}
@@ -241,7 +241,7 @@ export default function TimelineProcessEnhanced() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-150px" }}
-                transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
+                transition={{ duration: 0.3, delay: index * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
                   <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
