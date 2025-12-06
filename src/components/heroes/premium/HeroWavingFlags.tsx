@@ -136,9 +136,9 @@ export const HeroWavingFlags = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8 break-words hyphens-auto [&_span]:text-lg [&_span]:md:text-base [&_span]:leading-tight [&_span]:[font-size:clamp(0.75rem,2.5vw,1rem)]"
+                    className="w-full h-auto min-h-[64px] md:min-h-[48px] py-3 md:py-2 px-4 dark:bg-card/60 light:bg-gradient-to-br light:from-[hsl(220_90%_25%)] light:to-[hsl(220_90%_18%)] rounded-md font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl border dark:border-primary/20 light:border-primary/30 !mt-8 break-words hyphens-auto"
                   >
-                    <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block">{t('contact.requestInfo')}</span>
+                    <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block text-base md:text-sm font-semibold">{t('contact.requestInfo')}</span>
                   </button>
                 </form>
               </div>

@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain, FileCode, RefreshCw, PartyPopper, MessageSquare, Palette, Layout, Globe, Type, Target } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain, FileCode, RefreshCw, PartyPopper, MessageSquare, Palette, Layout, Globe, Type, Target, ChevronDown, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -18,10 +19,18 @@ type NavLink = {
 export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [collapsedSections, setCollapsedSections] = useState<string[]>(['Admin Tools', 'Demos', 'Workflows']);
+  
+  const toggleSection = (title: string) => {
+    setCollapsedSections(prev => 
+      prev.includes(title) ? prev.filter(s => s !== title) : [...prev, title]
+    );
+  };
   
   const NAVIGATION_SECTIONS: Array<{
     title: string;
     links: NavLink[];
+    collapsible?: boolean;
   }> = [
     {
       title: 'Main',
@@ -31,6 +40,8 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
         { label: t('nav.contact'), href: '#contact' },
         { label: t('nav.timeline'), href: '#timeline' },
         { label: t('nav.services'), href: '#services' },
+        { label: 'How to Start', href: '#how-to-start' },
+        { label: t('nav.testimonials'), href: '#testimonials' },
       ]
     },
     {
@@ -38,13 +49,12 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
       links: [
         { label: 'Law', href: '#faq' },
         { label: 'Passport', href: '#services' },
-        { label: 'Process', href: '#timeline' },
         { label: 'Documents', href: '#timeline' },
-        { label: t('nav.testimonials'), href: '#testimonials' },
       ]
     },
   {
     title: 'Workflows',
+    collapsible: true,
     links: [
       { label: 'AI Workflow', href: '/admin/ai-workflow', icon: Brain },
       { label: 'Archives Search', href: '/admin/archives-search', icon: Archive },
@@ -56,6 +66,7 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
   },
   {
     title: 'Admin Tools',
+    collapsible: true,
     links: [
       { label: 'AI Agent', href: '/admin/ai-agent-diagnostics', icon: Bot },
       { label: 'Code Review', href: '/admin/code-review', icon: FileCode },
@@ -68,6 +79,7 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
   },
   {
     title: 'Demos',
+    collapsible: true,
     links: [
       { label: 'Demos Hub', href: '/demos', icon: Globe, featured: true },
       { label: 'Main CTA Reference', href: '/demos/main-cta-reference', icon: Target, featured: true },
@@ -132,54 +144,74 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
 
   return (
     <div className="space-y-6">
-      {filteredSections.map((section, idx) => (
+      {filteredSections.map((section, idx) => {
+        const isCollapsed = section.collapsible && collapsedSections.includes(section.title);
+        
+        return (
         <div key={section.title}>
           {idx > 0 && <div className="h-px bg-border/50 my-4" />}
           <div className="space-y-1">
             {section.title !== 'Featured' && (
-              <div className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                {section.title}
+              section.collapsible ? (
+                <button
+                  onClick={() => toggleSection(section.title)}
+                  className="w-full px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 flex items-center justify-between hover:text-foreground transition-colors"
+                >
+                  <span>{section.title}</span>
+                  {isCollapsed ? (
+                    <ChevronRight className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </button>
+              ) : (
+                <div className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  {section.title}
+                </div>
+              )
+            )}
+            {!isCollapsed && (
+              <div className="space-y-1 px-2">
+                {section.links.map((link) => {
+                  const Icon = link.icon;
+                  const isFeatured = link.featured;
+                  const { href } = link;
+                  
+                  return href.startsWith('#') ? (
+                    <button
+                      key={`${href}-${link.label}`}
+                      onClick={(e) => {
+                        handleClick(e, href);
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-left cursor-pointer"
+                    >
+                      {Icon && <Icon className="h-4 w-4 text-primary" />}
+                      <span className="font-medium">
+                        {link.label}
+                      </span>
+                    </button>
+                  ) : (
+                    <Link
+                      key={`${href}-${link.label}`}
+                      to={href}
+                      onClick={() => {
+                        onNavigate();
+                      }}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+                    >
+                      {Icon && <Icon className="h-4 w-4 text-primary" />}
+                      <span className="font-medium">
+                        {link.label}
+                      </span>
+                    </Link>
+                  );
+                })}
               </div>
             )}
-            <div className="space-y-1 px-2">
-              {section.links.map((link) => {
-                const Icon = link.icon;
-                const isFeatured = link.featured;
-                const { href } = link;
-                
-                return href.startsWith('#') ? (
-                  <button
-                    key={`${href}-${link.label}`}
-                    onClick={(e) => {
-                      handleClick(e, href);
-                    }}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors text-left cursor-pointer"
-                  >
-                    {Icon && <Icon className="h-4 w-4 text-primary" />}
-                    <span className="font-medium">
-                      {link.label}
-                    </span>
-                  </button>
-                ) : (
-                  <Link
-                    key={`${href}-${link.label}`}
-                    to={href}
-                    onClick={() => {
-                      onNavigate();
-                    }}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
-                  >
-                    {Icon && <Icon className="h-4 w-4 text-primary" />}
-                    <span className="font-medium">
-                      {link.label}
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
           </div>
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

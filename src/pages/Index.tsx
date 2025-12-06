@@ -49,7 +49,7 @@ const Index = () => {
       
       {/* No image preloading needed - using design system only */}
       
-      <div className="min-h-screen overflow-x-hidden relative">
+      <div className="min-h-screen overflow-x-hidden overflow-y-auto relative" style={{ overscrollBehaviorX: 'none' }}>
         {/* Unified Background - Single 3D Canvas for optimal performance */}
         <GlobalBackground />
         
