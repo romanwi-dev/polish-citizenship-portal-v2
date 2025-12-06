@@ -51,6 +51,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@types/dompurify": "^3.2.0",
+    "@types/three": "^0.181.0",
     "@vitejs/plugin-react": "^5.1.0",
     "@vitest/ui": "^4.0.7",
     "canvas-confetti": "^1.9.4",

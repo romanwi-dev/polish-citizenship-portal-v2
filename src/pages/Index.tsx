@@ -9,6 +9,7 @@ import { GlobalBackground } from "@/components/GlobalBackground";
 import { SkipToContent } from "@/components/ui/skip-to-content";
 import { SEOHead } from "@/components/SEOHead";
 import { StructuredData } from "@/components/StructuredData";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 // Eagerly load critical above-the-fold components for LCP
 import Navigation from "@/components/Navigation";
@@ -51,7 +52,9 @@ const Index = () => {
       
       <div className="min-h-screen overflow-x-hidden relative">
         {/* Unified Background - Single 3D Canvas for optimal performance */}
-        <GlobalBackground />
+        <ErrorBoundary>
+          <GlobalBackground />
+        </ErrorBoundary>
         
         <div className="relative z-10">
           <Navigation />
@@ -86,6 +89,10 @@ const Index = () => {
 
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
+        </Suspense>
+
+        <Suspense fallback={<SectionLoader />}>
+          <TimelineProcessEnhanced />
         </Suspense>
 
         <div className="my-16 md:my-24">

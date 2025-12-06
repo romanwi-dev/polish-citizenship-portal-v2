@@ -42,27 +42,38 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
       return;
     }
     
+    // CRITICAL: Close dropdown immediately to prevent UI jump
+    setOpen(false);
+    
     console.log('🔄 Changing language to:', code);
     
     // LANG-RUNTIME-SAFE: Store preference BEFORE navigation to prevent race conditions
-    localStorage.setItem('preferredLanguage', code);
+    try {
+      localStorage.setItem('preferredLanguage', code);
+    } catch (e) {
+      // Ignore localStorage errors
+    }
     
-    // LANG-RUNTIME-SAFE: Change i18n language
-    await i18n.changeLanguage(code);
+    // LANG-RUNTIME-SAFE: Change i18n language with error handling
+    try {
+      await i18n.changeLanguage(code);
+    } catch (error) {
+      console.warn('[LanguageSelector] Language change error:', error);
+    }
     
     // ADMIN-LANG-SAFE: Admin routes (/admin, /client) don't use lang prefix - skip navigation
     const currentPath = window.location.pathname;
     if (currentPath.startsWith('/admin') || currentPath.startsWith('/client')) {
       // Just change the language, no navigation needed for admin/client areas
-      setOpen(false);
       return;
     }
     
     // LANG-RUNTIME-SAFE: Navigate to new language URL with replace to avoid back-button issues
-    const pathWithoutLang = currentPath.replace(/^\/(en|es|pt|de|fr|he|ru|uk|pl)(\/|$)/, '/');
-    navigate(`/${code}${pathWithoutLang === '/' ? '' : pathWithoutLang}`, { replace: true });
-    
-    setOpen(false);
+    // Use requestAnimationFrame to ensure smooth transition
+    requestAnimationFrame(() => {
+      const pathWithoutLang = currentPath.replace(/^\/(en|es|pt|de|fr|he|ru|uk|pl)(\/|$)/, '/');
+      navigate(`/${code}${pathWithoutLang === '/' ? '' : pathWithoutLang}`, { replace: true });
+    });
   };
 
   return (
@@ -78,7 +89,7 @@ export function LanguageSelector({ allowedLanguages }: LanguageSelectorProps = {
           </span>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20 z-50" role="menu" aria-label="Language selection menu">
+      <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100]" role="menu" aria-label="Language selection menu">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}

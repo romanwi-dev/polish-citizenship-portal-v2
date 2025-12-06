@@ -6,6 +6,26 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Sanitize Dropbox path for special characters and format issues
+function sanitizeDropboxPath(path: string): string {
+  let sanitized = path.trim();
+  
+  // Handle special characters
+  sanitized = sanitized.replace(/'/g, "'"); // Smart quotes to straight
+  sanitized = sanitized.replace(/"/g, '"'); // Smart quotes to straight
+  sanitized = sanitized.replace(/'/g, "'"); // Another smart quote variant
+  
+  // Ensure leading slash
+  if (!sanitized.startsWith('/')) {
+    sanitized = '/' + sanitized;
+  }
+  
+  // Remove double slashes
+  sanitized = sanitized.replace(/\/\//g, '/');
+  
+  return sanitized;
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -48,15 +68,21 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json();
-    const filePath = body.file_path || body.dropboxPath; // Support both parameter names
-    console.log(`[dropbox-download-${requestId}] File path: ${filePath}`);
-
-    if (!filePath) {
+    const rawFilePath = body.file_path || body.dropboxPath; // Support both parameter names
+    
+    if (!rawFilePath) {
       console.error(`[dropbox-download-${requestId}] ❌ No file path provided`);
       return new Response(
         JSON.stringify({ error: 'Missing file_path or dropboxPath parameter' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
+    }
+    
+    // Sanitize the path
+    const filePath = sanitizeDropboxPath(rawFilePath);
+    console.log(`[dropbox-download-${requestId}] Original path: ${rawFilePath}`);
+    if (filePath !== rawFilePath) {
+      console.log(`[dropbox-download-${requestId}] Sanitized path: ${filePath}`);
     }
 
     const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
@@ -85,13 +111,53 @@ Deno.serve(async (req) => {
     if (!downloadResponse.ok) {
       const errorText = await downloadResponse.text();
       console.error(`[dropbox-download-${requestId}] ❌ Dropbox API error: ${downloadResponse.status}`);
+      console.error(`[dropbox-download-${requestId}] Original path: ${rawFilePath}`);
+      console.error(`[dropbox-download-${requestId}] Sanitized path: ${filePath}`);
       console.error(`[dropbox-download-${requestId}] Error details: ${errorText}`);
+      
+      // Parse request body to get document info for logging
+      const documentId = body.document_id || null;
+      const caseId = body.case_id || null;
+      
+      // Log 404 errors to HAC logs for manual review
+      if (downloadResponse.status === 404 && caseId) {
+        try {
+          await supabase.from('hac_logs').insert({
+            case_id: caseId,
+            action_type: 'dropbox_download_404',
+            action_details: `File not found in Dropbox: ${filePath}`,
+            metadata: {
+              scope: 'dropbox_download',
+              document_id: documentId,
+              dropbox_path: filePath,
+              original_path: rawFilePath,
+              path_mismatch: rawFilePath !== filePath,
+              error_code: '404',
+              error_message: errorText,
+              action_recommended: 'Verify the file exists in Dropbox or update the stored path.'
+            },
+            performed_by: 'system'
+          });
+          console.log(`[dropbox-download-${requestId}] 📝 Logged 404 error to HAC logs`);
+        } catch (logError) {
+          console.error(`[dropbox-download-${requestId}] Failed to log to HAC:`, logError);
+        }
+      }
+      
+      // Provide detailed error for path issues
+      const errorDetails = downloadResponse.status === 404 
+        ? `File not found at path: ${filePath}. Original path: ${rawFilePath}`
+        : errorText;
       
       return new Response(
         JSON.stringify({
           error: 'Failed to download file from Dropbox',
-          details: errorText,
+          details: errorDetails,
           status: downloadResponse.status,
+          originalPath: rawFilePath,
+          sanitizedPath: filePath,
+          pathMismatch: rawFilePath !== filePath,
+          isPermanent: downloadResponse.status === 404, // Signal to caller this is permanent
         }),
         {
           status: downloadResponse.status === 404 ? 404 : 409,

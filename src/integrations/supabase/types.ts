@@ -1444,6 +1444,7 @@ export type Database = {
           ocr_confidence: number | null
           ocr_data: Json | null
           ocr_error_message: string | null
+          ocr_next_retry_at: string | null
           ocr_retry_count: number | null
           ocr_reviewed_at: string | null
           ocr_reviewed_by: string | null
@@ -1521,6 +1522,7 @@ export type Database = {
           ocr_confidence?: number | null
           ocr_data?: Json | null
           ocr_error_message?: string | null
+          ocr_next_retry_at?: string | null
           ocr_retry_count?: number | null
           ocr_reviewed_at?: string | null
           ocr_reviewed_by?: string | null
@@ -1598,6 +1600,7 @@ export type Database = {
           ocr_confidence?: number | null
           ocr_data?: Json | null
           ocr_error_message?: string | null
+          ocr_next_retry_at?: string | null
           ocr_retry_count?: number | null
           ocr_reviewed_at?: string | null
           ocr_reviewed_by?: string | null
@@ -3578,6 +3581,60 @@ export type Database = {
           },
           {
             foreignKeyName: "ocr_processing_logs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ocr_status_history: {
+        Row: {
+          case_id: string
+          changed_at: string
+          changed_by: string | null
+          document_id: string
+          error_message: string | null
+          from_status: string | null
+          id: string
+          metadata: Json | null
+          retry_count: number | null
+          to_status: string
+        }
+        Insert: {
+          case_id: string
+          changed_at?: string
+          changed_by?: string | null
+          document_id: string
+          error_message?: string | null
+          from_status?: string | null
+          id?: string
+          metadata?: Json | null
+          retry_count?: number | null
+          to_status: string
+        }
+        Update: {
+          case_id?: string
+          changed_at?: string
+          changed_by?: string | null
+          document_id?: string
+          error_message?: string | null
+          from_status?: string | null
+          id?: string
+          metadata?: Json | null
+          retry_count?: number | null
+          to_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ocr_status_history_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ocr_status_history_document_id_fkey"
             columns: ["document_id"]
             isOneToOne: false
             referencedRelation: "documents"

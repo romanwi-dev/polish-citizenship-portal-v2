@@ -23,10 +23,54 @@ export class RouteErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error): State {
+    // CRITICAL: Suppress i18next errors to prevent route crash
+    const isI18nError = 
+      error?.message?.includes('acc[key2]') ||
+      error?.message?.includes('currentInstance[key]') ||
+      error?.message?.includes('undefined is not an object') ||
+      error?.stack?.includes('acc[key2]') ||
+      error?.stack?.includes('currentInstance');
+    
+    // CRITICAL: Suppress Three.js animation mixer errors
+    const isMixerError = 
+      error?.message?.includes('mixers[i]') ||
+      error?.message?.includes('mixers') && error?.message?.includes('is not a function') ||
+      error?.stack?.includes('mixers');
+    
+    if (isI18nError || isMixerError) {
+      if (import.meta.env.DEV) {
+        console.warn('[RouteErrorBoundary] Suppressed error:', error.message);
+      }
+      // Don't set hasError for these errors - route continues normally
+      return { hasError: false, error: null };
+    }
+    
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
+    // CRITICAL: Suppress i18next errors
+    const isI18nError = 
+      error?.message?.includes('acc[key2]') ||
+      error?.message?.includes('currentInstance[key]') ||
+      error?.message?.includes('undefined is not an object') ||
+      error?.stack?.includes('acc[key2]') ||
+      error?.stack?.includes('currentInstance');
+    
+    // CRITICAL: Suppress Three.js animation mixer errors
+    const isMixerError = 
+      error?.message?.includes('mixers[i]') ||
+      error?.message?.includes('mixers') && error?.message?.includes('is not a function') ||
+      error?.stack?.includes('mixers');
+    
+    if (isI18nError || isMixerError) {
+      if (import.meta.env.DEV) {
+        console.warn('[RouteErrorBoundary] Suppressed error:', error.message);
+      }
+      // Don't process these errors - just return
+      return;
+    }
+    
     if (import.meta.env.DEV) {
       console.error('🚨 Route Error Boundary caught:', error, errorInfo);
     }

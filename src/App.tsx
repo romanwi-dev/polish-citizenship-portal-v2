@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 const ContactFormsDemo = lazy(() => import("./pages/ContactFormsDemo"));
 const TranslationDemo = lazy(() => import("./pages/TranslationDemo"));
 const HeroGallery = lazy(() => import("./pages/HeroGallery"));
+const CountryLanding = lazy(() => import("./pages/CountryLanding"));
 
 
 // Client portal pages
@@ -147,6 +148,10 @@ const App = () => {
   
   // Update HTML lang and dir attributes when language changes
   useEffect(() => {
+    // SSR-SAFE: Only update DOM in browser
+    if (typeof window === 'undefined' || !document?.documentElement) {
+      return;
+    }
     document.documentElement.lang = i18n.language;
     // Set RTL for Hebrew
     document.documentElement.dir = i18n.language === 'he' ? 'rtl' : 'ltr';
@@ -266,6 +271,13 @@ const App = () => {
             <Route path="/cases" element={
               <RouteErrorBoundary>
                 <Cases />
+              </RouteErrorBoundary>
+            } />
+            <Route path="/country/:countryCode" element={
+              <RouteErrorBoundary>
+                <Suspense fallback={<AdminLoader />}>
+                  <CountryLanding />
+                </Suspense>
               </RouteErrorBoundary>
             } />
             

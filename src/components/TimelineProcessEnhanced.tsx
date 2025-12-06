@@ -42,6 +42,18 @@ export default function TimelineProcessEnhanced() {
   const supported = ['en', 'es', 'pt', 'de', 'fr', 'he', 'ru', 'uk'];
   const lang = supported.includes(baseLang) ? baseLang : 'en';
   
+  // CRITICAL: Safe translation with fallback to prevent rendering issues
+  const safeT = (key: string, fallback: string = '') => {
+    try {
+      const result = t(key);
+      // If translation returns the key itself (missing translation), use fallback
+      return result === key ? fallback : result;
+    } catch (error) {
+      console.warn(`[Timeline] Translation error for key "${key}":`, error);
+      return fallback;
+    }
+  };
+  
   // Get steps from centralized translations with fallback to English
   const steps = TIMELINE_TRANSLATIONS[lang] ?? TIMELINE_TRANSLATIONS.en;
 
@@ -84,14 +96,17 @@ export default function TimelineProcessEnhanced() {
       [stepNumber]: !prev[stepNumber]
     }));
   };
+  // CRITICAL: Only re-render on language change if translations are actually loaded
+  const sectionKey = i18n.isInitialized ? i18n.language : 'loading';
+  
   return (
-    <section key={i18n.language} id="timeline" className="relative py-12 md:py-20 overflow-hidden overflow-x-hidden">
+    <section key={sectionKey} id="timeline" className="relative py-12 md:py-20 overflow-hidden overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
         {/* Badge - Above Title */}
         <div className="flex justify-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-primary/30">
             <Clock className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('timelineProcess.badge')}</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{safeT('timelineProcess.badge', 'Process Timeline')}</span>
           </div>
         </div>
         
@@ -99,11 +114,11 @@ export default function TimelineProcessEnhanced() {
         <div className="text-center mb-32">
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              {t('timelineProcess.title')}
+              {safeT('timelineProcess.title', 'How It Works')}
             </span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto font-body font-light tracking-normal mt-14">
-            {t('timelineProcess.subtitle')}
+            {safeT('timelineProcess.subtitle', 'Step-by-step guide to obtaining Polish citizenship')}
           </p>
         </div>
 
@@ -117,12 +132,12 @@ export default function TimelineProcessEnhanced() {
             <div className="absolute inset-0 w-1 bg-gradient-to-b from-primary/15 via-secondary/15 to-accent/15" />
           </div>
 
-          {timelineSteps.map((step, index) => {
-            const isLeft = index % 2 === 0;
+            {timelineSteps.map((step, index) => {
+              const isLeft = index % 2 === 0;
             
             return (
             <motion.div 
-              key={step.number} 
+              key={`${step.number}-${lang}`} 
               initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ 
@@ -132,6 +147,7 @@ export default function TimelineProcessEnhanced() {
               }}
               viewport={{ once: true, margin: "-150px" }}
               className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
+              style={{ willChange: 'transform, opacity' }}
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
@@ -186,7 +202,7 @@ export default function TimelineProcessEnhanced() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-5 text-center">{step.clickToSeeDetails || (isMobile ? t('timelineProcess.tapToSeeDetails') : t('timelineProcess.clickToSeeDetails'))}</p>
+                      <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-5 text-center">{step.clickToSeeDetails || (isMobile ? safeT('timelineProcess.tapToSeeDetails', 'Tap to see details') : safeT('timelineProcess.clickToSeeDetails', 'Click to see details'))}</p>
                     </div>
 
                     {/* Back Side */}
@@ -227,7 +243,7 @@ export default function TimelineProcessEnhanced() {
                             document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                           }}
                         >
-                          <span className="block w-full break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{step.openAccountLabel || t('timelineProcess.openAccountCta')}</span>
+                          <span className="block w-full break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{step.openAccountLabel || safeT('timelineProcess.openAccountCta', 'Open Account')}</span>
                         </Button>
                       </div>
                     </div>
@@ -261,7 +277,7 @@ export default function TimelineProcessEnhanced() {
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             ariaLabel="Take the Polish Citizenship Test to check your eligibility"
           >
-            {t('hero.cta')}
+            {safeT('hero.cta', 'Get Started')}
           </MainCTA>
         </div>
       </div>

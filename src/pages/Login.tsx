@@ -8,11 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { PasswordStrengthMeter } from "@/components/PasswordStrengthMeter";
-import { AlertCircle, Sparkles, LogIn, UserPlus, Type } from "lucide-react";
+import { AlertCircle, Sparkles, LogIn, UserPlus } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { GlobalBackground } from "@/components/GlobalBackground";
+import GlobeWidget from "@/components/globe/GlobeWidget";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [isPasswordStrong, setIsPasswordStrong] = useState(false);
   const [breachWarning, setBreachWarning] = useState("");
-  const { isLargeFonts, toggleFontSize } = useAccessibility();
+  const { isLargeFonts } = useAccessibility();
 
   const checkPasswordBreach = async (pwd: string): Promise<boolean> => {
     try {
@@ -95,35 +96,22 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative">
-      <GlobalBackground />
-      <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
-        {/* Header */}
-        <div className="animate-fade-in-up mb-6">
-          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight break-words mb-4">
+    <div className="min-h-screen overflow-x-hidden relative flex flex-col lg:flex-row items-start lg:items-center justify-center lg:justify-between px-4 lg:px-16 pt-16 lg:pt-20 pb-8 gap-8">
+      {/* LEFT: Login Content */}
+      <div className="w-full lg:w-[480px] max-w-lg mx-auto lg:mx-0 relative z-10">
+        {/* Header + Subtitle */}
+        <div className="space-y-2 mb-6 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text leading-tight whitespace-nowrap">
             {isSignUp ? "Create Account" : "Welcome Back"}
           </h2>
-          <div className="flex justify-center">
-            <Button
-              onClick={toggleFontSize}
-              variant="ghost"
-              size="icon"
-              className="h-10 w-10 md:h-12 md:w-12"
-              title="Toggle font size"
-            >
-              <Type className="h-6 w-6 md:h-8 md:w-8" />
-            </Button>
-          </div>
+          <p className="text-sm md:text-base text-muted-foreground">
+            {isSignUp ? "Create a new account to access your case management system" : "Sign in to access your case management system"}
+          </p>
         </div>
 
         {/* Form */}
-        <div className="animate-scale-in w-full max-w-3xl">
-          <div className="p-8 md:p-12">
-            <p className="text-center text-lg text-muted-foreground mb-8">
-              {isSignUp ? "Create a new account to access the case management system" : "Sign in to access your case management system"}
-            </p>
-            
-            <form onSubmit={handleAuth} className="space-y-6">
+        <div className="animate-scale-in w-full mt-4">
+          <form onSubmit={handleAuth} className="w-full space-y-4">
               <div className="space-y-4">
                 <Label 
                   htmlFor="email" 
@@ -220,10 +208,17 @@ const Login = () => {
                 )}
               </div>
 
-              <div className="space-y-4 pt-4">
+              <div className="space-y-4 pt-8 md:pt-12">
                 <Button 
                   type="submit" 
-                  className="w-full h-16 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30 flex items-center justify-center"
+                  style={{ 
+                    paddingTop: '0',
+                    paddingBottom: '0',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem',
+                    boxSizing: 'border-box'
+                  }}
                   disabled={loading}
                 >
                   {loading ? (
@@ -246,7 +241,14 @@ const Login = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full h-16 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                  className="w-full h-16 md:h-20 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border-2 border-white/30 flex items-center justify-center"
+                  style={{ 
+                    paddingTop: '0',
+                    paddingBottom: '0',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem',
+                    boxSizing: 'border-box'
+                  }}
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -255,8 +257,26 @@ const Login = () => {
                 </Button>
               </div>
             </form>
-          </div>
         </div>
+        
+        {/* Back to Homepage Link */}
+        <div className="mt-12 md:mt-16 text-center">
+          <a
+            href="/"
+            className="text-sm md:text-base text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors no-underline"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/');
+            }}
+          >
+            ← Back to Homepage
+          </a>
+        </div>
+      </div>
+
+      {/* RIGHT: Full-Height Globe (Desktop Only) */}
+      <div className="relative hidden lg:flex lg:flex-1 h-screen items-center justify-center">
+        <GlobeWidget className="w-full h-full" country="PL" />
       </div>
     </div>
   );

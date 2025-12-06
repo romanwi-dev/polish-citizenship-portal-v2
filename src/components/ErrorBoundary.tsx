@@ -60,10 +60,54 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public static getDerivedStateFromError(error: Error): State {
+    // CRITICAL: Suppress i18next errors to prevent app crash
+    const isI18nError = 
+      error?.message?.includes('acc[key2]') ||
+      error?.message?.includes('currentInstance[key]') ||
+      error?.message?.includes('undefined is not an object') ||
+      error?.stack?.includes('acc[key2]') ||
+      error?.stack?.includes('currentInstance');
+    
+    // CRITICAL: Suppress Three.js animation mixer errors
+    const isMixerError = 
+      error?.message?.includes('mixers[i]') ||
+      error?.message?.includes('mixers') && error?.message?.includes('is not a function') ||
+      error?.stack?.includes('mixers');
+    
+    if (isI18nError || isMixerError) {
+      if (import.meta.env.DEV) {
+        console.warn('[ErrorBoundary] Suppressed error:', error.message);
+      }
+      // Don't set hasError for these errors - app continues normally
+      return { hasError: false, error: null, errorInfo: null, recoveredState: null };
+    }
+    
     return { hasError: true, error, errorInfo: null, recoveredState: null };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // CRITICAL: Suppress i18next errors
+    const isI18nError = 
+      error?.message?.includes('acc[key2]') ||
+      error?.message?.includes('currentInstance[key]') ||
+      error?.message?.includes('undefined is not an object') ||
+      error?.stack?.includes('acc[key2]') ||
+      error?.stack?.includes('currentInstance');
+    
+    // CRITICAL: Suppress Three.js animation mixer errors
+    const isMixerError = 
+      error?.message?.includes('mixers[i]') ||
+      error?.message?.includes('mixers') && error?.message?.includes('is not a function') ||
+      error?.stack?.includes('mixers');
+    
+    if (isI18nError || isMixerError) {
+      if (import.meta.env.DEV) {
+        console.warn('[ErrorBoundary] Suppressed error:', error.message);
+      }
+      // Don't process these errors - just return
+      return;
+    }
+    
     console.error('ErrorBoundary caught an error:', error, errorInfo);
     
     // Save current state server-side (no client-side HMAC)

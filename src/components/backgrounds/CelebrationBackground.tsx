@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+// Safety check for motion components - fallback to regular div if motion is not available
+const SafeMotionDiv = (motion && motion.div) ? motion.div : ((props: any) => {
+  const { initial, animate, transition, ...restProps } = props;
+  return <div {...restProps} />;
+});
+
 interface Particle {
   id: number;
   x: number;
@@ -56,7 +62,7 @@ export const CelebrationBackground = () => {
       {particles.map((particle) => {
         if (particle.type === 'star') {
           return (
-            <motion.div
+            <SafeMotionDiv
               key={particle.id}
               className="absolute"
               style={{
@@ -92,13 +98,13 @@ export const CelebrationBackground = () => {
                   </linearGradient>
                 </defs>
               </svg>
-            </motion.div>
+            </SafeMotionDiv>
           );
         }
         
         if (particle.type === 'sparkle') {
           return (
-            <motion.div
+            <SafeMotionDiv
               key={particle.id}
               className="absolute rounded-full"
               style={{
@@ -128,7 +134,7 @@ export const CelebrationBackground = () => {
       
       {/* Shooting stars */}
       {[1, 2, 3].map((i) => (
-        <motion.div
+        <SafeMotionDiv
           key={`shooting-${i}`}
           className="absolute h-0.5 w-12 bg-gradient-to-r from-transparent via-primary to-transparent"
           style={{

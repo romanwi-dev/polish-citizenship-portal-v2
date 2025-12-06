@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { UserCircle } from "lucide-react";
 import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send } from "lucide-react";
@@ -7,14 +7,38 @@ import { MainCTA } from "./ui/main-cta";
 import { Card } from "./ui/card";
 import { useTranslation } from 'react-i18next';
 import { SectionLayout } from "./layout/SectionLayout";
-import consultationImg from "@/assets/onboarding-consultation.png";
-import reviewImg from "@/assets/onboarding-review.png";
-import agreementImg from "@/assets/onboarding-agreement.png";
-import initiationImg from "@/assets/onboarding-initiation.png";
 
 export default function ClientOnboardingSection() {
   const { t } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  
+  // Inject CSS to ensure image styles are applied
+  useEffect(() => {
+    const styleId = 'process-step-images-style';
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.textContent = `
+        .process-step-image {
+          width: 380px !important;
+          height: 380px !important;
+          min-width: 380px !important;
+          min-height: 380px !important;
+          max-width: 380px !important;
+          max-height: 380px !important;
+        }
+        .process-step-image-mobile {
+          width: 300px !important;
+          height: 300px !important;
+          min-width: 300px !important;
+          min-height: 300px !important;
+          max-width: 300px !important;
+          max-height: 300px !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
 
   const toggleFlip = (stepNumber: string) => {
     setFlippedCards(prev => ({
@@ -32,9 +56,9 @@ export default function ClientOnboardingSection() {
       gradient: "from-primary to-secondary",
       cta: t('onboarding.step1Cta'),
       link: "#contact",
-      illustration: consultationImg,
       detailedInfo: t('onboarding.step1DetailedInfo'),
-      keyPoints: t('onboarding.step1KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step1KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/step1-first-contact.png"
     },
     {
       number: t('onboarding.step2Number'),
@@ -44,9 +68,9 @@ export default function ClientOnboardingSection() {
       gradient: "from-secondary to-accent",
       cta: t('onboarding.step2Cta'),
       link: "https://polishcitizenship.typeform.com/to/PS5ecU",
-      illustration: reviewImg,
       detailedInfo: t('onboarding.step2DetailedInfo'),
-      keyPoints: t('onboarding.step2KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step2KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/step2-eligibility-check.png"
     },
     {
       number: t('onboarding.step3Number'),
@@ -56,9 +80,9 @@ export default function ClientOnboardingSection() {
       gradient: "from-accent to-primary",
       cta: t('onboarding.step3Cta'),
       link: "#",
-      illustration: agreementImg,
       detailedInfo: t('onboarding.step3DetailedInfo'),
-      keyPoints: t('onboarding.step3KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step3KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/step3-document-examination.png"
     },
     {
       number: t('onboarding.step4Number'),
@@ -68,9 +92,9 @@ export default function ClientOnboardingSection() {
       gradient: "from-primary to-secondary",
       cta: t('onboarding.step4Cta'),
       link: "#contact",
-      illustration: initiationImg,
       detailedInfo: t('onboarding.step4DetailedInfo'),
-      keyPoints: t('onboarding.step4KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step4KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/step4-case-assessment.png"
     },
     {
       number: t('onboarding.step5Number'),
@@ -80,9 +104,9 @@ export default function ClientOnboardingSection() {
       gradient: "from-secondary to-accent",
       cta: t('onboarding.step5Cta'),
       link: "#",
-      illustration: reviewImg,
       detailedInfo: t('onboarding.step5DetailedInfo'),
-      keyPoints: t('onboarding.step5KeyPoints', { returnObjects: true }) as string[]
+      keyPoints: t('onboarding.step5KeyPoints', { returnObjects: true }) as string[],
+      image: "/steps/step5-send-documents.png"
     }
   ];
 
@@ -126,7 +150,7 @@ export default function ClientOnboardingSection() {
                 </div>
               </div>
               
-              <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-3 sm:gap-4 md:gap-12 items-center`}> {/* ONBOARDING-UX-SAFE: Tighter gap on mobile */}
+              <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-3 sm:gap-4 md:gap-10 lg:gap-12 items-center`}> {/* ONBOARDING-UX-SAFE: Tighter gap on mobile */}
                 {/* Card - adjusted for mobile spacing */}
                 <div className="w-full md:w-[42%] mt-16 sm:mt-20 md:mt-0"> {/* ONBOARDING-UX-SAFE: Reduced top margin on small mobile */}
                   <div 
@@ -188,7 +212,7 @@ export default function ClientOnboardingSection() {
                       </p>
                       <div className="space-y-1.5 sm:space-y-2"> {/* ONBOARDING-UX-SAFE: Tighter spacing on mobile */}
                         <ul className="text-[11px] sm:text-xs text-muted-foreground space-y-1.5 sm:space-y-2"> {/* ONBOARDING-UX-SAFE: Smaller text + tighter spacing */}
-                          {step.keyPoints.map((point: string, idx: number) => (
+                          {Array.isArray(step.keyPoints) && step.keyPoints.map((point: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2">
                               <span className="text-primary mt-0.5 flex-shrink-0">✓</span> {/* ONBOARDING-UX-SAFE: Prevent checkmark from shrinking */}
                               <span className="break-words" style={{ hyphens: 'none', wordBreak: 'break-word' }}>{point}</span>
@@ -230,8 +254,167 @@ export default function ClientOnboardingSection() {
                   </div>
                 </div>
 
-                {/* Empty space on other side */}
-                <div className="hidden md:block md:w-[42%]" />
+                {/* Image on other side - Desktop */}
+                <div className="hidden lg:flex lg:w-[42%] items-center justify-center" data-process-image-container="true">
+                  <div 
+                    className={`relative flex items-center justify-center group ${isLeft ? '-ml-28' : '-mr-28'}`}
+                    style={{
+                      perspective: '1500px',
+                    }}
+                  >
+                    <div
+                      className="transition-all duration-700 ease-out group-hover:scale-[1.08] group-hover:translateZ-10"
+                      style={{
+                        transform: `perspective(1500px) rotateY(${isLeft ? '-6deg' : '6deg'}) rotateX(1deg) translateZ(40px)`,
+                        transformStyle: 'preserve-3d',
+                        willChange: 'transform',
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: 'relative',
+                          width: '380px',
+                          height: '380px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          filter: `
+                            drop-shadow(0 10px 20px rgba(0, 0, 0, 0.12))
+                            drop-shadow(0 5px 10px rgba(0, 0, 0, 0.08))
+                            drop-shadow(0 2px 4px rgba(0, 0, 0, 0.04))
+                          `,
+                        }}
+                      >
+                        <img
+                          ref={(el) => {
+                            if (el) {
+                              el.style.setProperty('width', '380px', 'important');
+                              el.style.setProperty('height', '380px', 'important');
+                              el.style.setProperty('min-width', '380px', 'important');
+                              el.style.setProperty('min-height', '380px', 'important');
+                              el.style.setProperty('max-width', '380px', 'important');
+                              el.style.setProperty('max-height', '380px', 'important');
+                              el.style.setProperty('object-fit', 'contain', 'important');
+                              el.style.setProperty('filter', 'contrast(1.12) brightness(0.96) saturate(1.08)', 'important');
+                              el.style.setProperty('opacity', '0.92', 'important');
+                              el.style.setProperty('border-radius', '16px', 'important');
+                            }
+                          }}
+                          src={step.image}
+                          alt={step.title}
+                          className="process-step-image"
+                          style={{
+                            width: '380px',
+                            height: '380px',
+                            minWidth: '380px',
+                            minHeight: '380px',
+                            maxWidth: '380px',
+                            maxHeight: '380px',
+                            objectFit: 'contain',
+                            filter: 'contrast(1.12) brightness(0.96) saturate(1.08)',
+                            opacity: 0.92,
+                            imageRendering: 'auto',
+                            display: 'block',
+                            flexShrink: 0,
+                            borderRadius: '16px',
+                            backgroundColor: 'transparent',
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
+                          }}
+                          onLoad={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.style.setProperty('width', '380px', 'important');
+                            img.style.setProperty('height', '380px', 'important');
+                            img.style.setProperty('min-width', '380px', 'important');
+                            img.style.setProperty('min-height', '380px', 'important');
+                            img.style.setProperty('max-width', '380px', 'important');
+                            img.style.setProperty('max-height', '380px', 'important');
+                            console.log('✅ Process image loaded - Step', step.number, 'Size:', img.offsetWidth, 'x', img.offsetHeight);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Image on mobile/tablet - below card */}
+                <div className="lg:hidden w-full mt-6 sm:mt-8 flex items-center justify-center">
+                  <div 
+                    className="relative flex items-center justify-center"
+                    style={{
+                      perspective: '1000px',
+                    }}
+                  >
+                    <div
+                      className="transition-all duration-700 ease-out"
+                      style={{
+                        transform: 'perspective(1000px) rotateY(-2deg) rotateX(0.5deg) translateZ(25px)',
+                        transformStyle: 'preserve-3d',
+                        willChange: 'transform',
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: 'relative',
+                          filter: `
+                            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.1))
+                            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.06))
+                            drop-shadow(0 2px 4px rgba(0, 0, 0, 0.03))
+                          `,
+                        }}
+                      >
+                        <img
+                          ref={(el) => {
+                            if (el) {
+                              el.style.setProperty('width', '300px', 'important');
+                              el.style.setProperty('height', '300px', 'important');
+                              el.style.setProperty('min-width', '300px', 'important');
+                              el.style.setProperty('min-height', '300px', 'important');
+                              el.style.setProperty('max-width', '300px', 'important');
+                              el.style.setProperty('max-height', '300px', 'important');
+                              el.style.setProperty('object-fit', 'contain', 'important');
+                              el.style.setProperty('filter', 'contrast(1.12) brightness(0.96) saturate(1.08)', 'important');
+                              el.style.setProperty('opacity', '0.92', 'important');
+                              el.style.setProperty('border-radius', '16px', 'important');
+                            }
+                          }}
+                          src={step.image}
+                          alt={step.title}
+                          className="process-step-image-mobile"
+                          style={{
+                            width: '300px',
+                            height: '300px',
+                            minWidth: '300px',
+                            minHeight: '300px',
+                            maxWidth: '300px',
+                            maxHeight: '300px',
+                            objectFit: 'contain',
+                            filter: 'contrast(1.12) brightness(0.96) saturate(1.08)',
+                            opacity: 0.92,
+                            imageRendering: 'auto',
+                            display: 'block',
+                            flexShrink: 0,
+                            borderRadius: '16px',
+                            backgroundColor: 'transparent',
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
+                          }}
+                          onLoad={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.style.setProperty('width', '300px', 'important');
+                            img.style.setProperty('height', '300px', 'important');
+                            img.style.setProperty('min-width', '300px', 'important');
+                            img.style.setProperty('min-height', '300px', 'important');
+                            img.style.setProperty('max-width', '300px', 'important');
+                            img.style.setProperty('max-height', '300px', 'important');
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             );

@@ -68,23 +68,56 @@ export function ProjectMemoryDashboard() {
   const memory = Array.isArray(memoryData) ? memoryData : [];
   const agentActivity = Array.isArray(activityData) ? activityData : [];
 
-  const memoryMap = memory.reduce((acc: any, item: any) => {
-    acc[item.memory_key] = item.memory_value;
-    return acc;
-  }, {} as Record<string, any>);
+  const memoryMap = (() => {
+    try {
+      return memory.reduce((acc: any, item: any) => {
+        if (!item || typeof item !== 'object' || !item.memory_key) return acc;
+        try {
+          // Try to parse if it's a JSON string, otherwise use as-is
+          let value = item.memory_value;
+          if (typeof item.memory_value === 'string') {
+            try {
+              value = JSON.parse(item.memory_value);
+            } catch {
+              value = item.memory_value;
+            }
+          }
+          if (item.memory_key && value !== undefined && value !== null) {
+            acc[item.memory_key] = value;
+          }
+        } catch (error) {
+          // Silently skip invalid items
+          console.warn('Failed to process memory item:', item, error);
+        }
+        return acc;
+      }, {} as Record<string, any>);
+    } catch (error) {
+      console.error('Failed to build memory map:', error);
+      return {};
+    }
+  })();
 
-  const systemConfig = memoryMap.system_configuration || {};
-  const agentCoordMap = memoryMap.agent_coordination_map || {};
-  const optimizations = memoryMap.learned_optimizations || [];
+  const systemConfig = (memoryMap.system_configuration && typeof memoryMap.system_configuration === 'object') 
+    ? memoryMap.system_configuration 
+    : {};
+  const agentCoordMap = (memoryMap.agent_coordination_map && typeof memoryMap.agent_coordination_map === 'object')
+    ? memoryMap.agent_coordination_map
+    : {};
+  const optimizations = Array.isArray(memoryMap.learned_optimizations) 
+    ? memoryMap.learned_optimizations 
+    : [];
 
   // Calculate agent statistics
   const agentStats = agentActivity.reduce((acc: any, activity: any) => {
-    if (!acc[activity.agent_type]) {
-      acc[activity.agent_type] = { total: 0, success: 0, totalTime: 0 };
+    const agentType = activity?.agent_type;
+    if (!agentType) return acc; // Skip if agent_type is missing
+    
+    if (!acc[agentType]) {
+      acc[agentType] = { total: 0, success: 0, totalTime: 0 };
     }
-    acc[activity.agent_type].total++;
-    if (activity.success) acc[activity.agent_type].success++;
-    acc[activity.agent_type].totalTime += activity.response_time_ms || 0;
+    acc[agentType].total++;
+    if (activity.success) acc[agentType].success++;
+    acc[agentType].totalTime += activity.response_time_ms || 0;
     return acc;
   }, {});
 
@@ -145,13 +178,17 @@ export function ProjectMemoryDashboard() {
             </div>
             <div className="text-center p-4 rounded-lg bg-background border">
               <div className="text-3xl font-bold text-warning">
-                {systemConfig.resource_allocation?.urgent_tasks || 0}
+                {(systemConfig.resource_allocation && typeof systemConfig.resource_allocation === 'object')
+                  ? (systemConfig.resource_allocation.urgent_tasks || 0)
+                  : 0}
               </div>
               <div className="text-sm text-muted-foreground">Urgent Tasks</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-background border">
               <div className="text-3xl font-bold text-primary">
-                {systemConfig.resource_allocation?.high_priority_cases || 0}
+                {(systemConfig.resource_allocation && typeof systemConfig.resource_allocation === 'object')
+                  ? (systemConfig.resource_allocation.high_priority_cases || 0)
+                  : 0}
               </div>
               <div className="text-sm text-muted-foreground">Priority Cases</div>
             </div>
@@ -171,40 +208,43 @@ export function ProjectMemoryDashboard() {
         <CardContent>
           <ScrollArea className="h-[300px]">
             <div className="space-y-2">
-              {Object.entries(agentCoordMap).map(([agentType, status]: [string, any]) => (
-                <div
-                  key={agentType}
-                  className="flex items-center justify-between p-3 rounded-lg border"
-                >
-                  <div className="flex items-center gap-3 flex-1">
-                    {status.status === 'overloaded' && <AlertTriangle className="h-5 w-5 text-destructive" />}
-                    {status.status === 'busy' && <Activity className="h-5 w-5 text-warning" />}
-                    {status.status === 'idle' && <CheckCircle2 className="h-5 w-5 text-success" />}
-                    <div>
-                      <div className="font-medium">{agentType}</div>
-                      <div className="text-xs text-muted-foreground">
-                        Workload: {status.workload} requests/hr
+              {Object.entries(agentCoordMap).map(([agentType, status]: [string, any]) => {
+                if (!status || typeof status !== 'object') return null;
+                return (
+                  <div
+                    key={agentType}
+                    className="flex items-center justify-between p-3 rounded-lg border"
+                  >
+                    <div className="flex items-center gap-3 flex-1">
+                      {status.status === 'overloaded' && <AlertTriangle className="h-5 w-5 text-destructive" />}
+                      {status.status === 'busy' && <Activity className="h-5 w-5 text-warning" />}
+                      {status.status === 'idle' && <CheckCircle2 className="h-5 w-5 text-success" />}
+                      <div>
+                        <div className="font-medium">{agentType}</div>
+                        <div className="text-xs text-muted-foreground">
+                          Workload: {status.workload || 0} requests/hr
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right text-sm">
-                      <div className="font-medium">{status.success_rate?.toFixed(1)}%</div>
-                      <div className="text-xs text-muted-foreground">Success</div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right text-sm">
+                        <div className="font-medium">{(status.success_rate || 0).toFixed(1)}%</div>
+                        <div className="text-xs text-muted-foreground">Success</div>
+                      </div>
+                      <div className="text-right text-sm">
+                        <div className="font-medium">{(status.avg_response_time || 0).toFixed(0)}ms</div>
+                        <div className="text-xs text-muted-foreground">Avg Time</div>
+                      </div>
+                      <Badge variant={
+                        status.status === 'overloaded' ? 'destructive' :
+                        status.status === 'busy' ? 'secondary' : 'default'
+                      }>
+                        {status.status || 'unknown'}
+                      </Badge>
                     </div>
-                    <div className="text-right text-sm">
-                      <div className="font-medium">{status.avg_response_time?.toFixed(0)}ms</div>
-                      <div className="text-xs text-muted-foreground">Avg Time</div>
-                    </div>
-                    <Badge variant={
-                      status.status === 'overloaded' ? 'destructive' :
-                      status.status === 'busy' ? 'secondary' : 'default'
-                    }>
-                      {status.status}
-                    </Badge>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {Object.keys(agentCoordMap).length === 0 && (
                 <div className="text-center text-sm text-muted-foreground py-8">
                   No agent coordination data yet
@@ -280,7 +320,7 @@ export function ProjectMemoryDashboard() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
-            {systemConfig.integration_status && Object.entries(systemConfig.integration_status).map(([service, status]: [string, any]) => (
+            {systemConfig.integration_status && typeof systemConfig.integration_status === 'object' && Object.entries(systemConfig.integration_status).map(([service, status]: [string, any]) => (
               <div key={service} className="text-center p-4 rounded-lg border">
                 <div className="flex items-center justify-center mb-2">
                   {status === 'healthy' ? (
@@ -312,7 +352,7 @@ export function ProjectMemoryDashboard() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2 flex-wrap">
-            {systemConfig.peak_usage_hours?.map((hour: number) => (
+            {Array.isArray(systemConfig.peak_usage_hours) && systemConfig.peak_usage_hours.map((hour: number) => (
               <Badge key={hour} variant="outline" className="text-primary">
                 {hour}:00 - {hour + 1}:00
               </Badge>
