@@ -68,18 +68,18 @@ export const HeroWavingFlags = () => {
             </div>
           </div>
 
-          <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-20 relative" style={{ perspective: '1000px' }}>
+          <div className="glass-card p-5 md:p-6 pb-8 rounded-2xl border border-primary/10 backdrop-blur-sm bg-background/5 w-full max-w-md mx-auto lg:mx-0 lg:-mt-24 relative" style={{ perspective: '1000px' }}>
             <div className={`relative transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
               {/* Front - Form */}
               <div className={`${isFlipped ? 'invisible' : 'visible'}`} style={{ backfaceVisibility: 'hidden' }}>
                 {/* CLS FIX: Container with explicit aspect ratio to prevent image layout shift */}
-                <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100" style={{ aspectRatio: '16/10' }}>
+                <div className="mb-4 rounded-xl overflow-hidden opacity-70 dark:opacity-70 lg:opacity-100" style={{ aspectRatio: '1/1' }}>
                   <img 
                     src={professionalWoman} 
                     alt="Professional consultation"
                     // CLS FIX: Added explicit dimensions to prevent layout shift
                     width="400"
-                    height="250"
+                    height="400"
                     className="w-full h-full object-cover object-top"
                     loading="eager"
                     decoding="async"
