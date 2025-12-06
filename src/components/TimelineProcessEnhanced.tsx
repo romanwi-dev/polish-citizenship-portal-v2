@@ -123,14 +123,14 @@ export default function TimelineProcessEnhanced() {
             return (
             <motion.div 
               key={step.number} 
-              initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
+              initial={{ opacity: 0, x: isLeft ? -20 : 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ 
-                duration: 0.4, 
-                delay: index * 0.04, 
-                ease: [0.25, 0.46, 0.45, 0.94]
+                duration: 0.5, 
+                delay: index * 0.03, 
+                ease: [0.22, 1, 0.36, 1]
               }}
-              viewport={{ once: true, margin: "-150px" }}
+              viewport={{ once: true, margin: "-100px" }}
               className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
             >
               {/* Mobile timeline dot - positioned in center */}
