@@ -123,14 +123,14 @@ export default function TimelineProcessEnhanced() {
             return (
             <motion.div 
               key={step.number} 
-              initial={{ opacity: 0, x: isLeft ? -20 : 20 }}
+              initial={{ opacity: 0, x: isLeft ? -15 : 15 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ 
-                duration: 0.5, 
-                delay: index * 0.03, 
-                ease: [0.22, 1, 0.36, 1]
+                duration: 0.8, 
+                delay: index * 0.05, 
+                ease: [0.16, 1, 0.3, 1]
               }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-80px" }}
               className={`relative mb-40 md:mb-28 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
             >
               {/* Mobile timeline dot - positioned in center */}
@@ -238,10 +238,10 @@ export default function TimelineProcessEnhanced() {
               {/* Timeline Dot - Center Aligned */}
               <motion.div 
                 className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center"
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.85 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.8, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
                   <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
