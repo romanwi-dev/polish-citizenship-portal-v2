@@ -240,8 +240,8 @@ export default function TimelineProcessEnhanced() {
                 className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-150px" }}
-                transition={{ duration: 0.3, delay: index * 0.04, ease: [0.25, 0.46, 0.45, 0.94] }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
               >
                 <div className="w-16 h-16 rounded-full bg-card border-2 border-border shadow-lg flex items-center justify-center">
                   <span className="text-foreground opacity-50 font-heading font-bold text-3xl">{parseInt(step.number)}</span>
